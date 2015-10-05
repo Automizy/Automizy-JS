@@ -1,0 +1,339 @@
+
+<div id='doc-container'>
+    <h1>Button Widget</h1>
+    <div class='description-label'>Description:
+        <div class="description">Adding a customizable button to your webpage.</div>
+    </div>
+    <section>
+        <h2 class='quick-nav'>Quick navigation <a href='#button/entry-examples'>Examples</a></h2>
+        <table class='doc-content-table'>
+            <tr>
+                <td>
+                    <h3>Options</h3>
+                    <ul>
+                        <li><a href='#button/option/data'>data*</a></li>
+                        <li><a href='#button/option/float'>float</a></li>
+                        <li><a href='#button/option/html'>html</a></li>
+                        <li><a href='#button/option/id'>id*</a></li>
+                        <li><a href='#button/option/newRow'>newRow</a></li>
+                        <li><a href='#button/option/skin'>skin*</a></li>
+                        <li><a href='#button/option/text'>text</a></li>
+                    </ul>
+                </td>
+                <td>
+                    <h3>Methods</h3>
+                    <ul>
+                        <li><a href='#button/method/button'>button</a></li>
+                        <li><a href='#button/method/disable'>disable</a></li>
+                        <li><a href='#button/method/draw'>draw*</a></li>
+                        <li><a href='#button/method/drawTo'>drawTo*</a></li>
+                        <li><a href='#button/method/enable'>enable</a></li>
+                        <li><a href='#button/method/hide'>hide*</a></li>
+                        <li><a href='#button/method/remove'>remove*</a></li>
+                        <li><a href='#button/method/show'>show*</a></li>
+                        <li><a href='#button/method/widget'>widget*</a></li>
+                    </ul>
+                </td>
+                <td>
+                    <h3>Events</h3>
+                    <ul>
+                        <li><a href='#button/event/click'>click</a></li>
+                        <li><a href='#button/event/create'>create*</a></li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+    </section>
+
+    <section>
+        <h2>Options</h2>
+
+        <article id='button/option/data'></article>
+
+        <article id='button/option/float'>
+            <h4 class='option-name'>float</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>none</div>
+            </div>
+            <p class='option-use'>
+                This option is used to set the css property <code><a href='http://www.w3schools.com/cssref/pr_class_float.asp'>float</a></code> of the button element.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the button widget with the <code>float</code> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newButton({
+    float: 'right'
+}).draw();
+            </pre>
+            Initialize the button widget with the <code>float</code> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newButton().float('right').draw();
+            </pre>
+            <br>Get or set the <code>float</code> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var button = $A.newButton().draw();
+//Setter
+button.float('right'); //returns button
+
+//Getter
+console.log(button.float()); //returns value of float
+            </pre>
+        </article>
+
+        <article id='button/option/html'>
+            <h4 class='option-name'>html</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>''</div>
+            </div>
+            <p class='option-use'>
+                Use this option to set the html of the given button object.<br>
+                The use of this function is similar to the <code><a href='#button/option/text'>text</a></code> method, but with this you can insert html tags too.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the button widget with the <code>html</code> option specified, using object in constructor<br>
+            <pre  class='prettyprint linenums'>
+$A.newButton({
+    html: "&lt;u>button&lt;/u>" //the tags wont be shown
+}).draw();
+            </pre>
+            Initialize the button widget with the <code>html</code> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newButton().html("&lt;b>I love buttons&lt;/b>").draw();
+            </pre>
+            <br>Get or set the <code>html</code> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var button = $A.newButton().draw();
+//Setter
+button.html("&lt;b>I'm cool&lt;/b>"); //returns button
+
+//Getter
+console.log(button.html()); //returns value of html
+            </pre>
+        </article>
+        
+        <article id='button/option/id'></article>
+
+        <article id='button/option/newRow'>
+            <h4 class='option-name'>newRow</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Boolean</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>true</div>
+            </div>
+            <p class='option-use'>
+                If <code>true</code> the button element will appear in a new row. Then no other elements can be inserted in that row.<br>
+                If <code>false</code> the button element will appear in the same row, next to the previous element.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the button widget with the <code>newRow</code> option specified, using object in constructor<br>
+            <pre  class='prettyprint linenums'>
+//Buttons drawn in a single row
+$A.newButton({
+    newRow: false
+}).draw();
+$A.newButton({
+    newRow: false
+}).draw();
+
+//Third button will be drawn  in a new row
+$A.newButton({
+    newRow: true
+}).draw();
+            </pre>
+            Initialize the button widget with the <code>newRow</code> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newButton().newRow(false).draw();
+            </pre>
+            <br>Get or set the <code>newRow</code> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var button = $A.newButton().draw();
+//Setter
+button.newRow(false); //returns button
+
+//Getter
+console.log(button.newRow()); //returns value of newRow
+            </pre>
+        </article>
+
+        <article id='button/option/skin'>
+            <h4 class='option-name'>skin</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>'simple-white'</div>
+            </div>
+            <p class='option-use'>
+                Setting the skin of the widget.
+            </p>        
+            <div class='option-examples'>Code examples</div>
+            Initialize the button widget with the <code>skin</code> option specified, using object in constructor
+            <pre class="prettyprint linenums">
+$A.newButton({
+    skin: 'simple-white'
+}).draw();
+$A.newButton({
+    skin: 'simple-orange'
+}).draw();
+            </pre>
+            Initialize the button widget with the <code>skin</code> option specified, using method chaining
+            <pre class="prettyprint linenums">
+$A.newButton().skin('simple-white').draw()
+            </pre>
+            Get or set the <code>skin</code> option, after initialization
+            <pre class="prettyprint linenums">
+var button = $A.newButton().draw()
+//Setter
+button.skin('simple-white');
+
+//Getter
+console.log(button.skin());            
+            </pre>
+        </article>
+
+        <article id='button/option/text' class='last'>
+            <h4 class='option-name'>text</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>"My Button"</div>
+            </div>
+            <p class='option-use'>
+                Use this option to set the text which appears on the button.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the button widget with the <code>text</code> option specified, using object in constructor<br>
+            <pre  class='prettyprint linenums'>
+$A.newButton({
+    text: "Submit"
+}).draw();
+            </pre>
+            Initialize the button widget with the <code>text</code> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newButton().text("I love buttons").draw();
+            </pre>
+            <br>Get or set the <code>text</code> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var button = $A.newButton().draw();
+//Setter
+button.text("I'm cool"); //returns button
+
+//Getter
+console.log(button.text()); //returns value of text
+            </pre>
+        </article>
+
+    </section>
+    <section>
+        <h2>Methods</h2>
+        
+        <article id='button/method/button'>
+            <h4 class='method-name'>button()</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>jQuery</div>
+            </div>
+            <p class='method-use'>
+                Use this function to get the jQuery object representing the given button.
+            </p> 
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var button=$A.newButton().draw();
+console.log(button.button());
+            </pre>
+        </article>
+
+        <article id='button/method/disable'>
+            <h4 class='method-name'>disable()</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Button</div>
+            </div>
+            <p class='method-use'>
+                Use this to disable the particular button element.<br>
+                Disabled buttons cannot be clicked, selected, edited or copied.
+            </p> 
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var button=$A.newButton({skin: 'simple-orange'}).draw();
+setTimeout(function(){
+    button.disable();
+},1000);
+            </pre>
+        </article>
+
+        <article id='button/method/draw'></article>
+        <article id='button/method/drawTo'></article>
+
+        <article id='button/method/enable'>
+            <h4 class='method-name'>enable()</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Button</div>
+            </div>
+            <p class='method-use'>
+                Use this to enable the particular button element.<br>
+            </p>      
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var button=$A.newButton({skin: 'simple-orange'}).disable().draw();
+setTimeout(function(){
+    button.enable();
+},1000);
+            </pre>
+        </article>
+
+        <article id='button/method/hide'></article>
+        <article id='button/method/remove'></article>
+        <article id='button/method/show'></article>
+        <article id='button/method/widget' class='last'></article>
+
+    </section>
+
+    <section>
+        <h2>Events</h2>
+        <article id='button/event/click'>
+            <h4 class='event-name'>click(event)</h4>
+            <div class='event-attributes'>
+                Returns:<div class='event-returns'>Button</div>
+            </div>
+            <p class='event-use'>
+                You can set the event you want to be triggered when clicking on the particular button.
+            </p>               
+            <ul>
+                <li>
+                    <div class=event-parameter>
+                        event
+                    </div>
+                    Type: <code>function</code><br>
+                    The event to be triggered
+                </li>
+            </ul>
+            <div class='event-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var button=$A.newButton().draw();
+button.click(function(){
+    alert('Clicked!');
+})          
+            </pre>
+        </article>
+
+        <article id='button/event/create' class='last'></article>
+
+    </section>
+
+    <section>
+        <h2>Examples</h2>
+        <article id='button/entry-examples' class='last'>
+            <h3>A simple module </h3>
+            <pre id='module-example' class='prettyprint linenums'></pre>
+            <h3>Demo:</h3>
+            <div id='module-demo'></div>
+        </article>
+    </section>
+</div>

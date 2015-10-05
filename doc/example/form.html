@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Form Example</title>
+        <link rel="stylesheet" href="css/jquery-ui.min.css" />
+        <link rel="stylesheet" href="css/jquery.multiselect.css">
+        <link rel="stylesheet" href="css/jquery.multiselect.filter.css">
+        <link rel="stylesheet" href="css/automizy.min.css">
+
+        <script src="js/jquery.min.js"></script>
+        <script src="js/jquery-ui.min.js"></script>
+        <script src="js/jquery.multiselect.min.js"></script>
+        <script src="js/jquery.multiselect.filter.js"></script>
+        <script src="js/automizy.min.js"></script>
+        <script>
+            var temp;
+            $(function () {
+                window.temp = $A.newForm({
+                    inputs: [
+                        {
+                            label: 'Import file',
+                            help: "Select a file to upload that contains contact data that you want to import.",
+                            type: 'file',
+                            name: 'import-subscribers',
+                            accept: ['.csv', '.rar', '.zip', '.tar', '.gz']
+                        },
+                        {
+                            label: 'Add to segments',
+                            help: 'Select the segments you want to add the uploaded subscribers to.',
+                            type: 'select',
+                            name: 'segments[]',
+                            multiselect: $A.d.defines.input.setupSelectSearchCheckObj,
+                            options: [
+                                [0, '--- Nothing ---'],
+                                [12, 'First Segment'],
+                                [15, 'Second Segment']
+                            ],
+                            change: function (input, $elem) {
+
+                            }
+                        },
+                        {
+                            label: 'Embed images',
+                            help: "This will embed the images from the content inside the email. This may make the email significantly larger.",
+                            name: 'overrideSubscribers',
+                            type: 'checkbox',
+                            create: function (input, $elem) {
+                                $elem.data({on: 'Yes', off: 'No'});
+                                //createIphoneStyle($elem);
+                            }
+                        }
+                    ],
+                    target: $('body')
+                }).addSubTitle('Title1').addGroups([
+                    {
+                        text: 'Group 1',
+                        inputs: [
+                            {
+                                label: 'Import file',
+                                help: "Select a file to upload that contains contact data that you want to import.",
+                                type: 'file',
+                                name: 'import-subscribers',
+                                accept: ['.csv', '.rar', '.zip', '.tar', '.gz']
+                            },
+                            {
+                                label: 'Apple',
+                                validator: 'notEmpty'
+                            }
+                        ]
+                    },
+                    {
+                        text: 'Group 2',
+                        inputs: [
+                            {
+                                label: $A.translate('Stuff')
+                            }
+                        ]
+                    }]);
+                ;
+            });
+        </script>
+    </head>
+    <body></body>
+</html>
+

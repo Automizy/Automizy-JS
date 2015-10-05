@@ -1,0 +1,213 @@
+.automizy-input{
+    display: inline-block;
+    position: relative;
+    padding:0 0 12px 0;
+    max-width: 100%;
+}
+.automizy-input .automizy-input{
+    padding:0;
+}
+.automizy-input.new-row{
+    clear: both;
+    display: block;
+}
+.automizy-input.automizy-skin-simple-automizy input[type='text'],
+.automizy-input.automizy-skin-simple-automizy input[type='number'],
+.automizy-input.automizy-skin-simple-automizy input[type='password'],
+.automizy-input.automizy-skin-simple-automizy select,
+.automizy-input.automizy-skin-simple-automizy textarea{
+    background-color: #f7f8f0;
+    border: 1px solid #b6c5a4;
+    box-sizing: border-box;
+    color: #555555;
+    width: 300px;
+    height: 32px;
+    padding-left:8px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    outline: none;
+    max-width: 100%;
+}
+.automizy-input.automizy-skin-simple-automizy textarea{
+    height:80px;
+}
+.automizy-input.automizy-skin-simple-automizy input[type='text']:focus,
+.automizy-input.automizy-skin-simple-automizy input[type='number']:focus,
+.automizy-input.automizy-skin-simple-automizy input[type='password']:focus,
+.automizy-input.automizy-skin-simple-automizy select:focus,
+.automizy-input.automizy-skin-simple-automizy textarea:focus{
+    background-color:#ffffff;
+    color:#000000;
+    border-color:#79aa41;
+}
+.automizy-input.automizy-skin-simple-automizy input[type='text']:disabled,
+.automizy-input.automizy-skin-simple-automizy input[type='number']:disabled,
+.automizy-input.automizy-skin-simple-automizy input[type='password']:disabled,
+.automizy-input.automizy-skin-simple-automizy select:disabled,
+.automizy-input.automizy-skin-simple-automizy textarea:disabled{
+    background-color:#d5d6cf;
+    color:#555555;
+}
+.automizy-input.automizy-skin-simple-automizy.error input{
+    border-color:red;
+}
+.automizy-input.automizy-skin-simple-automizy label{
+    width: 240px;
+    display:inline-block;
+    text-align: left;
+    /*margin: 0 8px 16px 16px;*/
+    vertical-align: top;
+}
+.automizy-input.automizy-skin-simple-automizy .automizy-input-help{
+    line-height:10000px;
+    width:17px;
+    height:17px;
+    display:inline-block;
+    overflow:hidden;
+    margin:4px 0 0 8px;
+    opacity:0.5;
+    /*background-image:url('../../images/help-icon.png');*/ /* 17px */
+    cursor:pointer;
+    vertical-align: top;
+}
+.automizy-input .automizy-input-box{
+    display:inline-block;
+    position:relative;
+    max-width: 100%;
+}
+
+.automizy-input .automizy-input-box.automizy-input-has-help{
+    width: calc(100% - 25px) !important;
+    max-width: 300px !important;
+}
+
+.automizy-input .automizy-input-box.new-row{
+    clear: both;
+    margin: 0 24px 16px 0;
+    display: block;
+}
+.automizy-input.new-row label{
+    margin:0 0 3px 0;
+    font-family:Arial, Helvetica, sans-serif;
+}
+.automizy-input .automizy-input-box-error{
+    display:none;
+    margin:0 0 0 270px;
+    position:relative;
+    color:red;
+}
+.automizy-input.error .automizy-input-box-error{
+    display:block;
+}
+.automizy-input-help-content{
+    display:none;
+    position:absolute;
+    top:-10px;
+    left:0;
+    width:259px;
+    max-width:259px;
+    min-height:50px;
+    padding:12px;
+    background-color:#fffbd0;
+    border:1px solid #ebe7bc;
+    font-family: Arial, Helvetica, sans-serif;
+    z-index:5000;
+}
+.automizy-input-help-content .automizy-input-help-content-arrow{
+    margin:0 10px 0 -26px;
+    padding:0;
+    float:left;
+}
+
+
+
+.automizy-skin-simple-automizy .ui-multiselect{
+    font-size:14px;
+    padding-left:8px;
+    height:28px;
+    border:1px solid #b6c5a4;
+    outline:none;
+    height:30px;
+    background:#f7f8f0 url("data:image/gif;base64,R0lGODlhAQABAJEAAAAAAP///93j1f///yH5BAEAAAMALAAAAAABAAEAAAICVAEAOw==") repeat-y calc(100% - 28px) 0;
+}
+.automizy-skin-simple-automizy button.ui-multiselect{
+    vertical-align:middle;
+}
+.automizy-skin-simple-automizy button.ui-multiselect span i{
+    display:none;
+}
+.automizy-skin-simple-automizy button.ui-multiselect span:last-child{
+    display:inline-block;
+    box-sizing:border-box;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width:calc(100% - 25px);
+}
+.automizy-skin-simple-automizy .ui-multiselect.ui-state-hover{
+    border:1px solid #b6c5a4;
+}
+.automizy-skin-simple-automizy .ui-multiselect.ui-state-active{
+    border:1px solid #79aa41;
+    background-color:#ffffff;
+}
+.automizy-skin-simple-automizy .ui-multiselect .ui-icon{
+    margin-right:6px;
+}
+.automizy-skin-simple-automizy .ui-multiselect .ui-icon{
+    background:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAHCAYAAADEUlfTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAB6SURBVHjabMsxDsFQAIDh7z3CCYwGRzA4gS7SpKu7tHOP4CDt3Bsg4gAMrE6AeJZKJPzrny+UzfKCqd+uEbn/5SGlpGqzE2YI/bjVRTcJZbMcYI7tl1rgGBHrotvh/FE4QMSzarMx1khY4VUX3WOIEe7YY9OrWLWZ9wBUXyCZ/4WT6gAAAABJRU5ErkJggg==") no-repeat 4px 5px;
+}
+.automizy-skin-simple-automizy .ui-multiselect-menu{
+    padding:0;
+    width:auto !important;
+}
+.automizy-skin-simple-automizy .ui-multiselect-menu .css-checkbox{
+    max-width:none !important;
+}
+.automizy-skin-simple-automizy .ui-multiselect-menu .ui-multiselect-checkboxes span i{
+    font-size:11px;
+    color:#777777;
+    display:inline-block;
+    margin:0 0 0 8px;
+}
+.automizy-skin-simple-automizy .ui-multiselect-menu li{
+    padding:0px;
+    font-size:14px;
+    /*margin-right:15px;*/
+}
+.automizy-skin-simple-automizy .ui-multiselect-menu label{
+
+}
+.automizy-skin-simple-automizy .ui-multiselect-menu .ui-state-active:not(.ui-multiselect){
+    background:#96c26b;
+    border-color:#96c26b;
+    color:#ffffff;
+    outline:none;
+}
+.automizy-skin-simple-automizy .ui-multiselect-menu .ui-state-hover:not(.ui-state-active){
+    background:#e5e5e0;
+    border-color:#e5e5e0;
+    outline:none;
+}
+.automizy-skin-simple-automizy .simple-automizy-file-box{
+    display:block;
+    height:33px;
+}
+.automizy-skin-simple-automizy .simple-automizy-file-box td{
+    vertical-align:top;
+}
+
+.simple-automizy-slider{
+    width:250px;
+    margin:5px 0 0 0;
+    display:inline-block;
+}
+.simple-automizy-slider-value{
+    width:50px;
+    display:inline-block;
+    box-sizing:border-box;
+    padding:4px 0 0 15px;
+    vertical-align: top;
+    text-align:left;
+}

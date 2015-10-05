@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>AutomizyJS Button Example</title>
+        <link rel="stylesheet" href="css/automizy.min.css">
+
+        <script src="js/jquery.min.js"></script>
+        <script src="js/automizy.min.js"></script>
+        <script>
+            $(function () {
+                //Creating Button module with object
+                $A.newButton({
+                    text: "New Button",
+                    float: "left",
+                    target: $('body'),
+                    skin: "simple-white"
+                });
+
+                //Creating Button module with method chaining
+                $A.newButton().text("New Button").float('right').skin('simple-orange').draw();
+            });
+        </script>
+    </head>
+    <body></body>
+</html>

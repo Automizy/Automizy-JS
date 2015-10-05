@@ -1,0 +1,469 @@
+<div id="doc-container">
+    <h1>Global functions</h1>
+    <div class="description-label">Description:
+        <div class="description">These are the basic functions of AutomizyJS. The fuctions below work on all Automizy modules, writing the specific module name in the fuction names (shown in the examples).</div>
+    </div>
+    <section>
+        <h2 class="quick-nav">Quick navigation</h2>
+        <ul>
+            <li class="global-function-name"><a href="#globalFunctions/newModule" class="globalFunctions-newModule">$A.newModule()</a></li>
+            <li class="global-function-name"><a href="#globalFunctions/getModule" class="globalFunctions-getModule">$A.getModule()</a></li>
+            <li class="global-function-name"><a href="#globalFunctions/getAllModule" class="globalFunctions-getAllModule">$A.getAllModule()</a></li>
+            <li class="global-function-name"><a href="#globalFunctions/removeModule" class="globalFunctions-removeModule">$A.removeModule()</a></li>
+            <li class="global-function-name"><a href="#globalFunctions/removeAllModule" class="globalFunctions-removeAllModule">$A.removeAllModule()</a></li>
+            <li class="global-function-name"><a href="#globalFunctions/ajaxDocumentCover" class="globalFunctions-ajaxDocumentCover">$A.ajaxDocumentCover()</a></li>
+            <li class="global-function-name"><a href="#globalFunctions/base64Encode" class="globalFunctions-base64Encode">$A.base64Encode()</a></li>
+            <li class="global-function-name"><a href="#globalFunctions/base64Decode" class="globalFunctions-base64Decode">$A.base64Decode()</a></li>
+            <li class="global-function-name"><a href="#globalFunctions/dateFormat" class="globalFunctions-dateFormat">$A.dateFormat()</a></li>
+            <li class="global-function-name"><a href="#globalFunctions/store" class="globalFunctions-store">$A.store()</a></li>
+            <li class="global-function-name"><a href="#globalFunctions/getUniqueString" class="globalFunctions-getUniqueString">$A.getUniqueString()</a></li>
+            <li class="global-function-name"><a href="#globalFunctions/hashChange" class="globalFunctions-hashChange">$A.hashChange()</a></li>
+            <li class="global-function-name"><a href="#globalFunctions/insertAtCaret" class="globalFunctions-insertAtCaret">$A.insertAtCaret()</a></li>
+            <li class="global-function-name"><a href="#globalFunctions/parseBoolean" class="globalFunctions-parseBoolean">$A.parseBoolean()</a></li>
+            <li class="global-function-name"><a href="#globalFunctions/rand" class="globalFunctions-rand">$A.rand()</a></li>
+            <li class="global-function-name"><a href="#globalFunctions/setWindowScroll" class="globalFunctions-setWindowScroll">$A.setWindowScroll()</a></li>
+            <li class="global-function-name"><a href="#globalFunctions/numberFormat" class="globalFunctions-numberFormat">$A.numberFormat()</a></li>
+            <li class="global-function-name"><a href="#globalFunctions/defaultNumberFormat" class="globalFunctions-defaultNumberFormat">$A.defaultNumberFormat()</a></li>
+            <li class="global-function-name"><a href="#globalFunctions/convertToResponsive" class="globalFunctions-convertToResponsive">$A.convertToResponsive()</a></li>
+        </ul>
+    </section>
+    <section>
+        <h2>Global methods</h2>  
+        <article id="globalFunctions/newModule">
+            <h4 class='method-name'>$A.newModule(obj)</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Module</div>
+            </div>
+            <p class='method-use'>
+                This method creates a new Automizy module.<br>
+                If the method is invoked without parameter a default copy of the specific module will be created.<br>
+                If invoked with parameter the copy will be created based on the properties given in the <code>obj</code> object.
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        obj
+                    </div>
+                    Type: <code>Object</code><br>
+                    The object which specifies the attributes of the module you want to create.<br>
+                    If you want to know which attributes can be specified in the object of the particular module, check the 'Options' in the module description. 
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+//Creating a new Button module
+var button = $A.newButton({
+    text: "My new button",
+    float: "left",
+    skin: "simple-orange"
+}).draw();
+            </pre>
+        </article>
+        <article id="globalFunctions/getModule">
+            <h4 class='method-name'>$A.getModule(id)</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Module</div>
+            </div>
+            <p class='method-use'>
+                This method returns the Automizy module with the specific id.<br>
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        id
+                    </div>
+                    Type: <code>String</code><br>
+                    The id of the module you want to get.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+//Getting a new Button module
+$A.newButton({id: "button-1"}).draw();
+var button1 = $A.getButton("button-1");
+setTimeout(function(){
+    button1.disable();
+},1000);
+            </pre>
+        </article>
+        
+        <article id="globalFunctions/getAllModule">
+            <h4 class='method-name'>$A.getAllModule()</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Object</div>
+            </div>
+            <p class='method-use'>
+                This method returns the all copies of the specific Automizy module in an object.<br>
+            </p>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+//Creating and getting all Button modules
+$A.newButton().draw();
+$A.newButton().draw();
+$A.newButton().draw();
+var buttons = $A.getAllButton();
+setTimeout(function(){
+    for(var i in buttons){
+        buttons[i].disable();
+    }
+}, 1000);
+            </pre>
+        </article>
+        <article id="globalFunctions/removeModule">
+            <h4 class='method-name'>$A.removeModule(id)</h4>
+            <div class='method-attributes'>
+            </div>
+            <p class='method-use'>
+                This method removes the Automizy module with the specific id.<br>
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        id
+                    </div>
+                    Type: <code>String</code><br>
+                    The id of the module you want to remove.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+//Creating and removing a Button module
+$A.newButton({id: "button-1"}).draw();
+setTimeout(function (){
+    $A.removeButton("button-1");
+},1000);
+            </pre>
+        </article>
+        
+        <article id="globalFunctions/removeAllModule">
+            <h4 class='method-name'>$A.removeAllModule()</h4>
+            <p class='method-use'>
+                This method removes all copies of the specific Automizy module in an object.<br>
+            </p>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+//Creating and removing Button modules
+$A.newButton().draw();
+$A.newButton().draw();
+$A.newButton().draw();
+setTimeout(function () {
+    $A.removeAllButton();
+}, 1000);
+            </pre>
+        </article>
+        
+        <article id="globalFunctions/ajaxDocumentCover">
+            <h4 class='method-name'>$A.ajaxDocumentCover()</h4>
+            <p class='method-use'>
+                Use this methoud to add a loading cover to your page.
+            </p>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+$A.ajaxDocumentCover(true);
+            </pre>
+        </article>
+        
+        <article id="globalFunctions/base64Encode">
+            <h4 class='method-name'>$A.base64Encode()</h4>
+            <p class='method-use'>
+                Use this method to base64 encode any string.
+            </p>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var txt = "This is the text to encode.";
+var encoded = $A.base64Encode(txt);
+document.write(encoded);
+            </pre>
+        </article>
+        
+        <article id="globalFunctions/base64Decode">
+            <h4 class='method-name'>$A.base64Decode()</h4>
+            <p class='method-use'>
+                Use this method to base64 decode any base64 encoded string.
+            </p>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var txt = "This is the text to encode.";
+var encoded = $A.base64Encode(txt);
+document.write($A.base64Decode(encoded));
+            </pre>
+        </article>
+        
+        <article id="globalFunctions/dateFormat">
+            <h4 class='method-name'>$A.dateFormat()</h4>
+            <p class='method-use'>
+                Use this method to format date and time.<br>
+                This function uses Steven Levithan's <a href="blog.stevenlevithan.com/archives/date-time-format" target="_blank">dateFormat.js</a>.
+            </p>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+document.write($A.dateFormat('2015.04.16 12:31', 'mysqlDateTime'));
+            </pre>
+        </article>
+
+        <article id="globalFunctions/store">
+            <h4 class='method-name'>$A.store()</h4>
+            <p class='method-use'>
+                localStorage wrapper for all browsers without using cookies or flash. Uses localStorage, globalStorage, and userData behavior under the hood.<br>
+                This function uses Marcus Westin's <a href="https://github.com/marcuswestin/store.js" target="_blank">store.js</a>.
+            </p>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+$A.store.set('user', {name:'John Doe', age:25, active:false});
+document.write($A.store.get('user').name + ' is a ');
+document.write($A.store.get('user').age + ' years old ');
+document.write(($A.store.get('user').active?'active':'inactive') + ' user.');
+            </pre>
+        </article>
+        
+        <article id="globalFunctions/getUniqueString">
+            <h4 class='method-name'>$A.getUniqueString()</h4>
+            <p class='method-use'>
+                Use this method to get a random, 16 characters long string.
+            </p>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+document.write($A.getUniqueString());
+            </pre>
+        </article>
+        
+        <article id="globalFunctions/hashChange">
+            <h4 class='method-name'>$A.hashChange(str, bool)</h4>
+            <p class='method-use'>
+                Use this method to change the hash tag in the browser url.<br>
+                If invoked without parameter, this function will trigger the <a href="http://api.jquerymobile.com/hashchange/" target="_blank">hashchange</a> event, as shown in the example below.
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        str
+                    </div>
+                    Type: <code>String</code><br>
+                    The hash text you want to show.<br>
+                    Invoke this function using only one parameter to change hash value.
+                </li>
+                <li>
+                    <div class='method-parameter'>
+                        bool
+                    </div>
+                    Type: <code>boolean</code><br>
+                    Set this second parameter <code>false</code> if you want to remove the hash tag.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+//Setting hashchange event:
+$('body').on("hashchange", function(){
+    alert("Hash changed!");
+});
+//Setting hash:
+$A.hashChange('hashName');
+//Removing the 'hashName' hash
+$A.hashChange('hashName', false);
+            </pre>
+        </article>
+        
+        <article id="globalFunctions/insertAtCaret">
+            <h4 class='method-name'>$A.insertAtCaret($input, str)</h4>
+            <p class='method-use'>
+                Use this method to instert a string at the cursor in an input field.
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        $input
+                    </div>
+                    Type: <code>jQuery</code><br>
+                    The input element in which you want to insert the string.
+                </li>
+                <li>
+                    <div class='method-parameter'>
+                        str
+                    </div>
+                    Type: <code>String</code><br>
+                    The string you want to insert.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+$('body').append('&lt;input type="text" id="input01" value="Text"/>');
+setTimeout(function(){
+    $A.insertAtCaret($('#input01'),'Insert this!');
+},1000);
+            </pre>
+        </article>
+        
+        <article id="globalFunctions/parseBoolean">
+            <h4 class='method-name'>$A.parseBoolean(val)</h4>
+            <p class='method-use'>
+                Use this method to evaluate the given parameter as a boolean.<br>
+            </p>
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        val
+                    </div>
+                    Type: <code>String|Number</code><br>
+                    The value you want to parse to boolean.<br>
+                    This method will parse the following expressions <code>true</code>:  'true' | 1 | '1' | 'on' | 'yes'<br>
+                    This method will parse the following expressions <code>false</code>:  'true' | 0 | '0' | 'off' | 'no'<br>
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+document.write($A.parseBoolean(1) + ", ");
+document.write($A.parseBoolean('off') + ", ");
+document.write($A.parseBoolean('yes'));
+            </pre>
+        </article>
+        
+        <article id="globalFunctions/rand">
+            <h4 class='method-name'>$A.rand(a, b)</h4>
+            <p class='method-use'>
+                This method gives a random number between the two given numbers (incl. value of 'a' and 'b' too).
+            </p>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+document.write($A.rand(0, 100));
+            </pre>
+        </article>
+        
+        <article id="globalFunctions/setWindowScroll">
+            <h4 class='method-name'>$A.setWindowScroll(id, bool)</h4>
+            <p class='method-use'>
+                Use this method to enable or disable window scrolling when a dialog is open.
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        id
+                    </div>
+                    Type: <code>String</code><br>
+                    The id of the dialog element on which you want to enable or diable window scrolling.
+                </li>
+                <li>
+                    <div class='method-parameter'>
+                        bool
+                    </div>
+                    Type: <code>boolean</code><br>
+                    <code>true</code>: Scrolling will be enabled.<br>
+                    <code>false</code>: Scrolling will be disabled.<br>
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+$A.newDialog({
+    id: 'dialog01',
+    title: 'New dialog'
+}).open();
+$A.setWindowScroll(false, 'dialog01');
+            </pre>
+        </article>
+        
+        <article id="globalFunctions/numberFormat">
+            <h4 class='method-name'>$A.numberFormat(number, decimals, decPoint, thousandsSep)</h4>
+            <p class='method-use'>
+                Use this method to format a number.
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        number
+                    </div>
+                    Type: <code>Number</code><br>
+                    The number you want to format. It can be either an integer or a double.
+                </li>
+                <li>
+                    <div class='method-parameter'>
+                        decimals
+                    </div>
+                    Type: <code>Integer</code><br>
+                    The number of decimals you want to show.
+                </li>
+                <li>
+                    <div class='method-parameter'>
+                        decPoint
+                    </div>
+                    Type: <code>String</code><br>
+                    The decimal point separator character.
+                </li>
+                <li>
+                    <div class='method-parameter'>
+                        thousandsSep
+                    </div>
+                    Type: <code>String</code><br>
+                    The thousands separator character.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+$('&lt;div>'+$A.numberFormat(1234.56)+'&lt;/div>').appendTo('body');	//'1,235'
+$('&lt;div>'+$A.numberFormat(1234.56, 2, ',', ' ')+'&lt;/div>').appendTo('body');	//'1 234,56'
+$('&lt;div>'+$A.numberFormat(1234.5678, 2, '.', '')+'&lt;/div>').appendTo('body');	//'1234.57'
+$('&lt;div>'+$A.numberFormat(67, 2, ',', '.')+'&lt;/div>').appendTo('body');	//'67,00'
+$('&lt;div>'+$A.numberFormat(1000)+'&lt;/div>').appendTo('body');	//'1,000'
+$('&lt;div>'+$A.numberFormat(67.311, 2)+'&lt;/div>').appendTo('body');	//'67.31'
+$('&lt;div>'+$A.numberFormat(1000.55, 1)+'&lt;/div>').appendTo('body');	//'1,000.6'
+$('&lt;div>'+$A.numberFormat(67000, 5, ',', '.')+'&lt;/div>').appendTo('body');	//'67.000,00000'
+$('&lt;div>'+$A.numberFormat(0.9, 0)+'&lt;/div>').appendTo('body');	//'1'
+$('&lt;div>'+$A.numberFormat('1.20', 2)+'&lt;/div>').appendTo('body');	//'1.20'
+$('&lt;div>'+$A.numberFormat('1.20', 4)+'&lt;/div>').appendTo('body');	//'1.2000'
+$('&lt;div>'+$A.numberFormat('1.2000', 3)+'&lt;/div>').appendTo('body');	//'1.200'
+            </pre>
+        </article>
+        
+        <article id="globalFunctions/defaultNumberFormat" class='last'>
+            <h4 class='method-name'>$A.defaultNumberFormat(numberFormat)</h4>
+            <p class='method-use'>
+                Use this method to set the default number formatting pattern.<br>
+                This pattern will be used if you invoke the $A.numberFormat(number) function.
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        numberFormat
+                    </div>
+                    Type: <code>Object</code><br>
+                        <code>decimals: 0</code><br>
+                        <code>decPoint: '.'</code><br>
+                        <code>thousandsSep: ','</code>
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+$A.defaultNumberFormat({
+    decPoint:',',
+    thousandsSep:' ',
+});
+
+//Please note that the number will be ceiled this case, because the default number of decimals is 0
+$('&lt;div>'+$A.numberFormat(67000.5)+'&lt;/div>').appendTo('body');	//'67 001'
+
+
+$A.defaultNumberFormat({
+    decPoint:',',
+    thousandsSep:' ',
+    decimals: 3
+});
+
+//Now decimals will be shown
+$('&lt;div>'+$A.numberFormat(67000.5)+'&lt;/div>').appendTo('body');	//'67 000,500'
+
+            </pre>
+        </article>
+        
+        <article id="globalFunctions/convertToResponsive" class='last'>
+            <h4 class='method-name'>$A.convertToResponsive()</h4>
+            <p class='method-use'>
+                Use this method to enable the mobile-friendly CSS features of AutomizyJs.
+            </p>   
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+//Try it out by resizing your browser window
+$A.convertToResponsive();
+$A.newDialog().content($('&lt;div class="automizy-dialog-content">Content&lt;/div>')).draw();
+            </pre>
+        </article>
+                
+    </section>
+</div>

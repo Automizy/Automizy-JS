@@ -1,0 +1,487 @@
+
+<div id='doc-container'>
+    <h1>Dialog</h1>
+    <div class='description-label'>Description:
+        <div class="description">Adding popup windows to your webpage.</div>
+    </div>
+    <section>
+        <h2 class='quick-nav'>Quick navigation <a href='#dialog/entry-examples'>Examples</a></h2>
+        <table class='doc-content-table'>
+            <tr>
+                <td>
+                    <h3>Options</h3>
+                    <ul><li><a href='#dialog/option/buttons'>buttons*</a></li>
+                        <li><a href='#dialog/option/closable'>closable</a></li>
+                        <li><a href='#dialog/option/content'>content</a></li>
+                        <li><a href='#dialog/option/data'>data*</a></li>
+                        <li><a href='#dialog/option/hash'>hash</a></li>
+                        <li><a href='#dialog/option/id'>id*</a></li>
+                        <li><a href='#dialog/option/minHeight'>minHeight</a></li>
+                        <li><a href='#dialog/option/position'>position</a></li>
+                        <li><a href='#dialog/option/positionX'>positionX</a></li>
+                        <li><a href='#dialog/option/positionY'>positionY</a></li>
+                        <li><a href='#dialog/option/skin'>skin*</a></li>
+                        <li><a href='#dialog/option/title'>title</a></li>
+                        <li><a href='#dialog/option/width'>width</a></li>
+                        <li><a href='#dialog/option/zIndex'>zIndex</a></li>
+                    </ul>
+                </td>
+                <td>
+                    <h3>Methods</h3>
+                    <ul><li><a href='#dialog/method/addButton'>addButton*</a></li>
+                        <li><a href='#dialog/method/close'>close</a></li>
+                        <li><a href='#dialog/method/draw'>draw*</a></li>
+                        <li><a href='#dialog/method/drawTo'>drawTo*</a></li>
+                        <li><a href='#dialog/method/hide'>hide*</a></li>
+                        <li><a href='#dialog/method/open'>open</a></li>
+                        <li><a href='#dialog/method/remove'>remove*</a></li>
+                        <li><a href='#dialog/method/removeButton'>removeButton*</a></li>
+                        <li><a href='#dialog/method/setMaxHeight'>setMaxHeight</a></li>
+                        <li><a href='#dialog/method/show'>show*</a></li>
+                        <li><a href='#dialog/method/widget'>widget*</a></li>
+                    </ul>
+                </td>
+                <td>
+                    <h3>Events</h3>
+                    <ul>
+                        <li><a href='#dialog/event/create'>create*</a></li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+    </section>
+
+    <section>
+        <h2>Options</h2>
+        <article id='dialog/option/buttons'></article>
+        
+        <article id='dialog/option/closable'>
+            <h4 class='option-name'>closable</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Boolean</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>true</div>
+            </div>
+            <p class='option-use'>
+                Use this option to set the dialog closable or unclosable.<br>
+                If the dialog is closable it will close in case the user clicks on any other element on the page.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the dialog widget with the <code>closable</code> option specified, using object in constructor
+            <pre class="prettyprint linenums">
+$A.newDialog({
+    closable: false
+}).draw();                  
+            </pre>
+            Initialize the dialog widget with the <code>closable</code> option specified, using method chaining
+            <pre class="prettyprint linenums">
+$A.newDialog().closable(false).draw();
+            </pre>
+            Get or set the <code>closable</code> option, after initialization
+            <pre class="prettyprint linenums">
+var dialog = $A.newDialog().draw();
+//Setter
+dialog.closable(false);  //returns dialog
+
+//Getter
+console.log(dialog.closable()); //returns value of closable
+            </pre>
+        </article>
+        
+        <article id='dialog/option/content'>
+            <h4 class='option-name'>content</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>jQuery</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>$('&lt;div class="automizy-dialog-content">Content&lt;/div>')</div>
+            </div>
+            <p class='option-use'>
+                The <code>content</code> inside the widget can be any jQuery object, AutomizyJS form or HTML code.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the dialog widget with the <code>content</code> option specified, using object in constructor
+            <pre class="prettyprint linenums">
+$A.newDialog({
+    content: $('&lt;div class="automizy-dialog-content">Content&lt;/div>')
+}).draw();                  
+            </pre>
+            Initialize the dialog widget with the <code>content</code> option specified, using method chaining
+            <pre class="prettyprint linenums">
+$A.newDialog().content($('&lt;div class="automizy-dialog-content">Content&lt;/div>')).draw();
+            </pre>
+            Get or set the <code>content</code> option, after initialization
+            <pre class="prettyprint linenums">
+var dialog = $A.newDialog().draw();
+//Setter
+dialog.content($('&lt;div class="automizy-dialog-content">Content&lt;/div>'));  //returns dialog
+
+//Getter
+console.log(dialog.content()); //returns the content element
+            </pre>
+        </article>
+        
+        <article id='dialog/option/data'></article>
+
+        <article id='dialog/option/hash'>
+            <h4 class='option-name'>hash</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>false</div>
+            </div>
+            <p class='option-use'>
+                Use this method to set the hash tag in the browser url.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the dialog widget with the <code>hash</code> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newDialog({
+    hash: "newHash"
+}).draw();
+            </pre>
+            Initialize the dialog widget with the <code>hash</code> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newDialog().draw().hash("newHash");
+            </pre>
+            <br>Get or set the <code>hash</code> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var dialog = $A.newDialog().draw();
+//Setter
+dialog.hash("newHash");  //returns dialog
+
+//Getter
+console.log(dialog.hash()); //returns value of hash
+            </pre>
+        </article>
+
+        <article id='dialog/option/minHeight'>
+            <h4 class='option-name'>minHeight</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>'0px'</div>
+            </div>
+            <p class='option-use'>
+                Use this method to set the minimum height of the dialog box.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the dialog widget with the <code>minHeight</code> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newDialog({
+    minHeight: "200px"
+}).draw();
+            </pre>
+            Initialize the dialog widget with the <code>minHeight</code> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newDialog().draw().minHeight("200px");
+            </pre>
+            <br>Get or set the <code>minHeight</code> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var dialog = $A.newDialog().draw();
+//Setter
+dialog.minHeight("200px");  //returns dialog
+
+//Getter
+console.log(dialog.minHeight()); //returns value of minHeight
+            </pre>
+        </article>
+        
+        <article id='dialog/option/id'></article>
+
+        <article id='dialog/option/position'>
+            <h4 class='option-name'>position</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>'center middle'</div>
+            </div>
+            <p class='option-use'>
+                Use this function to set the position if the dialog widget.<br>
+                First word of string: Horizontal position. Accepted values: <code>left | center | right</code><br>
+                Second word of string: Vertical position. Accepted values: <code>top | middle | bottom</code>
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the dialog widget with the <code>position</code> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+var dialog = $A.newDialog({position: 'left bottom'}).draw();
+            </pre>
+            Initialize the dialog widget with the <code>position</code> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+var dialog = $A.newDialog().position('left bottom').draw();
+            </pre>
+            <br>Get or set the <code>position</code> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var dialog = $A.newDialog().draw();
+//Setter
+dialog.position('left bottom'); //returns dialog
+
+//Getter
+console.log(dialog.position());  //returns value of position
+            </pre>
+        </article>
+
+        <article id='dialog/option/positionX'>
+            <h4 class='option-name'>positionX</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>'center'</div>
+            </div>
+            <p class='option-use'>
+                <code>positionX</code> determines the distance between the left edge of the dialog widget and the left edge of its containing element in pixels.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the dialog widget with the <code>positionX</code> option specified, using object in constructor
+            <pre class="prettyprint linenums">
+$A.newDialog({
+    positionX: '100px'
+}).draw();                  
+            </pre>
+            Initialize the dialog widget with the <code>positionX</code> option specified, using method chaining
+            <pre class="prettyprint linenums">
+$A.newDialog().positionX('100px').draw();
+            </pre>
+            Get or set the <code>positionX</code> option, after initialization
+            <pre class="prettyprint linenums">
+var dialog = $A.newDialog().draw();
+//Setter
+dialog.positionX('100px');  //returns dialog
+
+//Getter
+console.log(dialog.positionX()); //returns value of positionX
+            </pre>
+        </article>
+
+        <article id='dialog/option/positionY'>
+            <h4 class='option-name'>positionY</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>'middle'</div>
+            </div>
+            <p class='option-use'>
+                <code>positionY</code> determines the distance between the top edge of the dialog widget and the top edge of its containing element in pixels.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the dialog widget with the <code>positionY</code> option specified, using object in constructor
+            <pre class="prettyprint linenums">
+$A.newDialog({
+    positionY: '100px'
+}).draw();                  
+            </pre>
+            Initialize the dialog widget with the <code>positionY</code> option specified, using method chaining
+            <pre class="prettyprint linenums">
+$A.newDialog().positionY('100px').draw();
+            </pre>
+            Get or set the <code>positionY</code> option, after initialization
+            <pre class="prettyprint linenums">
+var dialog = $A.newDialog().draw();
+//Setter
+dialog.positionY('100px'); //returns dialog
+
+//Getter
+console.log(dialog.positionY()); //returns value of positionY
+            </pre>
+        </article>
+        
+        <article id='dialog/option/skin'></article>
+
+        <article id='dialog/option/title'>
+            <h4 class='option-name'>title</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>My Dialog</div>
+            </div>
+            <p class='option-use'>
+                The displayed title in the dialog widget.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the dialog widget with the <code>title</code> option specified, using object in constructor
+            <pre class="prettyprint linenums">
+$A.newDialog({
+    title: 'MyDialog'
+}).draw();                  
+            </pre>
+            Initialize the dialog widget with the <code>id</code> option specified, using method chaining
+            <pre class="prettyprint linenums">
+$A.newDialog().title('MyDialog').draw();
+            </pre>
+            Get or set the <code>title</code> option, after initialization
+            <pre class="prettyprint linenums">
+var dialog = $A.newDialog().draw();
+//Setter
+dialog.title('MyDialog'); //returns dialog
+
+//Getter
+console.log(dialog.title()); //returns value of title
+            </pre>
+        </article>
+
+        <article id='dialog/option/width'>
+            <h4 class='option-name'>width</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Number | String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>'60%'</div>
+            </div>
+            <p class='option-use'>
+                The width of the dialog widget.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the dialog widget with the <code>width</code> option specified, using object in constructor
+            <pre class="prettyprint linenums">
+$A.newDialog({
+    width: 600
+}).draw();                  
+            </pre>
+            Initialize the dialog widget with the <code>width</code> option specified, using method chaining
+            <pre class="prettyprint linenums">
+$A.newDialog().width(600).draw();
+            </pre>
+            Get or set the <code>width</code> option, after initialization
+            <pre class="prettyprint linenums">
+var dialog = $A.newDialog().draw();
+//Setter
+dialog.width(600);  //returns dialog
+
+//Getter
+console.log(dialog.width()); //returns value of width
+            </pre>
+        </article>
+
+        <article id='dialog/option/zIndex' class='last'>
+            <h4 class='option-name'>zIndex</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Number</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>3000</div>
+            </div>
+            <p class='option-use'>
+                The <code>zIndex</code> property specifies the stack order of an element.<br>
+                An element with greater stack order is always in front of an element with a lower stack order.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the dialog widget with the <code>zIndex</code> option specified, using object in constructor
+            <pre class="prettyprint linenums">
+$A.newDialog({
+    zIndex: 3000
+}).draw();                  
+            </pre>
+            Initialize the dialog widget with the <code>zIndex</code> option specified, using method chaining
+            <pre class="prettyprint linenums">
+$A.newDialog().zIndex(3000).draw();
+            </pre>
+            Get or set the <code>zIndex</code> option, after initialization
+            <pre class="prettyprint linenums">
+var dialog = $A.newDialog().draw();
+//Setter
+dialog.zIndex(3000);  //returns dialog
+
+//Getter
+console.log(dialog.zIndex()); //returns value of zIndex
+            </pre>
+        </article>
+
+    </section>
+    <section>
+        <h2>Methods</h2>
+        <article id='dialog/method/addButton'></article>
+
+<article id='dialog/method/close'>
+            <h4 class='method-name'>close</h4>
+            <div class='method-attributes'>
+            </div>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Dialog</div>
+            </div>
+            <p class='method-use'>
+                Invoke this function to close the current dialog.
+            </p>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var dialog = $A.newDialog().draw();
+dialog.open();
+setTimeout(function(){
+    dialog.close();
+    },1000);
+            </pre>
+        </article>
+
+        <article id='dialog/method/open'>
+            <h4 class='method-name'>open</h4>
+            <div class='method-attributes'>
+            </div>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Dialog</div>
+            </div>
+            <p class='method-use'>
+                Invoke this function to open the current dialog.
+            </p>   
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var dialog = $A.newDialog().draw();
+dialog.open();
+setTimeout(function(){
+    dialog.close();
+    },1000);
+            </pre>
+        </article>
+
+        <article id='dialog/method/draw'></article>
+        <article id='dialog/method/drawTo'></article>
+        <article id='dialog/method/hide'></article>
+        <article id='dialog/method/remove'></article>
+        <article id='dialog/method/removeButton'></article>
+        
+        <article id='dialog/method/setMaxHeight'>
+            <h4 class='method-name'>setMaxHeight</h4>
+            <div class='method-attributes'>
+            </div>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'></div>
+            </div>
+            <p class='method-use'>
+                This is a helper function which adjusts the dialog window's max height to the browser.<br>
+                If the dialog would be hang out of the browser window this function will make it just the right size and add a scrollbar to it.<br>
+            </p>   
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var dialog = $A.newDialog({
+    content: $('&lt;div class="automizy-dialog-content">Text&lt;br>Text&lt;br>Text&lt;br>Text&lt;br>Text&lt;br>Text&lt;br>Text&lt;br>Text&lt;br>Text&lt;br>Text&lt;br>Text&lt;br>Text&lt;br>&lt;/div>')
+}).draw();
+            </pre>
+        </article>
+
+        <article id='dialog/method/show'></article>
+        <article id='dialog/method/widget'></article>
+
+    </section>
+
+    <section>
+        <h2>Events</h2>
+
+        <article id='dialog/event/create'></article>
+
+    </section>
+
+    <section>
+        <h2>Examples</h2>
+        <article id='dialog/entry-examples' class='last'>
+            <h3>A simple module </h3>
+            <pre id='module-example' class='prettyprint linenums'></pre>
+            <h3>Demo:</h3>
+            <div id='module-demo'></div>
+        </article>
+    </section>
+</div>

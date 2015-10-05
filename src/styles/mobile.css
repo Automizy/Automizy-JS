@@ -1,0 +1,136 @@
+
+/* Global CSS / High resolution*/
+.automizy-mobile .automizy-dialog-box,
+.automizy-mobile .automizy-input,
+.automizy-mobile .automizy-input-box,
+.automizy-mobile input,
+.automizy-mobile button,
+.automizy-mobile textarea{
+    max-width:100% !important;
+    box-sizing: border-box;
+}
+
+/* iPads (portrait and landscape) ----------- */
+@media only screen and (min-width : 768px) and (max-width : 1024px) {
+    .automizy-mobile .automizy-dialog-box{
+        width:70% !important;
+    }
+
+}
+
+@media only screen and (max-width : 800px){
+    .automizy-mobile .automizy-dialog-box{
+        width:80% !important;
+    }
+    .automizy-mobile .automizy-dialog-content{
+        padding: 30px 30px 0 30px;
+    }
+}
+
+@media screen and (min-width : 600px) and (max-width : 767px) {
+    .automizy-mobile .automizy-dialog-box{
+        width:80% !important;
+    }
+
+}
+@media screen and (max-width : 600px){
+    .automizy-mobile .automizy-dialog-box{
+        width:90% !important;
+    }
+    .automizy-mobile .automizy-dialog-content{
+        padding: 20px 20px 0 20px;
+    }
+}
+
+@media only screen and (min-width : 571px) and (max-width : 599px) {
+    /* Styles */
+}
+
+/* iPhone 5 (portrait & landscape)----------- */
+@media only screen and (min-width : 320px) and (max-width : 570px) {
+    .automizy-mobile .automizy-dialog-box{
+        width:95% !important;
+    }
+    .automizy-mobile .automizy-dialog-content{
+        padding: 15px 15px 0 15px;
+    }
+}
+
+@media only screen and (max-width : 480px) {
+    .automizy-mobile .automizy-dialog-box{
+        width:100% !important;
+    }
+    .automizy-mobile .automizy-dialog-content{
+        padding: 10px 10px 0 10px;
+    }
+}
+
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (min-width : 320px) and (max-width : 480px) {
+    .automizy-mobile .automizy-table .automizy-table-box .automizy-table-container table td,
+    .automizy-mobile .automizy-table .automizy-table-box .automizy-table-container table th{
+        font-size: 13px;
+        padding: 4px;
+    }
+    
+    .automizy-mobile .automizy-table-settings-box{
+        font-size: 12px !important;
+    }
+    
+    .automizy-mobile .automizy-table-inline-buttons{
+        padding-bottom: 8px !important;
+        font-size: 13px !important;
+    }
+    
+    .automizy-mobile .automizy-table-inline-buttons a{
+        font-size: 13px !important;
+        padding: 6px 14px !important;
+    }
+    
+    .automizy-mobile .automizy-dialog-head{
+        padding:10px;
+    }
+    
+}
+
+@media only screen and (max-width : 380px) {
+    .automizy-mobile .automizy-dialog-content{
+        padding: 5px 5px 0 5px;
+    }
+    
+    .automizy-mobile .automizy-table .automizy-table-box .automizy-table-container table td,
+    .automizy-mobile .automizy-table .automizy-table-box .automizy-table-container table th{
+        font-size: 12px;
+        padding: 2px 4px;
+    }
+    
+    
+    .automizy-mobile .automizy-table-settings-box{
+        font-size: 12px !important;
+    }
+    
+    .automizy-mobile .automizy-table-inline-buttons{
+        padding-bottom: 4px !important;
+        font-size: 12px !important;
+    }
+    
+    .automizy-mobile .automizy-table-inline-buttons a{
+        font-size: 12px !important;
+        padding: 6px 10px !important;
+    }
+    
+    .automizy-mobile .automizy-dialog-head .automizy-button a{
+        padding: 8px 12px 9px 12px;
+    }
+    
+}
+
+/* Smartphones (portrait) ----------- */
+@media only screen and (max-width : 320px) {
+    
+    .automizy-mobile .automizy-dialog-head .automizy-button a{
+        padding: 8px 12px 9px 12px;
+        min-width:0;
+    }
+}

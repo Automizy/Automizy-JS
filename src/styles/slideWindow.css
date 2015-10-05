@@ -1,0 +1,189 @@
+
+.clr {
+    clear: both;
+}
+.automizy-slide-window{
+    font-family:Arial;
+    position:fixed;
+    right:-600px;
+    top: 350px;
+    border: 1px solid #689339;
+    width: 600px;
+    height: auto;
+    max-width:90%;
+    z-index:2450;
+    box-sizing: border-box;
+}
+
+.automizy-slide-window-tab{
+    font-weight: bold;
+    color:#ffffff;
+    font-size: 20px;
+    letter-spacing: 2px;
+    width:auto;
+    height:auto;
+    text-align: center;
+    vertical-align: middle;
+    display: block;
+    padding:3px 6px;
+    background-color:#78aa42;
+    float:left;
+    position:absolute;
+    top: 0px;
+    left: 0px;
+    cursor:pointer;
+    border: 2px solid #689339;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    box-sizing: border-box;
+}
+
+.slideWindow-position-left .automizy-slide-window-tab{
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+    border: 2px solid #689339;
+    border-top: 0px;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 0px;
+}
+.slideWindow-position-top .automizy-slide-window-tab{
+    border: 2px solid #689339;
+    border-top: 0px;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 0px;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 0px;
+}
+
+.slideWindow-position-bottom .automizy-slide-window-tab{
+    border: 2px solid #689339;
+    border-bottom:0px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.slideWindow-position-right .automizy-slide-window-tab{
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+    border: 2px solid #689339;
+    border-top-left-radius: 5px;
+    border-bottom: 0px;
+}
+.automizy-slide-window-head{
+    text-align:center;
+    width:100%;
+    background-color: #78aa42;
+    font-weight: bold;
+    color:#ffffff;
+    border: 1px solid #689339;
+    border-left:none;
+    box-sizing: border-box;
+}
+
+.slideWindow-position-left .automizy-slide-window-head{
+    border-right:1px solid #78aa42;
+}
+.slideWindow-position-top .automizy-slide-window-head{
+    border-top: 0px;
+    border-left: 1px solid #689339;
+}
+.slideWindow-position-bottom .automizy-slide-window-head{
+    border-left: 1px solid #689339;
+}
+.slideWindow-position-right .automizy-slide-window-head{
+    border-left: 0;
+}
+
+.automizy-slide-window-content{
+    padding:15px;
+    width:100%;
+    vertical-align:bottom;
+    display: block;
+    box-sizing: border-box;
+    top:0px;
+    left:0px;
+    border-bottom: none;
+    border-top: none;
+    background-color:#ffffff;
+}
+
+.automizy-slide-window .automizy-slide-window-buttons{
+    border-top: none;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    padding:15px;
+    padding-top: 0px;
+    background-color: #ffffff;
+    display:none;
+}
+.automizy-slide-window.has-button .automizy-slide-window-buttons{
+    display:block;
+}
+
+/*Progress bar styles*/
+
+.automizy-skin-progress-bar{
+    background-color: #ffffff;
+    border: none;
+    box-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.1);
+    left:auto;
+    right:500px;
+}
+
+.automizy-skin-progress-bar .automizy-slide-window-tab{
+    border-radius: 0;
+    border: none;
+    width: auto;
+    box-shadow: 0px -2px 4px 2px rgba(0, 0, 0, 0.1);
+    width:500px;
+    color: #d8feb3;
+    font-weight: normal;
+    font-size: 14px;
+    font-family: Arial;
+    padding: 0 !important;
+    letter-spacing: 0px;
+    
+}
+
+.automizy-skin-progress-bar .automizy-progress-bar{
+    text-align:left;
+    padding: 10px 14px 26px 14px !important;
+    background-color: #79aa41;
+}
+.automizy-skin-progress-bar .automizy-progress-bar-label{
+    text-align:left;
+    float:left;
+}
+
+.automizy-skin-progress-bar .automizy-progress-bar-percent{
+    text-align:left;
+    float:left;
+}
+
+.automizy-skin-progress-bar .automizy-progress-bar-close-tab{
+    float:right;
+    font-weight: bold;
+    font-size:20px;
+    padding:0;
+    margin:0;
+    height: 22px;
+    width: 22px;
+    line-height: 12px;
+    text-align: center;
+    position: relative;
+    top:-3px;
+}
+.automizy-skin-progress-bar .automizy-progress-bar-close-tab:hover{
+    background-color: #669138;
+}

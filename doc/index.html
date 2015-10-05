@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>AutomizyJs</title>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="css/jquery-ui.min.css" />
+        <link rel="stylesheet" href="css/jquery.multiselect.css" />
+        <link rel="stylesheet" href="css/jquery.multiselect.filter.css" />
+        <link rel="stylesheet" href="css/tomorrow.css" />
+        <link rel="stylesheet" href="css/automizy.min.css" />
+        <link rel="stylesheet" href="css/automizyjs.css" />
+        <link rel="shortcut icon" type="image/png" href="images/Automizy_favicon.png"/>
+
+        <script src="js/jquery.min.js"></script>
+        <script src="js/prettify.js"></script>
+        <script src="js/jquery-ui.min.js"></script>
+        <script src="js/require.js"></script>
+        <script src="js/jquery.multiselect.min.js"></script>
+        <script src="js/jquery.multiselect.filter.js"></script>
+        <script src="js/automizy.min.js"></script>
+        <script src="js/common.js"></script>
+
+    </head>
+    <body>
+        <!-- Google Tag Manager -->
+        <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-PM76QX"
+                          height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <script>(function (w, d, s, l, i) {
+                w[l] = w[l] || [];
+                w[l].push({'gtm.start':
+                            new Date().getTime(), event: 'gtm.js'});
+                var f = d.getElementsByTagName(s)[0],
+                        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : '';
+                j.async = true;
+                j.src =
+                        '//www.googletagmanager.com/gtm.js?id=' + i + dl;
+                f.parentNode.insertBefore(j, f);
+            })(window, document, 'script', 'dataLayer', 'GTM-PM76QX');</script>
+        <!-- End Google Tag Manager -->
+        <div id="container">
+            <div class="menu">
+                <ul>
+                    <li><a href="/"><img src="images/header-logo.png" /></a></li>
+                    <li onClick="openDownloadsDialog()">Downloads</li>
+                </ul>
+            </div>
+            <div class="content">
+                <div class="element-list">
+                    <div class='labels'>Introduction</div>
+                    <ul>
+                        <li data-url="introduction.html" data-name="Introduction">What is AutomizyJS?</li>
+                    </ul>
+                    <div class='labels'>Modules</div>
+                    <ul>
+                        <li data-url="button.html" data-example-url="example/button.html" data-name="button">Button</li>
+                        <li data-url="dialog.html" data-example-url="example/dialog.html" data-name="dialog">Dialog</li>
+                        <li data-url="form.html" data-example-url="example/form.html" data-name="form">Form</li>
+                        <li data-url="input.html" data-example-url="example/input.html" data-name="input">Input</li>
+                        <li data-url="slideWindow.html" data-example-url="example/slideWindow.html" data-name="slideWindow">Slide Window</li>
+                        <li data-url="table.html" data-example-url="example/table.html" data-name="table">Table</li>
+                        <li data-url="validator.html" data-example-url="example/validator.html" data-name="validator">Validator</li>
+                    </ul>
+                    <div class='labels'>Global functions</div>
+                    <ul>
+                        <li data-url="globalFunctions.html" data-name="newModule">$A.newModule()</li>
+                        <li data-url="globalFunctions.html" data-name="getModule">$A.getModule()</li>
+                        <li data-url="globalFunctions.html" data-name="getAllModule">$A.getAllModule()</li>
+                        <li data-url="globalFunctions.html" data-name="removeModule">$A.removeModule()</li>
+                        <li data-url="globalFunctions.html" data-name="removeAllModule">$A.removeAllModule()</li>
+                        <li data-url="globalFunctions.html" data-name="ajaxDocumentCover">$A.ajaxDocumentCover()</li>
+                        <li data-url="globalFunctions.html" data-name="base64Encode">$A.base64Encode()</li>
+                        <li data-url="globalFunctions.html" data-name="base64Decode">$A.base64Decode()</li>
+                        <li data-url="globalFunctions.html" data-name="dateFormat">$A.dateFormat()</li>
+                        <li data-url="globalFunctions.html" data-name="store">$A.store()</li>
+                        <li data-url="globalFunctions.html" data-name="getUniqueString">$A.getUniqueString()</li>
+                        <li data-url="globalFunctions.html" data-name="hashChange">$A.hashChange()</li>
+                        <li data-url="globalFunctions.html" data-name="insertAtCaret">$A.insertAtCaret()</li>
+                        <li data-url="globalFunctions.html" data-name="parseBoolean">$A.parseBoolean()</li>
+                        <li data-url="globalFunctions.html" data-name="rand">$A.rand()</li>
+                        <li data-url="globalFunctions.html" data-name="setWindowScroll">$A.setWindowScroll()</li>
+                        <li data-url="globalFunctions.html" data-name="numberFormat">$A.numberFormat()</li>
+                        <li data-url="globalFunctions.html" data-name="defaultNumberFormat">$A.defaultNumberFormat()</li>
+                        <li data-url="globalFunctions.html" data-name="convertToResponsive">$A.convertToResponsive()</li>
+                    </ul>
+                </div>
+                <div class="module-content"></div>
+                <div class="automizyjs-footer">
+                    <span class="license">
+                        Copyright 2015 <a href='license.html' target='blank'>AutomizyJs License</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

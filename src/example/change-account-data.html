@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>QUnit Example</title>
+        <script src="js/jquery.min.js"></script>
+        <script src="js/automizy.min.js"></script>
+        <script>
+            $(function () {
+                var temp = $A.newForm().addSubTitle("My user profile").addInputs([
+                    {
+                        label: $A.translate('Email:'),
+                        help: 'Your email adress.',
+                        type: 'text',
+                        value: 'john@gmail.com'
+                    },
+                    {
+                        label: 'Real name:',
+                        help: 'Your real name e.g. John Smith.',
+                        type: 'text',
+                        value: 'John Smith'
+                    },
+                    {
+                        label: 'Language:',
+                        help: 'What language do you want to use the software?',
+                        type: 'select',
+                        options: [
+                            [1, 'English (US)'],
+                            [2, 'Magyar']
+                        ],
+                        multiselect: $A.d.defines.input.setupSelectObj
+                    }
+                ]).addSubTitle('Change password').addInputs([
+                    {
+                        label: 'Old password:',
+                        help: 'Your old (actual) password.',
+                        type: 'text'
+                    },
+                    {
+                        label: 'New password:',
+                        help: 'Please, enter the new password you want to use!',
+                        type: 'text'
+                    },
+                    {
+                        label: 'New password again:',
+                        help: 'Please, re-enter the new password for verification!',
+                        type: 'text'
+                    }
+                ]).addSubTitle('Advanced settings').addInputs([
+                    {
+                        label: 'Time zone:',
+                        help: 'Select your time zone.',
+                        type: 'select',
+                        options: [[1, 'Europe/Budapest GMT +01:00'], [2, 'Africa/Adibjan GMT + 00:00']],
+                        multiselect: $A.d.defines.input.setupSelectObj
+                    }
+                ]).addSubTitle('Import file settings').addInputs([
+                    {
+                        label: 'Field separator:',
+                        help: 'Enter the character that is used in your CSV files that separates each column.',
+                        type: 'text',
+                        value: ';'
+                    },
+                    {
+                        label: 'Field enclosure:',
+                        help: 'Which character is each field enclosed by in your CSV files?',
+                        type: 'text',
+                        value: '"'
+                    },
+                    {
+                        label: 'Character encoding:',
+                        help: 'Select the character encoding of your imported files containing contact data.',
+                        type: 'select',
+                        options: [[1, 'UTF-8'], [2, 'ISO-8859-2']],
+                        multiselect: $A.d.defines.input.setupSelectObj
+                    }
+                ]).addButtons([
+                    {
+                        text: 'Save'
+                    },
+                    {
+                        text: 'Cancel'
+                    }
+                ]).draw();
+            });
+        </script>
+    </head>
+    <body></body>
+</html>
+

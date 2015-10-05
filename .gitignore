@@ -1,0 +1,6 @@
+nbproject/private
+external/
+node_modules/
+.idea/
+*.log
+*.orig

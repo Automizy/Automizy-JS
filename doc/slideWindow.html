@@ -1,0 +1,579 @@
+
+<div id="doc-container">
+    <h1>Slide Window Widget</h1>
+    <div class="description-label">Description:
+        <div class="description">Adding a customizable slide window widget.</div>
+    </div>
+    <section>
+        <h2 class="quick-nav">Quick navigation <a href='#slideWindow/entry-examples'>Examples</a></h2>
+        <table class="doc-content-table">
+            <tr>
+                <td>
+                    <h3>Options</h3>
+                    <ul>
+                        <li><a href='#slideWindow/option/animation'>animation</a></li>
+                        <li><a href='#slideWindow/option/autoClose'>autoClose</a></li>
+                        <li><a href='#slideWindow/option/buttons'>buttons*</a></li>
+                        <li><a href='#slideWindow/option/content'>content</a></li>
+                        <li><a href='#slideWindow/option/data'>data*</a></li>
+                        <li><a href='#slideWindow/option/id'>id*</a></li>
+                        <li><a href='#slideWindow/option/position'>position</a></li>
+                        <li><a href='#slideWindow/option/positionX'>positionX</a></li>
+                        <li><a href='#slideWindow/option/positionY'>positionY</a></li>
+                        <li><a href='#slideWindow/option/skin'>skin*</a></li>
+                        <li><a href='#slideWindow/option/tab'>tab</a></li>
+                        <li><a href='#slideWindow/option/title'>title</a></li>
+                        <li><a href='#slideWindow/option/width'>width</a></li>
+                        <li><a href='#slideWindow/option/zIndex'>zIndex</a></li>
+
+                    </ul>
+                </td>
+                <td>
+                    <h3>Methods</h3>
+                    <ul>
+                        <li><a href='#slideWindow/method/addButton'>addButton*</a></li>
+                        <li><a href='#slideWindow/method/close'>close</a></li>
+                        <li><a href='#slideWindow/method/draw'>draw*</a></li>
+                        <li><a href='#slideWindow/method/drawTo'>drawTo*</a></li>
+                        <li><a href='#slideWindow/method/hide'>hide*</a></li>
+                        <li><a href='#slideWindow/method/open'>open</a></li>
+                        <li><a href='#slideWindow/method/remove'>remove*</a></li>
+                        <li><a href='#slideWindow/method/removeButton'>removeButton*</a></li>
+                        <li><a href='#slideWindow/method/show'>show*</a></li>
+                        <li><a href='#slideWindow/method/widget'>widget*</a></li>
+                    </ul>
+                </td>
+                <td>
+                    <h3>Events</h3>
+                    <ul>
+                        <li><a href='#slideWindow/event/create'>create*</a></li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+    </section>
+
+    <section>
+        <h2>Options</h2>                
+        <article id='slideWindow/option/animation'>
+            <h4 class='option-name'>animation</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Object</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>{open: 'swing', close: 'swing', openTime: 200, closeTime:200}</div>
+            </div>
+            <p class='option-use'>
+                The animation to use to open and close the slide window widget.<br>
+                <code>open</code> and <code>close</code> properties are type of String, and must be one of the jQuery easing types like <code>'swing'</code>.<br>
+                <code>openTime</code>: A number determining how long the opening animation will run in millisecs.<br>
+                <code>closeTime</code>: A number determining how long the closing animation will run in millisecs.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the slide window widget with the <code>animation</code> option specified, using object in constructor
+            <pre class="prettyprint linenums">
+$A.newSlideWindow({
+    animation: {
+        open: 'swing',
+        close: 'swing',
+        openTime: 200,
+        closeTime: 200
+    }
+}).draw();
+            </pre>
+            Initialize the slide window widget with the <code>animation</code> option specified, using method chaining
+            <pre class="prettyprint linenums">
+$A.newSlideWindow().animation({open:"swing",close:"swing",openTime:200,closeTime:200}).draw();
+            </pre>                    
+            Get or set the <code>animation</code> option, after initialization
+            <pre class="prettyprint linenums">
+var slideWindow = $A.newSlideWindow().draw();
+//Setter
+slideWindow.animation({open:"swing",close:"swing",openTime:200,closeTime:200}); //returns slideWindow
+
+//Getter
+console.log(slideWindow.animation()); //returns value of animation
+            </pre>
+        </article>
+
+        <article id='slideWindow/option/autoClose'>
+            <h4 class='option-name'>autoClose</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Boolean</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>true</div>
+            </div>
+            <p class='option-use'>
+                If this option is set <code>true</code> the slide window widget will automatically close if you clik out of it.<br>
+                If this option is set <code>false</code> the slide window widget won't close unless the <code><a href='#slideWindow/option/tab'>tab</a></code> is clicked.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the slide window widget with the <code>autoClose</code> option specified, using object in constructor
+            <pre class="prettyprint linenums">
+$A.newSlideWindow({autoClose: true}}).draw();
+            </pre>
+            Initialize the slide window widget with the <code>autoClose</code> option specified, using method chaining
+            <pre class="prettyprint linenums">
+$A.newSlideWindow().autoClose(true).draw();
+            </pre>                    
+            Get or set the <code>autoClose</code> option, after initialization
+            <pre class="prettyprint linenums">
+var slideWindow = $A.newSlideWindow().draw();
+//Setter
+slideWindow.autoClose(true); //returns slideWindow
+
+//Getter
+console.log(slideWindow.autoClose()); //returns value of autoClose
+            </pre>
+        </article>
+
+        <article id='slideWindow/option/buttons'></article>
+
+        <article id='slideWindow/option/content'>
+            <h4 class='option-name'>content</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>jQuery</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>$('&lt;div class="automizy-slide-window-content">&lt;/div>')</div>
+            </div>
+            <p class='option-use'>
+                The <code>content</code> inside the widget can be any jQuery object, AutomizyJS form or HTML code.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the slide window widget with the <code>content</code> option specified, using object in constructor
+            <pre class="prettyprint linenums">
+$A.newSlideWindow({
+    content: 'This will be the content'
+}).draw();                  
+            </pre>
+            Initialize the slide window widget with the <code>content</code> option specified, using method chaining
+            <pre class="prettyprint linenums">
+$A.newSlideWindow().content('This will be the content').draw();
+            </pre>
+            Get or set the <code>content</code> option, after initialization
+            <pre class="prettyprint linenums">
+var slideWindow = $A.newSlideWindow().draw();
+//Setter
+slideWindow.content('This will be the content');  //returns slideWindow
+
+//Getter
+console.log(slideWindow.content()); //returns the content element
+            </pre>
+        </article>
+
+        <article id='slideWindow/option/id'></article>
+        <article id='slideWindow/option/data'></article>
+
+        <article id='slideWindow/option/position'>
+            <h4 class='option-name'>position</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>right</div>
+            </div>
+            <p class='option-use'>
+                The position of the slide window widget.
+                Accepted values: <code>right | left | top | bottom</code>
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the slide window widget with the <code>position</code> option specified, using object in constructor
+            <pre class="prettyprint linenums">
+$A.newSlideWindow({
+    position: 'left'
+}).draw();                  
+            </pre>
+            Initialize the slide window widget with the <code>position</code> option specified, using method chaining
+            <pre class="prettyprint linenums">
+$A.newSlideWindow().position('left').draw();
+            </pre>
+            Get or set the <code>position</code> option, after initialization
+            <pre class="prettyprint linenums">
+var slideWindow = $A.newSlideWindow().draw();
+//Setter
+slideWindow.position('left'); //returns slideWindow
+
+//Getter
+console.log(slideWindow.position()); //returns value of position
+            </pre>
+        </article>
+
+        <article id='slideWindow/option/positionX'>
+            <h4 class='option-name'>positionX</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>0</div>
+            </div>
+            <p class='option-use'>
+                <code>positionX</code> determines the distance between the left edge of the slide window widget and the left edge of its containing element in pixels.<br>
+                Usage only enabled if the widget is positioned to the top or on the bottom.<br>
+                You can also use <code>right | left | center</code> keywords to set the horizontal position of the side window widget.<br>
+                Disabled if <code>position: 'right' || position: 'left'</code>.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the slide window widget with the <code>positionX</code> option specified, using object in constructor
+            <pre class="prettyprint linenums">
+$A.newSlideWindow({
+    position: 'bottom',
+    positionX: 'right'
+}).draw();                  
+            </pre>
+            Initialize the slide window widget with the <code>positionX</code> option specified, using method chaining
+            <pre class="prettyprint linenums">
+$A.newSlideWindow().position('bottom').positionX('right').draw();
+            </pre>
+            Get or set the <code>positionX</code> option, after initialization
+            <pre class="prettyprint linenums">
+var slideWindow = $A.newSlideWindow({position: 'bottom'}).draw();
+//Setter
+slideWindow.positionX('right');  //returns slideWindow
+
+//Getter
+console.log(slideWindow.positionX()); //returns value of positionX
+            </pre>
+        </article>
+
+        <article id='slideWindow/option/positionY'>
+            <h4 class='option-name'>positionY</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Number</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>100</div>
+            </div>
+            <p class='option-use'>
+                <code>positionY</code> determines the distance between the top edge of the slide window widget and the top edge of its containing element in pixels.<br>
+                Usage only enabled if the widget is positioned to the right or the left.<br>
+                You can also use <code>top | bottom | middle</code> keywords to set the vertical position of the side window widget.<br>
+                Disabled if <code>position: 'top' || position: 'bottom'</code>.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the slide window widget with the <code>positionY</code> option specified, using object in constructor
+            <pre class="prettyprint linenums">
+$A.newSlideWindow({
+    position: 'right',
+    positionY: 'middle'
+}).draw();                  
+            </pre>
+            Initialize the slide window widget with the <code>positionY</code> option specified, using method chaining
+            <pre class="prettyprint linenums">
+$A.newSlideWindow().position('right').positionY('middle').draw();
+            </pre>
+            Get or set the <code>positionY</code> option, after initialization
+            <pre class="prettyprint linenums">
+var slideWindow = $A.newSlideWindow({position: 'right'}).draw();
+//Setter
+slideWindow.positionY('middle'); //returns slideWindow
+
+//Getter
+console.log(slideWindow.positionY()); //returns value of positionY
+            </pre>
+        </article>
+
+        <article id='slideWindow/option/skin'></article>
+
+        <article id='slideWindow/option/tab'>
+            <h4 class='option-name'>tab</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Object</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>{text: 'Click this!', html: $('&lt;span>&lt;/span>'), width: 'auto', pos: 'right'}</div>
+            </div>
+            <p class='option-use'>
+                The clickable tab of the slide window widget. The widget opens on one click on the tab, and closes on another click on it.<br>
+                <ul>
+                    <li>
+                        <div class="option-attribute">
+                            text
+                        </div>
+                        Type: <code>String</code><br>
+                        The text shown on the tab.
+                    </li>
+                    <li>
+                        <div class="option-attribute">
+                            html
+                        </div>
+                        Type: <code>jQuery</code><br>
+                        You can insert a jQuery element in the tab by using this attribute.
+                    </li>
+                    <li>
+                        <div class="option-attribute">
+                            width
+                        </div>
+                        Type: <code>String</code><br>
+                        The width of the tab in pixels.<br>
+                        You can also use optional values:<br>
+                        <code>'100%'</code>: the tab width will be adjusted to the slide window widget.<br>
+                        <code>'auto'</code>: the tab width will be adjusted to the text inside it.<br>
+                    </li>
+                    <li>
+                        <div class="option-attribute">
+                            pos
+                        </div>
+                        Type: <code>String</code><br>
+                        The text position of the tab.<br>
+                        Optional values:<br>
+                        <code>top | bottom | middle</code> if the slide window widget is positioned to the left or the right.<br>
+                        <code>left | center | right</code> if the slide window widget is positioned to the top or the bottom.
+                    </li>
+                </ul>                     
+            </p>    
+            <div class='option-examples'>Code examples</div>
+            Initialize the slide window widget with the <code>tab</code> option specified, using object in constructor
+            <pre class="prettyprint linenums">
+$A.newSlideWindow({
+    positionY: 'top',
+    content: $('&lt;div style="height:100px;">some content&lt;div>'),
+    tab: {
+        text: 'OPEN',
+        pos: 'bottom'
+    }
+}).draw();                  
+                </pre>
+                Initialize the slide window widget with the <code>tab</code> option specified, using method chaining
+                <pre class="prettyprint linenums">
+$A.newSlideWindow({position: 'top', content:$('&lt;div style="height:100px;">some content&lt;div>')}).tab({text:'OPEN', pos: 'bottom'}).draw();
+                </pre>
+                Get or set the <code>tab</code> option, after initialization
+                <pre class="prettyprint linenums">
+var slideWindow = $A.newSlideWindow({position: 'top', content:$('&lt;div style="height:100px;">some content&lt;div>')}).draw();
+//Setter
+slideWindow.tab({text:'OPEN', pos: 'bottom'}); //returns slideWindow
+
+//Getter
+console.log(slideWindow.tab()); //returns the tab element
+                </pre>
+        </article>
+
+        <article id='slideWindow/option/title'>
+            <h4 class='option-name'>title</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>MySlideWindow</div>
+            </div>
+            <p class='option-use'>
+                The displayed title in the slide window widget.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the slide window widget with the <code>title</code> option specified, using object in constructor
+            <pre class="prettyprint linenums">
+$A.newSlideWindow({
+    title: 'MySlideWindow'
+}).draw();                  
+            </pre>
+            Initialize the slide window widget with the <code>id</code> option specified, using method chaining
+            <pre class="prettyprint linenums">
+$A.newSlideWindow().title('MySlideWindow').draw();
+            </pre>
+            Get or set the <code>title</code> option, after initialization
+            <pre class="prettyprint linenums">
+var slideWindow = $A.newSlideWindow().draw();
+//Setter
+slideWindow.title('MySlideWindow'); //returns slideWindow
+
+//Getter
+console.log(slideWindow.title()); //returns value of title
+            </pre>
+        </article>
+        <article id='slideWindow/option/width'>
+            <h4 class='option-name'>width</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Number</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>600</div>
+            </div>
+            <p class='option-use'>
+                The width of the slide window widget without the slide window in pixels.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the slide window widget with the <code>width</code> option specified, using object in constructor
+            <pre class="prettyprint linenums">
+$A.newSlideWindow({
+    width: 600
+}).draw();                  
+            </pre>
+            Initialize the slide window widget with the <code>width</code> option specified, using method chaining
+            <pre class="prettyprint linenums">
+$A.newSlideWindow().width(600).draw();
+            </pre>
+            Get or set the <code>width</code> option, after initialization
+            <pre class="prettyprint linenums">
+var slideWindow = $A.newSlideWindow().draw();
+//Setter
+slideWindow.width(600);  //returns slideWindow
+
+//Getter
+console.log(slideWindow.width()); //returns value of width
+            </pre>
+        </article>
+        <article id='slideWindow/option/zIndex' class="last">
+            <h4 class='option-name'>zIndex</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Number</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>3000</div>
+            </div>
+            <p class='option-use'>
+                The <code>zIndex</code> property specifies the stack order of an element.<br>
+                An element with greater stack order is always in front of an element with a lower stack order.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the slide window widget with the <code>zIndex</code> option specified, using object in constructor
+            <pre class="prettyprint linenums">
+$A.newSlideWindow({
+    zIndex: 3000
+}).draw();                  
+            </pre>
+            Initialize the slide window widget with the <code>zIndex</code> option specified, using method chaining
+            <pre class="prettyprint linenums">
+$A.newSlideWindow().zIndex(3000).draw();
+            </pre>
+            Get or set the <code>zIndex</code> option, after initialization
+            <pre class="prettyprint linenums">
+var slideWindow = $A.newSlideWindow().draw();
+//Setter
+slideWindow.zIndex(3000);  //returns slideWindow
+
+//Getter
+console.log(slideWindow.zIndex()); //returns value of zIndex
+            </pre>
+        </article>
+    </section>
+
+    <section>
+        <h2>Methods</h2>
+        <article id='slideWindow/method/addButton'></article>
+
+        <article id='slideWindow/method/close'>
+            <h4 class='method-name'>close(func)</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>SlideWindow</div>
+            </div>
+            <p class='method-use'>
+                Invokes the closing animation of the slide window widget.
+            </p>            
+            <ul>
+                <li>
+                    <div class="method-parameter">
+                        func
+                    </div>
+                    Type: <code>function</code><br>
+                    The fuction which will be invoked after the slide window closed.
+                </li>
+            </ul>                     
+            <div class='method-examples'>Code examples</div>
+            <pre class="prettyprint linenums">
+var slideWindow = $A.newSlideWindow().draw();
+slideWindow.close(function () {
+    console.log('Slide window closed.');
+});
+slideWindow.open();
+setTimeout(function (){
+    slideWindow.close();
+},1000);
+            </pre>
+        </article>
+
+        <article id='slideWindow/method/draw'></article>
+
+        <article id='slideWindow/method/drawTo'></article>
+
+        <article id='slideWindow/method/hide'></article>
+
+        <article id='slideWindow/method/open'>
+            <h4 class='method-name'>open(func)</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>SlideWindow</div>
+            </div>
+            <p class='method-use'>
+                Invokes the opening animation of the slide window widget.
+            </p>                    
+            <ul>
+                <li>
+                    <div class="method-parameter">
+                        func
+                    </div>
+                    Type: <code>function</code><br>
+                    The fuction which will be invoked after the slide window opened.
+                </li>
+            </ul>             
+            <div class='method-examples'>Code examples</div>
+            <pre class="prettyprint linenums">
+var slideWindow = $A.newSlideWindow().draw();
+slideWindow.open(function () {
+    console.log('Slide window opened.');
+});
+setTimeout(function (){
+    slideWindow.open();
+},1000);
+            </pre>
+        </article>
+
+        <article id='slideWindow/method/remove'></article>
+
+<article id='slideWindow/method/removeButton'>
+            <h4 class='method-name'>removeButton(button)</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>SlideWindow</div>
+            </div>
+            <p class='method-use'>
+                Removes the button from the slide window widget.
+            </p>                    
+            <ul>
+                <li>
+                    <div class="method-parameter">
+                        button
+                    </div>
+                    Type: <code>Object | String</code><br>
+                    The Button or the ID if the button to remove.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class="prettyprint linenums">
+var slideWindow = $A.newSlideWindow().draw().open();
+setTimeout(function (){
+    //Removing a button by object parameter
+    var btn = slideWindow.addButton();
+    setTimeout(function() {
+        slideWindow.removeButton(btn);
+    },1000);
+
+    //Removing a button by id
+    slideWindow.addButton({id: 'MyButton02'});
+    setTimeout(function() {
+        slideWindow.removeButton('MyButton02');
+    },1000);
+},1000);
+            </pre>
+</article>
+
+        <article id='slideWindow/method/show'></article>
+
+        <article id='slideWindow/method/widget' class='last'></article>
+
+    </section>
+    <section>
+        <h2>Events</h2>
+
+        <article id='slideWindow/event/create'></article>
+
+    </section>
+    <section>
+        <h2>Examples</h2>
+        <article id='slideWindow/entry-examples' class="last">
+            <h3>A simple module </h3>
+            <pre id="module-example" class="prettyprint linenums"></pre>
+            <h3>Demo:</h3>
+            <div id='module-demo'></div>
+        </article>
+    </section>
+</div>

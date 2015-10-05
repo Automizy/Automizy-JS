@@ -1,0 +1,1261 @@
+
+<div id="doc-container">
+    <h1>Input Widget</h1>
+    <div class="description-label">Description:
+        <div class="description">Adding multiple inputs to your webpage in various types.</div>
+    </div>
+    <section>
+        <h2 class="quick-nav">Quick navigation <a href='#input/entry-examples'>Examples</a></h2>
+        <table class="doc-content-table">
+            <tr>
+                <td>
+                    <h3>Options</h3>
+                    <ul>
+                        <li><a href='#input/option/accept'>accept</a></li>
+                        <li><a href='#input/option/breakInput'>breakInput</a></li>
+                        <li><a href='#input/option/checked'>checked</a></li>
+                        <li><a href='#input/option/data'>data*</a></li>
+                        <li><a href='#input/option/height'>height</a></li>
+                        <li><a href='#input/option/help'>help</a></li>
+                        <li><a href='#input/option/id'>id*</a></li>
+                        <li><a href='#input/option/items'>items</a></li>                        
+                        <li><a href='#input/option/label'>label</a></li>                 
+                        <li><a href='#input/option/labelPosition'>labelPosition</a></li>                 
+                        <li><a href='#input/option/labelWidth'>labelWidth</a></li>
+                        <li><a href='#input/option/multiple'>multiple</a></li>
+                        <li><a href='#input/option/multiselect'>multiselect</a></li>
+                        <li><a href='#input/option/name'>name</a></li>
+                        <li><a href='#input/option/needModify'>needModify</a></li>
+                        <li><a href='#input/option/newRow'>newRow</a></li>
+                        <li><a href='#input/option/options'>options</a></li>
+                        <li><a href='#input/option/placeholder'>placeholder</a></li>
+                        <li><a href='#input/option/readonly'>readonly</a></li>
+                        <li><a href='#input/option/skin'>skin*</a></li>
+                        <li><a href='#input/option/type'>type</a></li>
+                        <li><a href='#input/option/value'>value</a></li>
+                        <li><a href='#input/option/validator'>validator</a></li>
+                        <li><a href='#input/option/width'>width</a></li>
+                    </ul>
+                </td>
+                <td>
+                    <h3>Methods</h3>
+                    <ul>
+                        <li><a href='#input/method/addItem'>addItem</a></li>
+                        <li><a href='#input/method/addItemBefore'>addItemBefore</a></li>
+                        <li><a href='#input/method/addItems'>addItems</a></li>
+                        <li><a href='#input/method/addOption'>addOption</a></li>
+                        <li><a href='#input/method/addOptionBefore'>addOptionBefore</a></li>
+                        <li><a href='#input/method/addOptions'>addOptions</a></li>
+                        <li><a href='#input/method/datepicker'>datepicker</a></li>
+                        <li><a href='#input/method/datetimepicker'>datetimepicker</a></li>
+                        <li><a href='#input/method/disable'>disable</a></li>
+                        <li><a href='#input/method/draw'>draw*</a></li>
+                        <li><a href='#input/method/drawTo'>drawTo*</a></li>
+                        <li><a href='#input/method/enable'>enable</a></li>
+                        <li><a href='#input/method/errorBox'>errorBox</a></li>
+                        <li><a href='#input/method/focus'>focus</a></li>
+                        <li><a href='#input/method/hide'>hide*</a></li>
+                        <li><a href='#input/method/input'>input</a></li>
+                        <li><a href='#input/method/remove'>remove*</a></li>
+                        <li><a href='#input/method/show'>show*</a></li>
+                        <li><a href='#input/method/timepicker'>timepicker</a></li>
+                        <li><a href='#input/method/val'>val</a></li>
+                        <li><a href='#input/method/validate'>validate</a></li>
+                        <li><a href='#input/method/widget'>widget*</a></li>
+                    </ul>
+                </td>
+                <td>
+                    <h3>Events</h3>
+                    <ul>
+                        <li><a href='#input/event/change'>change</a></li>
+                        <li><a href='#input/event/check'>check</a></li>
+                        <li><a href='#input/event/click'>click</a></li>
+                        <li><a href='#input/event/create'>create*</a></li>
+                        <li><a href='#input/event/enter'>enter</a></li>
+                        <li><a href='#input/event/uncheck'>uncheck</a></li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+    </section>
+
+    <section>
+        <h2>Options</h2>
+        <article id='input/option/accept'>
+            <h4 class='option-name'>accept</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Array</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>[]</div>
+            </div>
+            <p class='option-use'>
+                The <code>accept</code> array contains the file types which are accepted by the file upload field.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the input widget with the <code>accept</code> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newInput({
+    type:'file',
+    accept: ['.csv', '.rar', '.zip', '.tar', '.gz']
+}).draw();
+            </pre>
+            Initialize the input widget with the <code>accept</code> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newInput().accept(['.csv', '.rar', '.zip', '.tar', '.gz']).draw();
+            </pre>
+            <br>Get or set the <code>accept</code> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var input = $A.newInput().draw();
+//Setter
+input.accept(['.csv', '.rar', '.zip', '.tar', '.gz']); //returns input
+
+//Getter
+console.log(input.accept()); //returns value of accept
+            </pre>
+        </article>
+
+        <article id='input/option/breakInput'>
+            <h4 class='option-name'>breakInput</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Boolean</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>false</div>
+            </div>
+            <p class='option-use'>
+                If <code>true</code> the input field will appear in a new row, below the label.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the input widget with the <code>breakInput</code> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newInput({
+    label: 'title',
+    breakInput: true
+}).draw();
+            </pre>
+            Initialize the input widget with the <code>breakInput</code> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newInput().breakInput(true).label('title').draw();
+            </pre>
+            <br>Get or set the <code>breakInput</code> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var input = $A.newInput().label('title').draw();
+//Setter
+input.breakInput(true); //returns input
+
+//Getter
+console.log(input.breakInput()); //returns value of breakInput
+            </pre>
+        </article>
+
+        <article id='input/option/checked'>
+            <h4 class='option-name'>checked</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Boolean</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>false</div>
+            </div>
+            <p class='option-use'>
+                Shows if the radio button or checkbox input is checked.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the input widget with the <code>checked</code> option specified, using object in constructor<br>
+            <pre  class='prettyprint linenums'>
+$A.newInput({
+    type: 'radio',
+    checked: true
+}).draw();
+            </pre>
+            Initialize the input widget with the <code>checked</code> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newInput({type: 'radio'}).checked(true).draw();
+            </pre>
+            <br>Get or set the <code>checked</code> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var input = $A.newInput({type: 'radio'}).draw();
+//Setter
+input.checked(true); //returns input
+
+//Getter
+console.log(input.checked()); //returns value of checked
+            </pre>
+        </article>        
+
+        <article id='input/option/data'></article>
+
+        <article id='input/option/height'>
+            <h4 class='option-name'>height</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Number|String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>"auto"</div>
+            </div>
+            <p class='option-use'>
+                Setting the height of the input field.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the input widget with the <code>height</code> option specified, using object in constructor<br>
+            <pre  class='prettyprint linenums'>
+$A.newInput({
+    height:"100px"
+}).draw();
+            </pre>
+            Initialize the input widget with the <code>height</code> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newInput().height("100px").draw();
+            </pre>
+            <br>Get or set the <code>height</code> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var input = $A.newInput().draw();
+//Setter
+input.height(100); //returns input
+
+//Getter
+console.log(input.height()); //returns the height
+            </pre>
+        </article>
+
+        <article id='input/option/help'>
+            <h4 class='option-name'>help</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>""</div>
+            </div>
+            <p class='option-use'>
+                If set, an icon appears next to the particular input showing a hint when mouse is hovered. 
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the input widget with the <code>help</code> option specified, using object in constructor<br>
+            <pre  class='prettyprint linenums'>
+$A.newInput({
+    help: "Tell the user what to do",
+}).draw();
+            </pre>
+            Initialize the input widget with the <code>help</code> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newInput().help("Tell the user what to do").draw();
+            </pre>
+            <br>Get or set the <code>help</code> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var input = $A.newInput().draw();
+//Setter
+input.help("Tell the user what to do"); //returns input
+
+//Getter
+console.log(input.help()); //returns the help string
+            </pre>
+        </article>
+
+        <article id='input/option/id'></article>
+
+        <article id='input/option/items'>
+            <h4 class='option-name'>items</h4>
+            <p class='option-use'>
+                This option is an alias for the <code><a href='#input/option/options'>options</a></code> method.
+            </p>   
+        </article>
+        
+        <article id='input/option/label'>
+            <h4 class='option-name'>label</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>true</div>
+            </div>
+            <p class='option-use'>
+                If set, a label appears beneath the input.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the input widget with the <code>label</code> option specified, using object in constructor<br>
+            <pre  class='prettyprint linenums'>
+$A.newInput({
+    label: 'Name:'
+}).draw();
+            </pre>
+            Initialize the input widget with the <code>label</code> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newInput().label('Name:').draw();
+            </pre>
+            <br>Get or set the <code>label</code> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var input = $A.newInput().draw();
+//Setter
+input.label('Name:'); //returns input
+
+//Getter
+console.log(input.label()); //returns value of label
+            </pre>
+        </article>
+
+        <article id='input/option/labelPosition'>
+            <h4 class='option-name'>labelPosition</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>'left'</div>
+            </div>
+            <p class='option-use'>
+                Setting the position of the label.<br>
+                Allowed values: <code>'left'</code>, <code>'right'</code> 
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the input widget with the <code>labelPosition</code> option specified, using object in constructor<br>
+            <pre  class='prettyprint linenums'>
+$A.newInput({
+    label: 'Name:',
+    labelPosition: 'right'
+}).draw();
+            </pre>
+            Initialize the input widget with the <code>labelPosition</code> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newInput().label('Name:').labelPosition('right').draw();
+            </pre>
+            <br>Get or set the <code>labelPosition</code> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var input = $A.newInput().label('Name:').draw();
+//Setter
+input.labelPosition('right'); //returns input
+
+//Getter
+console.log(input.labelPosition()); //returns value of labelPosition
+            </pre>
+        </article>
+
+        <article id='input/option/labelWidth'>
+            <h4 class='option-name'>labelWidth</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Number|String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>''</div>
+            </div>
+            <p class='option-use'>
+                Setting the width of the label.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the input widget with the <code>labelWidth</code> option specified, using object in constructor<br>
+            <pre  class='prettyprint linenums'>
+$A.newInput({
+    label: 'Name:',
+    labelWidth: '100'
+}).draw();
+            </pre>
+            Initialize the input widget with the <code>labelWidth</code> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newInput().label('Name:').labelWidth(100).draw();
+            </pre>
+            <br>Get or set the <code>labelWidth</code> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var input = $A.newInput().label('Name:').draw();
+//Setter
+input.labelWidth('100px'); //returns input
+
+//Getter
+console.log(input.labelWidth()); //returns value of labelWidth
+            </pre>
+        </article>
+
+        <article id='input/option/multiple'>
+            <h4 class='option-name'>multiple</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Boolean</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>false</div>
+            </div>
+            <p class='option-use'>
+                This option can modify the function of a <code>select</code> input element.<br>
+                If <code>true</code>: the <code>select</code> element will be set so, that you can select multiple options.<br>
+                If <code>false</code>: the <code>select</code> element will be set so, that you can select only one option.<br>
+                <!--This is dependent of the <code><a href='#option-multiselect'>multiselect</a></code> option.-->
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the input widget with the <code>multiple</code> option specified, using object in constructor<br>
+            <pre  class='prettyprint linenums'>
+$A.newInput({
+    type: 'select',
+    options: [
+        [0, '--- Nothing ---'],
+        [12, 'First Segment'],
+        [15, 'Second Segment']
+    ],
+    multiple: true,
+}).draw();
+            </pre>
+            Initialize the input widget with the <code>multiple</code> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newInput().type('select').multiple(true).options([[0, '--- Nothing ---'],[12, 'First Segment'],[15, 'Second Segment']]).draw();
+            </pre>
+            <br>Get or set the <code>multiple</code> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var input = $A.newInput({type: 'select'}).options([[0, '--- Nothing ---'],[12, 'First Segment'],[15, 'Second Segment']]).draw();
+//Setter
+input.multiple(true); //returns input
+
+//Getter
+console.log(input.multiple()); //returns value of multiple
+            </pre>
+        </article>
+
+        <article id='input/option/multiselect'>
+            <h4 class='option-name'>multiselect</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Boolean</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>true</div>
+            </div>
+            <p class='option-use'>
+                By setting it <code>true</code> you can apply the <a href='http://www.erichynds.com/blog/jquery-ui-multiselect-widget' target='blank'>jQuery UI Multiselect Widget</a> on your <code>select</code> fields.<br>
+                Else the default HTML skin will be applied on the fields.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the input widget with the <code>multiselect</code> option specified, using object in constructor<br>
+            <pre  class='prettyprint linenums'>
+$A.newInput({
+    type: 'select',
+    options: [
+        [0, '--- Nothing ---'],
+        [12, 'First Segment'],
+        [15, 'Second Segment']
+    ],
+    multiselect: true
+}).draw();
+            </pre>
+            Initialize the input widget with the <code>multiselect</code> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newInput().multiselect(true).draw();
+            </pre>
+            <br>Get or set the <code>multiselect</code> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var input = $A.newInput().draw();
+//Setter
+input.multiselect(true); //returns input
+
+//Getter
+console.log(input.multiselect()); //returns value of multiselect
+            </pre>
+        </article>
+
+        <article id='input/option/name'>
+            <h4 class='option-name'>name</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>""</div>
+            </div>
+            <p class='option-use'>
+                Sets the <code>name</code> attribute of the particular input element in the DOM.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the input widget with the <code>name</code> option specified, using object in constructor<br>
+            <pre  class='prettyprint linenums'>
+$A.newInput({
+    name: 'address'
+}).draw();
+            </pre>
+            Initialize the input widget with the <code>name</code> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newInput().name('address').draw();
+            </pre>
+            <br>Get or set the <code>name</code> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var input = $A.newInput().draw();
+//Setter
+input.name('address'); //returns input
+
+//Getter
+console.log(input.name()); //returns value of name
+            </pre>
+        </article>
+
+        <article id='input/option/needModify'>
+            <h4 class='option-name'>needModify</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Boolean</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>false</div>
+            </div>
+            <p class='option-use'>
+                This option is in close connection with the form module.<br>
+                If <code>needModify</code> is set, the particular input won't be serialized and sent in case it's value is the same as its previous value.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the input widget with the <code>needModify</code> option specified, using object in constructor<br>
+            <pre  class='prettyprint linenums'>
+$A.newInput({
+    needModify: true
+}).draw();
+            </pre>
+            Initialize the input widget with the <code>needModify</code> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newInput().needModify(true).draw();
+            </pre>
+            <br>Get or set the <code>needModify</code> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var input = $A.newInput().draw();
+//Setter
+input.needModify(true); //returns input
+
+//Getter
+console.log(input.needModify()); //returns value of needModify
+            </pre>
+        </article>
+
+        <article id='input/option/newRow'>
+            <h4 class='option-name'>newRow</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Boolean</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>true</div>
+            </div>
+            <p class='option-use'>
+                If <code>true</code> the input element (including the label) will appear in a new row. Then no other elements can be inserted in that row.<br>
+                If <code>false</code> the input element (including the label) will appear in the same row, next to the previous element.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the input widget with the <code>newRow</code> option specified, using object in constructor<br>
+            <pre  class='prettyprint linenums'>
+$A.newInput({
+    newRow: false
+}).draw();
+            </pre>
+            Initialize the input widget with the <code>newRow</code> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newInput().newRow(false).draw();
+            </pre>
+            <br>Get or set the <code>newRow</code> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var input = $A.newInput().draw();
+//Setter
+input.newRow(false); //returns input
+
+//Getter
+console.log(input.newRow()); //returns value of newRow
+            </pre>
+        </article>
+
+        <article id='input/option/options'>
+            <h4 class='option-name'>options</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Array | Object</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>[]</div>
+            </div>
+            <p class='option-use'>
+                The array or object containing the options which can be selected when using a select or multiselect as input.<br>
+                If previously defined, setter will replace the old array with the one given as argument. To add further options use the <code><a href='#input/method/addItem'>addItem</a></code> or <code><a href='#input/method/addOption'>addOption</a></code> methods.<br>
+                If using an array, you can set which option should be selected by default. (Shown in example)
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the input widget with the <code>options</code> option specified, using object in constructor<br>
+            <pre  class='prettyprint linenums'>
+//Using object as argument:
+$A.newInput({
+    type: 'select',
+    options:{
+        1: 'option1',
+        two: 2,
+        three: 'option three'
+    }
+}).draw();
+
+//Using an array of arrays as argument:
+$A.newInput({
+    type: 'select',
+    options:[
+        [1, 'option1'],
+        ['two', 2, true], //this element will be selected by default, as we gave 'true' a third parameter of the option.
+        ['three', 'option three']
+    ]
+}).draw();
+            </pre>
+            Initialize the input widget with the <code>options</code> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newInput({type: 'select'}).options([[1, 'option1'], ['two', 2, true], ['three', 'option three']]).draw();
+            </pre>
+            <br>Get or set the <code>options</code> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var input = $A.newInput({type: 'select'}).draw();
+//Setter
+input.options([[1, 'option1'], ['two', 2, true], ['three', 'option three']]); //returns input
+
+//Getter
+console.log(input.options()); //returns the options array
+            </pre>
+        </article>
+
+        <article id='input/option/placeholder'>
+            <h4 class='option-name'>placeholder</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>""</div>
+            </div>
+            <p class='option-use'>
+                Use this option on input fields to write predefined text which can give the user some hints.<br>
+                Actually sets the <code>placeholder</code> attribute of an input field.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the input widget with the <code>placeholder</code> option specified, using object in constructor<br>
+            <pre  class='prettyprint linenums'>
+$A.newInput({
+    type: 'text',
+    placeholder: 'Name'
+}).draw();
+            </pre>
+            Initialize the input widget with the <code>placeholder</code> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newInput({type: 'text'}).placeholder('Name').draw();
+            </pre>
+            <br>Get or set the <code>placeholder</code> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var input = $A.newInput({type: 'text'}).draw();
+//Setter
+input.placeholder('Name'); //returns input
+
+//Getter
+console.log(input.placeholder()); //returns the value of placeholder
+            </pre>
+        </article>
+        <article id='input/option/readonly'>
+            <h4 class='option-name'>readonly</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Boolean</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>false</div>
+            </div>
+            <p class='option-use'>
+                Set this option <code>true</code> to make an input read-only.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the input widget with the <code>readonly</code> option specified, using object in constructor<br>
+            <pre  class='prettyprint linenums'>
+$A.newInput({
+    readonly: true
+}).draw();
+            </pre>
+            Initialize the input widget with the <code>readonly</code> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newInput().readonly(true).draw();
+            </pre>
+            <br>Get or set the <code>readonly</code> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var input = $A.newInput().draw();
+//Setter
+input.readonly(true); //returns input
+
+//Getter
+console.log(input.readonly()); //returns value of readonly
+
+            </pre>
+        </article>
+
+        <article id='input/option/skin'></article>
+
+        <article id='input/option/type'>
+            <h4 class='option-name'>type</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>'text'</div>
+            </div>
+            <p class='option-use'>
+                Use this option to set the <code>type</code> attribute of the input element.<br>
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the input widget with the <code>type</code> option specified, using object in constructor<br>
+            <pre  class='prettyprint linenums'>
+$A.newInput({
+    type: 'textarea'
+}).draw();
+            </pre>
+            Initialize the input widget with the <code>type</code> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newInput().type('textarea').draw();
+            </pre>
+            <br>Get or set the <code>type</code> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var input = $A.newInput().draw();
+//Setter
+input.type('textarea'); //returns input
+
+//Getter
+console.log(input.type()); //returns value of type
+            </pre>
+        </article>
+        <article id='input/option/value'>
+            <h4 class='option-name'>value</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'></div>
+            </div>
+            <p class='option-use'>
+                Use this option to set the value of any input.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the input widget with the <code>value</code> option specified, using object in constructor<br>
+            <pre  class='prettyprint linenums'>
+$A.newInput({
+    type: 'text',
+    value: 'Default text'
+}).draw();
+            </pre>
+            Initialize the input widget with the <code>value</code> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newInput({type: 'text'}).value('Default text').draw();
+            </pre>
+            <br>Get or set the <code>value</code> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var input = $A.newInput().draw();
+//Setter
+input.value('Default text'); //returns input
+
+//Getter
+console.log(input.value()); //returns value
+
+            </pre>
+        </article>
+        <article id='input/option/validator'>
+            <h4 class='option-name'>validator</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Validator | String | Object</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>$A.newValidator()</div>
+            </div>
+            <p class='option-use'>
+                AutomizyJS has bulit-in validators for various types of input, using this option you can set which one you would like to use.<br>
+                For further details check the Validator Module documentation.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the input widget with the <code>validator</code> option specified, using object in constructor<br>
+            <pre  class='prettyprint linenums'>
+
+$A.newInput({
+    validator: 'email'
+}).draw();
+            </pre>
+            Initialize the input widget with the <code>validator</code> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newInput().validator('email').draw();
+            </pre>
+            <br>Get or set the <code>validator</code> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var input = $A.newInput().draw();
+//Setter:
+input.validator('email'); //returns input
+
+//Getter
+console.log(input.validator()); //returns validator
+
+            </pre>
+        </article>
+        <article id='input/option/width' class='last'>
+            <h4 class='option-name'>width</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Number</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>600</div>
+            </div>
+            <p class='option-use'>
+                The width of the input field in pixels.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the input widget with the <code>width</code> option specified, using object in constructor
+            <pre class="prettyprint linenums">
+$A.newInput({
+    width: 600
+}).draw();                  
+            </pre>
+            Initialize the input widget with the <code>width</code> option specified, using method chaining
+            <pre class="prettyprint linenums">
+$A.newInput().width(600).draw();
+            </pre>
+            Get or set the <code>width</code> option, after initialization
+            <pre class="prettyprint linenums">
+var input = $A.newInput().draw();
+//Setter
+input.width(600);  //returns input
+
+//Getter
+console.log(input.width()); //returns value of width
+            </pre>
+        </article>
+    </section>
+
+    <section>
+        <h2>Methods</h2>
+        <article id='input/method/addItem'>
+            <h4 class='method-name'>addItem(key, value)</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Input</div>
+            </div>
+            <p class='method-use'>
+                Use this method to add a new option to your select or multiselect input.<br>
+                The new option will be added to the end of the <code>options</code> array.
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        key
+                    </div>
+                    Type: <code>String | Number</code><br>
+                    The key of the new option.
+                </li>
+                <li>
+                    <div class='method-parameter'>
+                        value
+                    </div>
+                    Type: <code>String | Number</code><br>
+                    The value of the new option.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var input=$A.newInput({type: 'select'}).draw();
+input.addItem(1, 'First option');
+            </pre>
+        </article>
+
+        <article id='input/method/addItemBefore'>
+            <h4 class='method-name'>addItemBefore(key, value)</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Input</div>
+            </div>
+            <p class='method-use'>
+                Use this method to add a new option to your select or multiselect input.<br>
+                The new option will be added to the beginning of the <code>options</code> array.
+            </p>               
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        key
+                    </div>
+                    Type: <code>String | Number</code><br>
+                    The key of the new option.
+                </li>
+                <li>
+                    <div class='method-parameter'>
+                        value
+                    </div>
+                    Type: <code>String | Number</code><br>
+                    The value of the new option.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var input=$A.newInput({type: 'select'}).addItem(2, 'Second option').draw();
+input.addItemBefore(1, 'First option');
+            </pre>
+        </article>
+
+        <article id='input/method/addItems'>
+            <h4 class='method-name'>addItems(arr, before)</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Input</div>
+            </div>
+            <p class='method-use'>
+                Use this method to add an array of new options to your select or multiselect input.<br>
+                The new options will be added to the beginning or to the end of the <code>options</code> array depending on the value of the <code>before</code> parameter.
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        arr
+                    </div>
+                    Type: <code>Array | Object</code><br>
+                    The array or object of new options.<br>                    
+                    If using an array, you can set which option should be selected by default. (Shown in example)
+                </li>
+                <li>
+                    <div class='method-parameter'>
+                        before
+                    </div>
+                    Type: <code>Boolean</code><br>
+                    If <code>true</code> the new options will be added to the beginning of the original <code>options</code> array.<br>
+                    If <code>false</code> the new options will be added to the end of the original <code>options</code> array.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var input=$A.newInput({type: 'select'}).draw();
+//Using an object as argument:
+input.addItems({
+    1: 'option1',
+    two: 2,
+    three: 'option three'
+});  //no second parameter given -> These options will be added to the end of the original 'options' array.
+
+//Using an array of arrays as argument:
+input.addItems([
+    [1, 'option1'],
+    ['two', 2, true], //this element will be selected by default, as we gave 'true' a third parameter of the option.
+    ['three', 'option three']
+], true); //'true' parameter given -> These options will be inserted before the first element of the original 'options' array.
+            </pre>
+        </article>
+
+        <article id='input/method/addOption'>
+            <h4 class='method-name'>addOption(key, value)</h4>
+            <p class='method-use'>
+                This method is an alias for the <code><a href='#input/method/addItem'>addItem(key, value)</a></code> method.
+            </p>    
+        </article>
+
+        <article id='input/method/addOptionBefore'>
+            <h4 class='method-name'>addOptionBefore(key, value)</h4>
+            <p class='method-use'>
+                This method is an alias for the <code><a href='#input/method/addItemBefore'>addItemBefore(key, value)</a></code> method.
+            </p>    
+        </article>
+
+        <article id='input/method/addOptions'>
+            <h4 class='method-name'>addOptions(arr, before)</h4>
+            <p class='method-use'>
+                This method is an alias for the <code><a href='#input/method/addItems'>addItems(arr, before)</a></code> method.
+            </p>    
+        </article>
+
+        <article id='input/method/datepicker'>
+            <h4 class='method-name'>datepicker()</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Input</div>
+            </div>
+            <p class='method-use'>
+                Use this method to apply a datepicker on the particular input.<br>
+                Please note that jQuery UI plugin is needed for this feature.
+            </p> 
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var input=$A.newInput().draw();
+input.datepicker();
+            </pre>
+        </article>
+
+        <article id='input/method/datetimepicker'>
+            <h4 class='method-name'>datetimepicker()</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Input</div>
+            </div>
+            <p class='method-use'>
+                Use this method to apply a datetimepicker on the particular input.<br>
+                Please note that jQuery UI plugin is needed for this feature.
+            </p> 
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var input=$A.newInput().draw();
+input.datetimepicker();
+            </pre>
+        </article>
+        
+        <article id='input/method/disable'>
+            <h4 class='method-name'>disable()</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Input</div>
+            </div>
+            <p class='method-use'>
+                Use this to disable the particular input element.<br>
+                Disabled inputs cannot be selected, edited or copied.
+            </p> 
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var input=$A.newInput().draw();
+input.disable();
+            </pre>
+        </article>
+
+        <article id='input/method/draw'></article>
+        <article id='input/method/drawTo'></article>
+
+        <article id='input/method/enable'>
+            <h4 class='method-name'>enable()</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Input</div>
+            </div>
+            <p class='method-use'>
+                Use this to enable the particular input element.<br>
+            </p>      
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var input=$A.newInput().disable().draw();
+setTimeout(function(){
+    input.enable();
+},1000);
+            </pre>
+        </article>
+
+        <article id='input/method/errorBox'>
+            <h4 class='method-name'>errorBox()</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>jQuery</div>
+            </div>
+            <p class='method-use'>
+                Returns the JQuery object that represents the error box of the particular input element.<br>
+                <code>errorBox</code> is the element which appears when the user types invalid value in an input field.
+            </p>   
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var input=$A.newInput({
+    label: 'Email address:',
+    value: 'Type here an invalid email address!', //invalid email address given
+    validator: 'email'
+}).draw().validate();
+input.errorBox(); //returns [&lt;span class="automizy-input-box-error">Invalid email address&lt;/span>]
+            </pre>
+        </article>
+        
+        <article id='input/method/focus'>
+            <h4 class='method-name'>focus()</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Input</div>
+            </div>
+            <p class='method-use'>
+                Use this option to set the focus of the given input.
+            </p>   
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var input=$A.newInput({
+    label: 'Email address:',
+}).draw()
+setTimeout( function(){
+    input.focus();
+},1000);
+            </pre>
+        </article>
+
+        <article id='input/method/hide'></article>
+
+        <article id='input/method/input'>
+            <h4 class='method-name'>input()</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>jQuery</div>
+            </div>
+            <p class='method-use'>
+                Returns the JQuery object that represents the particular input element.
+            </p>   
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var input=$A.newInput({name: 'asd', type: 'textarea', id:'txtarea01'}).draw();
+console.log(input.input()); //returns [&lt;textarea id="txtarea01" name="asd" style="display: inline-block;">&lt;/textarea>]
+            </pre>
+        </article>
+
+        <article id='input/method/remove'></article>
+        <article id='input/method/show'></article>
+
+        <article id='input/method/timepicker'>
+            <h4 class='method-name'>timepicker()</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Input</div>
+            </div>
+            <p class='method-use'>
+                Use this method to apply a timepicker on the particular input.<br>
+                Please note that jQuery UI plugin is needed for this feature.
+            </p> 
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var input=$A.newInput().draw();
+input.timepicker();
+            </pre>
+        </article>
+        
+        <article id='input/method/val'>
+            <h4 class='method-name'>val()</h4>
+            <div class='method-attributes'>
+            </div>
+            <p class='method-use'>
+                Sets or gets the value of any input element. Works the same as the <a href='http://api.jquery.com/val/'>jQuery .val()</a> function.
+            </p>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var input = $A.newInput().draw();
+//Setter
+input.val('Default text'); //returns input
+
+//Getter
+console.log(input.val()); //returns value
+            </pre>
+        </article>
+
+        <article id='input/method/validate'>
+            <h4 class='method-name'>validate(func)</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Boolean | Input</div>
+            </div>
+            <p class='method-use'>
+                Use this method to run the set validator to validate the particular input field.<br>
+                If invoked without parameter the function returns <code>true</code> or <code>false</code> depending on the result of validation.<br>
+                If invoked with parameter returns with the particular input module.
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        func
+                    </div>
+                    Type: <code>function</code><br>
+                    The function which will be invoked after validation is over.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var input=$A.newInput({label: 'Age:', value: 14, validator: {num: true, min: 18, max: 130}}).draw();
+//Invoke without parameter
+input.validate(); //returns result of validation (true|false)
+
+//Invoke with parameter
+input.validate(function(){
+    alert('Validation over!');
+});
+            </pre>
+        </article>
+
+        <article id='input/method/widget' class='last'></article>
+
+    </section>
+
+    <section>
+        <h2>Events</h2>
+        <article id='input/event/change'>
+            <h4 class='event-name'>change(event)</h4>
+            <div class='event-attributes'>
+                Returns:<div class='event-returns'>Input</div>
+            </div>
+            <p class='event-use'>
+                By setting this event you can give a function which will be invoked after any changes on the Input widget.
+            </p>               
+            <ul>
+                <li>
+                    <div class=event-parameter>
+                        event
+                    </div>
+                    Type: <code>function</code><br>
+                    The event which will be triggered on the change of the Input widget.
+                </li>
+            </ul>
+            <div class='event-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var input=$A.newInput({label: 'Type something here, then click out of the input field!'}).draw();
+input.change(function (){
+    alert('Input widget changed!');
+})
+            </pre>
+        </article>
+
+        <article id='input/event/check'>
+            <h4 class='event-name'>check()</h4>
+            <div class='event-attributes'>
+                Returns:<div class='event-returns'>Input</div>
+            </div>
+            <p class='event-use'>
+                Sets the <code>checked</code> property of particular checkbox or radio button <code>true</code>.
+            </p>    
+            <div class='event-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var input=$A.newInput({type: 'checkbox'}).draw();
+setTimeout(function(){
+    input.check();
+},1000);
+            </pre>
+        </article>
+
+        <article id='input/event/click'>
+            <h4 class='event-name'>click(event)</h4>
+            <div class='event-attributes'>
+                Returns:<div class='event-returns'>Input</div>
+            </div>
+            <p class='event-use'>
+                You can set the event you want to be triggered when clicking on the particular input.
+            </p>               
+            <ul>
+                <li>
+                    <div class=event-parameter>
+                        event
+                    </div>
+                    Type: <code>function</code><br>
+                    The event to be triggered
+                </li>
+            </ul>
+            <div class='event-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var input=$A.newInput().label('Click in the input field!').draw();
+input.click(function(){
+    alert('Clicked!');
+})          
+            </pre>
+        </article>
+
+        <article id='input/event/create'></article>
+
+        
+        <article id='input/event/enter'>
+            <h4 class='event-name'>enter(event)</h4>
+            <div class='event-attributes'>
+                Returns:<div class='event-returns'>Input</div>
+            </div>
+            <p class='event-use'>
+                You can set the event you want to be triggered when clicking on the particular input.
+            </p>               
+            <ul>
+                <li>
+                    <div class=event-parameter>
+                        event
+                    </div>
+                    Type: <code>function</code><br>
+                    The event to be triggered
+                </li>
+            </ul>
+            <div class='event-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var input=$A.newInput().label('Click in the input field, then press enter!').draw();
+input.enter(function(){
+    alert('Pressed enter!');
+})          
+            </pre>
+        </article>
+        
+        <article id='input/event/uncheck' class='last'>
+            <h4 class='event-name'>uncheck()</h4>
+            <div class='event-attributes'>
+                Returns:<div class='event-returns'>Input</div>
+            </div>
+            <p class='event-use'>
+                Sets the <code>checked</code> property of particular checkbox or radio button <code>false</code>.
+            </p>   
+            <div class='event-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var input=$A.newInput({type: 'checkbox'}).draw().check();
+setTimeout(function (){
+    input.uncheck()
+    },1000);
+            </pre>
+        </article>
+
+    </section>
+    <section>
+        <h2>Examples</h2>
+        <article id='input/entry-examples' class="last">
+            <h3>A simple module </h3>
+            <pre id="module-example" class="prettyprint linenums"></pre>
+            <h3>Demo:</h3>
+            <div id='module-demo'></div>
+        </article>
+    </section>
+</div>

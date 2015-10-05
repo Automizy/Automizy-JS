@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>QUnit Example</title>
+        <link rel="stylesheet" href="css/jquery-ui.min.css" />
+        <link rel="stylesheet" href="css/jquery.multiselect.css">
+        <link rel="stylesheet" href="css/jquery.multiselect.filter.css">
+        <link rel="stylesheet" href="css/automizy.min.css">
+
+        <script src="js/jquery.min.js"></script>
+        <script src="js/jquery-ui.min.js"></script>
+        <script src="js/jquery.multiselect.min.js"></script>
+        <script src="js/jquery.multiselect.filter.js"></script>
+        <script src="js/automizy.min.js"></script>
+        <style>
+            td.highlight-click{
+                background-color:#e5e5e5 !important;
+            }
+        </style>
+        <script>
+            $(function () {
+                    $A.default.table = {
+                        selectable:true,    //add checkboxes in to the first column
+                        create:function(table, $tableWidget){
+                            console.log('create');
+                            /*this: table module*/
+                        },
+                        onPageFirst:function(table, $tableWidget){
+                            console.log('onPageFirst', this.page() +'/'+ this.pageMax());
+                            /*this: table module*/
+                        },
+                        onPagePrev:function(table, $tableWidget){
+                            console.log('onPagePrev', this.page() +'/'+ this.pageMax());
+                            /*this: table module*/
+                        },
+                        onPageNext:function(table, $tableWidget){
+                            console.log('onPageNext', this.page() +'/'+ this.pageMax());
+                            /*this: table module*/
+                        },
+                        onPageLast:function(table, $tableWidget){
+                            console.log('onPageLast', this.page() +'/'+ this.pageMax());
+                            /*this: table module*/
+                        },
+                        onPerPage:function(table, $tableWidget){
+                            console.log('onPerPage', this.val());
+                            /*this: input module*/
+                        },
+                        onSort:function(table, $tableWidget){
+                            console.log('onSort', this.name+': '+this.order);
+                            /*this: object {name:"Column name", order:"Sort direction"}*/
+                        },
+                        onSearch:function(table, $tableWidget){
+                            console.log('onSearch', this.val());
+                            /*this: input module*/
+                        },
+                        onShowCol:function(table, $tableWidget){
+                            console.log('onShowCol', this.name(), this.index());
+                            /*this: tableCol module*/
+                        },
+                        onHideCol:function(table, $tableWidget){
+                            console.log('onHideCol',  this.name(), this.index());
+                            /*this: tableCol module*/
+                        }
+                    };
+
+                    window.table = $A.newTable({
+                        title:'Newsletters',    //fenti cím
+                        id:'newsletters',
+                        storeData:true,
+                        perPage:$A.store.get('newslettersPerPage') || 10,
+                        page:3, //aktuális oldalszám beállítása: table.page(3)
+                        pageMax:8,  //maximális oldalszám beállítása: table.pageMax(8)
+                        cols:[  //oszlopok beállítása: table.cols([...])
+                            {name: 'name', text:'Campaign name', hideable:false, order:'asc'},
+                            {name: 'subject', text: 'Campaign subject', sortable:false},
+                            {name: 'type', text: 'Type', visibility:false},
+                            {name: 'createDate', text: 'Created'},
+                            {name: 'lastSend', text: 'Last sent'},
+                            {name: 'maxWidth', text: 'Max bandwidth', visibility:false},
+                            {name: 'backup', text: 'Draft', visibility:false}
+                        ],
+                        buttons:[
+                            {
+                                skin: 'simple-orange',
+                                text: 'New campaign',
+                                click: function () {
+                                    openCampaignDialog();
+                                }
+                            },
+                            {
+                                text: 'Edit campaign',
+                                condition: 'select-one',
+                                disabled:true,
+                                click: function () {
+                                    console.log({
+                                        isEdit: true,
+                                        id: table.firstSelectedRow().recordId(),
+                                        name: table.firstSelectedRow().getCellByColName('name').text(),
+                                        subject: table.firstSelectedRow().getCellByColName('subject').text()
+                                    });
+                                }
+                            },
+                            {
+                                text: 'Delete campaigns',
+                                condition: 'select-more-than-zero',
+                                disabled:true,
+                                click: function () {
+                                    var text = $A.translate("Are you sure you want to delete the following campaigns?");
+                                    text += "<ul>";
+                                    var rows = table.selectedRows();
+                                    for (var i = 0; i < rows.length; i++) {
+                                        text += "<li>" + rows[i].getCellByColName('name').text() + "</li>";
+                                    }
+                                    text += "</ul>";
+                                    $A.newDialog().content(text).open();
+                                }
+                            }
+                        ],
+                        inlineButtons:[
+                            {
+                                text: 'edit',
+                                click: function () {
+                                    console.log({
+                                        isEdit: true,
+                                        id: table.openedRow().recordId(),
+                                        name: table.openedRow().getCellByColName('name').text(),
+                                        subject: table.openedRow().getCellByColName('subject').text()
+                                    });
+                                }
+                            }
+                        ]
+                    }).draw();
+
+/*
+                    table.table().on('click', 'td', function() {
+                        var cell = $A.tableCell($(this));
+                        cell.row().$cells().addClass('highlight-click');
+                        cell.col().$cells().addClass('highlight-click');
+                        
+                    }).on('mouseleave', 'th, td', function() {
+                        if($(this).hasClass('highlight-click')){
+                            var cell = $A.tableCell($(this));
+                            cell.row().$cells().removeClass('highlight-click');
+                            cell.col().$cells().removeClass('highlight-click');
+                        }
+                    });
+*/
+
+                    var rows = [];
+
+                    for(var i = 0; i < 5; i++){
+                        rows.push({
+                            recordId:i*2,
+                            values:[i+'. This is a campaign', 'Some text', '', '2015-02-19 18:05', '2015-02-19 18:06']
+                        });
+                    }
+                    for(var i = 5; i < 10; i++){
+                        rows.push({
+                            recordId:i*2,
+                            values:{
+                                name:'Something',
+                                subject:'{{Name}}, you won!',
+                                createDate:'2015-02-19 19:05',
+                                lastSend:'2015-02-19 19:06'
+                            }
+                        });
+                    }
+
+                    table.addRows(rows);
+                });
+        </script>
+    </head>
+    <body></body>
+</html>
+

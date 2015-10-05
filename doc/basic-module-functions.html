@@ -1,0 +1,336 @@
+
+<article id='{{ModuleLowerCase}}/event/create'>
+    <h4 class='event-name'>create(event)</h4>
+    <div class='event-attributes'>
+        Returns:<div class='event-returns'>{{ModuleUpperCase}}</div>
+    </div>
+    <p class='event-use'>
+        Setting the event which will be triggered when creating the {{ModuleLowerCase}} widget.
+    </p>                    
+    <ul>
+        <li>
+            <div class="event-parameter">
+                event
+            </div>
+            Type: <code>function</code><br>
+            The event to be triggered
+        </li>
+    </ul>
+    <div class='event-examples'>Code examples</div>
+    <pre class="prettyprint linenums">
+$A.new{{ModuleUpperCase}}({
+    create: function (){
+        console.log("{{ModuleUpperCase}} module created!");
+    }
+}).draw()
+    </pre>
+</article>
+
+<article id='{{ModuleLowerCase}}/method/addButton'>
+            <h4 class='method-name'>addButton(obj)</h4>
+            <div class='method-attributes'>
+                Returns<div class='method-returns'>Button | {{ModuleUpperCase}}</div>
+            </div>
+            <p class='method-use'>
+                Adds a Button to the {{ModuleLowerCase}} widget.
+                Returns a Button if invoked without parameters.
+                Returns the {{ModuleLowerCase}} widget if invoked with parameters.
+            </p>                    
+            <ul>
+                <li>
+                    <div class="method-parameter">
+                        obj
+                    </div>
+                    Type: <code>Object | Button</code><br>
+                    The Button to add, or an object used to build a new button.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class="prettyprint linenums">
+var {{ModuleLowerCase}} = $A.new{{ModuleUpperCase}}().draw();
+//Adding a new button with default parameters
+{{ModuleLowerCase}}.addButton(); //returns the new button
+
+//Adding a new button using object parameters
+{{ModuleLowerCase}}.addButton({text: "NewButton"}); //returns {{ModuleLowerCase}}
+
+//Adding an already existing button to the widget
+var btn = $A.newButton({text: "NewButton"});
+{{ModuleLowerCase}}.addButton(btn)  //returns {{ModuleLowerCase}}
+            </pre>
+        </article>
+
+<article id='{{ModuleLowerCase}}/option/buttons'>
+            <h4 class='option-name'>buttons</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Array</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>[]</div>
+            </div>
+            <p class='option-use'>
+                Array that contains all Button objects which are on the widget.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the {{ModuleLowerCase}} widget with the <code>buttons</code> option specified, using object in constructor
+            <pre class="prettyprint linenums">
+//Adding two customized buttons to a new {{ModuleLowerCase}} widget
+$A.new{{ModuleUpperCase}}({
+    buttons:[
+        $A.newButton({
+            text: "button1"
+        }),
+        $A.newButton({
+            text: "button2"
+        })
+    ]
+}).draw();                  
+            </pre>
+            Initialize the {{ModuleLowerCase}} widget with the <code>buttons</code> option specified, using method chaining
+            <pre class="prettyprint linenums">
+//Adding two default buttons to a new {{ModuleLowerCase}} widget
+$A.new{{ModuleUpperCase}}().buttons([$A.newButton(),$A.newButton()]).draw();
+            </pre>
+            Get or set the <code>buttons</code> option, after initialization
+            <pre class="prettyprint linenums">
+var {{ModuleLowerCase}} = $A.new{{ModuleUpperCase}}().draw();
+//Setter
+{{ModuleLowerCase}}.buttons([$A.newButton(),$A.newButton()]);  //returns {{ModuleLowerCase}}
+
+//Getter
+console.log({{ModuleLowerCase}}.buttons()); //returns the buttons array
+            </pre>
+        </article>
+
+<article id='{{ModuleLowerCase}}/option/data'>
+    <h4 class='option-name'>data</h4>
+    <div class='option-attributes'>
+        Type:<div class='option-type'>Object</div>
+    </div>
+    <div class='option-attributes'>
+        Default value:<div class='option-default-value'>{}</div>
+    </div>
+    <p class='option-use'>
+        The <code>.data()</code> method allows us to attach data of any type to Automizy modules.<br>
+        We can set several distinct values for a single element and retrieve them later:
+    </p>        
+    <div class='option-examples'>Code examples</div>
+    Initialize the {{ModuleLowerCase}} widget with the <code>data</code> option specified, using object in constructor
+    <pre class="prettyprint linenums">
+$A.new{{ModuleUpperCase}}({
+    data: {
+        foo: "asd",
+        myObject: { txt: "dsa", apples: 40 },
+        baz: [ 1, 2, 3 ]
+    }
+}).draw()
+    </pre>
+    Initialize the {{ModuleLowerCase}} widget with the <code>data</code> option specified, using method chaining
+    <pre class="prettyprint linenums">
+var {{ModuleLowerCase}} = $A.new{{ModuleUpperCase}}().draw()
+//Setters
+{{ModuleLowerCase}}.data( "foo", "asd" ); //returns {{ModuleLowerCase}}
+{{ModuleLowerCase}}.data( "bar", { myObject: "dsa", apples: 40 } );  //returns {{ModuleLowerCase}}
+{{ModuleLowerCase}}.data( "baz", [ 1, 2, 3 ] );  //returns {{ModuleLowerCase}}
+
+//Getters
+console.log({{ModuleLowerCase}}.data( "foo" )); // returns the value which belongs to the "foo" key
+console.log({{ModuleLowerCase}}.data()); // returns the whole data Object: { foo: "asd", bar: { myObject: "dsa", apples: 40 }, baz: [ 1, 2, 3 ] }        
+    </pre>
+</article>
+
+<article id='{{ModuleLowerCase}}/method/draw'>
+    <h4 class='method-name'>draw($target)</h4>
+    <div class='method-attributes'>
+        Returns:<div class='method-returns'>{{ModuleUpperCase}}</div>
+    </div>
+    <p class='method-use'>
+        Invoke this function to draw the widget after initialization on the target element.<br>
+        Invoking without parameter sets <code>$('body')</code> as target.
+    </p>        
+    <div class='method-examples'>Code examples</div>
+    Simple way without parameter:
+    <pre class="prettyprint linenums">
+$A.new{{ModuleUpperCase}}().draw()          
+    </pre>
+    With jQuery element parameter
+    <pre class="prettyprint linenums">
+var container = $('&ltdiv id="{{ModuleLowerCase}}-container">&lt/div>').css({height: '200px', margin: '20px 10px', border:'2px solid #FF0000', position:'relative'}).appendTo('body')
+var {{ModuleLowerCase}} = $A.new{{ModuleUpperCase}}();
+{{ModuleLowerCase}}.draw(container);          
+    </pre>
+</article>
+
+<article id='{{ModuleLowerCase}}/method/drawTo'>
+    <h4 class='method-name'>drawTo($target)</h4>
+    <p class='method-use'>
+        This method is an alias for the <code><a href='#{{ModuleLowerCase}}/method/draw'>draw($target)</a></code> method.
+    </p>    
+</article>
+
+<article id='{{ModuleLowerCase}}/method/hide'>
+    <h4 class='method-name'>hide()</h4>
+    <div class='method-attributes'>
+        Returns:<div class='method-returns'>{{ModuleUpperCase}}</div>
+    </div>
+    <p class='method-use'>
+        Invoke this function to hide the widget.
+    </p>        
+    <div class='method-examples'>Code examples</div>
+    <pre class="prettyprint linenums">
+var {{ModuleLowerCase}} = $A.new{{ModuleUpperCase}}().draw();
+setTimeout(function (){
+    {{ModuleLowerCase}}.hide();
+},1000);
+    </pre>
+</article>
+
+<article id='{{ModuleLowerCase}}/option/id'>
+    <h4 class='option-name'>id</h4>
+    <div class='option-attributes'>
+        Type:<div class='option-type'>String</div>
+    </div>
+    <div class='option-attributes'>
+        Default value:<div class='option-default-value'>'automizy-{{ModuleLowerCase}}-' + $A.getUniqueString()</div>
+    </div>
+    <p class='option-use'>
+        The default <code>id</code> of {{ModuleLowerCase}} widget, always starts with <code>'automizy-{{ModuleLowerCase}}-'</code> followed by a unique string.
+    </p>
+    <div class='option-examples'>Code examples</div>
+    Initialize the {{ModuleLowerCase}} widget with the <code>id</code> option specified, using object in constructor
+    <pre class="prettyprint linenums">
+$A.new{{ModuleUpperCase}}({
+    id: 'MyID01'
+}).draw()
+    </pre>
+    Initialize the {{ModuleLowerCase}} widget with the <code>id</code> option specified, using method chaining
+    <pre class="prettyprint linenums">
+$A.new{{ModuleUpperCase}}().id('MyID01').draw()
+    </pre>
+    Get or set the <code>id</code> option, after initialization
+    <pre class="prettyprint linenums">
+var {{ModuleLowerCase}} = $A.new{{ModuleUpperCase}}().draw()
+//Setter
+{{ModuleLowerCase}}.id('MyID01'); //returns {{ModuleLowerCase}}
+
+//Getter
+console.log({{ModuleLowerCase}}.id()); //returns vlue of id          
+    </pre>
+</article>
+
+
+<article id='{{ModuleLowerCase}}/method/remove'>
+    <h4 class='method-name'>remove()</h4>
+    <div class='method-attributes'>
+        Returns:<div class='method-returns'>Boolean</div>
+    </div>
+    <p class='method-use'>
+        Invoke this function to remove the widget.
+    </p>        
+    <div class='method-examples'>Code examples</div>
+    <pre class="prettyprint linenums">
+var {{ModuleLowerCase}} = $A.new{{ModuleUpperCase}}().draw()
+setTimeout(function (){
+    {{ModuleLowerCase}}.remove();
+}, 1000);
+    </pre>
+</article>
+
+<article id='{{ModuleLowerCase}}/method/removeButton'>
+            <h4 class='method-name'>removeButton(button)</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>{{ModuleUpperCase}}</div>
+            </div>
+            <p class='method-use'>
+                Removes the button from the {{ModuleLowerCase}} widget.
+            </p>                    
+            <ul>
+                <li>
+                    <div class="method-parameter">
+                        button
+                    </div>
+                    Type: <code>Object | String</code><br>
+                    The Button or the ID if the button to remove.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class="prettyprint linenums">
+var {{ModuleLowerCase}} = $A.new{{ModuleUpperCase}}().draw();
+//Removing a button by object parameter
+var btn = {{ModuleLowerCase}}.addButton();
+setTimeout(function() {
+    {{ModuleLowerCase}}.removeButton(btn);
+},1000);
+
+//Removing a button by id
+{{ModuleLowerCase}}.addButton({id: 'MyButton02'});
+setTimeout(function() {
+    {{ModuleLowerCase}}.removeButton('MyButton02');
+},1000);
+            </pre>
+</article>
+
+<article id='{{ModuleLowerCase}}/method/show'>
+    <h4 class='method-name'>show()</h4>
+    <div class='method-attributes'>
+        Returns:<div class='method-returns'>{{ModuleUpperCase}}</div>
+    </div>
+    <p class='method-use'>
+        Invoke this function to show the widget.
+    </p>        
+    <div class='method-examples'>Code examples</div>
+    <pre class="prettyprint linenums">
+var {{ModuleLowerCase}} = $A.new{{ModuleUpperCase}}().draw().hide();
+setTimeout(function(){
+    {{ModuleLowerCase}}.show();
+},1000);          
+    </pre>
+</article>
+
+<article id='{{ModuleLowerCase}}/option/skin'>
+    <h4 class='option-name'>skin</h4>
+    <div class='option-attributes'>
+        Type:<div class='option-type'>String</div>
+    </div>
+    <div class='option-attributes'>
+        Default value:<div class='option-default-value'>'simple-automizy'</div>
+    </div>
+    <p class='option-use'>
+        Setting the skin of the widget.
+    </p>        
+    <div class='option-examples'>Code examples</div>
+    Initialize the {{ModuleLowerCase}} widget with the <code>skin</code> option specified, using object in constructor
+    <pre class="prettyprint linenums">
+$A.new{{ModuleUpperCase}}({
+    skin: 'simple-automizy'
+}).draw()
+    </pre>
+    Initialize the {{ModuleLowerCase}} widget with the <code>skin</code> option specified, using method chaining
+    <pre class="prettyprint linenums">
+$A.new{{ModuleUpperCase}}().skin('simple-automizy').draw()
+    </pre>
+    Get or set the <code>skin</code> option, after initialization
+    <pre class="prettyprint linenums">
+var {{ModuleLowerCase}} = $A.new{{ModuleUpperCase}}().draw()
+//Setter
+{{ModuleLowerCase}}.skin('simple-automizy');   //returns {{ModuleLowerCase}}
+
+//Getter
+console.log({{ModuleLowerCase}}.skin());  //returns value of skin            
+    </pre>
+</article>
+
+<article id='{{ModuleLowerCase}}/method/widget'>
+    <h4 class='method-name'>widget()</h4>
+    <div class='method-attributes'>
+        Returns:<div class='method-returns'>jQuery</div>
+    </div>
+    <p class='method-use'>
+        Invoke this function to get the jQuery object representing the {{ModuleUpperCase}} widget.
+    </p>        
+    <div class='method-examples'>Code examples</div>
+    <pre class="prettyprint linenums">
+var {{ModuleLowerCase}} = $A.new{{ModuleUpperCase}}().draw()
+console.log({{ModuleLowerCase}}.widget());          
+    </pre>
+</article>

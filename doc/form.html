@@ -1,0 +1,713 @@
+
+<div id='doc-container'>
+    <h1>Form Widget</h1>
+    <div class='description-label'>Description:
+        <div class="description">Adding customizable forms to your webpage with a lot of functions.</div>
+    </div>
+    <section>
+        <h2 class='quick-nav'>Quick navigation <a href='#form/entry-examples'>Examples</a></h2>
+        <table class='doc-content-table'>
+            <tr>
+                <td>
+                    <h3>Options</h3>
+                    <ul>
+                        <li><a href='#form/option/action'>action</a></li>
+                        <li><a href='#form/option/buttons'>buttons*</a></li>
+                        <li><a href='#form/option/data'>data*</a></li>
+                        <li><a href='#form/option/enctype'>enctype</a></li>
+                        <li><a href='#form/option/htmls'>htmls</a></li>
+                        <li><a href='#form/option/id'>id*</a></li>
+                        <li><a href='#form/option/inputs'>inputs</a></li>
+                        <li><a href='#form/option/method'>method</a></li>
+                        <!--<li><a href='#form/option/skin'>skin</a></li>-->
+                        <li><a href='#form/option/target'>target</a></li>
+                        <li><a href='#form/option/url'>url</a></li>
+                    </ul>
+                </td>
+                <td>
+                    <h3>Methods</h3>
+                    <ul>
+                        <li><a href='#form/method/addButton'>addButton*</a></li>
+                        <li><a href='#form/method/addGroup'>addGroup</a></li>
+                        <li><a href='#form/method/addGroups'>addGroups</a></li>
+                        <li><a href='#form/method/addHtml'>addHtml</a></li>
+                        <li><a href='#form/method/addInput'>addInput</a></li>
+                        <li><a href='#form/method/addInputs'>addInputs</a></li>
+                        <li><a href='#form/method/addSubTitle'>addSubTitle</a></li>
+                        <li><a href='#form/method/break'>break</a></li>
+                        <li><a href='#form/method/draw'>draw*</a></li>
+                        <li><a href='#form/method/drawTo'>drawTo*</a></li>
+                        <li><a href='#form/method/group'>group</a></li>
+                        <li><a href='#form/method/groups'>groups</a></li>
+                        <li><a href='#form/method/hide'>hide*</a></li>
+                        <li><a href='#form/method/input'>input</a></li>
+                        <li><a href='#form/method/json'>json</a></li>
+                        <li><a href='#form/method/object'>object</a></li>
+                        <li><a href='#form/method/remove'>remove*</a></li>
+                        <li><a href='#form/method/removeButton'>removeButton*</a></li>
+                        <li><a href='#form/method/removeGroup'>removeGroup</a></li>
+                        <li><a href='#form/method/removeHtml'>removeHtml</a></li>
+                        <li><a href='#form/method/removeInput'>removeInput</a></li>
+                        <li><a href='#form/method/removeSubTitle'>removeSubTitle</a></li>
+                        <li><a href='#form/method/show'>show*</a></li>
+                        <li><a href='#form/method/submit'>submit</a></li>
+                        <li><a href='#form/method/subTitle'>subTitle</a></li>
+                        <li><a href='#form/method/validate'>validate</a></li>
+                        <li><a href='#form/method/widget'>widget*</a></li>
+                    </ul>
+                </td>
+                <td>
+                    <h3>Events</h3>
+                    <ul>
+                        <li><a href='#form/event/create'>create*</a></li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+    </section>
+
+    <section>
+        <h2>Options</h2>
+
+        
+        <article id='form/option/action'>
+            <h4 class='option-name'>action</h4>
+            This function is an alias for the <code><a href='#form/option/url'>url</a></code> method.
+        </article>
+        
+        <article id='form/option/buttons'></article>
+        <article id='form/option/data'></article>
+
+        <article id='form/option/enctype'>
+            <h4 class='option-name'>enctype</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>false</div>
+            </div>
+            <p class='option-use'>
+                Sets the <code><a href='http://www.w3schools.com/tags/att_form_enctype.asp' target='_blank'>enctype</a></code> attribute of the form element.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the form widget with the <code>enctype</code> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newForm({enctype: 'multipart/form-data'}).draw();
+            </pre>
+            Initialize the form widget with the <code>enctype</code> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newForm().enctype('multipart/form-data').draw();
+            </pre>
+            <br>Get or set the <code>enctype</code> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var form = $A.newForm().draw();
+//Setter
+form.enctype('multipart/form-data'); //returns form
+
+//Getter
+console.log(form.enctype()); //returns value of enctype
+            </pre>
+        </article>
+
+        <article id='form/option/htmls'>
+            <h4 class='option-name'>htmls</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Array</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>[]</div>
+            </div>
+            <p class='option-use'>
+                By using this option you can insert html code on your form.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the form widget with the <code>htmls</code> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newForm({htmls: ['&lt;div>html content&lt/div>']}).draw();
+            </pre>
+            Initialize the form widget with the <code>htmls</code> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newForm().htmls(['&lt;div>html content&lt/div>']).draw();
+            </pre>
+            <br>Get or set the <code>htmls</code> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var form = $A.newForm().draw();
+//Setter
+form.htmls(['&lt;div>html content&lt/div>']); //returns form
+/*
+    form.htmls($('.element-to-insert')); //adding jQuery elements
+*/
+
+//Getter
+console.log(form.htmls()); //returns the htmls array
+            </pre>
+        </article>
+
+        <article id='form/option/id'></article>
+
+        <article id='form/option/inputs'>
+            <h4 class='option-name'>inputs</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Array</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>true</div>
+            </div>
+            <p class='option-use'>
+                The array of inputs added to the form.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the form widget with the <code>inputs</code> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newForm({inputs: [$A.newInput(), $A.newInput()]}).draw();
+            </pre>
+            Initialize the form widget with the <code>inputs</code> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newForm().inputs([$A.newInput(), $A.newInput()]).draw();
+            </pre>
+            <br>Get or set the <code>inputs</code> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var form = $A.newForm().draw();
+//Setter
+form.inputs([$A.newInput(), $A.newInput()]); //returns form
+
+//Getter
+console.log(form.inputs()); //returns the inputs array
+            </pre>
+        </article>
+
+        <article id='form/option/method'>
+            <h4 class='option-name'>method</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>'POST'</div>
+            </div>
+            <p class='option-use'>
+                Use this option to set the <code><a href='http://www.w3schools.com/tags/att_form_method.asp'>method</a></code> of the form element.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the form widget with the <code>method</code> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newForm({method: 'POST'}).draw();
+            </pre>
+            Initialize the form widget with the <code>method</code> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newForm().method('POST').draw();
+            </pre>
+            <br>Get or set the <code>method</code> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var form=$A.newForm().draw();
+//Setter
+form.method('POST'); //returns form
+
+//Getter
+console.log(form.method()); //returns value of method
+            </pre>
+        </article>
+
+        <!--<article id='form/option/skin'></article>-->
+
+        <article id='form/option/target'>
+            <h4 class='option-name'>target</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>jQuery</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>$('body')</div>
+            </div>
+            <p class='option-use'>
+                If set in constructor, the form will be automatically drawn to the target element.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the form widget with the <code>target</code> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newForm({taget: $('body')});
+            </pre>
+        </article>
+
+        <article id='form/option/url' class='last'>
+            <h4 class='option-name'>url</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>document.location.href</div>
+            </div>
+            <p class='option-use'>
+                The string containing the URL to which the request is sent.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the form widget with the <code>url</code> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newForm({url: 'google.com'}).draw();
+            </pre>
+            Initialize the form widget with the <code>url</code> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newForm().url('google.com').draw();
+            </pre>
+            <br>Get or set the <code>url</code> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var form = $A.newForm().draw();
+//Setter
+form.url('google.com') //returns form
+
+//Getter
+console.log(form.url()) //returns value of url
+            </pre>
+        </article>
+
+    </section>
+    <section>
+        <h2>Methods</h2>
+        
+        <article id='form/method/addButton'></article>
+
+        <article id='form/method/addGroup'>
+            <h4 class='method-name'>addGroup(obj)</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Form</div>
+            </div>
+            <p class='method-use'>
+                Use this method to create groups of elements on your form.<br>
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        obj
+                    </div>
+                    Type: <code>Object</code><br>
+                    The object which represents the elements you want to add to the group.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+$A.newForm().draw().addGroup({
+    text: 'More options',
+    inputs: [
+        {
+            label: 'Import file',
+            help: "Select a file to upload that contains contact data that you want to import.",
+            type: 'file',
+            name: 'import-subscribers',
+            accept: ['.csv', '.rar', '.zip', '.tar', '.gz']
+        },
+        {
+            label: 'Apple',
+            validator: 'notEmpty'
+        }
+    ]});
+            </pre>
+        </article>
+
+        <article id='form/method/addGroups'>
+            <h4 class='method-name'>addGroups(arr)</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Form</div>
+            </div>
+            <p class='method-use'>
+                Use this function to add multiple groups to your form at once.
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        arr
+                    </div>
+                    Type: <code>Array</code><br>
+                    The array of object to be added as groups.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+$A.newForm().draw().addGroups([
+    {
+        text: 'Group 1',
+        inputs: [
+            {
+                label: 'Import file',
+                help: "Select a file to upload that contains contact data that you want to import.",
+                type: 'file',
+                name: 'import-subscribers',
+                accept: ['.csv', '.rar', '.zip', '.tar', '.gz']
+            },
+            {
+                label: 'Apple',
+                validator: 'notEmpty'
+            }
+        ]
+    },
+    {
+        text: 'Group 2',
+        inputs: [
+            {
+                label: $A.translate('Stuff')
+            }
+        ]
+    }]);
+            </pre>
+        </article>
+
+        <article id='form/method/addHtml'>
+            <h4 class='method-name'>addHtml(html)</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Form</div>
+            </div>
+            <p class='method-use'>
+                Use this method to add html code to your form.
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        html
+                    </div>
+                    Type: <code>String | jQuery</code><br>
+                    The element which will be inserted.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var form = $A.newForm().draw();
+form.addHtml(['&lt;div>html content&lt/div>']); //returns form
+form.addHtml($('.elements-to-insert')); //adding jQuery elements
+            </pre>
+        </article>
+
+        <article id='form/method/addInput'>
+            <h4 class='method-name'>addInput(obj)</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Form</div>
+            </div>
+            <p class='method-use'>
+                Use this method ta add an input to your form.
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        obj
+                    </div>
+                    Type: <code>Input</code><br>
+                    The input you want to add to the form.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+$A.newForm().addInput($A.newInput()).draw();
+            </pre>
+        </article>
+
+        <article id='form/method/addInputs'>
+            <h4 class='method-name'>addInput(arr)</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Form</div>
+            </div>
+            <p class='method-use'>
+                Use this method ta add multiple inputs to your form.
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        arr
+                    </div>
+                    Type: <code>Array</code><br>
+                    The array of inputs you want to add to your form.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+$A.newForm().addInputs([$A.newInput(),$A.newInput()]).draw();
+            </pre>
+        </article>
+
+        <article id='form/method/addSubTitle'>
+            <h4 class='method-name'>addSubTitle(str)</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Form</div>
+            </div>
+            <p class='method-use'>
+                Use this method to add a subtitle to your form.<br>
+                Subtitles will be displayed in new rows.
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        str
+                    </div>
+                    Type: <code>String</code><br>
+                    The text of the subtitle.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+$A.newForm().addSubTitle('Title').draw();
+            </pre>
+        </article>
+
+        <article id='form/method/break'>
+            <h4 class='method-name'>break</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Form</div>
+            </div>
+            <p class='method-use'>
+                Use this method to break line in your form.<br>
+                Tehnically, a <code>&lt;br></code> tag will be appended to the widget's html.
+            </p>                    
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+ //regardless the newRow: false attribute of the inputs, they'll be shown in new lines
+$A.newForm().addInput({newRow: false}).break().addInput({newRow: false}).draw();
+            </pre>
+        </article>
+
+        <article id='form/method/draw'>
+            <h4 class='method-name'>draw($target)</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Form</div>
+            </div>
+            <p class='method-use'>
+                Invoke this function to draw the widget after initialization on the target element.<br>
+                Invoking without parameter sets <code>$('body')</code> as target.
+            </p>        
+            <div class='method-examples'>Code examples</div>
+            Simple way without parameter:
+            <pre class="prettyprint linenums">
+$A.newForm().addInput().draw()          
+            </pre>
+            With jQuery element parameter
+            <pre class="prettyprint linenums">
+var container = $('&ltdiv id="form-container">&lt/div>').css({height: '200px', margin: '20px 10px', border:'2px solid #FF0000', position:'relative'}).appendTo('body')
+var form = $A.newForm();
+form.addInput(); 
+form.draw(container);          
+            </pre>
+        </article>
+
+        <article id='form/method/drawTo'></article>
+
+        <article id='form/method/group'>
+            <h4 class='method-name'>group</h4>
+            This method is an alias for the <code><a href='#form/method/addGroup'>addGroup(obj)</a></code> method.
+        </article>
+
+        <article id='form/method/groups'>
+            <h4 class='method-name'>groups(arr)</h4>
+            This method is an alias for the <code><a href='#form/method/addGroups'>addGroups(arr)</a></code> method.
+        </article>
+
+        <article id='form/method/hide'>
+            <h4 class='method-name'>hide()</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Form</div>
+            </div>
+            <p class='method-use'>
+                Invoke this function to hide the widget.
+            </p>        
+            <div class='method-examples'>Code examples</div>
+            <pre class="prettyprint linenums">
+var form = $A.newForm().draw();
+form.addInput();
+setTimeout(function (){
+    form.hide();
+},1000);
+            </pre>
+        </article>
+
+        <article id='form/method/input'>
+            <h4 class='method-name'>input</h4>
+            This method is an alias for the <code><a href='#form/method/addInput'>addInput(obj)</a></code> method.
+        </article>
+
+        <article id='form/method/json'>
+            <h4 class='method-name'>json</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>String</div>
+            </div>
+            <p class='method-use'>
+                Use this method to JSON stringify your from.
+            </p>   
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var form = $A.newForm({
+        inputs: [$A.newInput({label: 'Name:', value: 'John'})]
+    }).draw();
+console.log(form.json());
+            </pre>
+        </article>
+
+        <article id='form/method/object'>
+            <h4 class='method-name'>object</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Object</div>
+            </div>
+            <p class='method-use'>
+                Use this method to serializy the form.
+            </p>    
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var form = $A.newForm({
+        inputs: [$A.newInput({label: 'Name:', value: 'John'})]
+    }).draw();
+console.log(form.object());
+            </pre>
+        </article>
+
+        <article id='form/method/remove'></article>
+        <article id='form/method/removeButton'></article>
+
+        <article id='form/method/removeGroup'>
+            <h4 class='method-name'>removeGroup(id)</h4>
+            <p class='method-use'>
+                Use this method to remove a group from your form.
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        id
+                    </div>
+                    Type: <code>String</code><br>
+                    The id of the html element representing the group.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+Give some examples here!
+            </pre>
+        </article>
+
+        <article id='form/method/removeHtml'>
+            <h4 class='method-name'>removeHtml(id)</h4>
+            <p class='method-use'>
+                Use this method to remove a html from your form.
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        id
+                    </div>
+                    Type: <code>String</code><br>
+                    The id of the html element.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var form = $A.newForm().addHtml('content').draw();
+var id = form.htmls()[0].attr('id');
+setTimeout(function(){
+    form.removeHtml(id);
+},1000);
+            </pre>
+        </article>
+
+        <article id='form/method/removeInput'>
+            <h4 class='method-name'>removeInput(obj)</h4>
+            <p class='method-use'>
+                Use this method to remove an input from the form.
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        obj
+                    </div>
+                    Type: <code>Object | String</code><br>
+                    The input object you want to remove, or its id.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var form = $A.newForm().draw();
+var input = $A.newInput().draw();
+form.addInput(input);
+setTimeout(function (){
+    form.removeInput(input);
+    }, 1000);
+            </pre>
+        </article>
+
+        <article id='form/method/removeSubTitle'>
+            <h4 class='method-name'>removeSubTitle(obj)</h4>
+            <p class='method-use'>
+                Use this to remove a subtitle from your form.
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        obj
+                    </div>
+                    Type: <code>Object | String</code><br>
+                    The subtitle you want to remove, or its id.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var form = $A.newForm().draw();
+form.addSubTitle('title');
+setTimeout(function (){
+    form.removeSubTitle($($('.automizy-form-subtitle')[0]).attr('id'));
+    }, 1000);
+            </pre>
+        </article>
+
+        <article id='form/method/show'>
+            <h4 class='method-name'>show()</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Form</div>
+            </div>
+            <p class='method-use'>
+                Invoke this function to show the widget.
+            </p>        
+            <div class='method-examples'>Code examples</div>
+            <pre class="prettyprint linenums">
+var form = $A.newForm().draw().hide();
+form.addInput();
+setTimeout(function(){
+    form.show();
+},1000);          
+            </pre>
+        </article>
+
+        <article id='form/method/submit'>
+            <h4 class='method-name'>submit</h4>
+            <p class='method-use'>
+                Use this method to submit the form.
+            </p>     
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var form = $A.newInput().draw().submit();
+        </article>
+
+        <article id='form/method/subTitle'>
+            <h4 class='method-name'>subTitle(str)</h4>
+            This method is an alias for the <code><a href='#form/method/addSubTitle'>addSubTitle(str)</a></code> method.
+        </article>
+        
+        <article id='form/method/validate'>
+            <h4 class='method-name'>validate</h4>
+            <p class='method-use'>
+                Use this method to run the validation process on all inputs in the form.
+            </p>     
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var form = $A.newInput().validator('email').draw().validate();
+        </article>
+        
+        <article id='form/method/widget' class='last'></article>
+        
+    </section>
+
+    <section>
+        <h2>Events</h2>
+        
+        <article id='form/event/create' class='last'></article>
+        
+    </section>
+    
+    <section>
+        <h2>Examples</h2>
+        <article id='form/entry-examples' class='last'>
+            <h3>A simple module </h3>
+            <pre id='module-example' class='prettyprint linenums'></pre>
+            <h3>Demo:</h3>
+            <div id='module-demo'></div>
+        </article>
+    </section>
+</div>

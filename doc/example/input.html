@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>QUnit Example</title>
+        <link rel="stylesheet" href="css/jquery-ui.min.css" />
+        <link rel="stylesheet" href="css/jquery.multiselect.css">
+        <link rel="stylesheet" href="css/jquery.multiselect.filter.css">
+        <link rel="stylesheet" href="css/automizy.min.css">
+
+        <script src="js/jquery.min.js"></script>
+        <script src="js/jquery-ui.min.js"></script>
+        <script src="js/jquery.multiselect.min.js"></script>
+        <script src="js/jquery.multiselect.filter.js"></script>
+        <script src="js/automizy.min.js"></script>
+        <script>
+            $(function () {
+                //Creating Input modules with objects
+                $A.newInput({
+                    label: 'Multiselect jQuery style',
+                    help: 'Which campaign would you like to send',
+                    type: 'select',
+                    name: 'segments',
+                    breakInput: true,
+                    newRow: false,
+                    target: $('body'),
+                    multiple: true,
+                    multiselect: true, //enables jQuery style 
+                    options: [[1, 'first segment'], [2, 'second segment']],
+                    change: function (input, $element) {
+
+                    }
+                });
+                $A.newInput({
+                    label: 'Simple select jQuery style',
+                    help: 'Which campaign would you like to send',
+                    type: 'select',
+                    name: 'segments',
+                    target: $('body'),
+                    newRow: false,
+                    breakInput: true,
+                    multiple: false,
+                    multiselect: true, //enables jQuery style 
+                    options: [[1, 'first segment'], [2, 'second segment']],
+                    change: function (input, $element) {
+
+                    }
+                });
+
+                $A.newInput({
+                    type: 'select',
+                    multiselect: false,
+                    multiple: true,
+                    target: $('body'),
+                    label: 'Multiselect default HTML style',
+                    newRow: true,
+                    breakInput: true,
+                    options: [[1, 'first segment'], [2, 'second segment']]
+                });
+
+                $A.newInput({
+                    type: 'select',
+                    label: 'Simple select default HTML style:',
+                    name: 'campaign1',
+                    target: $('body'),
+                    multiselect: false,
+                    multiple: false,
+                    help: 'This is the first campaign',
+                    newRow: false,
+                    breakInput: true,
+                    options: [[1, 'first segment'], [2, 'second segment']]
+                });
+                
+                $A.newInput({
+                    label: 'Age',
+                    help: "Type your age here!",
+                    name: 'simpleText',
+                    target: $('body'),
+                    validator: {
+                        num: true,
+                        min: 18,
+                        max: 130
+                    },
+                    validate: function (isValid, module, $widget) {
+                        if (!isValid) {
+                            module.errorBox().html('Age must be between 18 and 130 years!')
+                        }
+                    }
+                });
+
+                //Creating Input modules with method chaining
+
+                //with simple-automizy skin
+                $A.newInput().type('text').placeholder("Type here").label("Name:").skin('simple-automizy').draw();
+
+                //set the same 'name' attribute to group the radio buttons
+                $A.newInput().type('radio').name('radio group').label('First').draw();
+                $A.newInput().type('radio').name('radio group').label('Second').draw();
+                $A.newInput().type('checkbox').label('Check?').draw();
+
+
+            });
+        </script>
+    </head>
+    <body></body>
+</html>

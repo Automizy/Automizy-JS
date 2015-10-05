@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>QUnit Example</title>
+        <link rel="stylesheet" href="css/jquery-ui.min.css" />
+        <link rel="stylesheet" href="css/jquery.multiselect.css">
+        <link rel="stylesheet" href="css/jquery.multiselect.filter.css">
+        <link rel="stylesheet" href="../src/automizy.css">
+        <link rel="stylesheet" href="../src/responsive/css/dialog.css">
+        
+        <style>
+            body{
+                width:100%;
+                height: 2000px;
+            }
+        </style>
+        <script src="js/jquery.min.js"></script>
+        <script src="js/jquery-ui.min.js"></script>
+        <script src="js/require.js"></script>
+        <script src="js/jquery.multiselect.min.js"></script>
+        <script src="js/jquery.multiselect.filter.js"></script>
+        <script>
+            var temp;
+            $(function () {
+                requirejs.config({
+                    paths: {
+                        automizyJsDir: '../src',
+                        automizyJs: '../src/automizy'
+                    }
+                });
+                require([
+                    "automizyJs"
+                ], function ($A) {
+                    function translate(a) {
+                        return a;
+                    }
+                    var selectSegmentInput = $A.newInput({
+                        label: 'Add to segment',
+                        help: 'Select the segments you want to add the uploaded subscribers to.',
+                        type: 'select',
+                        name: 'segments',
+                        validator: {
+                            minLength: 1,
+                            invalidValue: 0
+                        },
+                        multiselect: $A.d.defines.input.setupSelectObj,
+                        options: [
+                            [0, '--- Nothing ---'],
+                            [12, 'First Segment'],
+                            [15, 'Second Segment']
+                        ],
+                        create: function () {
+                            $A.newButton({
+                                newRow: true,
+                                text: 'Create new segment',
+                                target: this.d.$widgetInputBox,
+                                click: function () {
+                                    newSegmentDialog.draw();
+                                }
+                            });
+                        }
+                    });
+                    var segmentNameInput = $A.newInput({
+                        label: 'Segment name',
+                        help: "Segment name...",
+                        name: 'segment-name'
+                    });
+                    var newSegmentForm = $A.newForm({
+                        inputs: [
+                            segmentNameInput
+                        ]
+                    });
+                    var newSegmentDialog = $A.newDialog({
+                        title: 'Add new segment',
+                        hash: 'AddNewSegment',
+                        buttons: [
+                            {
+                                skin: 'nobox-green',
+                                text: 'Cancel',
+                                float: 'left',
+                                click: function () {
+                                    newSegmentDialog.close();
+                                }
+                            },
+                            {
+                                skin: 'simple-orange',
+                                text: 'Add segment',
+                                float: 'right',
+                                click: function (module, widget) {
+                                    $.ajax({
+                                        method: 'POST',
+                                        url: 'api.example.com/segments',
+                                        data: newSegmentForm.json(),
+                                        dataType: 'json',
+                                        complete: function (data) {
+                                            selectSegmentInput.addOptionBefore(12, segmentNameInput.val());
+                                            newSegmentDialog.close();
+                                        }
+                                    });
+                                }
+                            }
+                        ],
+                        content: newSegmentForm
+                    });
+                    var form = $A.newForm({
+                        method: "POST",
+                        enctype: 'multipart/form-data',
+                        inputs: [
+                            {
+                                label: 'Import file',
+                                help: "Select a file to upload that contains contact data that you want to import.",
+                                type: 'file',
+                                name: 'import-subscribers',
+                                accept: ['.csv', '.rar', '.zip', '.tar', '.gz']
+                            },
+                            selectSegmentInput,
+                            {
+                                label: 'Select campaigns',
+                                help: '...',
+                                type: 'select',
+                                name: 'campaigns',
+                                validator: {
+                                    minLength: 2,
+                                    maxLength: 4
+                                },
+                                multiselect: $A.d.defines.input.setupSelectSearchCheckObj,
+                                options: [
+                                    [4, 'Campaign1'],
+                                    [12, 'Campaign2'],
+                                    [15, 'Campaign3'],
+                                    [18, 'Campaign4'],
+                                    [19, 'Campaign5'],
+                                    [20, 'Campaign6']
+                                ]
+                            },
+                            {
+                                label: 'Felűlírja e he',
+                                help: "...",
+                                name: 'overrideSubscribers',
+                                type: 'checkbox'
+                            },
+                            {
+                                label: 'Email',
+                                help: "...",
+                                name: 'simpleText',
+                                validator: 'email'
+                            },
+                            {
+                                label: 'Életkor',
+                                help: "...",
+                                name: 'simpleText',
+                                validator: {
+                                    num: true,
+                                    min: 18,
+                                    max: 130
+                                },
+                                validate: function (isValid, module, $widget) {
+                                    if (!isValid) {
+                                        module.errorBox().html('Az életkor 18 és 130 év között lehet!')
+                                    }
+                                }
+                            },
+                            {
+                                label: 'Gyerekek száma',
+                                help: "...",
+                                name: 'simpleText',
+                                validator: $A.newValidator({num: true, min: 0})
+                            },
+                            {
+                                label: 'Százalékos cucc',
+                                help: "Teszt százalékos cucca",
+                                name: 'percentage',
+                                type: "slider",
+                                create: function (module, $widget) {
+
+                                }
+                            },
+                            {
+                                label: translate('After this many time from the end of the sending process, check the status? (<i>Days/Hours/Minutes</i>)'),
+                                placeholder: translate('Days'),
+                                newRow: false,
+                                name: 'conditionCheckDays',
+                                type: 'number',
+                                width: '100px'
+                            },
+                            {
+                                placeholder: translate('Hours'),
+                                newRow: false,
+                                name: 'conditionCheckHours',
+                                type: 'number',
+                                width: '100px'
+                            },
+                            {
+                                help: translate('HELP: After this many time from the end of the sending process, check the status? (<i>Days/Hours/Minutes</i>)'),
+                                placeholder: translate('Minutes'),
+                                newRow: false,
+                                name: 'conditionCheckMinutes',
+                                type: 'number',
+                                width: '100px'
+                            }
+                        ],
+                        groups: [
+                            {
+                                text: 'More 1',
+                                inputs: [
+                                    {
+                                        label: 'Import file',
+                                        help: "Select a file to upload that contains contact data that you want to import.",
+                                        type: 'file',
+                                        name: 'import-subscribers',
+                                        accept: ['.csv', '.rar', '.zip', '.tar', '.gz']
+                                    },
+                                    {
+                                        label: 'Körte',
+                                        validator: 'notEmpty'
+                                    }
+                                ]
+                            },
+                            {
+                                text: 'More 2',
+                                inputs: [
+                                    {
+                                        label: $A.translate('Meggy')
+                                    }
+                                ]
+                            }
+                        ]
+                    });
+                    var dialog = $A.newDialog({
+                        title: 'Import contacts',
+                        hash: 'ImportContacts',
+                        buttons: [
+                            {
+                                skin: 'nobox-green',
+                                text: $A.translate('Cancel'),
+                                float: 'left',
+                                click: function () {
+                                    alert('CANCEL');
+                                    dialog.hide();
+                                }
+                            },
+                            {
+                                skin: 'simple-orange',
+                                text: 'Next',
+                                float: 'right',
+                                click: function () {
+                                    var a = form.inputs();
+                                    var send = true;
+                                    for (var i in a) {
+                                        if (a[i].validate() === false)
+                                            send = false;
+                                        console.log(a[i].validator().errors());
+                                    }
+                                    if (send === true) {
+                                        alert('SAVE');
+                                        dialog.hide();
+                                    }
+                                }
+                            }
+                        ],
+                        content: form,
+                        create: function (module, $widget) {
+                            console.log('Dialog created!');
+                            console.log('this: ', this);
+                            console.log('module: ', module);
+                            console.log('$widget ', $widget);
+                        }
+                    }).draw();
+                    temp = dialog;
+                    var button = $A.newButton({
+                        click: function (){
+                            temp.open();
+                        }
+                    });
+                    button.draw();
+                });
+            });
+        </script>
+    </head>
+    <body></body>
+</html>
+

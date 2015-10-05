@@ -1,0 +1,3657 @@
+
+<div id='doc-container'>
+    <h1>Module name</h1>
+    <div class='description-label'>Description:
+        <div class="description">Descr.</div>
+    </div>
+    <section>
+        <h2 class='quick-nav'>Quick navigation <a href='#table/entry-examples'>Examples</a></h2>
+        <table class='doc-content-table'>
+            <tr>
+                <td>
+                    <h3>Options</h3>
+                    <h4>Table options</h4>
+                    <ul>
+                        <li><a href='#table/option/border'>border</a></li>
+                        <li><a href='#table/option/borderCollapse'>borderCollapse</a></li>
+                        <li><a href='#table/option/cols'>cols</a></li>
+                        <li><a href='#table/option/exportable'>exportable</a></li>
+                        <li><a href='#table/option/inlineButtons'>inlineButtons</a></li>
+                        <li><a href='#table/option/loadingCellContent'>loadingCellContent</a></li>
+                        <li><a href='#table/option/openableInlineBox'>openableInlineBox</a></li>
+                        <li><a href='#table/option/page'>page</a></li>
+                        <li><a href='#table/option/pageMax'>pageMax</a></li>
+                        <li><a href='#table/option/perPage'>perPage</a></li>
+                        <li><a href='#table/option/perPageLabel'>perPageLabel</a></li>
+                        <li><a href='#table/option/perPageList'>perPageList</a></li>
+                        <li><a href='#table/option/rows'>rows</a></li>
+                        <li><a href='#table/option/searchValue'>searchValue</a></li>
+                        <li><a href='#table/option/selectable'>selectable</a></li>
+                        <li><a href='#table/option/storeData'>storeData</a></li>
+                        <li><a href='#table/option/tableButtons'>tableButtons</a></li>
+                        <li><a href='#table/option/title'>title</a></li>
+                    </ul> 
+                    <h4>Column options</h4>
+                    <ul>
+                        <!--<li><a href='#table/option/active'>active</a></li>-->
+                        <li><a href='#table/option/colHtml'>html</a></li>
+                        <li><a href='#table/option/colText'>text</a></li>
+                    </ul>
+                    <h4>Global options</h4>
+                    <ul>
+                        <li><a href='#table/option/buttons'>buttons</a></li>
+                        <li><a href='#table/option/data'>data</a></li>
+                        <li><a href='#table/option/id'>id</a></li>
+                        <li><a href='#table/option/skin'>skin</a></li>
+                    </ul>
+                </td>
+                <td>
+                    <h3>Methods</h3>
+                    <h4>Table methods</h4>
+                    <ul>
+                        <li><a href='#table/method/addCols'>addCols</a></li>
+                        <li><a href='#table/method/addRows'>addRows</a></li>
+                        <li><a href='#table/method/deleteCol'>deleteCol</a></li>
+                        <li><a href='#table/method/deleteCols'>deleteCols</a></li>
+                        <li><a href='#table/method/deleteRow'>deleteRow</a></li>
+                        <li><a href='#table/method/deleteRows'>deleteRows</a></li>
+                        <li><a href='#table/method/getCell'>getCell</a></li>
+                        <li><a href='#table/method/getCells'>getCells</a></li>
+                        <li><a href='#table/method/$getCells'>$getCells</a></li>
+                        <li><a href='#table/method/getColByIndex'>getColByIndex</a></li>
+                        <li><a href='#table/method/getColByName'>getColByName</a></li>
+                        <li><a href='#table/method/getDomCells'>getDomCells</a></li>
+                        <li><a href='#table/method/getRowByIndex'>getRowByIndex</a></li>
+                        <li><a href='#table/method/getRowByRecordId'>getRowByRecordId</a></li>
+                        <li><a href='#table/method/loading'>loading</a></li>
+                        <li><a href='#table/method/openedId'>openedId</a></li>
+                        <li><a href='#table/method/openedRow'>openedRow</a></li>
+                        <li><a href='#table/method/rowCount'>rowCount</a></li>
+                        <li><a href='#table/method/selectedId'>selectedId</a></li>
+                        <li><a href='#table/method/selectedIds'>selectedIds</a></li>
+                        <li><a href='#table/method/selectedRow'>selectedRow</a></li>
+                        <li><a href='#table/method/selectedRows'>selectedRows</a></li>
+                        <li><a href='#table/method/setButtonsStatus'>setButtonsStatus</a></li>
+                    </ul>
+                    <h4>Row methods</h4>   
+                    <ul>
+                        <li><a href='#table/method/rowCells'>cells</a></li>  
+                        <li><a href='#table/method/row$cells'>$cells</a></li> 
+                        <li><a href='#table/method/$checkbox'>$checkbox</a></li> 
+                        <li><a href='#table/method/getCellByColName'>getCellByColName</a></li>  
+                        <li><a href='#table/method/rowDomCells'>domCells</a></li>  
+                        <li><a href='#table/method/rowIndex'>index</a></li>   
+                        <li><a href='#table/method/rowRecordId'>recordId</a></li> 
+                    </ul>
+                    <h4>Column methods</h4> 
+                    <ul>
+                        <li><a href='#table/method/colCells'>cells</a></li>  
+                        <li><a href='#table/method/col$cells'>$cells</a></li>  
+                        <li><a href='#table/method/colDomCells'>domCells</a></li>  
+                        <li><a href='#table/method/colIndex'>index</a></li>  
+                        <li><a href='#table/method/colName'>name</a></li>  
+                    </ul>                    
+                    <h4>Cell methods</h4>
+                    <ul>
+                        <li><a href='#table/method/col'>col</a></li>
+                        <li><a href='#table/method/cellHtml'>html</a></li>
+                        <li><a href='#table/method/index'>index</a></li>
+                        <li><a href='#table/method/recordId'>recordId</a></li>    
+                        <li><a href='#table/method/row'>row</a></li>
+                        <li><a href='#table/method/cellText'>text</a></li>                  
+                    </ul>
+                    <h4>Global methods</h4>
+                    <ul>         
+                        <li><a href='#table/method/table'>table</a></li>               
+                        <li><a href='#table/method/addButton'>addButton</a></li>
+                        <li><a href='#table/method/draw'>draw</a></li>
+                        <li><a href='#table/method/drawTo'>drawTo</a></li>
+                        <li><a href='#table/method/hide'>hide</a></li>
+                        <li><a href='#table/method/remove'>remove</a></li>
+                        <li><a href='#table/method/removeButton'>removeButton</a></li>
+                        <li><a href='#table/method/show'>show</a></li>
+                        <li><a href='#table/method/widget'>widget</a></li>
+                    </ul>
+                </td>
+                <td>
+                    <h3>Events</h3>
+                    <h4>Table events</h4>
+                    <ul>
+                        <li><a href='#table/event/beforeOpenInlineBox'>beforeOpenInlineBox</a></li>
+                        <li><a href='#table/event/onExport'>onExport</a></li>
+                        <li><a href='#table/event/onHideCol'>onHideCol</a></li>
+                        <li><a href='#table/event/onPageFirst'>onPageFirst</a></li>
+                        <li><a href='#table/event/onPageLast'>onPageLast</a></li>
+                        <li><a href='#table/event/onPageNext'>onPageNext</a></li>
+                        <li><a href='#table/event/onPagePrev'>onPagePrev</a></li>
+                        <li><a href='#table/event/onPerPage'>onPerPage</a></li>
+                        <li><a href='#table/event/onShowCol'>onShowCol</a></li>
+                        <li><a href='#table/event/onSort'>onSort</a></li>
+                    </ul>
+                    <h4>Global events</h4>
+                    <ul>
+                        <li><a href='#table/event/create'>create</a></li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+    </section>
+
+    <section>
+        <h2>Options</h2>
+        <h3>Table options</h3>
+        <article id='table/option/border'>
+            <h4 class='option-name'>border</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>'none'</div>
+            </div>
+            <p class='option-use'>
+                Use this function to set the border of the table using css parameters.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the table widget with the <code>border</code><br> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        border: '1px solid #aaaaaa' //setting the border
+}).draw();
+            </pre>
+            Initialize the table widget with the <code>border</code><br> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	]
+}).border('1px solid #aaaaaa').draw(); //setting the border
+            </pre>
+            <br>Get or set the <code>border</code><br> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var table = $A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	]
+}).draw();
+
+//Setter
+table.border('1px solid #aaaaaa'); //returns table
+
+//Getter
+alert('border: '+table.border()); //returns value of border
+            </pre>
+        </article>
+
+        <article id='table/option/borderCollapse'>
+            <h4 class='option-name'>borderCollapse</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Boolean</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>true</div>
+            </div>
+            <p class='option-use'>
+                Use this function to enable or disable border collapsing in the table.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the table widget with the <code>borderCollapse</code><br> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        border: '1px solid #aaaaaa',
+        borderCollapse: false  //disabling borderCollapse
+}).draw();
+            </pre>
+            Initialize the table widget with the <code>borderCollapse</code><br> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        border: '1px solid #aaaaaa'
+}).borderCollapse(false).draw();
+            </pre>
+            <br>Get or set the <code>borderCollapse</code><br> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+    cols:[ 
+        {name: 'name', text:'Campaign name'},
+        {name: 'subject', text: 'Campaign subject'}
+    ],
+    border: '1px solid #aaaaaa'
+}).draw();
+
+//Setter
+table.borderCollapse(false); //returns table
+
+//Getter
+alert('borderCollapse: '+table.borderCollapse()); //returns value of borderCollapse
+            </pre>
+        </article>
+        
+        
+        <article id='table/option/border'>
+            <h4 class='option-name'>border</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>'none'</div>
+            </div>
+            <p class='option-use'>
+                Use this function to set the border of the table using css parameters.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the table widget with the <code>border</code><br> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        border: '1px solid #aaaaaa' //setting the border
+}).draw();
+            </pre>
+            Initialize the table widget with the <code>border</code><br> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	]
+}).border('1px solid #aaaaaa').draw(); //setting the border
+            </pre>
+            <br>Get or set the <code>border</code><br> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var table = $A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	]
+}).draw();
+
+//Setter
+table.border('1px solid #aaaaaa'); //returns table
+
+//Getter
+alert('border: '+table.border()); //returns value of border
+            </pre>
+        </article>
+
+        <article id='table/option/cols'>
+            <h4 class='option-name'>cols</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Array</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>[]</div>
+            </div>
+            <p class='option-use'>
+                Use this function to set the colums of the table.<br>
+                If invoked without parameter returns the columns of the table, otherwise returns the table.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the table widget with the <code>cols</code><br> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	]
+}).draw();
+            </pre>
+            Initialize the table widget with the <code>cols</code><br> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newTable().draw().cols([{name: 'name', text:'Campaign name'},{name: 'subject', text: 'Campaign subject'}]);
+            </pre>
+            <br>Get or set the <code>cols</code><br> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable().draw();
+
+//Setter
+table.cols([{name: 'name', text:'Campaign name'},{name: 'subject', text: 'Campaign subject'}]); //returns table
+
+//Getter
+table.cols(); //returns the cols array
+alert('cols: '+table.cols());
+            </pre>
+        </article>
+
+        <article id='table/option/exportable'>
+            <h4 class='option-name'>exportable</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Boolean</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>false</div>
+            </div>
+            <p class='option-use'>
+                If you set this option true, a little export icon wil appear next to the table.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the table widget with the <code>exportable</code><br> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        exportable: true
+}).draw();
+            </pre>
+            Initialize the table widget with the <code>exportable</code><br> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newTable().draw().cols([{name: 'name', text:'Campaign name'},{name: 'subject', text: 'Campaign subject'}]).exportable(true);
+            </pre>
+            <br>Get or set the <code>exportable</code><br> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable().cols([{name: 'name', text:'Campaign name'},{name: 'subject', text: 'Campaign subject'}]).draw();
+
+//Setter
+table.exportable(true); //returns table
+
+//Getter
+table.exportable(); //returns value of exportable
+alert('exportable: '+table.exportable());
+            </pre>
+        </article>
+
+        <article id='table/option/inlineButtons'>
+            <h4 class='option-name'>inlineButtons</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Boolean</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>true</div>
+            </div>
+            <p class='option-use'>
+                Use this function to set enable or disable the openable inline button box of the table.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the table widget with the <code>inlineButtons</code><br> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        rows:[
+            {
+                recordId: 1,
+                values:{
+                    name: 'Campaign1',
+                    subject: 'test1'
+                }
+            }
+        ],
+        inlineButtons:[
+            {text: 'Edit'},
+            {text: 'Delete'}
+        ]
+}).draw();
+            </pre>
+            Initialize the table widget with the <code>inlineButtons</code><br> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        rows:[
+            {
+                recordId: 1,
+                values:{
+                    name: 'Campaign1',
+                    subject: 'test1'
+                }
+            }
+        ]
+}).draw().inlineButtons([{text: 'Edit'},{text: 'Delete'}]);
+            </pre>
+            <br>Get or set the <code>inlineButtons</code><br> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        rows:[
+            {
+                recordId: 1,
+                values:{
+                    name: 'Campaign1',
+                    subject: 'test1'
+                }
+            }
+        ]
+}).draw();
+
+//Setter
+table.inlineButtons([{text: 'Edit'},{text: 'Delete'}]); //returns table
+
+//Getter
+alert('inlineButtons '+table.inlineButtons()); // returns value of inlineButtons
+            </pre>
+        </article>
+        
+        <article id='table/method/loadingCellContent'>
+            <h4 class='method-name'>loadingCellContent</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Table || value</div>
+            </div>
+            <p class='method-use'>
+                <!-- Beállítja a töltés alatt lévő táblázat sorának tartalmát -->
+            </p>
+
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+
+            </pre>
+        </article>
+        
+        <article id='table/option/loadingCellContent'>
+            <h4 class='option-name'>loadingCellContent</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>'&lt;b>Loading...&lt;/b>'</div>
+            </div>
+            <p class='option-use'>
+                Use this function to set the text you want to show while the cells are loading.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the table widget with the <code>loadingCellContent</code><br> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        loadingCellContent: '&lt;b>Loading...&lt;/b>'
+}).draw().loading();
+            </pre>
+            Initialize the table widget with the <code>loadingCellContent</code><br> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	]
+}).draw().loadingCellContent('&lt;b>Loading...&lt;/b>').loading();
+            </pre>
+            <br>Get or set the <code>loadingCellContent</code><br> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	]
+}).draw().loading();
+
+//Setter
+table.loadingCellContent('&lt;b>Loading...&lt;/b>'); //returns table
+
+//Getter
+alert('loadingCellContent: '+table.loadingCellContent()); // returns value of loadingCellContent
+            </pre>
+        </article>
+        
+        <article id='table/option/page'>
+            <h4 class='option-name'>page</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Integer</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>1</div>
+            </div>
+            <p class='option-use'>
+                Use this function to set the number of the actual page showed in the right top corner.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the table widget with the <code>page</code><br> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        page: 2
+}).draw();
+            </pre>
+            Initialize the table widget with the <code>page</code><br> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	]
+}).draw().page(2);
+            </pre>
+            <br>Get or set the <code>page</code><br> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	]
+}).draw();
+
+//Setter
+table.page(2); //returns table
+
+//Getter
+alert('page: '+table.page()); // returns value of page
+            </pre>
+        </article>
+        
+        <article id='table/option/openableInlineBox'>
+            <h4 class='option-name'>openableInlineBox</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Boolean</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>true</div>
+            </div>
+            <p class='option-use'>
+                Use this function to set enable or disable the openable inline button box of the table.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the table widget with the <code>openableInlineBox</code><br> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        openableInlineBox: false
+}).draw();
+            </pre>
+            Initialize the table widget with the <code>openableInlineBox</code><br> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	]
+}).draw().openableInlineBox(false);
+            </pre>
+            <br>Get or set the <code>openableInlineBox</code><br> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	]
+}).draw();
+
+//Setter
+table.openableInlineBox(false); //returns table
+
+//Getter
+alert('openableInlineBox: '+table.openableInlineBox()); // returns value of openableInlineBox
+            </pre>
+        </article>
+
+        <article id='table/option/pageMax'>
+            <h4 class='option-name'>pageMax</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Integer</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>1</div>
+            </div>
+            <p class='option-use'>
+                Use this function to set the number of all pages showed in the right top corner.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the table widget with the <code>pageMax</code><br> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        pageMax: 5
+}).draw();
+            </pre>
+            Initialize the table widget with the <code>pageMax</code><br> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	]
+}).draw().pageMax(5);
+            </pre>
+            <br>Get or set the <code>pageMax</code><br> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	]
+}).draw();
+
+//Setter
+table.pageMax(5) // returns table
+
+//Getter
+alert('pageMax: '+table.pageMax()); //returns value of pageMax
+
+            </pre>
+        </article>
+
+
+        <article id='table/option/perPage'>
+            <h4 class='option-name'>perPage</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Integer</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>10</div>
+            </div>
+            <p class='option-use'>
+                Use this function to set the maximum number of rows appearon on a single page.<br>
+                Only values from the perPageList are accepted.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the table widget with the <code>perPage</code><br> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        perPage: 100
+}).draw();
+            </pre>
+            Initialize the table widget with the <code>perPage</code><br> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	]
+}).draw().perPage(100);
+            </pre>
+            <br>Get or set the <code>perPage</code><br> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	]
+}).draw();
+
+//Setter
+table.perPage(100); //returns table
+
+//Getter
+alert('perPage: '+table.perPage()); // returns value of perPage
+            </pre>
+        </article>
+
+        <article id='table/option/perPageLabel'>
+            <h4 class='option-name'>perPageLabel</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>'Results per page'</div>
+            </div>
+            <p class='option-use'>
+                Use this function to set the label next to the perPage selector.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the table widget with the <code>perPageLabel</code><br> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        perPageLabel: 'Rows per page:'
+}).draw();
+            </pre>
+            Initialize the table widget with the <code>perPageLabel</code><br> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	]
+}).draw().perPageLabel('Rows per page');
+            </pre>
+            <br>Get or set the <code>perPageLabel</code><br> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var table = $A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	]
+}).draw();
+
+//Setter
+table.perPageLabel('Rows per page'); //returns table
+
+//Getter
+alert('perPageLabel: '+table.perPageLabel()); //returns value of perPageLabel
+            </pre>
+        </article>
+
+        <article id='table/option/perPageList'>
+            <h4 class='option-name'>perPageList</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Array</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>[5, 10, 50, 100, 1000]</div>
+            </div>
+            <p class='option-use'>
+                The array of numbers which will appear in hte perPage selector.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the table widget with the <code>perPageList</code><br> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        perPageList: [1, 5, 10, 20, 25]
+}).draw();
+            </pre>
+            Initialize the table widget with the <code>perPageList</code><br> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	]
+}).perPageList([1, 5, 10, 20, 25]).draw();
+            </pre>
+            <br>Get or set the <code>perPageList</code><br> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	]
+}).draw();
+
+//Setter
+table.perPageList([1, 5, 10, 20, 25]); //returns table
+
+//Getter
+alert('perPageList: '+table.perPageList()); //return the array
+            </pre>
+        </article>
+
+        <article id='table/option/rows'>
+            <h4 class='option-name'>rows</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Array</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>[]</div>
+            </div>
+            <p class='option-use'>
+                Use this function to set the rows of the table.<br>
+                If invoked without parameter returns the rows of the table, otherwise returns the table.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the table widget with the <code>rows</code><br> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        rows:[
+            {
+                recordId: 1, // The id of the new row
+                values:{
+                    name: 'Campaign1',
+                    subject: 'test1'
+                }
+            },
+            {
+                recordId: 2,
+                values:{
+                    name: 'Campaign2',
+                    subject: 'test2'
+                }
+            }
+        ]        
+}).draw();
+            </pre>
+            Initialize the table widget with the <code>rows</code><br> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	]
+}).draw().rows([{recordId:1, values:{name: 'Campaign1',subject: 'test1'}},{recordId:2, values:{name: 'Campaign2',subject: 'test2'}}]);
+            </pre>
+            <br>Get or set the <code>rows</code><br> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	]
+}).draw();
+
+//Setter
+table.rows([{recordId:1, values:{name: 'Campaign1',subject: 'test1'}},{recordId:2, values:{name: 'Campaign2',subject: 'test2'}}]); //returns table
+
+//Getter
+table.rows(); //returns the cols array
+alert('rows: '+table.rows());
+            </pre>
+        </article>
+        
+        <article id='table/option/selectable'>
+            <h4 class='option-name'>selectable</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Boolean</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>false</div>
+            </div>
+            <p class='option-use'>
+                Use this function to add checkboxes before the first column, which are used to select rows.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the table widget with the <code>selectable</code><br> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        selectable: true
+}).draw();
+            </pre>
+            Initialize the table widget with the <code>selectable</code><br> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	]
+}).draw().selectable(true);
+            </pre>
+            <br>Get or set the <code>selectable</code><br> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	]
+}).draw();
+
+//Setter
+table.selectable(true); //returns table
+
+//Getter
+alert('selectable: '+table.selectable()); //returns value of selectable
+            </pre>
+        </article>
+        
+        <article id='table/option/storeData'>
+            <h4 class='option-name'>storeData</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Boolean</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>false</div>
+            </div>
+            <p class='option-use'>
+                Use this option if you want to store the data of the cells. Next time you open the browser the table will remember the data.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the table widget with the <code>storeData</code><br> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        storeData: true
+}).draw();
+            </pre>
+            Initialize the table widget with the <code>storeData</code><br> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	]
+}).draw().storeData(true);
+            </pre>
+            <br>Get or set the <code>storeData</code><br> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	]
+}).draw();
+
+//Setter
+table.storeData(true); //returns table
+
+//Getter
+alert('storeData: '+table.storeData()); //returns value of storeData
+            </pre>
+        </article>
+        
+        <article id='table/option/searchValue'>
+            <h4 class='option-name'>searchValue</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>""</div>
+            </div>
+            <p class='option-use'>
+                Use this function to set the string in the table search input.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the table widget with the <code>searchValue</code><br> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        searchValue: 'Search this!'
+}).draw();
+            </pre>
+            Initialize the table widget with the <code>selectable</code><br> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	]
+}).draw().searchValue('Search this!');
+            </pre>
+            <br>Get or set the <code>searchValue</code><br> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	]
+}).draw();
+
+//Setter
+table.searchValue('Search this!'); //returns table
+
+//Getter
+alert('searchValue: '+table.searchValue()); //returns value of searchValue
+            </pre>
+        </article>
+
+        <article id='table/option/tableButtons'>
+            <h4 class='option-name'>tableButtons</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Array</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>[]</div>
+            </div>
+            <p class='option-use'>
+                Use this option to set the array of buttons which appear above the table.<br>
+                These buttons can have varios options, shown below in the examples.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the table widget with the <code>tableButtons</code><br> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],        
+        rows:[
+            {
+                values:{
+                    name:'Campaign1',
+                    subject:'test'
+                }
+            },
+            {
+                values:{
+                    name:'Campaign2',
+                    subject:'test2'
+                }
+            }
+        ],
+        //You can set the table buttons by defining the buttons array in the constructor object
+        buttons:[
+            {
+                text: 'New campaign',
+                skin: 'simple-orange' //Setting the automizy orange skin
+            },
+            {
+                text: 'Edit campaign',
+                condition: 'select-one', //select-one condition makes the button clickable only if one row is selected
+                disabled:true //the button will be disabled by default
+            },
+            {
+                text: 'Delete campaigns',
+                condition: 'select-more-than-zero', //select-more-than-zero condition makes the button clickable if one or more rows are selected
+                disabled:true //the button will be disabled by default
+            }
+        ],
+        selectable: true //To use the conditions we have to make the table rows selectable
+}).draw();
+            </pre>
+            Initialize the table widget with the <code>tableButtons</code><br> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+//You can also set the buttons after the table is initialized by using the tableButtons() method.
+$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],        
+        rows:[
+            {
+                values:{
+                    name:'Campaign1',
+                    subject:'test'
+                }
+            },
+            {
+                values:{
+                    name:'Campaign2',
+                    subject:'test2'
+                }
+            }
+        ]
+}).tableButtons([
+    {
+        text: 'New campaign',
+        skin: 'simple-orange' //Setting the automizy orange skin
+    },
+    {
+        text: 'Edit campaign',
+        condition: 'select-one', //select-one condition makes the button clickable only if one row is selected
+        disabled:true //the button will be disabled by default
+    },
+    {
+        text: 'Delete campaigns',
+        condition: 'select-more-than-zero', //select-more-than-zero condition makes the button clickable if one or more rows are selected
+        disabled:true //the button will be disabled by default
+    }
+]).draw();
+            </pre>
+            <br>Get or set the <code>tableButtons</code><br> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var table = $A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],        
+        rows:[
+            {
+                values:{
+                    name:'Campaign1',
+                    subject:'test'
+                }
+            },
+            {
+                values:{
+                    name:'Campaign2',
+                    subject:'test2'
+                }
+            }
+        ]
+});
+
+//Setter
+table.tableButtons([
+    {
+        text: 'New campaign',
+        skin: 'simple-orange' //Setting the automizy orange skin
+    },
+    {
+        text: 'Edit campaign',
+        condition: 'select-one', //select-one condition makes the button clickable only if one row is selected
+        disabled:true //the button will be disabled by default
+    },
+    {
+        text: 'Delete campaigns',
+        condition: 'select-more-than-zero', //select-more-than-zero condition makes the button clickable if one or more rows are selected
+        disabled:true //the button will be disabled by default
+    }
+]); //return table
+
+//Getter
+table.tableButtons(); //return the buttons array
+alert('tableButtons: '+JSON.stringify(table.tableButtons()));
+            </pre>
+        </article>
+
+        <article id='table/option/title' class='last'>
+            <h4 class='option-name'>title</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>''</div>
+            </div>
+            <p class='option-use'>
+                Use this option to set the title of the table.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the table widget with the <code>title</code><br> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        title: 'Newsletters'
+}).draw();
+            </pre>
+            Initialize the table widget with the <code>title</code><br> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	]
+}).draw().title('Newsletters');
+            </pre>
+            <br>Get or set the <code>title</code><br> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var table = $A.newTable({
+    cols:[ 
+        {name: 'name', text:'Campaign name'},
+        {name: 'subject', text: 'Campaign subject'}
+    ]
+}).draw();
+
+//Setter
+table.title('Newsletters'); //returns table
+
+//Getter
+alert('title: '+table.title()); //returns table
+            </pre>
+        </article>
+
+        <h3>Column options</h3>
+        <!--
+        <article id='table/option/active'>
+            <h4 class='option-name'>active</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Boolean</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>true</div>
+            </div>
+            <p class='option-use'>
+                Use this option to set a column visible or unvisible.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the table widget with the <code>active</code><br> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {
+                name: 'subject',
+                text: 'Campaign subject',
+                active: false
+            }
+	]
+}).draw();
+            </pre>
+            Initialize the table widget with the <code>active</code><br> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {
+                name: 'subject',
+                text: 'Campaign subject',
+                active: false
+            }
+	]
+}).draw().getColByIndex(2).active(false);
+            </pre>
+            <br>Get or set the <code>active</code><br> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+Give some examples here!
+            </pre>
+        </article>
+-->
+        <article id='table/option/colHtml'>
+            <h4 class='option-name'>html</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>''</div>
+            </div>
+            <p class='option-use'>
+                Use this function to get or set the html of the given column's header.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the table widget with the <code>html</code><br> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newTable({
+	cols:[ 
+            {
+                name: 'name',
+                text:'Campaign name'
+            },
+            {
+                name: 'subject',
+                text: 'Campaign subject',
+                html: '&lt;div>Subject&lt;/div>' //This way the html will be inserted after the name.
+            }
+	]
+}).draw();
+            </pre>
+            Initialize the table widget with the <code>html</code><br> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newTable({
+	cols:[ 
+            {
+                name: 'name',
+                text:'Campaign name'
+            },
+            {
+                name: 'subject',
+                text: 'Campaign subject'
+            }
+	]
+}).draw().getColByIndex(1).html('&lt;div>Subject&lt;/div>'); //Getting the column then setting the html
+                                                            //This way the column name will be replaced by the html
+            </pre>
+            <br>Get or set the <code>html</code><br> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var table =$A.newTable({
+	cols:[ 
+            {
+                name: 'name',
+                text:'Campaign name'
+            },
+            {
+                name: 'subject',
+                text: 'Campaign subject'
+            }
+	]
+}).draw();
+var col=table.getColByIndex(1);
+
+//Setter
+col.html('&lt;div>Subject&lt;/div>'); //returns col
+
+//Getter
+alert('html: '+col.html()); //returns value of html
+            </pre>
+        </article>
+        <article id='table/option/colText' class='last'>
+            <h4 class='option-name'>text</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>''</div>
+            </div>
+            <p class='option-use'>
+                Use this function to get or set the text of the given column's header.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the table widget with the <code>text</code><br> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newTable({
+	cols:[ 
+            {   name: 'name',
+                text:'Campaign name'
+            },
+            {
+                name: 'subject',
+                text: 'Campaign subject'
+            }
+	]
+}).draw();
+            </pre>
+            Initialize the table widget with the <code>text</code><br> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newTable({
+	cols:[ 
+            {
+                name: 'name',
+                text:'Campaign name'
+            },
+            {
+                name: 'subject',
+            }
+	]
+}).draw().getColByIndex(1).text('Campaign subject');
+            </pre>
+            <br>Get or set the <code>text</code><br> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var col=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'}
+	]
+}).draw().getColByIndex(1);
+
+//Setter
+col.text('Campaign subject'); //returns col
+
+//Getter
+alert('text: '+col.text()); //returns value of text
+            </pre>
+        </article>
+
+        <h3>Global options</h3>
+
+        <article id='table/option/buttons'></article>
+        <article id='table/option/data'></article>
+        <article id='table/option/id'></article>
+        <article id='table/option/skin' class='last'></article>
+    </section>
+    <section>
+        <h2>Methods</h2>
+        <h3>Table methods</h3>
+
+        <article id='table/method/addCols'>
+            <h4 class='method-name'>addCols(arr)</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Table</div>
+            </div>
+            <p class='method-use'>
+                Use this method to add columns to your table.
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        arr
+                    </div>
+                    Type: <code>Array</code><br>
+                    The array containing the objects which defines the columns you want to add.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[
+            {name: 'name', text:'Campaign name'}
+        ]
+}).draw();
+
+//Adding new columns
+table.addCols([
+    {
+        name: 'type',
+        text: 'Type',
+        visibility:false    //This makes the column hidden
+    },
+    {
+        name: 'createDate',
+        text: 'Created'
+    }
+]);
+            </pre>
+        </article>
+
+        <article id='table/method/addRows'>
+            <h4 class='method-name'>addRows(arr)</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Table</div>
+            </div>
+            <p class='method-use'>
+                Use this method to add new rows to your table.
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        arr
+                    </div>
+                    Type: <code>Array | Object</code><br>
+                    The new row object, or the array of new row objects you want to add.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject',text: 'Subject'}
+	]
+}).draw();
+
+//Adding a new row using object as parameter
+table.addRows({
+    recordId: 1, // The id of the new row
+    values:{
+        name: 'Campaign1',
+        subject: 'test1'
+    }
+})
+
+//Adding new rows using array as parameter
+table.addRows([
+    {
+        recordId: 2,
+        values:{
+            name: 'Campaign2',
+            subject: 'test2'
+        }
+    },
+    {
+        recordId: 3,
+        values:{
+            name: 'Campaign3',
+            subject: 'test3'
+        }
+    }
+]);
+            </pre>
+        </article>
+
+        <article id='table/method/deleteCol'>
+            <h4 class='method-name'>deleteCol(index)</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Table</div>
+            </div>
+            <p class='method-use'>
+                Use this function to delete a column by the given index.<br>
+                Please note that column indexes start at 0.
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        index
+                    </div>
+                    Type: <code>Integer</code><br>
+                    The index of the column you want to delete.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject',text: 'Subject'}
+	]
+}).draw();
+
+//Deleting the first column
+table.deleteCol(0); //returns table
+            </pre>
+        </article>
+
+        <article id='table/method/deleteCols'>
+            <h4 class='method-name'>deleteCols(indexes)</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Table</div>
+            </div>
+            <p class='method-use'>
+                Use this function to delete multiple columns.
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        indexes
+                    </div>
+                    Type: <code>Array</code><br>
+                    The array of column indexes you want to remove.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject',text: 'Subject'},
+            {name: 'date',text: 'Date'}
+	]
+}).draw();
+
+//Deleting the first two columns
+table.deleteCols([0,1]); //returns table
+            </pre>
+        </article>
+
+        <article id='table/method/deleteRow'>
+            <h4 class='method-name'>deleteRow(index)</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Table</div>
+            </div>
+            <p class='method-use'>
+                Use this function to delete a row by the given index.
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        index
+                    </div>
+                    Type: <code>Integer</code><br>
+                    The index of the row you want to delete.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        rows:[
+            {
+                recordId: 1,
+                values:{
+                    name: 'Campaign1',
+                    subject: 'test1'
+                }
+            },
+            {
+                recordId: 2,
+                values:{
+                    name: 'Campaign2',
+                    subject: 'test2'
+                }
+            }
+        ]        
+}).draw();
+
+//Deleting the first row
+table.deleteRow(1); //returns table
+            </pre>
+        </article>
+
+        <article id='table/method/deleteRows'>
+            <h4 class='method-name'>deleteRows(indexes)</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Table</div>
+            </div>
+            <p class='method-use'>
+                Use this function to delete multiple rows by the given indexes.<br>
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        indexes
+                    </div>
+                    Type: <code>Array</code><br>
+                    The array of indexes of the rows you want to delete.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        rows:[
+            {
+                recordId: 1,
+                values:{
+                    name: 'Campaign1',
+                    subject: 'test1'
+                }
+            },
+            {
+                recordId: 2,
+                values:{
+                    name: 'Campaign2',
+                    subject: 'test2'
+                }
+            },
+            {
+                recordId: 3,
+                values:{
+                    name: 'Campaign3',
+                    subject: 'test3'
+                }
+            }
+        ]        
+}).draw();
+
+//Deleting the first two rows
+table.deleteRows([1,2]); //returns table
+            </pre>
+        </article>
+
+        <article id='table/method/getCell'>
+            <h4 class='method-name'>getCell(colIndex, rowIndex</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>tableCell</div>
+            </div>
+            <p class='method-use'>
+                Use this method to get a table cell by the given indexes.
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        colIndex
+                    </div>
+                    Type: <code>Integer</code><br>
+                    The column index of the cell you want to get.
+                </li>
+                
+                <li>
+                    <div class='method-parameter'>
+                        rowIndex
+                    </div>
+                    Type: <code>Integer</code><br>
+                    The row index of the cell you want to get.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        rows:[
+            {
+                recordId: 1,
+                values:{
+                    name: 'Campaign1',
+                    subject: 'test1'
+                }
+            },
+            {
+                recordId: 2,
+                values:{
+                    name: 'Campaign2',
+                    subject: 'test2'
+                }
+            },
+            {
+                recordId: 3,
+                values:{
+                    name: 'Campaign3',
+                    subject: 'test3'
+                }
+            }
+        ]        
+}).draw();
+
+//Getting the third cell of the second column
+console.log(table.getCell(2,3)); //returns tableCell
+            </pre>
+        </article>
+
+        <article id='table/method/getCells'>
+            <h4 class='method-name'>getCells(type)</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Array</div>
+            </div>
+            <p class='method-use'>
+                Use this function to get all cells of the table.
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        type
+                    </div>
+                    Type: <code>String</code><br>
+                    Accepted values:<br>
+                    <ul>
+                        <li>
+                            <code>Automizy || ''</code>: This is the default, if invoket without parameter.<br>
+                            The function will return the cells as Automizy tableCell objects.
+                        </li>
+                        <li>
+                            <code>jQuery</code>: The function will return the cells as jQuery objects.
+                        </li>
+                        <li>
+                            <code>DOM</code>: The function will return the cells as DOM objects.
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        rows:[
+            {
+                recordId: 1,
+                values:{
+                    name: 'Campaign1',
+                    subject: 'test1'
+                }
+            },
+            {
+                recordId: 2,
+                values:{
+                    name: 'Campaign2',
+                    subject: 'test2'
+                }
+            },
+        ]        
+}).draw();
+
+//Getting the cells
+console.log(table.getCells()); //returns cells as array of Automizy tableCell objects.
+console.log(table.getCells('jQuery')); //returns cells as array of jQuery objects.
+console.log(table.getCells('DOM')); //returns cells as array of DOM objects.
+            </pre>
+        </article>
+
+        <article id='table/method/$getCells'>
+            <h4 class='method-name'>$getCells</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Array</div>
+            </div>
+            <p class='method-use'>
+                Use this method to get the cells of the table as jQuery elements.<br>
+                Please note that this fuction does the same as the getCells('jQuery') method.
+            </p>  
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        rows:[
+            {
+                recordId: 1,
+                values:{
+                    name: 'Campaign1',
+                    subject: 'test1'
+                }
+            },
+            {
+                recordId: 2,
+                values:{
+                    name: 'Campaign2',
+                    subject: 'test2'
+                }
+            },
+        ]        
+}).draw();
+
+//Getting the cells ass jQuery objects
+console.log(table.$getCells()); //returns cells as array of jQuery objects.
+            </pre>
+        </article>
+
+        <article id='table/method/getColByIndex'>
+            <h4 class='method-name'>getColByIndex</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>tableCol</div>
+            </div>
+            <p class='method-use'>
+                Use this function to get a column of the tably by the given index.
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        index
+                    </div>
+                    Type: <code>Integer</code>
+                    The index of the column you want to get.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        rows:[
+            {
+                recordId: 1,
+                values:{
+                    name: 'Campaign1',
+                    subject: 'test1'
+                }
+            }
+        ],
+        selectable: true; //the checkbox column will have the index 0
+}).draw();
+
+//Getting the first column of the table
+console.log(table.getColByIndex(1));
+            </pre>
+        </article>
+
+        <article id='table/method/getColByName'>
+            <h4 class='method-name'>getColByName</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>tableCol(name)</div>
+            </div>
+            <p class='method-use'>
+                Use this method to get a table column by its name.
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        name
+                    </div>
+                    Type: <code>String</code>
+                    The name of the column you want to get.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        rows:[
+            {
+                recordId: 1,
+                values:{
+                    name: 'Campaign1',
+                    subject: 'test1'
+                }
+            }
+        ],
+        selectable: true; //the checkbox column will have the index 0
+}).draw();
+
+//Getting the first column of the table
+console.log(table.getColByNyme('subject'));
+            </pre>
+        </article>
+
+        <article id='table/method/getDomCells'>
+            <h4 class='method-name'>getDomCells</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>DOM elements</div>
+            </div>
+            <p class='method-use'>
+                Use this method to get the cells of the table as DOM elements.<br>
+                Please note that this function does the same as the getCells('DOM') function.
+            </p>  
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        rows:[
+            {
+                recordId: 1,
+                values:{
+                    name: 'Campaign1',
+                    subject: 'test1'
+                }
+            },
+            {
+                recordId: 2,
+                values:{
+                    name: 'Campaign2',
+                    subject: 'test2'
+                }
+            },
+        ]        
+}).draw();
+
+//Getting the cells as DOM elements
+console.log(table.getDomCells());
+            </pre>
+        </article>
+
+        <article id='table/method/getRowByIndex'>
+            <h4 class='method-name'>getRowByIndex</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>tableRow</div>
+            </div>
+            <p class='method-use'>
+                Use this method to get a row by its index.
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        index
+                    </div>
+                    Type: <code>Integer</code>
+                    The index of the row you want to get.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        rows:[
+            {
+                recordId: 1,
+                values:{
+                    name: 'Campaign1',
+                    subject: 'test1'
+                }
+            },
+            {
+                recordId: 2,
+                values:{
+                    name: 'Campaign2',
+                    subject: 'test2'
+                }
+            },
+        ]        
+}).draw();
+
+//Getting the second row
+console.log(table.getRowByIndex(2));
+            </pre>
+        </article>
+
+        <article id='table/method/getRowByRecordId'>
+            <h4 class='method-name'>getRowByRecordId(id)</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>tableRow</div>
+            </div>
+            <p class='method-use'>
+                Use this function to get a row by its recordID.
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        id
+                    </div>
+                    Type: <code>Integer</code>
+                    The recordId of the row you want to get.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        rows:[
+            {
+                recordId: 1,
+                values:{
+                    name: 'Campaign1',
+                    subject: 'test1'
+                }
+            },
+            {
+                recordId: 2,
+                values:{
+                    name: 'Campaign2',
+                    subject: 'test2'
+                }
+            },
+        ]        
+}).draw();
+
+//Getting the row with recordId 2
+console.log(table.getRowByRecordId(2));
+            </pre>
+        </article>
+
+        <article id='table/method/loading'>
+            <h4 class='method-name'>loading</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Table</div>
+            </div>
+            <p class='method-use'>
+                Use this function to set the table in 'Loading' state. If you invoke this function the rows will be deleted, and the <code><a href='#table/option/loadingCellContent'>loadingCellContent</a></code> text will be shown.
+            </p>
+
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        loadingCellContent: '&lt;b>Loading...&lt;/b>'
+}).draw().loading();
+            </pre>
+        </article>
+
+        <article id='table/method/openedId'>
+            <h4 class='method-name'>openedId</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Integer</div>
+            </div>
+            <p class='method-use'>
+                Use this method to get the id of the opened row.<br>
+                If none of the rows is opened, the function will return false.
+            </p>     
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        rows:[
+            {
+                recordId: 1,
+                values:{
+                    name: 'Campaign1',
+                    subject: 'test1'
+                }
+            },
+            {
+                recordId: 2,
+                values:{
+                    name: 'Campaign2',
+                    subject: 'test2'
+                }
+            },
+        ]        
+}).draw();
+
+//Getting the opened row's id
+table.openedId();
+            </pre>
+        </article>
+
+        <article id='table/method/openedRow'>
+            <h4 class='method-name'>openedRow</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>tableRow</div>
+            </div>
+            <p class='method-use'>
+                Use this method to get the opened row if there is one.<br>
+                If none of the rows is opened, the method will return false.
+            </p>  
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        rows:[
+            {
+                recordId: 1,
+                values:{
+                    name: 'Campaign1',
+                    subject: 'test1'
+                }
+            },
+            {
+                recordId: 2,
+                values:{
+                    name: 'Campaign2',
+                    subject: 'test2'
+                }
+            }
+        ]        
+}).draw();
+
+//Getting the opened row's id
+table.openedId();
+            </pre>
+        </article>
+
+        <article id='table/method/rowCount'>
+            <h4 class='method-name'>rowCount</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Boolean</div>
+            </div>
+            <p class='method-use'>
+                Use this method to get the number of rows in your table.
+            </p>               
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        rows:[
+            {
+                recordId: 1,
+                values:{
+                    name: 'Campaign1',
+                    subject: 'test1'
+                }
+            },
+            {
+                recordId: 2,
+                values:{
+                    name: 'Campaign2',
+                    subject: 'test2'
+                }
+            }
+        ]        
+}).draw();
+
+alert('rowCount: '+table.rowCount());
+            </pre>
+        </article>
+
+        <article id='table/method/selectedId'>
+            <h4 class='method-name'>selectedId</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Integer</div>
+            </div>
+            <p class='method-use'>
+                If your table is selectable, you can get the id of the first selected row by using this method.<br>
+                If none of the rows is selected, the method will return <code>'undefined'</code>.
+            </p>    
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        rows:[
+            {
+                recordId: 1,
+                values:{
+                    name: 'Campaign1',
+                    subject: 'test1'
+                }
+            },
+            {
+                recordId: 2,
+                values:{
+                    name: 'Campaign2',
+                    subject: 'test2'
+                }
+            }
+        ],
+        selectable: true,
+}).draw();
+
+setTimeout(function(){
+    $(table.getColByIndex(0).$cells()[2]).find('input[type="checkbox"]').prop('checked', true); //selecting the second row
+    alert("selectedId: "+table.selectedId());
+},1000);
+            </pre>
+        </article>
+
+        <article id='table/method/selectedIds'>
+            <h4 class='method-name'>selectedIds</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Array</div>
+            </div>
+            <p class='method-use'>
+                Use this method to get the id of the selected rows.
+            </p>  
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        rows:[
+            {
+                recordId: 1,
+                values:{
+                    name: 'Campaign1',
+                    subject: 'test1'
+                }
+            },
+            {
+                recordId: 2,
+                values:{
+                    name: 'Campaign2',
+                    subject: 'test2'
+                }
+            },
+            {
+                recordId: 3,
+                values:{
+                    name: 'Campaign3',
+                    subject: 'test3'
+                }
+            }
+        ],
+        selectable: true,
+}).draw();
+
+setTimeout(function(){
+    $(table.getColByIndex(0).$cells()[2]).find('input[type="checkbox"]').prop('checked', true); //selecting the second row
+    $(table.getColByIndex(0).$cells()[3]).find('input[type="checkbox"]').prop('checked', true); //selecting the third row
+    alert("selectedIds: "+table.selectedIds());
+},1000);
+            </pre>
+        </article>
+
+        <article id='table/method/selectedRow'>
+            <h4 class='method-name'>selectedRow</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>tableRow</div>
+            </div>
+            <p class='method-use'>
+                Use this method to get the first selected table row.<br>
+                If none of the rows is selected, the method will return <code>false</code>.
+            </p>  
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        rows:[
+            {
+                recordId: 1,
+                values:{
+                    name: 'Campaign1',
+                    subject: 'test1'
+                }
+            },
+            {
+                recordId: 2,
+                values:{
+                    name: 'Campaign2',
+                    subject: 'test2'
+                }
+            }
+        ],
+        selectable: true,
+}).draw();
+
+setTimeout(function(){
+    $(table.getColByIndex(0).$cells()[2]).find('input[type="checkbox"]').prop('checked', true); //selecting the second row
+    alert("selectedRow: "+table.selectedRow());
+},1000);
+            </pre>
+        </article>
+
+        <article id='table/method/selectedRows' class='last'>
+            <h4 class='method-name'>selectedRows</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Array</div>
+            </div>
+            <p class='method-use'>
+                Use this method to get the selected rows of the table.<br>
+                If none of the rows is selected, the method will return an empty array.
+            </p>                    
+            
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        rows:[
+            {
+                recordId: 1,
+                values:{
+                    name: 'Campaign1',
+                    subject: 'test1'
+                }
+            },
+            {
+                recordId: 2,
+                values:{
+                    name: 'Campaign2',
+                    subject: 'test2'
+                }
+            },
+            {
+                recordId: 3,
+                values:{
+                    name: 'Campaign3',
+                    subject: 'test3'
+                }
+            }
+        ],
+        selectable: true,
+}).draw();
+
+setTimeout(function(){
+    $(table.getColByIndex(0).$cells()[2]).find('input[type="checkbox"]').prop('checked', true); //selecting the second row
+    $(table.getColByIndex(0).$cells()[3]).find('input[type="checkbox"]').prop('checked', true); //selecting the third row
+    alert("selectedRows: "+table.selectedRows());
+},1000);
+            </pre>
+        </article>
+
+
+        <article id='table/method/setButtonsStatus' class='last'>
+            <h4 class='method-name'>setButtonsStatus</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Table</div>
+            </div>
+            <p class='method-use'>
+                Use this function to refresh the button states.<br>
+                When you have a table with buttons, you can set conditions for the buttons, which are in connection with the table rows. For example you can set a button disabled if there are more than one rows selected.
+                This function is useful if you changed the conditions, and want to refresh te buttons immediately.
+            </p>
+
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+
+$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],        
+        rows:[
+            {
+                values:{
+                    name:'Campaign1',
+                    subject:'test'
+                }
+            },
+            {
+                values:{
+                    name:'Campaign2',
+                    subject:'test2'
+                }
+            }
+        ],
+        //You can set the table buttons by defining the buttons array in the constructor object
+        buttons:[
+            {
+                text: 'New campaign',
+                skin: 'simple-orange' //Setting the automizy orange skin
+            },
+            {
+                text: 'Edit campaign',
+                condition: 'select-one', //select-one condition makes the button clickable only if one row is selected
+                disabled:true //the button will be disabled by default
+            },
+            {
+                text: 'Delete campaigns',
+                condition: 'select-more-than-zero', //select-more-than-zero condition makes the button clickable if one or more rows are selected
+                disabled:true //the button will be disabled by default
+            }
+        ],
+        selectable: true //To use the conditions we have to make the table rows selectable
+}).draw();
+            </pre>
+        </article>
+
+        <h3>Row methods</h3>
+        <article id='table/method/rowCells'>
+            <h4 class='method-name'>cells</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Array</div>
+            </div>
+            <p class='method-use'>
+                Use this method to get the cells of the given row.
+            </p>   
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        rows:[
+            {
+                recordId: 1,
+                values:{
+                    name: 'Campaign1',
+                    subject: 'test1'
+                }
+            },
+            {
+                recordId: 2,
+                values:{
+                    name: 'Campaign2',
+                    subject: 'test2'
+                }
+            }
+        ]
+}).draw();
+
+//Getting the cells of the first row
+alert('cells: '+table.rows()[1].cells());
+            </pre>
+        </article>
+        
+        <article id='table/method/row$cells'>
+            <h4 class='method-name'>$cells</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Array</div>
+            </div>
+            <p class='method-use'>
+                Use this method to get the cells of the given row as jQuery objects.
+            </p>  
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        rows:[
+            {
+                recordId: 1,
+                values:{
+                    name: 'Campaign1',
+                    subject: 'test1'
+                }
+            },
+            {
+                recordId: 2,
+                values:{
+                    name: 'Campaign2',
+                    subject: 'test2'
+                }
+            }
+        ]
+}).draw();
+
+//Getting the cells of the first row
+table.rows()[1].$cells();
+            </pre>
+        </article>
+        
+        <article id='table/method/rowDomCells'>
+            <h4 class='method-name'>domCells</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Array</div>
+            </div>
+            <p class='method-use'>
+                Use this method to get the cells of the given row as DOM objects.
+            </p>   
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        rows:[
+            {
+                recordId: 1,
+                values:{
+                    name: 'Campaign1',
+                    subject: 'test1'
+                }
+            },
+            {
+                recordId: 2,
+                values:{
+                    name: 'Campaign2',
+                    subject: 'test2'
+                }
+            }
+        ]
+}).draw();
+
+//Getting the cells of the first row
+table.rows()[1].domCells();
+            </pre>
+        </article>
+
+        <article id='table/method/$checkbox'>
+            <h4 class='method-name'>$checkbox</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>jQuery</div>
+            </div>
+            <p class='method-use'>
+                Use this method to get the checkbox of the given row.
+            </p>          
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        rows:[
+            {
+                recordId: 1,
+                values:{
+                    name: 'Campaign1',
+                    subject: 'test1'
+                }
+            },
+            {
+                recordId: 2,
+                values:{
+                    name: 'Campaign2',
+                    subject: 'test2'
+                }
+            }
+        ]
+}).draw();
+
+//Getting the cells of the second column
+table.getRowByIndex(1).$checkbox();
+            </pre>
+        </article>
+     
+        <article id='table/method/getCellByColName'>
+            <h4 class='method-name'>getCellByColName(colName)</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>tableCell</div>
+            </div>
+            <p class='method-use'>
+                Use this function to get a cell of the given row by the column name.
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        colName
+                    </div>
+                    Type: <code>String</code><br>
+                    The name of the column you want to select the cell from.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        rows:[
+            {
+                recordId: 1,
+                values:{
+                    name: 'Campaign1',
+                    subject: 'test1'
+                }
+            },
+            {
+                recordId: 2,
+                values:{
+                    name: 'Campaign2',
+                    subject: 'test2'
+                }
+            }
+        ]
+}).draw();
+
+//Getting the cell of the second row from the 'name' column.
+console.log(table.rows()[2].getCellByColName('name'));
+            </pre>
+        </article>
+        <article id='table/method/rowIndex'>
+            <h4 class='method-name'>index</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Integer</div>
+            </div>
+            <p class='method-use'>
+                Use this method to get the index of the given row.
+            </p>   
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        rows:[
+            {
+                recordId: 1,
+                values:{
+                    name: 'Campaign1',
+                    subject: 'test1'
+                }
+            },
+            {
+                recordId: 2,
+                values:{
+                    name: 'Campaign2',
+                    subject: 'test2'
+                }
+            }
+        ]
+}).draw();
+
+alert('index: '+table.rows()[2].index());
+            </pre>
+        </article>
+        <article id='table/method/rowRecordId' class='last'>
+            <h4 class='method-name'>recordId</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Integer</div>
+            </div>
+            <p class='method-use'>
+                Use this method to get the id of the given row.
+            </p>    
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        rows:[
+            {
+                recordId: 1,
+                values:{
+                    name: 'Campaign1',
+                    subject: 'test1'
+                }
+            },
+            {
+                recordId: 2,
+                values:{
+                    name: 'Campaign2',
+                    subject: 'test2'
+                }
+            }
+        ]
+}).draw();
+
+alert('recordId: '+table.rows()[2].recordId());
+            </pre>
+        </article>
+        
+        <h3>Column methods</h3>
+        <article id='table/method/colCells'>
+            <h4 class='method-name'>cells</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Array</div>
+            </div>
+            <p class='method-use'>
+                Use this method to get the cells of the given column.
+            </p>    
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        rows:[
+            {
+                recordId: 1,
+                values:{
+                    name: 'Campaign1',
+                    subject: 'test1'
+                }
+            },
+            {
+                recordId: 2,
+                values:{
+                    name: 'Campaign2',
+                    subject: 'test2'
+                }
+            }
+        ]
+}).draw();
+
+//Getting the cells of the second column
+console.log(table.getColByIndex(1).cells());
+            </pre>
+        </article>
+        <article id='table/method/col$cells'>
+            <h4 class='method-name'>$cells</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Array</div>
+            </div>
+            <p class='method-use'>
+                Use this method to get the cells of the given column as jQuery objects.
+            </p>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        rows:[
+            {
+                recordId: 1,
+                values:{
+                    name: 'Campaign1',
+                    subject: 'test1'
+                }
+            },
+            {
+                recordId: 2,
+                values:{
+                    name: 'Campaign2',
+                    subject: 'test2'
+                }
+            }
+        ]
+}).draw();
+
+//Getting the cells of the second column as jQuery objects
+console.log(table.getColByIndex(1).$cells());
+            </pre>
+        </article>
+        
+        <article id='table/method/colDomcCells'>
+            <h4 class='method-name'>domCells</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Boolean</div>
+            </div>
+            <p class='method-use'>
+                Type here how to use this method.
+            </p>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        rows:[
+            {
+                recordId: 1,
+                values:{
+                    name: 'Campaign1',
+                    subject: 'test1'
+                }
+            },
+            {
+                recordId: 2,
+                values:{
+                    name: 'Campaign2',
+                    subject: 'test2'
+                }
+            }
+        ]
+}).draw();
+
+//Getting the cells of the second column as DOM objects
+console.log(table.domCells());
+            </pre>
+        </article>
+        
+        <article id='table/method/colIndex'>
+            <h4 class='method-name'>index</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Integer</div>
+            </div>
+            <p class='method-use'>
+                Use this function to get the index of the given column.
+            </p>       
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        rows:[
+            {
+                recordId: 1,
+                values:{
+                    name: 'Campaign1',
+                    subject: 'test1'
+                }
+            },
+            {
+                recordId: 2,
+                values:{
+                    name: 'Campaign2',
+                    subject: 'test2'
+                }
+            }
+        ]
+}).draw();
+
+//Getting the index of the second column
+alert("index:" +table.getColByName("subject").index());
+            </pre>
+        </article>
+        <article id='table/method/colName' class='last'>
+            <h4 class='method-name'>name</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>String</div>
+            </div>
+            <p class='method-use'>
+                Use this method to get the name of the given column.
+            </p>      
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        rows:[
+            {
+                recordId: 1,
+                values:{
+                    name: 'Campaign1',
+                    subject: 'test1'
+                }
+            },
+            {
+                recordId: 2,
+                values:{
+                    name: 'Campaign2',
+                    subject: 'test2'
+                }
+            }
+        ]
+}).draw();
+
+//Getting the index of the second column
+alert("name: "+table.getColByIndex(2).name());
+            </pre>
+        </article>
+
+        <h3>Cell methods</h3>
+
+        <article id='table/method/col'>
+            <h4 class='method-name'>col</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>tableCol</div>
+            </div>
+            <p class='method-use'>
+                Use this function to get the column of the given cell.
+            </p>  
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table=$A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject', text: 'Campaign subject'}
+	],
+        rows:[
+            {
+                recordId: 1,
+                values:{
+                    name: 'Campaign1',
+                    subject: 'test1'
+                }
+            },
+            {
+                recordId: 2,
+                values:{
+                    name: 'Campaign2',
+                    subject: 'test2'
+                }
+            }
+        ]
+}).draw();
+
+
+//Getting the colum on cell(2,2)
+console.log(table.getCells(2,2).col());
+            </pre>
+        </article>
+        
+        <article id='table/method/cellHtml'>
+            <h4 class='method-name'>html(html)</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>String</div>
+            </div>                   
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        html
+                    </div>
+                    Type: <code>String</code><br>
+                    The html code you want to insert.
+                </li>
+            </ul>
+            <p class='method-use'>
+                Use this tuction to set the html of the given cell.
+            </p>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table = $A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {
+                name: 'subject',
+            }
+	],   
+        rows:[
+            {
+                values:{
+                    name:'Campaign1',
+                    subject:'test',
+                    html: 'test'
+                }
+            },
+            {
+                values:{
+                    name:'Campaign2',
+                    subject:'test2'
+                }
+            }
+        ]
+}).draw();
+
+//Setting the html
+table.getCell(2,2).html('html');
+
+//Getting the html
+table.getCell(2,2).html();
+            </pre>
+        </article>
+
+        <article id='table/method/index'>
+            <h4 class='method-name'>index</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Array</div>
+            </div>
+            <p class='method-use'>
+                Use this method to get the index of the given cell.
+            </p>  
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table = $A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {
+                name: 'subject',
+            }
+	],   
+        rows:[
+            {
+                values:{
+                    name:'Campaign1',
+                    subject:'test',
+                    html: 'test'
+                }
+            },
+            {
+                values:{
+                    name:'Campaign2',
+                    subject:'test2'
+                }
+            }
+        ]
+}).draw();
+
+alert('index: '+table.getCell(2,2).index());
+            </pre>
+        </article>
+
+        <article id='table/method/recordId'>
+            <h4 class='method-name'>recordId</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Integer</div>
+            </div>
+            <p class='method-use'>
+                Use this method to get the recordId of the cell's row.
+            </p>   
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table = $A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {
+                name: 'subject',
+            }
+	],   
+        rows:[
+            {
+                values:{
+                    name:'Campaign1',
+                    subject:'test',
+                    html: 'test'
+                }
+            },
+            {
+                values:{
+                    name:'Campaign2',
+                    subject:'test2'
+                }
+            }
+        ]
+}).draw();
+
+alert('recordId: '+table.getCell(2,2).recordId());
+            </pre>
+        </article>
+
+        <article id='table/method/row' class='last'>
+            <h4 class='method-name'>row</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>tableRow</div>
+            </div>
+            <p class='method-use'>
+                Use this method to get the row of the given cell.
+            </p>    
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table = $A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {
+                name: 'subject',
+            }
+	],   
+        rows:[
+            {
+                values:{
+                    name:'Campaign1',
+                    subject:'test',
+                    html: 'test'
+                }
+            },
+            {
+                values:{
+                    name:'Campaign2',
+                    subject:'test2'
+                }
+            }
+        ]
+}).draw();
+
+console.log(table.getCell82,2).row());
+            </pre>
+        </article>
+        <article id='table/method/cellText' class='last'>
+            <h4 class='option-name'>text(text)</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>String</div>
+            </div>
+            <p class='method-use'>
+                Use this method to get or set the text of a cell.
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        text
+                    </div>
+                    Type: <code>String</code><br>
+                    The text you want to insert.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table = $A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {
+                name: 'subject',
+            }
+	],   
+        rows:[
+            {
+                values:{
+                    name:'Campaign1',
+                    subject:'test',
+                    html: 'test'
+                }
+            },
+            {
+                values:{
+                    name:'Campaign2',
+                    subject:'test2'
+                }
+            }
+        ]
+}).draw();
+
+//Setting the text
+table.getCell(2,2).text('text');
+
+//Getting the text
+alert('text: '+table.getCell(2,2).text());
+            </pre>
+        </article>
+
+        <h3>Global methods</h3>
+
+        <article id='table/method/table'>
+            <h4 class='method-name'>table</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>table</div>
+            </div>
+            <p class='method-use'>
+                Use this method to get the table of the given column, row, or cell.
+            </p>    
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table = $A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {
+                name: 'subject',
+            }
+	],   
+        rows:[
+            {
+                values:{
+                    name:'Campaign1',
+                    subject:'test',
+                    html: 'test'
+                }
+            },
+            {
+                values:{
+                    name:'Campaign2',
+                    subject:'test2'
+                }
+            }
+        ]
+}).draw();
+
+console.log(table.rows()[0].table());
+            </pre>
+        </article>
+
+        <article id='table/method/addButton'></article>
+        <article id='table/method/draw'></article>
+        <article id='table/method/drawTo'></article>
+        <article id='table/method/hide'></article>
+        <article id='table/method/remove'></article>
+        <article id='table/method/removeButton'></article>
+        <article id='table/method/show'></article>
+        <article id='table/method/widget' class='last'></article>
+
+    </section>
+
+    <section>
+        <h2>Events</h2>
+        <h3>Table events</h3>
+        <article id='table/event/beforeOpenInlineBox'>
+            <h4 class='event-name'>beforeOpenInlineBox(event)</h4>
+            <div class='event-attributes'>
+                Returns:<div class='event-returns'>Table</div>
+            </div>
+            <p class='event-use'>
+                Use this function to set the event you want to trigger when opening the inline buttons box.
+            </p>               
+            <ul>
+                <li>
+                    <div class='event-parameter'>
+                        event
+                    </div>
+                    Type: <code>function</code><br>
+                    The event to be triggered.
+                </li>
+            </ul>
+            <div class='event-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table = $A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {
+                name: 'subject',
+            }
+	],   
+        rows:[
+            {
+                values:{
+                    name:'Campaign1',
+                    subject:'test',
+                    html: 'test'
+                }
+            },
+            {
+                values:{
+                    name:'Campaign2',
+                    subject:'test2'
+                }
+            }
+        ]
+}).draw();
+table.beforeOpenInlineBox(function (){
+    alert('opening');
+});
+            </pre>
+        </article>
+        
+        <article id='table/event/onExport'>
+            <h4 class='event-name'>onExport(event)</h4>
+            <div class='event-attributes'>
+                Returns:<div class='event-returns'>Table</div>
+            </div>
+            <p class='event-use'>
+                Use this function to set the event you want to trigger when clicking on the export icon.
+            </p>               
+            <ul>
+                <li>
+                    <div class='event-parameter'>
+                        event
+                    </div>
+                    Type: <code>function</code><br>
+                    The event to be triggered.
+                </li>
+            </ul>
+            <div class='event-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table = $A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {
+                name: 'subject',
+            }
+	],   
+        rows:[
+            {
+                values:{
+                    name:'Campaign1',
+                    subject:'test',
+                    html: 'test'
+                }
+            },
+            {
+                values:{
+                    name:'Campaign2',
+                    subject:'test2'
+                }
+            }
+        ],
+        exportable: true
+}).draw();
+table.onExport(function (){
+    alert('exporting');
+});
+            </pre>
+        </article>
+        
+        <article id='table/event/onHideCol'>
+            <h4 class='event-name'>onHideCol(event)</h4>
+            <div class='event-attributes'>
+                Returns:<div class='event-returns'>Table</div>
+            </div>
+            <p class='event-use'>
+                Use this function to set the event you want to trigger when clicking on the hide column button.
+            </p>               
+            <ul>
+                <li>
+                    <div class='event-parameter'>
+                        event
+                    </div>
+                    Type: <code>function</code><br>
+                    The event to be triggered.
+                </li>
+            </ul>
+            <div class='event-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table = $A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {
+                name: 'subject',
+            }
+	],   
+        rows:[
+            {
+                values:{
+                    name:'Campaign1',
+                    subject:'test',
+                    html: 'test'
+                }
+            },
+            {
+                values:{
+                    name:'Campaign2',
+                    subject:'test2'
+                }
+            }
+        ]
+}).draw();
+table.onHideCol(function (){
+    alert('column hidden');
+});
+            </pre>
+        </article>
+
+        <article id='table/event/onPageFirst'>
+            <h4 class='event-name'>onPageFirst</h4>
+            <div class='event-attributes'>
+                Returns:<div class='event-returns'>type</div>
+            </div>
+            <p class='event-use'>
+                Use this function to set the event you want to trigger when clicking on the first page button.
+            </p>               
+            <ul>
+                <li>
+                    <div class='event-parameter'>
+                        event
+                    </div>
+                    Type: <code>function</code><br>
+                    The event to be triggered.
+                </li>
+            </ul>
+            <div class='event-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table = $A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {
+                name: 'subject',
+            }
+	],   
+        rows:[
+            {
+                values:{
+                    name:'Campaign1',
+                    subject:'test',
+                    html: 'test'
+                }
+            },
+            {
+                values:{
+                    name:'Campaign2',
+                    subject:'test2'
+                }
+            }
+        ]
+}).draw();
+table.onPageFirst(function (){
+    alert('first page');
+});
+            </pre>
+        </article>
+
+        <article id='table/event/onPageLast'>
+            <h4 class='event-name'>onPageLast</h4>
+            <div class='event-attributes'>
+                Returns:<div class='event-returns'>type</div>
+            </div>
+            <p class='event-use'>
+                Use this function to set the event you want to trigger when clicking on the last page button.
+            </p>               
+            <ul>
+                <li>
+                    <div class='event-parameter'>
+                        event
+                    </div>
+                    Type: <code>function</code><br>
+                    The event to be triggered.
+                </li>
+            </ul>
+            <div class='event-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table = $A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {
+                name: 'subject',
+            }
+	],   
+        rows:[
+            {
+                values:{
+                    name:'Campaign1',
+                    subject:'test',
+                    html: 'test'
+                }
+            },
+            {
+                values:{
+                    name:'Campaign2',
+                    subject:'test2'
+                }
+            }
+        ]
+}).draw();
+table.onPageLast(function (){
+    alert('last page');
+});
+            </pre>
+        </article>
+
+        <article id='table/event/onPageNext'>
+            <h4 class='event-name'>onPageNext</h4>
+            <div class='event-attributes'>
+                Returns:<div class='event-returns'>type</div>
+            </div>
+            <p class='event-use'>
+                Use this function to set the event you want to trigger when clicking on the next page button.
+            </p>               
+            <ul>
+                <li>
+                    <div class='event-parameter'>
+                        event
+                    </div>
+                    Type: <code>function</code><br>
+                    The event to be triggered.
+                </li>
+            </ul>
+            <div class='event-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table = $A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {
+                name: 'subject',
+            }
+	],   
+        rows:[
+            {
+                values:{
+                    name:'Campaign1',
+                    subject:'test',
+                    html: 'test'
+                }
+            },
+            {
+                values:{
+                    name:'Campaign2',
+                    subject:'test2'
+                }
+            }
+        ]
+}).draw();
+table.onPageNext(function (){
+    alert('next page');
+});
+            </pre>
+        </article>
+
+        <article id='table/event/onPagePrev'>
+            <h4 class='event-name'>onPagePrev</h4>
+            <div class='event-attributes'>
+                Returns:<div class='event-returns'>type</div>
+            </div>
+            <p class='event-use'>
+                Use this function to set the event you want to trigger when clicking on the previous page button.
+            </p>               
+            <ul>
+                <li>
+                    <div class='event-parameter'>
+                        event
+                    </div>
+                    Type: <code>function</code><br>
+                    The event to be triggered.
+                </li>
+            </ul>
+            <div class='event-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table = $A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {
+                name: 'subject',
+            }
+	],   
+        rows:[
+            {
+                values:{
+                    name:'Campaign1',
+                    subject:'test',
+                    html: 'test'
+                }
+            },
+            {
+                values:{
+                    name:'Campaign2',
+                    subject:'test2'
+                }
+            }
+        ]
+}).draw();
+table.onPagePrev(function (){
+    alert('previous page');
+});
+            </pre>
+        </article>
+
+        <article id='table/event/onPerPage'>
+            <h4 class='event-name'>onPerPage</h4>
+            <div class='event-attributes'>
+                Returns:<div class='event-returns'>type</div>
+            </div>
+            <p class='event-use'>
+                Use this function to set the event you want to trigger when clicking on the per page button.
+            </p>               
+            <ul>
+                <li>
+                    <div class='event-parameter'>
+                        event
+                    </div>
+                    Type: <code>function</code><br>
+                    The event to be triggered.
+                </li>
+            </ul>
+            <div class='event-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table = $A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {
+                name: 'subject',
+            }
+	],   
+        rows:[
+            {
+                values:{
+                    name:'Campaign1',
+                    subject:'test',
+                    html: 'test'
+                }
+            },
+            {
+                values:{
+                    name:'Campaign2',
+                    subject:'test2'
+                }
+            }
+        ]
+}).draw();
+table.onPerPage(function (){
+    alert('setting per page');
+});
+            </pre>
+        </article>
+
+        <article id='table/event/onShowCol'>
+            <h4 class='event-name'>onShowCol</h4>
+            <div class='event-attributes'>
+                Returns:<div class='event-returns'>type</div>
+            </div>
+            <p class='event-use'>
+                Use this function to set the event you want to trigger when clicking on the show column button.
+            </p>               
+            <ul>
+                <li>
+                    <div class='event-parameter'>
+                        event
+                    </div>
+                    Type: <code>function</code><br>
+                    The event to be triggered.
+                </li>
+            </ul>
+            <div class='event-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table = $A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {
+                name: 'subject',
+            }
+	],   
+        rows:[
+            {
+                values:{
+                    name:'Campaign1',
+                    subject:'test',
+                    html: 'test'
+                }
+            },
+            {
+                values:{
+                    name:'Campaign2',
+                    subject:'test2'
+                }
+            }
+        ]
+}).draw();
+table.onShowCol(function (){
+    alert('column shown');
+});
+            </pre>
+        </article>
+        
+<article id='table/event/onSort' class='last'>
+            <h4 class='event-name'>onSort</h4>
+            <div class='event-attributes'>
+                Returns:<div class='event-returns'>type</div>
+            </div>
+            <p class='event-use'>
+                Use this function to set the event you want to trigger when sorting the table.
+            </p>               
+            <ul>
+                <li>
+                    <div class='event-parameter'>
+                        event
+                    </div>
+                    Type: <code>function</code><br>
+                    The event to be triggered.
+                </li>
+            </ul>
+            <div class='event-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var table = $A.newTable({
+	cols:[ 
+            {name: 'name', text:'Campaign name'},
+            {
+                name: 'subject',
+            }
+	],   
+        rows:[
+            {
+                values:{
+                    name:'Campaign1',
+                    subject:'test',
+                    html: 'test'
+                }
+            },
+            {
+                values:{
+                    name:'Campaign2',
+                    subject:'test2'
+                }
+            }
+        ]
+}).draw();
+table.onSort(function (){
+    alert('table sorted');
+});
+            </pre>
+        </article>
+
+        <h3>Global events</h3>
+        <article id='table/event/create' class='last'></article>
+
+    </section>
+
+    <section>
+        <h2>Examples</h2>
+        <article id='table/entry-examples' class='last'>
+            <h3>A simple module </h3>
+            <pre id='module-example' class='prettyprint linenums'></pre>
+            <h3>Demo:</h3>
+            <div id='module-demo'></div>
+        </article>
+    </section>
+</div>

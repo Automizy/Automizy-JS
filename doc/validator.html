@@ -1,0 +1,509 @@
+
+<div id='doc-container'>
+    <h1>Validator</h1>
+    <div class='description-label'>Description:
+        <div class='description'> A collection of functions which are used to validate a value. The validator can be used separately or as part of an input..</div>
+    </div>
+    <section>
+        <h2 class='quick-nav'>Quick navigation <a href='#validator/entry-examples'>Examples</a></h2>
+        <table class='doc-content-table'>
+            <tr>
+                <td>
+                    <h3>Options</h3>
+                        <li><a href='#validator/option/data'>data*</a></li>
+                    <ul><li><a href='#validator/option/domain'>domain</a></li>
+                        <li><a href='#validator/option/domainOrUrl'>domainOrUrl</a></li>
+                        <li><a href='#validator/option/email'>email</a></li>
+                        <li><a href='#validator/option/id'>id*</a></li>
+                        <li><a href='#validator/option/integer'>integer</a></li>
+                        <li><a href='#validator/option/invalidValue'>invalidValue</a></li>
+                        <li><a href='#validator/option/max'>max</a></li>
+                        <li><a href='#validator/option/maxLength'>maxLength</a></li>
+                        <li><a href='#validator/option/min'>min</a></li>
+                        <li><a href='#validator/option/minLength'>minLength</a></li>
+                        <li><a href='#validator/option/notEmpty'>notEmpty</a></li>
+                        <li><a href='#validator/option/number'>number</a></li>
+                        <li><a href='#validator/option/url'>url</a></li>
+                        <li><a href='#validator/option/value'>value</a></li>
+                    </ul>
+                </td>
+                <td>
+                    <h3>Methods</h3>
+                    <ul><li><a href='#validator/method/errors'>errors</a></li>
+                        <li><a href='#validator/method/execute'>execute</a></li>
+                        <li><a href='#validator/method/run'>run</a></li>
+                        <li><a href='#validator/method/sameas'>sameas</a></li>
+                    </ul>
+                </td>
+                <td>
+                    <h3>Events</h3>
+                    <ul>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+    </section>
+
+    <section>
+        <h2>Options</h2>
+        
+        <article id='validator/option/data'></article>
+        
+        <article id='validator/option/domain'>
+            <h4 class='option-name'>domain(value)</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Boolean</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>false</div>
+            </div>
+            <p class='option-use'>
+                Use this function to test if the given value or the input is a domain.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the validator with the <code>domain</code> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+//The validator will check automatically if the input's value is a domain
+$A.newInput().validator({
+    domain:true
+}).draw();
+            </pre>
+            <br>
+                Checking if the given input is valid or not
+            <br>
+            <pre class='prettyprint linenums'>
+//Checking a value with a single validator
+var result = $A.newValidator().domain('this is not a domain!'); //will return false
+$('body').text('domain: '+result);
+            </pre>
+        </article>
+
+        <article id='validator/option/domainOrUrl'>
+            <h4 class='option-name'>domainOrUrl(value)</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Boolean</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>false</div>
+            </div>
+            <p class='option-use'>
+                Use this option to test if the given value or the input is a domain or an url.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the validator with the <code>domainOrUrl</code> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newInput().validator({
+    domainOrUrl:true
+}).draw();
+            </pre>
+            <br>
+                Checking if the given input is valid or not
+            <br>
+            <pre class='prettyprint linenums'>
+//Checking a value with a single validator
+var result = $A.newValidator().domainOrUrl('this is not a domain or url!'); //will return false
+$('body').text('domain or url: '+result);
+            </pre>
+        </article>
+                
+        <article id='validator/option/id'></article>
+        
+        <article id='validator/option/email'>
+            <h4 class='option-name'>email(value)</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Boolean</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>false</div>
+            </div>
+            <p class='option-use'>
+                Use this option to test if the given value or the input is an email address.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the validator with the <code>email</code> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newInput().validator({
+    email:true
+}).draw();
+            </pre>
+            <br>
+                Checking if the given input is valid or not
+            <br>
+            <pre class='prettyprint linenums'>
+//Checking a value with a single validator
+var result = $A.newValidator().email('this is not an email address!'); //will return false
+$('body').text('email: '+result);
+            </pre>
+        </article>
+        
+        <article id='validator/option/integer'>
+            <h4 class='option-name'>integer(value)</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Boolean</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>false</div>
+            </div>
+            <p class='option-use'>
+                Use this option to test if the given value or the input is an integer.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the validator with the <code>integer</code> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newInput().validator({
+    integer:true
+}).draw();
+            </pre>
+            <br>
+                Checking if the given input is valid or not
+            <br>
+            <pre class='prettyprint linenums'>
+//Checking a value with a single validator
+var result = $A.newValidator().integer('this is not an integer!'); //will return false
+$('body').text('integer: '+result);
+            </pre>
+        </article>
+
+        <article id='validator/option/invalidValue'>
+            <h4 class='option-name'>invalidValue(value, invalidValue)</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Boolean</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>false</div>
+            </div>
+            <p class='option-use'>
+                Use this option to test if the given value or the input equals to a predefined invalid value.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the validator with the <code>invalidValue</code> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+//invalid@invalid.com meets the email pattern, but it won't be accepted
+$A.newInput().validator({
+    email:true,
+    invalidValue: 'invalid@invalid.com'
+}).draw();
+            </pre>
+            <br>
+                Checking if the given input is valid or not
+            <br>
+            <pre class='prettyprint linenums'>
+//Checking a value with a single validator
+var result = $A.newValidator().invalidValue('invalid@invalid.com','invalid@invalid.com'); //will return false
+$('body').text('valid email: '+result);
+            </pre>
+        </article>
+
+        <article id='validator/option/max'>
+            <h4 class='option-name'>max(value, maxValue)</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Boolean</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>false</div>
+            </div>
+            <p class='option-use'>
+                Use this option to test if the given value or the input is lower then a maximum value.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the validator with the <code>max</code> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newInput().validator({
+    max:100
+}).draw();
+            </pre>
+            <br>
+                Checking if the given input is valid or not
+            <br>
+            <pre class='prettyprint linenums'>
+//Checking a value with a single validator
+var result = $A.newValidator().max(101, 100); //will return false
+$('body').text('lower or equal to max: '+result);
+            </pre>
+        </article>
+
+        <article id='validator/option/maxLength'>
+            <h4 class='option-name'>maxLength(value, maxLenght)</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Boolean</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>false</div>
+            </div>
+            <p class='option-use'>
+                Use this option to test if the given value or the input is longer than a maximum length.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the validator with the <code>maxLength</code> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newInput().validator({
+    maxLength:5
+}).draw();
+            </pre>
+            <br>
+                Checking if the given input is valid or not
+            <br>
+            <pre class='prettyprint linenums'>
+//Checking a value with a single validator
+var result = $A.newValidator().maxLength('this is longer than 5', 5); //will return false
+$('body').text('not too long: '+result);
+            </pre>
+        </article>
+
+        <article id='validator/option/min'>
+            <h4 class='option-name'>min(value, minValue)</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Boolean</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>false</div>
+            </div>
+            <p class='option-use'>
+                Use this option to test if the given value or the input is lower than a minimum value.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the validator with the <code>min</code> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newInput().validator({
+    min:4
+}).draw();
+            </pre>
+            <br>
+                Checking if the given input is valid or not
+            <br>
+            <pre class='prettyprint linenums'>
+//Checking a value with a single validator
+var result = $A.newValidator().min('low', 4); //will return false
+$('body').text('high enough: '+result);
+            </pre>
+        </article>
+
+        <article id='validator/option/minLength'>
+            <h4 class='option-name'>minLength</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Boolean</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>false</div>
+            </div>
+            <p class='option-use'>
+                Use this option to test if the given value or the input is shorter than a minimum length.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the validator with the <code>minLength</code> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newInput().validator({
+    minLength:6
+}).draw();
+            </pre>
+            <br>
+                Checking if the given input is valid or not
+            <br>
+            <pre class='prettyprint linenums'>
+//Checking a value with a single validator
+var result = $A.newValidator().minLength('short',6); //will return false
+$('body').text('long enough: '+result);
+            </pre>
+        </article>
+
+        <article id='validator/option/notEmpty'>
+            <h4 class='option-name'>notEmpty(value)</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Boolean</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>false</div>
+            </div>
+            <p class='option-use'>
+                Use this option to test if the given value or the input is empty.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the validator with the <code>notEmpty</code> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newInput().validator({
+    notEmpty:true
+}).draw();
+            </pre>
+            <br>
+                Checking if the given input is valid or not
+            <br>
+            <pre class='prettyprint linenums'>
+//Checking a value with a single validator
+var result = $A.newValidator().notEmpty(''); //will return false
+$('body').text('not empty: '+result);
+            </pre>
+        </article>
+
+        <article id='validator/option/number'>
+            <h4 class='option-name'>number(value)</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Boolean</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>false</div>
+            </div>
+            <p class='option-use'>
+                Use this option to test if the given value or the input is a number.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the validator with the <code>number</code> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newInput().validator({
+    number:true
+}).draw();
+            </pre>
+            <br>
+                Checking if the given input is valid or not
+            <br>
+            <pre class='prettyprint linenums'>
+//Checking a value with a single validator
+var result = $A.newValidator().number('not number'); //will return false
+$('body').text('number: '+result);
+            </pre>
+        </article>
+
+        <article id='validator/option/url'>
+            <h4 class='option-name'>url</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Boolean</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>false</div>
+            </div>
+            <p class='option-use'>
+                Use this option to test if the given value or the input is a url,
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the validator with the <code>url</code> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newInput().validator({
+    url:true
+}).draw();
+            </pre>
+            <br>
+                Checking if the given input is valid or not
+            <br>
+            <pre class='prettyprint linenums'>
+//Checking a value with a single validator
+var result = $A.newValidator().url('this is not an url!'); //will return false
+$('body').text('url: '+result);
+            </pre>
+        </article>
+
+        <article id='validator/option/value'>
+            <h4 class='option-name'>value(val)</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>''</div>
+            </div>
+            <p class='option-use'>
+                Use this option to set the value you want to test with the validator.<br>
+                Pleas note that if you assign the validator to an input, the <code>value</code> attribute will be the value of the input, so there's basically no sense of changing it.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the validator with the <code>value</code> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newInput().validator({
+    value: 'some text'
+}).draw();
+            </pre>
+            <br>
+                Checking if the given input is valid or not
+            <br>
+            <pre class='prettyprint linenums'>
+//Checking a value with a single validator
+var validator = $A.newValidator({
+    email:true,
+    value: 'mail'
+});
+var result = validator.execute();
+$('body').text('email: '+result);
+            </pre>
+        </article>
+
+    </section>
+
+    <section>
+        <h2>Methods</h2>
+
+        <article id='validator/method/errors'>
+            <h4 class='method-name'>errors</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Array</div>
+            </div>
+            <p class='method-use'>
+                Use this method to get the array of error messages it produced.
+            </p>      
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var validator = $A.newValidator();
+validator.email('mail');
+$('body').text('errors: '+validator.errors());
+            </pre>
+        </article>
+
+        <article id='validator/method/execute'>
+            <h4 class='method-name'>execute</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Boolean</div>
+            </div>
+            <p class='method-use'>
+                Use this method to execute the validation process. (It calls the <code>run</code> method and returns its result.)<br>
+                Please note, that if the validator is assigned to an input, the function <code>execute</code> will be invoked automatically on any change of the input.
+            </p>         
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var validator = $A.newValidator({
+    email: true,
+    value: 'mail'
+});
+$('body').text('result: '+validator.execute());
+            </pre>
+        </article>
+
+        <article id='validator/method/run'>
+            <h4 class='method-name'>run</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Validator</div>
+            </div>
+            <p class='method-use'>
+                Use this method to evaluate all attributes.
+            </p>            
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+$A.newValidator({
+    email:true,
+    minLength:4,
+    value: 'mail'
+}).run();
+            </pre>
+        </article>
+
+        <article id='validator/method/sameas' class='last'>
+            <h4 class='method-name'>sameas(value, otherValue)</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Boolean</div>
+            </div>
+            <p class='method-use'>
+                Use this method to check if two values are equal.
+            </p>          
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var result = $A.newValidator().sameas('value','value2') //will return false;
+$('body').text('two values are equal: '+result);
+            </pre>
+        </article>
+    </section>
+
+    <section>
+        <h2>Examples</h2>
+        <article id='validator/entry-examples' class='last'>
+            <h3>A simple module </h3>
+            <pre id='module-example' class='prettyprint linenums'></pre>
+            <h3>Demo:</h3>
+            <div id='module-demo'></div>
+        </article>
+    </section>
+</div>

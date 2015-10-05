@@ -1,0 +1,62 @@
+<div id="automizyjs-intro">
+    <h1>What is AutomizyJs?</h1>
+    <div>
+        AutomizyJs is a jQuery UI-like GUI and widget collection, that provides you with several features which will make coding way faster for you.
+    </div>
+    
+    <h2>AutomizyJs takes you to a whole new level of web application development</h2>
+    <div>
+        With AutomizyJs you will be able to create complete applications, by creating simple objects, or calling short methods. You only have to define the bases, AutomizyJs will make the rest of the work.<br>
+        Whether you plan to build a complex, interactive web app, or you just want to insert a widget to your webpage, AutomizyJs will give you a helping hand.<br>
+        As reference we built <a href="https://www.automizy.com/" target="_blank">Automizy</a>, our professional marketing automation software using AutomizyJs and <a href="http://developers.automizy.com/automizyjsapi/" target="_blank">AutomizyJs API</a>, and as you see the result is quite spectacular:
+        <div class="example-image">
+            <img src="images/automizyjs-sample.png">
+        </div>
+    </div>
+    
+    <h2>Create complete web application without writing a single line of HTML code</h2>
+    <div>
+        All AutomizyJs modules can be created by defining a simple object, which stores basic data like a title for a dialog, label for inputs, or event on click for buttons.
+        
+        <pre class='prettyprint linenums'>
+var dialog = $A.newDialog({
+    title: 'Import contacts',
+    buttons: [
+        {skin: 'nobox-green',text: 'Cancel',float: 'left',click: function(){dialog.close();}},
+        {skin: 'simple-orange',text: 'Next',float: 'right'}
+    ],
+    content: $A.newForm({
+        inputs: [
+            {label: 'Import file',type: 'file'},
+            {label: 'Add to segment',type: 'select',multiselect: $A.d.defines.input.setupSelectObj,
+                options:[[0, '--- Nothing ---'],[12, 'First Segment'],[15, 'Second Segment']]
+            },
+            {label: 'Email',validator: 'email'}
+        ]
+    })
+}).draw();
+        </pre>
+    </div>
+    
+    <h2>Use method chaining, and your code will be as easy to read like a novel</h2>
+    <div>
+        If you think writing objects will ruin your code, you can also use method chaining for setting up the modules. Either way you like, you will find a ton of examples for each module, so you can choose the best fitting method for yourself.
+     <pre class='prettyprint linenums'>
+var dialog = $A.newDialog().title('Import contacts').buttons([
+        $A.newButton().skin('nobox-green').text('Cancel').float('left').click(function(){dialog.close();}),
+        $A.newButton().skin('simple-orange').text('Next').float('right')
+    ]).content($A.newForm().addInputs([
+        $A.newInput().label('Import file').type('file'),
+        $A.newInput().label('Add to segment').type('select').multiselect($A.d.defines.input.setupSelectObj).options([
+            [0, '--- Nothing ---'],[12, 'First Segment'],[15, 'Second Segment']
+        ]),
+        $A.newInput().label('Email').validator('email')
+    ])).draw();
+        </pre>
+    </div>
+    
+    <h2>Easy to combine with other JavaScript APIs</h2>
+    <div>
+        AutomizyJs can use all jQuery methods, so you won't have any troubles with integrating. 
+    </div>
+</div>

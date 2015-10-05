@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>QUnit Example</title>
+        <link rel="stylesheet" href="../external/jquery-ui/themes/smoothness/jquery-ui.min.css" />
+        <link rel="stylesheet" href="../external/jquery-ui-multiselect/jquery.multiselect.css">
+        <link rel="stylesheet" href="../external/jquery-ui-multiselect/jquery.multiselect.filter.css">
+        <link rel="stylesheet" href="../src/automizy.css">
+
+        <script src="../external/jquery/dist/jquery.min.js"></script>
+        <script src="../external/jquery-ui/jquery-ui.min.js"></script>
+        <script src="../external/requirejs/require.js"></script>
+        <script src="../external/jquery-ui-multiselect/src/jquery.multiselect.min.js"></script>
+        <script src="../external/jquery-ui-multiselect/src/jquery.multiselect.filter.js"></script>
+        <script>
+            var temp;
+            $(function () {
+                require([
+                    "../src/automizy.js"
+                ], function ($A) {
+                     temp = $A.newForm().addSubTitle("Payment settings").addHtml($("<div class='new html'>adsdsdadsaf</div>")).addHtml("<div class='new html'>adsdsdadsaf</div>").addInputs([
+                            {
+                                label: 'Card number:',
+                                type: 'text'
+                            },
+                            {
+                                label: 'Expiry date (MM/YY):',
+                                type: 'text'
+                            },
+                            {
+                                label: 'Name on card:',
+                                type: 'text'
+                            },
+                            {
+                                label: 'Security code (CCV):',
+                                type: 'text'
+                            },
+                        ]).addSubTitle('Package options').addInputs([
+                            {
+                                label: 'Package:',
+                                type: 'select',
+                                options: [[1, '1,000 active contacts - send 10,000 emails monthly (FREE)'], [2, '2,500 active contacts - send 25,000 emails monthly ($49)']],
+                                multiselect: $A.d.defines.input.setupSelectObj
+                            }
+                        ]).addSubTitle('Billing settings').addInputs([
+                            {
+                                label: 'Company name*:',
+                                type: 'text'
+                            },
+                            {
+                                label: 'First name:',
+                                type: 'text'
+                            },
+                            {
+                                label: 'Last name:',
+                                type: 'text'
+                            },
+                            {
+                                label: 'Country*:',
+                                type: 'select',
+                                options: [[1, 'United States of America'], [2, 'Magyarország']],
+                                multiselect: $A.d.defines.input.setupSelectObj
+                            },
+                            {
+                                label: 'State:',
+                                type: 'text'
+                            },
+                            {
+                                label: 'Postcode*:',
+                                type: 'text'
+                            },
+                            {
+                                label: 'City*',
+                                type: 'text'
+                            },
+                            {
+                                label: 'Address*:',
+                                type: 'text'
+                            },
+                            {
+                                type: 'text'
+                            }
+                        ]).addSubTitle('Import file settings').addInputs([
+                            {
+                                label: 'Field separator:',
+                                help: 'Enter the character that is used in your CSV files that separates each column.',
+                                type: 'text',
+                                value: ';'
+                            },
+                            {
+                                label: 'Field enclosure:',
+                                help: 'Which character is each field enclosed by in your CSV files?',
+                                type: 'text',
+                                value: '"'
+                            },
+                            {
+                                label: 'Character encoding:',
+                                help: 'Select the character encoding of your imported files containing contact data.',
+                                type: 'select',
+                                options: [[1, 'UTF-8'], [2, 'ISO-8859-2']],
+                                multiselect: $A.d.defines.input.setupSelectObj
+                            }
+                        ]).addButtons([
+                            {
+                                text: '!!! Get My Package NOW !!!'
+                            }
+                        ]).draw();
+                });
+            });
+        </script>
+    </head>
+    <body></body>
+</html>
+

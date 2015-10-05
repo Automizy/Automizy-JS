@@ -1,0 +1,41 @@
+{
+  "name": "automizy-js",
+  "version": "1.0",
+  "license": "MIT",
+  "description": "Automizy widget collection",
+  "keywords":[
+    "automizy-js",
+    "automizy",
+    "free",
+    "integrate",
+    "responsive",
+    "mobile-friendly"
+  ],
+  "private": false,
+  "ignore": [
+    "**/.*",
+    "build",
+    "AUTHORS.txt",
+    "Gruntfile.js",
+    "package.json"
+  ],
+  "moduleType":[
+    "globals",
+    "amd"
+  ],
+  "main":[
+    "src/automizy.js",
+    "src/automizy.css"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/automizy/automizy-js.git"
+  },
+  "dependencies": {
+    "jquery": "2.*",
+    "jquery-ui": "*",
+	"qunit":"*",
+	"requirejs": "https://github.com/jrburke/requirejs.git#master",
+	"jquery-ui-multiselect": "https://github.com/ehynds/jquery-ui-multiselect-widget.git#master"
+  }
+}

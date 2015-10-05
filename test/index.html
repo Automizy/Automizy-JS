@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>QUnit Example</title>
+        <link rel="stylesheet" href="../external/jquery-ui/themes/smoothness/jquery-ui.min.css" />
+        <link rel="stylesheet" href="../external/qunit/qunit/qunit.css">
+        <link rel="stylesheet" href="../external/jquery-ui-multiselect/jquery.multiselect.css">
+        <link rel="stylesheet" href="../external/jquery-ui-multiselect/jquery.multiselect.filter.css">
+        <link rel="stylesheet" href="../external/automizyjs/src/automizy.css">
+
+        <script src="../external/jquery/dist/jquery.min.js"></script>
+        <script src="../external/jquery-ui/jquery-ui.min.js"></script>
+        <script src="../external/requirejs/require.js"></script>
+        <script src="../external/qunit/qunit/qunit.js"></script>
+        <script src="../external/jquery-ui-multiselect/src/jquery.multiselect.min.js"></script>
+        <script src="../external/jquery-ui-multiselect/src/jquery.multiselect.filter.js"></script>
+        <script>
+            var dialogA;
+            var dialogB;
+            var dialogVarA;
+            var buttonA;
+            var buttonB;
+            var buttonVarA;
+            var inputA;
+            var inputB;
+            var inputVarA;
+            $(function () {
+                require([
+                    "../src/automizy.js"
+                ], function ($A) {
+                    QUnit.test("functions test", function (assert) {
+                        assert.strictEqual($A.base64Encode('1AŰ.,;*/-+({[<~'), "MUFwLiw7Ki8tKyh7Wzx+", "Automizy.base64Encode functon worked");
+                        assert.strictEqual($A.base64Decode('MUFwLiw7Ki8tKyh7Wzx+'), "1Ap.,;*/-+({[<~", "Automizy.base64Decode functon worked");
+                    });
+                    QUnit.test("button basic test", function (assert) {
+                        buttonA = $A.newButton();
+                        buttonB = $A.newButton();
+                        $A.newButton();
+                        
+                        assert.ok(buttonA instanceof $A.m.Button, "Automizy.newButton function worked");
+                        assert.strictEqual(buttonA.id(), buttonA.d.id, "Button.id function worked in get");
+                        assert.strictEqual(buttonA.id('button-1').id(), 'button-1', "Button.id function worked in set");
+                        assert.strictEqual($A.getButton(buttonA.id()), buttonA, "Automizy.getButton function worked");
+                        assert.strictEqual(Object.keys($A.getAllButton()).length, 3, "Automizy.getAllButton function worked");
+                        
+                        
+                        buttonVarA = false;
+                        buttonA.create(function(){buttonVarA = !buttonVarA;});
+                        
+                        assert.strictEqual(buttonA.draw().d.$widget[0].outerHTML, $('#'+buttonA.id())[0].outerHTML, "Button.draw function worked");
+                        assert.ok(buttonVarA, "Button.create function worked #1");
+                        assert.strictEqual(buttonA.drawTo($('div#qunit-temp')).d.$widget[0].outerHTML, $('#qunit-temp .automizy-button')[0].outerHTML, "Button.drawTo function worked");
+                        assert.ok(!buttonVarA, "Button.create function worked #2");
+                        
+                        buttonA.create();
+                        assert.ok(buttonVarA, "Button.create function worked #3");
+                        
+                        
+                        assert.ok(buttonA.hide().widget().hasClass('automizy-hide'), "Button.hide function worked");
+                        assert.ok(!buttonA.show().widget().hasClass('automizy-hide'), "Button.show function worked");
+                        
+                        assert.ok(buttonA.remove(), "Button.remove function worked #1");
+                        assert.strictEqual(Object.keys($A.getAllButton()).length, 2, "Button.remove function worked #2");
+                        assert.ok($A.removeButton(buttonB.id()), "Automizy.removeButton function worked #1");
+                        assert.strictEqual(Object.keys($A.getAllButton()).length, 1, "Automizy.removeButton function worked #2");
+                        assert.ok($A.removeAllButton(), "Automizy.removeAllButton function worked #1");
+                        assert.strictEqual(Object.keys($A.getAllButton()).length, 0, "Automizy.removeAllButton function worked #2");
+                    });
+                    QUnit.test("input basic test", function (assert) {
+                        inputA = $A.newInput();
+                        inputB = $A.newInput();
+                        $A.newInput();
+                        
+                        assert.ok(inputA instanceof $A.m.Input, "Automizy.newInput function worked");
+                        assert.strictEqual(inputA.id(), inputA.d.id, "Input.id function worked in get");
+                        assert.strictEqual(inputA.id('input-1').id(), 'input-1', "Input.id function worked in set");
+                        assert.strictEqual($A.getInput(inputA.id()), inputA, "Automizy.getInput function worked");
+                        assert.strictEqual(Object.keys($A.getAllInput()).length, 3, "Automizy.getAllInput function worked");
+                        
+                        
+                        inputVarA = false;
+                        inputA.create(function(){inputVarA = !inputVarA;});
+                        
+                        assert.strictEqual(inputA.draw().d.$widget[0].outerHTML, $('#'+inputA.id())[0].outerHTML, "Input.draw function worked");
+                        assert.ok(inputVarA, "Input.create function worked #1");
+                        assert.strictEqual(inputA.drawTo($('div#qunit-temp')).d.$widget[0].outerHTML, $('#qunit-temp .automizy-input')[0].outerHTML, "Input.drawTo function worked");
+                        assert.ok(!inputVarA, "Input.create function worked #2");
+                        
+                        inputA.create();
+                        assert.ok(inputVarA, "Input.create function worked #3");
+                        
+                        assert.ok(inputA.hide().widget().hasClass('automizy-hide'), "Input.hide function worked");
+                        assert.ok(!inputA.show().widget().hasClass('automizy-hide'), "Input.show function worked");
+                        
+                        assert.ok(inputA.remove(), "Input.remove function worked #1");
+                        assert.strictEqual(Object.keys($A.getAllInput()).length, 2, "Input.remove function worked #2");
+                        assert.ok($A.removeInput(inputB.id()), "Automizy.removeInput function worked #1");
+                        assert.strictEqual(Object.keys($A.getAllInput()).length, 1, "Automizy.removeInput function worked #2");
+                        assert.ok($A.removeAllInput(), "Automizy.removeAllInput function worked #1");
+                        assert.strictEqual(Object.keys($A.getAllInput()).length, 0, "Automizy.removeAllInput function worked #2");
+                    });
+                    QUnit.test("dialog basic test", function (assert) {
+                        dialogA = $A.newDialog();
+                        dialogB = $A.newDialog();
+                        $A.newDialog();
+                        
+                        assert.ok(dialogA instanceof $A.m.Dialog, "Automizy.newDialog function worked");
+                        assert.strictEqual(dialogA.id(), dialogA.d.id, "Dialog.id function worked in get");
+                        assert.strictEqual(dialogA.id('dialog-1').id(), 'dialog-1', "Dialog.id function worked in set");
+                        assert.strictEqual($A.getDialog(dialogA.id()), dialogA, "Automizy.getDialog function worked");
+                        assert.strictEqual(Object.keys($A.getAllDialog()).length, 3, "Automizy.getAllDialog function worked");
+                        
+                        
+                        dialogVarA = false;
+                        dialogA.create(function(){dialogVarA = !dialogVarA;});
+                        
+                        assert.strictEqual(dialogA.draw().d.$widget[0].outerHTML, $('#'+dialogA.id())[0].outerHTML, "Dialog.draw function worked");
+                        assert.ok(dialogVarA, "Dialog.create function worked #1");
+                        assert.strictEqual(dialogA.drawTo($('div#qunit-temp')).d.$widget[0].outerHTML, $('#qunit-temp .automizy-dialog')[0].outerHTML, "Dialog.drawTo function worked");
+                        assert.ok(!dialogVarA, "Dialog.create function worked #2");
+                        
+                        dialogA.create();
+                        assert.ok(dialogVarA, "Dialog.create function worked #3");
+                        
+                        assert.ok(dialogA.hide().widget().hasClass('automizy-hide'), "Dialog.hide function worked");
+                        assert.ok(!dialogA.show().widget().hasClass('automizy-hide'), "Dialog.show function worked");
+                        
+                        assert.ok(dialogA.remove(), "Dialog.remove function worked #1");
+                        assert.strictEqual(Object.keys($A.getAllDialog()).length, 2, "Dialog.remove function worked #2");
+                        assert.ok($A.removeDialog(dialogB.id()), "Automizy.removeDialog function worked #1");
+                        assert.strictEqual(Object.keys($A.getAllDialog()).length, 1, "Automizy.removeDialog function worked #2");
+                        assert.ok($A.removeAllDialog(), "Automizy.removeAllDialog function worked #1");
+                        assert.strictEqual(Object.keys($A.getAllDialog()).length, 0, "Automizy.removeAllDialog function worked #2");
+                    });
+                    QUnit.test("feedback basic test", function (assert) {
+                        feedbackA = $A.newFeedback();
+                        feedbackB = $A.newFeedback();
+                        $A.newFeedback();
+                        
+                        assert.ok(feedbackA instanceof $A.m.Feedback, "Automizy.newFeedback function worked");
+                        assert.strictEqual(feedbackA.id(), feedbackA.d.id, "Feedback.id function worked in get");
+                        assert.strictEqual(feedbackA.id('feedback-1').id(), 'feedback-1', "Feedback.id function worked in set");
+                        assert.strictEqual($A.getFeedback(feedbackA.id()), feedbackA, "Automizy.getFeedback function worked");
+                        assert.strictEqual(Object.keys($A.getAllFeedback()).length, 3, "Automizy.getAllFeedback function worked");
+                        
+                        
+                        feedbackVarA = false;
+                        feedbackA.create(function(){feedbackVarA = !feedbackVarA;});
+                        
+                        assert.strictEqual(feedbackA.draw().d.$widget[0].outerHTML, $('#'+feedbackA.id())[0].outerHTML, "Feedback.draw function worked");
+                        assert.ok(feedbackVarA, "Feedback.create function worked #1");
+                        assert.strictEqual(feedbackA.drawTo($('div#qunit-temp')).d.$widget[0].outerHTML, $('#qunit-temp .automizy-feedback')[0].outerHTML, "Feedback.drawTo function worked");
+                        assert.ok(!feedbackVarA, "Feedback.create function worked #2");
+                        
+                        feedbackA.create();
+                        assert.ok(feedbackVarA, "Feedback.create function worked #3");
+                        
+                        assert.ok(feedbackA.hide().widget().hasClass('automizy-hide'), "Feedback.hide function worked");
+                        assert.ok(!feedbackA.show().widget().hasClass('automizy-hide'), "Feedback.show function worked");
+                        
+                        assert.ok(feedbackA.remove(), "Feedback.remove function worked #1");
+                        assert.strictEqual(Object.keys($A.getAllFeedback()).length, 2, "Feedback.remove function worked #2");
+                        assert.ok($A.removeFeedback(feedbackB.id()), "Automizy.removeFeedback function worked #1");
+                        assert.strictEqual(Object.keys($A.getAllFeedback()).length, 1, "Automizy.removeFeedback function worked #2");
+                        assert.ok($A.removeAllFeedback(), "Automizy.removeAllFeedback function worked #1");
+                        assert.strictEqual(Object.keys($A.getAllFeedback()).length, 0, "Automizy.removeAllFeedback function worked #2");
+                    });
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div id="qunit"></div>
+        <div id="qunit-fixture"></div>
+        <div id="qunit-temp"></div>
+    </body>
+</html>
