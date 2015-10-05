@@ -1,0 +1,32 @@
+{
+    "name": "automizy/automizy-js",
+    "description": "Automizy widget collection",
+    "type": "library",
+    "keywords": [
+        "automizy-js",
+        "automizy",
+        "free",
+        "integrate",
+        "responsive",
+        "mobile-friendly"
+    ],
+    "homepage": "http://developers.automizy.com/automizyjs",
+    "license": "MIT",
+    "authors":[
+        { "name": "Gyorgy Reti", "email": "gyorgy.reti@automizy.com" },
+        { "name": "Dominik Sagi", "email": "dominik.sagi@automizy.com" },
+        { "name": "Abel Enekes", "email": "abel.enekes@automizy.com" },
+        { "name": "Gabor Koncz", "email": "gabor.koncz@automizy.com" }
+    ],
+    "support": {
+        "email": "gyorgy.reti@automizy.com",
+        "issues": "https://github.com/Automizy/Automizy-JS/issues",
+        "wiki": "https://github.com/Automizy/Automizy-JS/wiki",
+        "source": "https://github.com/Automizy/Automizy-JS",
+        "docs": "http://developers.automizy.com/automizyjs"
+    },
+    "prefer-stable": true,
+    "config": {
+        "vendor-dir":".composer"
+    }
+}
