@@ -3,12 +3,12 @@
     "description": "Automizy widget collection",
     "type": "library",
     "keywords": [
-        "automizy-js",
+        "automizyjs",
         "automizy",
         "free",
         "integrate",
         "responsive",
-        "mobile-friendly"
+        "mobilefriendly"
     ],
     "homepage": "http://developers.automizy.com/automizyjs",
     "license": "MIT",
