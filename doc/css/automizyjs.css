@@ -53,6 +53,11 @@ body{
     background-color: #689339
 }
 
+.menu ul li a{
+    text-decoration: none;
+    color:inherit;
+}
+
 .menu ul li.active-page{
     background-color: #689339;
 }
