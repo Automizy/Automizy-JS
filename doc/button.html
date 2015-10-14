@@ -12,12 +12,14 @@
                     <h3>Options</h3>
                     <ul>
                         <li><a href='#button/option/data'>data*</a></li>
+                        <li><a href='#button/option/disabled'>disabled</a></li>
                         <li><a href='#button/option/float'>float</a></li>
                         <li><a href='#button/option/html'>html</a></li>
                         <li><a href='#button/option/id'>id*</a></li>
                         <li><a href='#button/option/newRow'>newRow</a></li>
                         <li><a href='#button/option/skin'>skin*</a></li>
                         <li><a href='#button/option/text'>text</a></li>
+                        <li><a href='#button/option/width'>width</a></li>
                     </ul>
                 </td>
                 <td>
@@ -50,6 +52,39 @@
 
         <article id='button/option/data'></article>
 
+        <article id='button/option/disabled'>
+            <h4 class='option-name'>disabled</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>Boolean</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>false</div>
+            </div>
+            <p class='option-use'>
+                This option is used to diable or enable the button element.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the button widget with the <code>disabled</code> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newButton({
+    disabled: true
+}).draw();
+            </pre>
+            Initialize the button widget with the <code>disabled</code> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newButton().disabled(true).draw();
+            </pre>
+            <br>Get or set the <code>disabled</code> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var button = $A.newButton().draw();
+//Setter
+button.disabled(true); //returns button
+
+//Getter
+console.log(button.disabled()); //returns value of disabled
+            </pre>
+        </article>
+        
         <article id='button/option/float'>
             <h4 class='option-name'>float</h4>
             <div class='option-attributes'>
@@ -228,6 +263,39 @@ button.text("I'm cool"); //returns button
 
 //Getter
 console.log(button.text()); //returns value of text
+            </pre>
+        </article>
+
+        <article id='button/option/width' class='last'>
+            <h4 class='option-name'>width</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>"My Button"</div>
+            </div>
+            <p class='option-use'>
+                Use this option to set the width the button.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the button widget with the <code>width</code> option specified, using object in constructor<br>
+            <pre  class='prettyprint linenums'>
+$A.newButton({
+    width: '200px'
+}).draw();
+            </pre>
+            Initialize the button widget with the <code>width</code> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newButton().width(100).draw();
+            </pre>
+            <br>Get or set the <code>width</code> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var button = $A.newButton().draw();
+//Setter
+button.width(100); //returns button
+
+//Getter
+console.log(button.width()); //returns value of width
             </pre>
         </article>
 
