@@ -641,6 +641,8 @@
         if (typeof obj !== 'undefined') {
             if (typeof obj.title !== 'undefined')
                 t.title(obj.title);
+            if (typeof obj.displayHeader !== 'undefined')
+                t.displayHeader(obj.displayHeader);
             if (typeof obj.positionX !== 'undefined')
                 t.positionX(obj.positionX);
             if (typeof obj.positionY !== 'undefined')
@@ -683,6 +685,19 @@
             return t;
         }
         return t.d.title;
+    };
+    p.displayHeader = function (displayHeader) {
+        var t = this;
+        if (typeof displayHeader !== 'undefined') {
+            t.d.displayHeader = $A.parseBoolean(displayHeader);
+            if(t.d.displayHeader){
+                t.d.$head.hide();
+            }else{
+                t.d.$head.hide();
+            }
+            return t;
+        }
+        return t.d.displayHeader;
     };
     p.hash = function (hash) {
         var t = this;
@@ -4140,6 +4155,9 @@
                 var jMod = t.d.selectable ? j-1 : j;
                 if(typeof t.d.settings.cols[jMod] !== 'undefined'){
                     if(typeof t.d.settings.cols[jMod].cellFunction === 'function') {
+                        if(typeof t.d.settings.cols[jMod].cellData != 'undefined') {
+                            cell.automizyData = cellData;
+                        }
                         t.d.settings.cols[jMod].cellFunction.apply(cell, [cell, value]);
                     }
                 }
