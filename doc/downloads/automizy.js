@@ -1534,8 +1534,9 @@
         t.d.$widgetInputBoxError.appendTo(t.d.$widget);
         t.d.$widget.attr('type', 'text').attr('id', t.id()).addClass('automizy-skin-' + t.d.skin);
         t.d.$widgetInput.on('change keyup paste', function () {
-            t.validate();
             t.change();
+        }).blur(function(){
+            t.validate();
         }).keypress(function(e) {
             if (e.which == 13) {
                 t.enter();
@@ -4285,14 +4286,14 @@
         if(t.table().find('tr.automizy-table-loading-row').length > 0){
             return t;
         }
-        setTimeout(function(){
+        //setTimeout(function(){
             t.deleteRows();
             t.setButtonsStatus();
             var $tr = $('<tr class="automizy-table-loading-row"></tr>');
             var $td = $('<td colspan="'+t.getRowByIndex(0).$cells().length+'"></td>').appendTo($tr);
             t.d.$loadingCellContent.appendTo($td);
             $tr.appendTo(t.table());
-        }, 10);
+        //}, 10);
         return t;
     };
     p.loadingCellContent = function(loadingCellContent){

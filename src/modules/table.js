@@ -1154,14 +1154,14 @@ define([
         if(t.table().find('tr.automizy-table-loading-row').length > 0){
             return t;
         }
-        setTimeout(function(){
+        //setTimeout(function(){
             t.deleteRows();
             t.setButtonsStatus();
             var $tr = $('<tr class="automizy-table-loading-row"></tr>');
             var $td = $('<td colspan="'+t.getRowByIndex(0).$cells().length+'"></td>').appendTo($tr);
             t.d.$loadingCellContent.appendTo($td);
             $tr.appendTo(t.table());
-        }, 10);
+        //}, 10);
         return t;
     };
     p.loadingCellContent = function(loadingCellContent){

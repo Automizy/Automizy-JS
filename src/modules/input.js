@@ -89,8 +89,9 @@ define([
         t.d.$widgetInputBoxError.appendTo(t.d.$widget);
         t.d.$widget.attr('type', 'text').attr('id', t.id()).addClass('automizy-skin-' + t.d.skin);
         t.d.$widgetInput.on('change keyup paste', function () {
-            t.validate();
             t.change();
+        }).blur(function(){
+            t.validate();
         }).keypress(function(e) {
             if (e.which == 13) {
                 t.enter();
