@@ -34,6 +34,8 @@
                         <li><a href='#form/method/addInput'>addInput</a></li>
                         <li><a href='#form/method/addInputs'>addInputs</a></li>
                         <li><a href='#form/method/addSubTitle'>addSubTitle</a></li>
+                        <li><a href='#form/method/addTable'>addTable</a></li>
+                        <li><a href='#form/method/addTables'>addTables</a></li>
                         <li><a href='#form/method/break'>break</a></li>
                         <li><a href='#form/method/draw'>draw*</a></li>
                         <li><a href='#form/method/drawTo'>drawTo*</a></li>
@@ -49,6 +51,7 @@
                         <li><a href='#form/method/removeHtml'>removeHtml</a></li>
                         <li><a href='#form/method/removeInput'>removeInput</a></li>
                         <li><a href='#form/method/removeSubTitle'>removeSubTitle</a></li>
+                        <li><a href='#form/method/removeTable'>removeTable</a></li>
                         <li><a href='#form/method/show'>show*</a></li>
                         <li><a href='#form/method/submit'>submit</a></li>
                         <li><a href='#form/method/subTitle'>subTitle</a></li>
@@ -443,6 +446,78 @@ $A.newForm().addSubTitle('Title').draw();
             </pre>
         </article>
 
+        <article id='form/method/addTable'>
+            <h4 class='method-name'>addTable(obj)</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Table</div>
+            </div>
+            <p class='method-use'>
+                Use this method to add a table to your form.
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        obj
+                    </div>
+                    Type: <code>Object</code><br>
+                    The table object you want to insert.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+$A.newForm({
+    title: 'Form with inputs and table',
+    inputs: [$A.newInput()]
+}).addTable($A.newTable({
+    cols:[
+        {name: 'name', text:'Camaign name'},
+        {name: 'subject', text: 'Campaign subject'},
+        {name: 'type', text: 'Type'}
+    ]})
+).draw().addButton($A.newButton());
+            </pre>
+        </article>
+
+        <article id='form/method/addTables'>
+            <h4 class='method-name'>addTables(arr)</h4>
+            <div class='method-attributes'>
+                Returns:<div class='method-returns'>Array of tables</div>
+            </div>
+            <p class='method-use'>
+                Use this method to add multiple tables to your form.
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        arr
+                    </div>
+                    Type: <code>Array</code><br>
+                    The array of table objects you want to insert.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+$A.newForm({
+    title: 'Form with inputs and tables',
+    inputs: [$A.newInput()]
+}).addTables([
+    $A.newTable({
+        cols:[
+            {name: 'name', text:'Camaign name'},
+            {name: 'subject', text: 'Campaign subject'},
+            {name: 'type', text: 'Type'}
+        ]
+    }),
+    $A.newTable({
+        cols:[
+            {name: 'date', text:'Birth date'},
+            {name: 'email', text: 'Email address'}
+        ]
+    })
+]).draw().addButton($A.newButton());
+            </pre>
+        </article>
+
         <article id='form/method/break'>
             <h4 class='method-name'>break</h4>
             <div class='method-attributes'>
@@ -643,6 +718,30 @@ var form = $A.newForm().draw();
 form.addSubTitle('title');
 setTimeout(function (){
     form.removeSubTitle($($('.automizy-form-subtitle')[0]).attr('id'));
+    }, 1000);
+            </pre>
+        </article>
+
+        <article id='form/method/removeTable'>
+            <h4 class='method-name'>removeTable(table)</h4>
+            <p class='method-use'>
+                Use this to remove a table from your form.
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        table
+                    </div>
+                    Type: <code>Object | String</code><br>
+                    The table you want to remove, or its id.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var form = $A.newForm().draw();
+var table = form.addTable();
+setTimeout(function (){
+    form.removeTable(table);
     }, 1000);
             </pre>
         </article>
