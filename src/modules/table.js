@@ -1024,8 +1024,8 @@ define([
                 var jMod = t.d.selectable ? j-1 : j;
                 if(typeof t.d.settings.cols[jMod] !== 'undefined'){
                     if(typeof t.d.settings.cols[jMod].cellFunction === 'function') {
-                        if(typeof t.d.settings.cols[jMod].cellData != 'undefined') {
-                            cell.automizyData = cellData;
+                        if(typeof t.d.settings.cols[jMod].cellData !== 'undefined') {
+                            cell.automizyData = t.d.settings.cols[jMod].cellData;
                         }
                         t.d.settings.cols[jMod].cellFunction.apply(cell, [cell, value]);
                     }
