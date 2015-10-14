@@ -73,6 +73,7 @@ define([
             t.d.width = width;
             t.d.$widget.width(width);
             t.d.$widgetButton.width('100%');
+            t.d.$widgetButton.css('width','100%');
             return t;
         }
         return t.d.width;

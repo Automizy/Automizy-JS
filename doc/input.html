@@ -19,7 +19,8 @@
                         <li><a href='#input/option/help'>help</a></li>
                         <li><a href='#input/option/id'>id*</a></li>
                         <li><a href='#input/option/items'>items</a></li>                        
-                        <li><a href='#input/option/label'>label</a></li>                 
+                        <li><a href='#input/option/label'>label</a></li>                       
+                        <li><a href='#input/option/labelAfter'>labelAfter</a></li>                 
                         <li><a href='#input/option/labelPosition'>labelPosition</a></li>                 
                         <li><a href='#input/option/labelWidth'>labelWidth</a></li>
                         <li><a href='#input/option/multiple'>multiple</a></li>
@@ -266,7 +267,7 @@ console.log(input.help()); //returns the help string
                 Type:<div class='option-type'>String</div>
             </div>
             <div class='option-attributes'>
-                Default value:<div class='option-default-value'>true</div>
+                Default value:<div class='option-default-value'>''</div>
             </div>
             <p class='option-use'>
                 If set, a label appears beneath the input.
@@ -290,6 +291,39 @@ input.label('Name:'); //returns input
 
 //Getter
 console.log(input.label()); //returns value of label
+            </pre>
+        </article>
+
+        <article id='input/option/labelAfter'>
+            <h4 class='option-name'>labelAfter</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>''</div>
+            </div>
+            <p class='option-use'>
+                Use this option to insert a label after the input.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the input widget with the <code>labelAfter</code> option specified, using object in constructor<br>
+            <pre  class='prettyprint linenums'>
+$A.newInput({
+    labelAfter: 'label'
+}).draw();
+            </pre>
+            Initialize the input widget with the <code>labelAfter</code> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newInput().labelAfter('label').draw();
+            </pre>
+            <br>Get or set the <code>label</code> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var input = $A.newInput().draw();
+//Setter
+input.labelAfter('label'); //returns input
+
+//Getter
+console.log(input.labelAfter()); //returns value of labelAfter
             </pre>
         </article>
 

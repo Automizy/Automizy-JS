@@ -16,7 +16,9 @@
                         <li><a href='#dialog/option/data'>data*</a></li>
                         <li><a href='#dialog/option/hash'>hash</a></li>
                         <li><a href='#dialog/option/id'>id*</a></li>
+                        <li><a href='#dialog/option/maxWidth'>maxWidth</a></li>
                         <li><a href='#dialog/option/minHeight'>minHeight</a></li>
+                        <li><a href='#dialog/option/minWidth'>minWidth</a></li>
                         <li><a href='#dialog/option/position'>position</a></li>
                         <li><a href='#dialog/option/positionX'>positionX</a></li>
                         <li><a href='#dialog/option/positionY'>positionY</a></li>
@@ -157,6 +159,39 @@ console.log(dialog.hash()); //returns value of hash
             </pre>
         </article>
 
+        <article id='dialog/option/maxWidth'>
+            <h4 class='option-name'>maxWidth</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>'100%'</div>
+            </div>
+            <p class='option-use'>
+                Use this method to set the maximum width of the dialog box.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the dialog widget with the <code>maxWidth</code> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newDialog({
+    maxWidth: "300px"
+}).draw();
+            </pre>
+            Initialize the dialog widget with the <code>maxWidth</code> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newDialog().draw().maxWidth("300px");
+            </pre>
+            <br>Get or set the <code>maxWidth</code> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var dialog = $A.newDialog().draw();
+//Setter
+dialog.maxWidth("300px");  //returns dialog
+
+//Getter
+console.log(dialog.maxWidth()); //returns value of maxWidth
+            </pre>
+        </article>
+        
         <article id='dialog/option/minHeight'>
             <h4 class='option-name'>minHeight</h4>
             <div class='option-attributes'>
@@ -187,6 +222,40 @@ dialog.minHeight("200px");  //returns dialog
 
 //Getter
 console.log(dialog.minHeight()); //returns value of minHeight
+            </pre>
+        </article>
+        
+        <article id='dialog/option/minWidth'>
+            <h4 class='option-name'>minWidth</h4>
+            <div class='option-attributes'>
+                Type:<div class='option-type'>String</div>
+            </div>
+            <div class='option-attributes'>
+                Default value:<div class='option-default-value'>'0px'</div>
+            </div>
+            <p class='option-use'>
+                Use this method to set the minimum width of the dialog box.
+            </p>
+            <div class='option-examples'>Code examples</div>
+            Initialize the dialog widget with the <code>minWidth</code> option specified, using object in constructor<br>
+            <pre class='prettyprint linenums'>
+$A.newDialog({
+    minWidth: "200px",
+    width: "100px"
+}).draw();
+            </pre>
+            Initialize the dialog widget with the <code>minWidth</code> option specified, using method chaining
+            <pre class='prettyprint linenums'>
+$A.newDialog().draw().width('100px').minWidth("200px");
+            </pre>
+            <br>Get or set the <code>minWidth</code> option, after initialization<br>
+            <pre class='prettyprint linenums'>
+var dialog = $A.newDialog().draw().width('100px');
+//Setter
+dialog.minWidth("200px");  //returns dialog
+
+//Getter
+console.log(dialog.minWidth()); //returns value of minHeight
             </pre>
         </article>
         
