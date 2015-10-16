@@ -959,11 +959,12 @@ define([
                 setTimeout(function(){
                     if(!t.d.isCheckboxClick) {
                         t.openedRow($A.tableRow($t));
-                        t.d.beforeOpenInlineBox.apply($t, [t.openedRow(), t.d.openedRow.recordId()]);
-                        if (t.d.openableInlineBox) {
-                            t.d.$inlineButtons.attr('colspan', t.table()[0].rows[0].cells.length - t.table().find('tr:first th:not(:visible)').length);
-                            t.d.$inlineButtonsBox.insertAfter($t);
-                            t.d.$inlineButtonsBox.show();
+                        if(t.d.beforeOpenInlineBox.apply($t, [t.openedRow(), t.d.openedRow.recordId()]) !== false){
+                            if (t.d.openableInlineBox) {
+                                t.d.$inlineButtons.attr('colspan', t.table()[0].rows[0].cells.length - t.table().find('tr:first th:not(:visible)').length);
+                                t.d.$inlineButtonsBox.insertAfter($t);
+                                t.d.$inlineButtonsBox.show();
+                            }
                         }
                     }
                     t.d.isCheckboxClick = false;

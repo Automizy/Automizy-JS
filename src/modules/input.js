@@ -524,7 +524,13 @@ define([
             if (!$.isArray(arr)) {
                 var na = [];
                 for (var i in arr) {
-                    na.push([i, arr[i]]);
+                    var inVal = arr[i];
+                    var inSelected = false;
+                    if((typeof inVal === 'object' || typeof inVal === 'array') && !$.isArray(inVal)){
+                        inSelected = inVal.selected;
+                        inVal = inVal.value;
+                    }
+                    na.push([i, inVal, inSelected]);
                 }
                 arr = na;
             }
