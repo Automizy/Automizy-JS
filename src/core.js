@@ -19,6 +19,7 @@ define([], function () {
         t.m = {};
         t.mt = {};
         t.default = {};
+        t.events = {}
     }();
     
     return AutomizyJs;
