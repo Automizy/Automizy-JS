@@ -31,11 +31,9 @@
                 <td>
                     <h3>Methods</h3>
                     <ul><li><a href='#dialog/method/addButton'>addButton*</a></li>
-                        <li><a href='#dialog/method/close'>close</a></li>
                         <li><a href='#dialog/method/draw'>draw*</a></li>
                         <li><a href='#dialog/method/drawTo'>drawTo*</a></li>
                         <li><a href='#dialog/method/hide'>hide*</a></li>
-                        <li><a href='#dialog/method/open'>open</a></li>
                         <li><a href='#dialog/method/remove'>remove*</a></li>
                         <li><a href='#dialog/method/removeButton'>removeButton*</a></li>
                         <li><a href='#dialog/method/setMaxHeight'>setMaxHeight</a></li>
@@ -46,7 +44,10 @@
                 <td>
                     <h3>Events</h3>
                     <ul>
+                        <li><a href='#dialog/event/beforeOpen'>beforeOpen</a></li>
+                        <li><a href='#dialog/event/close'>close</a></li>
                         <li><a href='#dialog/event/create'>create*</a></li>
+                        <li><a href='#dialog/event/open'>open</a></li>
                     </ul>
                 </td>
             </tr>
@@ -466,47 +467,6 @@ console.log(dialog.zIndex()); //returns value of zIndex
     <section>
         <h2>Methods</h2>
         <article id='dialog/method/addButton'></article>
-
-<article id='dialog/method/close'>
-            <h4 class='method-name'>close</h4>
-            <div class='method-attributes'>
-            </div>
-            <div class='method-attributes'>
-                Returns:<div class='method-returns'>Dialog</div>
-            </div>
-            <p class='method-use'>
-                Invoke this function to close the current dialog.
-            </p>
-            <div class='method-examples'>Code examples</div>
-            <pre class='prettyprint linenums'>
-var dialog = $A.newDialog().draw();
-dialog.open();
-setTimeout(function(){
-    dialog.close();
-    },1000);
-            </pre>
-        </article>
-
-        <article id='dialog/method/open'>
-            <h4 class='method-name'>open</h4>
-            <div class='method-attributes'>
-            </div>
-            <div class='method-attributes'>
-                Returns:<div class='method-returns'>Dialog</div>
-            </div>
-            <p class='method-use'>
-                Invoke this function to open the current dialog.
-            </p>   
-            <div class='method-examples'>Code examples</div>
-            <pre class='prettyprint linenums'>
-var dialog = $A.newDialog().draw();
-dialog.open();
-setTimeout(function(){
-    dialog.close();
-    },1000);
-            </pre>
-        </article>
-
         <article id='dialog/method/draw'></article>
         <article id='dialog/method/drawTo'></article>
         <article id='dialog/method/hide'></article>
@@ -540,8 +500,92 @@ var dialog = $A.newDialog({
     <section>
         <h2>Events</h2>
 
+        <article id='dialog/event/beforeOpen'>
+            <h4 class='event-name'>beforeOpen(func)</h4>
+            <div class='event-attributes'>
+                Returns:<div class='event-returns'>Dialog</div>
+            </div>
+            <p class='event-use'>
+                Use this function add events which will be triggered before the <code>open</code> function.
+            </p>                    
+            <ul>
+                <li>
+                    <div class="event-parameter">
+                        func
+                    </div>
+                    Type: <code>function</code><br>
+                    The event to be triggered
+                </li>
+            </ul>
+            <div class='event-examples'>Code examples</div>
+            <pre class="prettyprint linenums">
+        $A.newDialog().beforeOpen(function (){
+            alert("Before dialog opens.");
+        }).open();
+            </pre>
+        </article>
+        
+        <article id='dialog/event/close'>
+            <h4 class='event-name'>close(func)</h4>
+            <div class='event-attributes'>
+                Returns:<div class='event-returns'>Dialog</div>
+            </div>
+            <p class='event-use'>
+                Invoke this function without parameter to close the dialog.<br>
+                If invoked with parameter, the function given as parameter will be added to the <code>close</code> function's event list.
+            </p>                    
+            <ul>
+                <li>
+                    <div class="event-parameter">
+                        func
+                    </div>
+                    Type: <code>function</code><br>
+                    The event to be triggered
+                </li>
+            </ul>
+            <div class='event-examples'>Code examples</div>
+            <pre class="prettyprint linenums">
+var dialog = $A.newDialog({
+    close: function () {
+        alert('close');
+    }
+}).draw().open();
+            </pre>
+        </article>
+
         <article id='dialog/event/create'></article>
 
+        
+        <article id='dialog/event/open'>
+            <h4 class='event-name'>open(func)</h4>
+            <div class='event-attributes'>
+                Returns:<div class='event-returns'>Dialog</div>
+            </div>
+            <p class='event-use'>
+                Invoke this function without parameter to open the dialog.<br>
+                If invoked with parameter, the function given as parameter will be registered to the <code>open</code> function's event list.
+            </p>                    
+            <ul>
+                <li>
+                    <div class="event-parameter">
+                        func
+                    </div>
+                    Type: <code>function</code><br>
+                    The event to be triggered
+                </li>
+            </ul>
+            <div class='event-examples'>Code examples</div>
+            <pre class="prettyprint linenums">
+var dialog = $A.newDialog({
+    open: function () {
+        alert('open');
+    }
+}).draw();
+setTimeout(function(){
+    dialog.open();
+},1000);
+            </pre>
+        </article>
     </section>
 
     <section>

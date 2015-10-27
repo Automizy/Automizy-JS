@@ -1,0 +1,64 @@
+<div id="doc-container">
+    <h1>Global events</h1>
+    <div class="description-label">Description:
+        <div class="description">These functions are used for registering global events on all specific module istances. When the specific event is triggered on any of the specific module instances, all functions registered on the event will be called.</div>
+    </div>
+    <section>
+        <h2 class="quick-nav">Quick navigation</h2>
+        <ul>
+            <li class="global-event-name"><a href="#globalEvents/dialogBeforeOpen" class="globalEvents-dialogBeforeOpen">$A.events.dialog.beforeOpen(func)</a></li>
+            <li class="global-event-name"><a href="#globalEvents/dialogOpen" class="globalEvents-dialogOpen">$A.events.dialog.open(func)</a></li>
+        </ul>
+    </section>
+    <section>
+        <h2>Global dialog events</h2> 
+        <article id="globalEvents/dialogBeforeOpen" class='last'>
+            <h4 class='method-name'>$A.events.dialog.beforeOpen(func)</h4>
+            <p class='method-use'>
+                Use this function to register a new function on the <code>beforeOpen</code> event of all dialogs.
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        func
+                    </div>
+                    Type: <code>function</code><br>
+                    The function to be called.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+//Creating a new Button module
+var dialog = $A.newDialog();
+$A.events.dialog.beforeOpen(function(dialog){
+    alert('A dialog will open!');
+});
+dialog.open();
+            </pre>
+        </article>
+        <article id="globalEvents/dialogOpen" class='last'>
+            <h4 class='method-name'>$A.events.dialog.open(func)</h4>
+            <p class='method-use'>
+                Use this function to register a new function on the <code>open</code> event of all dialogs.
+            </p>                    
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        func
+                    </div>
+                    Type: <code>function</code><br>
+                    The function to be called.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+//Creating a new Button module
+var dialog = $A.newDialog();
+$A.events.dialog.open(function(dialog){
+    alert('A dialog opened!');
+});
+dialog.open();
+            </pre>
+        </article>
+    </section>
+</div>

@@ -115,6 +115,8 @@ function loadPage(url1, url2, moduleName) {
             }, 100);
             if (typeof $(".globalFunctions-" + moduleName)[0]!=='undefined')
                 $(".globalFunctions-" + moduleName)[0].click();
+            if (typeof $(".globalEvents-" + moduleName)[0]!=='undefined')
+                $(".globalEvents-" + moduleName)[0].click();
         });
 }
 
