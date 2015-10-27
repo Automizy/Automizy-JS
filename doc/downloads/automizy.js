@@ -19,6 +19,7 @@
         t.m = {};
         t.mt = {};
         t.default = {};
+        t.events = {}
     }();
     
     return AutomizyJs;
@@ -436,6 +437,7 @@
             t.d.width = width;
             t.d.$widget.width(width);
             t.d.$widgetButton.width('100%');
+            t.d.$widgetButton.css('width','100%');
             return t;
         }
         return t.d.width;
@@ -590,6 +592,18 @@
 })();
 
 (function(){
+    $A.runFunctions = function(arr, functionThis, functionParameters){
+        var returnValue = true;
+        for(var i = 0; i < arr.length; i++){
+            if(arr[i].apply(functionThis, functionParameters) === false){
+                returnValue = false;
+            }
+        }
+        return returnValue;
+    }
+})();
+
+(function(){
     var Dialog = function (obj) {
         var t = this;
         t.d = {
@@ -613,11 +627,10 @@
             hash: false,
             closable:true,
             id: 'automizy-dialog-' + $A.getUniqueString(),
+            openFunctions: [],
+            beforeOpenFunctions: [],
+            closeFunctions: [],
             create: function () {
-            },
-            open: function () {
-            },
-            close: function () {
             }
         };
         t.init();
@@ -641,6 +654,8 @@
         if (typeof obj !== 'undefined') {
             if (typeof obj.title !== 'undefined')
                 t.title(obj.title);
+            if (typeof obj.displayHeader !== 'undefined')
+                t.displayHeader(obj.displayHeader);
             if (typeof obj.positionX !== 'undefined')
                 t.positionX(obj.positionX);
             if (typeof obj.positionY !== 'undefined')
@@ -663,6 +678,8 @@
                 t.closable(obj.closable);
             if (typeof obj.open === 'function')
                 t.open(obj.open);
+            if (typeof obj.beforeOpen === 'function')
+                t.beforeOpen(obj.beforeOpen);
             if (typeof obj.close === 'function')
                 t.close(obj.close);
             if (typeof obj.content !== 'undefined')
@@ -683,6 +700,19 @@
             return t;
         }
         return t.d.title;
+    };
+    p.displayHeader = function (displayHeader) {
+        var t = this;
+        if (typeof displayHeader !== 'undefined') {
+            t.d.displayHeader = $A.parseBoolean(displayHeader);
+            if(t.d.displayHeader){
+                t.d.$head.hide();
+            }else{
+                t.d.$head.hide();
+            }
+            return t;
+        }
+        return t.d.displayHeader;
     };
     p.hash = function (hash) {
         var t = this;
@@ -829,14 +859,27 @@
     p.open = function (func) {
         var t = this;
         if (typeof func === 'function') {
-            t.d.open = func;
+            t.d.openFunctions.push(func);
         } else {
-            if (t.hash() !== false)
-                $A.hashChange(t.hash());
-            t.d.open.apply(this, [this, this.d.$widget]);
-            t.show();
+            t.beforeOpen();
+            if($A.runFunctions(t.d.openFunctions, this, [this, this.d.$widget]) !== false){
+                if (t.hash() !== false)
+                    $A.hashChange(t.hash());
+                t.show();
+            }
+            $A.runFunctions($A.events.dialog.functions.open, this, [this, this.d.$widget]);
         }
         t.setMaxHeight();
+        return t;
+    };
+    p.beforeOpen = function (func) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.d.beforeOpenFunctions.push(func);
+        } else {
+            $A.runFunctions(t.d.beforeOpenFunctions, this, [this, this.d.$widget]);
+            $A.runFunctions($A.events.dialog.functions.beforeOpen, this, [this, this.d.$widget]);
+        }
         return t;
     };
     p.closable = function (closable) {
@@ -851,11 +894,12 @@
     p.close = function (func) {
         var t = this;
         if (typeof func === 'function') {
-            t.d.close = func;
+            t.d.closeFunctions.push(func);
         } else {
             if(t.d.closable){
-                t.hide();
-                t.d.close.apply(this, [this, this.d.$widget]);
+                if($A.runFunctions(t.d.closeFunctions, this, [this, this.d.$widget]) !== false){
+                    t.hide();
+                }
             }
         }
         return t;
@@ -872,7 +916,26 @@
     };    
 
     $A.initBasicFunctions(Dialog, "Dialog");
-    
+
+
+    $A.events.dialog = {
+        functions:{
+            open:[],
+            beforeOpen:[]
+        },
+        open:function(func){
+            if(typeof func === 'function'){
+                $A.events.dialog.functions.open.push(func);
+            }
+        },
+        beforeOpen:function(func){
+            if(typeof func === 'function'){
+                $A.events.dialog.functions.beforeOpen.push(func);
+            }
+        }
+    };
+
+
 })();
 
 (function(){
@@ -1519,8 +1582,9 @@
         t.d.$widgetInputBoxError.appendTo(t.d.$widget);
         t.d.$widget.attr('type', 'text').attr('id', t.id()).addClass('automizy-skin-' + t.d.skin);
         t.d.$widgetInput.on('change keyup paste', function () {
-            t.validate();
             t.change();
+        }).blur(function(){
+            t.validate();
         }).keypress(function(e) {
             if (e.which == 13) {
                 t.enter();
@@ -1953,7 +2017,13 @@
             if (!$.isArray(arr)) {
                 var na = [];
                 for (var i in arr) {
-                    na.push([i, arr[i]]);
+                    var inVal = arr[i];
+                    var inSelected = false;
+                    if((typeof inVal === 'object' || typeof inVal === 'array') && !$.isArray(inVal)){
+                        inSelected = inVal.selected;
+                        inVal = inVal.value;
+                    }
+                    na.push([i, inVal, inSelected]);
                 }
                 arr = na;
             }
@@ -4075,11 +4145,12 @@
                 setTimeout(function(){
                     if(!t.d.isCheckboxClick) {
                         t.openedRow($A.tableRow($t));
-                        t.d.beforeOpenInlineBox.apply($t, [t.openedRow(), t.d.openedRow.recordId()]);
-                        if (t.d.openableInlineBox) {
-                            t.d.$inlineButtons.attr('colspan', t.table()[0].rows[0].cells.length - t.table().find('tr:first th:not(:visible)').length);
-                            t.d.$inlineButtonsBox.insertAfter($t);
-                            t.d.$inlineButtonsBox.show();
+                        if(t.d.beforeOpenInlineBox.apply($t, [t.openedRow(), t.d.openedRow.recordId()]) !== false){
+                            if (t.d.openableInlineBox) {
+                                t.d.$inlineButtons.attr('colspan', t.table()[0].rows[0].cells.length - t.table().find('tr:first th:not(:visible)').length);
+                                t.d.$inlineButtonsBox.insertAfter($t);
+                                t.d.$inlineButtonsBox.show();
+                            }
                         }
                     }
                     t.d.isCheckboxClick = false;
@@ -4140,6 +4211,9 @@
                 var jMod = t.d.selectable ? j-1 : j;
                 if(typeof t.d.settings.cols[jMod] !== 'undefined'){
                     if(typeof t.d.settings.cols[jMod].cellFunction === 'function') {
+                        if(typeof t.d.settings.cols[jMod].cellData !== 'undefined') {
+                            cell.automizyData = t.d.settings.cols[jMod].cellData;
+                        }
                         t.d.settings.cols[jMod].cellFunction.apply(cell, [cell, value]);
                     }
                 }
@@ -4267,14 +4341,14 @@
         if(t.table().find('tr.automizy-table-loading-row').length > 0){
             return t;
         }
-        setTimeout(function(){
+        //setTimeout(function(){
             t.deleteRows();
             t.setButtonsStatus();
             var $tr = $('<tr class="automizy-table-loading-row"></tr>');
             var $td = $('<td colspan="'+t.getRowByIndex(0).$cells().length+'"></td>').appendTo($tr);
             t.d.$loadingCellContent.appendTo($td);
             $tr.appendTo(t.table());
-        }, 10);
+        //}, 10);
         return t;
     };
     p.loadingCellContent = function(loadingCellContent){

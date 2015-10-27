@@ -959,11 +959,12 @@ define([
                 setTimeout(function(){
                     if(!t.d.isCheckboxClick) {
                         t.openedRow($A.tableRow($t));
-                        t.d.beforeOpenInlineBox.apply($t, [t.openedRow(), t.d.openedRow.recordId()]);
-                        if (t.d.openableInlineBox) {
-                            t.d.$inlineButtons.attr('colspan', t.table()[0].rows[0].cells.length - t.table().find('tr:first th:not(:visible)').length);
-                            t.d.$inlineButtonsBox.insertAfter($t);
-                            t.d.$inlineButtonsBox.show();
+                        if(t.d.beforeOpenInlineBox.apply($t, [t.openedRow(), t.d.openedRow.recordId()]) !== false){
+                            if (t.d.openableInlineBox) {
+                                t.d.$inlineButtons.attr('colspan', t.table()[0].rows[0].cells.length - t.table().find('tr:first th:not(:visible)').length);
+                                t.d.$inlineButtonsBox.insertAfter($t);
+                                t.d.$inlineButtonsBox.show();
+                            }
                         }
                     }
                     t.d.isCheckboxClick = false;
@@ -1024,6 +1025,9 @@ define([
                 var jMod = t.d.selectable ? j-1 : j;
                 if(typeof t.d.settings.cols[jMod] !== 'undefined'){
                     if(typeof t.d.settings.cols[jMod].cellFunction === 'function') {
+                        if(typeof t.d.settings.cols[jMod].cellData !== 'undefined') {
+                            cell.automizyData = t.d.settings.cols[jMod].cellData;
+                        }
                         t.d.settings.cols[jMod].cellFunction.apply(cell, [cell, value]);
                     }
                 }
@@ -1151,14 +1155,14 @@ define([
         if(t.table().find('tr.automizy-table-loading-row').length > 0){
             return t;
         }
-        setTimeout(function(){
+        //setTimeout(function(){
             t.deleteRows();
             t.setButtonsStatus();
             var $tr = $('<tr class="automizy-table-loading-row"></tr>');
             var $td = $('<td colspan="'+t.getRowByIndex(0).$cells().length+'"></td>').appendTo($tr);
             t.d.$loadingCellContent.appendTo($td);
             $tr.appendTo(t.table());
-        }, 10);
+        //}, 10);
         return t;
     };
     p.loadingCellContent = function(loadingCellContent){

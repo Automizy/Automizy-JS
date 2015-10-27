@@ -89,8 +89,9 @@ define([
         t.d.$widgetInputBoxError.appendTo(t.d.$widget);
         t.d.$widget.attr('type', 'text').attr('id', t.id()).addClass('automizy-skin-' + t.d.skin);
         t.d.$widgetInput.on('change keyup paste', function () {
-            t.validate();
             t.change();
+        }).blur(function(){
+            t.validate();
         }).keypress(function(e) {
             if (e.which == 13) {
                 t.enter();
@@ -523,7 +524,13 @@ define([
             if (!$.isArray(arr)) {
                 var na = [];
                 for (var i in arr) {
-                    na.push([i, arr[i]]);
+                    var inVal = arr[i];
+                    var inSelected = false;
+                    if((typeof inVal === 'object' || typeof inVal === 'array') && !$.isArray(inVal)){
+                        inSelected = inVal.selected;
+                        inVal = inVal.value;
+                    }
+                    na.push([i, inVal, inSelected]);
                 }
                 arr = na;
             }
