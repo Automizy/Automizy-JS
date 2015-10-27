@@ -73,7 +73,7 @@ body{
 }
 
 .module-content{
-    width:80%;
+    width:75%;
     display: inline-block;
     box-sizing: border-box;
     padding: 30px;
@@ -83,7 +83,7 @@ body{
 
 .element-list{
     float:left;
-    width:20%;
+    width:25%;
     vertical-align: top;
     box-sizing: border-box;
     background-color: #edffd9;
@@ -298,19 +298,19 @@ table.doc-content-table td li a:hover{
     text-decoration: none;
 }
 
-.global-function-name{
+.global-function-name,.global-event-name{
     list-style-type: none;
     margin: 4px;
     font-size:15px;
 }
 
-.global-function-name a{
+.global-function-name a,.global-event-name a{
     color: #53821c;
     text-decoration: underline;
     font-size:15px;
 }
 
-.global-function-name a:hover{
+.global-function-name a:hover, .global-event-name a:hover{
     text-decoration: none;
 }
 
