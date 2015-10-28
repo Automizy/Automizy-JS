@@ -1,7 +1,7 @@
 <div id="doc-container">
-    <h1>Global events</h1>
+    <h1 id="globalEvents-head">Global events</h1>
     <div class="description-label">Description:
-        <div class="description">These functions are used for registering global events on all specific module istances. When the specific event is triggered on any of the specific module instances, all functions registered on the event will be called.</div>
+        <div class="description">These functions are used for registering global events on AutomizyJs modules, which will be triggered when a specific event occures on any of the module instances. When the specific event is triggered, all functions registered on the event will be called.</div>
     </div>
     <section>
         <h2 class="quick-nav">Quick navigation</h2>
@@ -15,7 +15,7 @@
         <article id="globalEvents/dialogBeforeOpen" class='last'>
             <h4 class='method-name'>$A.events.dialog.beforeOpen(func)</h4>
             <p class='method-use'>
-                Use this function to register a new function on the <code>beforeOpen</code> event of all dialogs.
+                Use this function to register a new function on the <code>beforeOpen</code> event dialogs.
             </p>                    
             <ul>
                 <li>
@@ -28,18 +28,26 @@
             </ul>
             <div class='method-examples'>Code examples</div>
             <pre class='prettyprint linenums'>
-//Creating a new Button module
-var dialog = $A.newDialog();
 $A.events.dialog.beforeOpen(function(dialog){
-    alert('A dialog will open!');
+    // This will run before a dialog opens
+    alert(dialog.title());
 });
-dialog.open();
+ 
+var firstDialog = $A.dialog().title("First title here");
+var secondDialog = $A.dialog().title("Second title here");
+ 
+$A.button().text("Open first dialog").click(function(){
+    firstDialog.open();
+}).draw();
+$A.button().text("Open second dialog").click(function(){
+    secondDialog.open();
+}).draw();
             </pre>
         </article>
         <article id="globalEvents/dialogOpen" class='last'>
             <h4 class='method-name'>$A.events.dialog.open(func)</h4>
             <p class='method-use'>
-                Use this function to register a new function on the <code>open</code> event of all dialogs.
+                Use this function to register a new function on the <code>open</code> event dialogs.
             </p>                    
             <ul>
                 <li>
@@ -52,12 +60,20 @@ dialog.open();
             </ul>
             <div class='method-examples'>Code examples</div>
             <pre class='prettyprint linenums'>
-//Creating a new Button module
-var dialog = $A.newDialog();
 $A.events.dialog.open(function(dialog){
-    alert('A dialog opened!');
+    // This will run after a dialog opens
+    alert(dialog.title());
 });
-dialog.open();
+ 
+var firstDialog = $A.dialog().title("First title here");
+var secondDialog = $A.dialog().title("Second title here");
+ 
+$A.button().text("Open first dialog").click(function(){
+    firstDialog.open();
+}).draw();
+$A.button().text("Open second dialog").click(function(){
+    secondDialog.open();
+}).draw();
             </pre>
         </article>
     </section>
