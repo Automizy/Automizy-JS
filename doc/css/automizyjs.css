@@ -132,6 +132,7 @@ body{
     padding: 10px 0 10px 10px;
     text-align: left;
     background-color: #CCEAAC;
+    cursor: pointer;
 }
 
 li.L0, li.L1, li.L2, li.L3,
@@ -298,19 +299,20 @@ table.doc-content-table td li a:hover{
     text-decoration: none;
 }
 
-.global-function-name,.global-event-name{
+.global-function-name,.global-event-name, .module-name{
     list-style-type: none;
     margin: 4px;
     font-size:15px;
+    cursor: pointer;
 }
 
-.global-function-name a,.global-event-name a{
+.global-function-name a,.global-event-name a, .module-name{
     color: #53821c;
     text-decoration: underline;
     font-size:15px;
 }
 
-.global-function-name a:hover, .global-event-name a:hover{
+.global-function-name a:hover, .global-event-name a:hover, .module-name:hover{
     text-decoration: none;
 }
 

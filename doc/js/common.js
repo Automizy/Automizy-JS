@@ -151,7 +151,8 @@ function openDownloadsDialog() {
 }
 
 $(function () {
-    $('[data-url]').click(function () {
+    $('body').delegate('[data-url]','click',function () {
+        console.log('asd');
         loadPage($(this).attr('data-url'), $(this).attr('data-example-url'), $(this).data('name'));
     });
     if (1==1 || getCookie("last-page") === "") {
@@ -160,6 +161,6 @@ $(function () {
     else {
         var attrs = getCookie("last-page").split(',');
         loadPage(attrs[0], attrs[1], attrs[2]);
-    }
-    ;
+    };
+    $('.module-content').css('min-height',$('.element-list').outerHeight());
 });
