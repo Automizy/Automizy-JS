@@ -143,7 +143,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width:calc(100% - 25px);
+    max-width:100%;
 }
 .automizy-skin-simple-automizy .ui-multiselect.ui-state-hover{
     border:1px solid #b6c5a4;
