@@ -415,21 +415,22 @@ console.log(input.labelWidth()); //returns value of labelWidth
             <pre  class='prettyprint linenums'>
 $A.newInput({
     type: 'select',
+    multiselect: true,
     options: [
         [0, '--- Nothing ---'],
         [12, 'First Segment'],
         [15, 'Second Segment']
     ],
-    multiple: true,
+    multiple: true
 }).draw();
             </pre>
             Initialize the input widget with the <code>multiple</code> option specified, using method chaining
             <pre class='prettyprint linenums'>
-$A.newInput().type('select').multiple(true).options([[0, '--- Nothing ---'],[12, 'First Segment'],[15, 'Second Segment']]).draw();
+$A.newInput().type('select').multiselect(true).multiple(true).options([[0, '--- Nothing ---'],[12, 'First Segment'],[15, 'Second Segment']]).draw();
             </pre>
             <br>Get or set the <code>multiple</code> option, after initialization<br>
             <pre class='prettyprint linenums'>
-var input = $A.newInput({type: 'select'}).options([[0, '--- Nothing ---'],[12, 'First Segment'],[15, 'Second Segment']]).draw();
+var input = $A.newInput({type: 'select'}).multiselect(true).options([[0, '--- Nothing ---'],[12, 'First Segment'],[15, 'Second Segment']]).draw();
 //Setter
 input.multiple(true); //returns input
 
