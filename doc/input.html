@@ -1246,7 +1246,7 @@ input.click(function(){
                 Returns:<div class='event-returns'>Input</div>
             </div>
             <p class='event-use'>
-                You can set the event you want to be triggered when clicking on the particular input.
+                You can set the event you want to be triggered when pressing the enter key when a particular input is focused.
             </p>               
             <ul>
                 <li>
@@ -1261,7 +1261,7 @@ input.click(function(){
             <pre class='prettyprint linenums'>
 var input=$A.newInput().label('Click in the input field, then press enter!').draw();
 input.enter(function(){
-    alert('Pressed enter!');
+    alert('Enter pressed!');
 })          
             </pre>
         </article>
