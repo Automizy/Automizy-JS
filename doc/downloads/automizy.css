@@ -320,7 +320,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width:calc(100% - 25px);
+    max-width:100%;
 }
 .automizy-skin-simple-automizy .ui-multiselect.ui-state-hover{
     border:1px solid #b6c5a4;
@@ -840,7 +840,7 @@
     max-width: 250px;
     position: relative;
 }
-.automizy-table td:first-child{
+.automizy-table td.automizy-main-cell{
     font-weight:bold;
 }
 .automizy-table th{
@@ -950,11 +950,6 @@
     src: url(fonts/OpenSans-CondBold.eot);
     src: url(fonts/OpenSans-CondBold.woff) format("woff"),
     url(fonts/OpenSans-CondBold.ttf) format("truetype");
-}
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
 }
 .automizy-hide{
     display:none;

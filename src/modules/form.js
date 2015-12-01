@@ -3,6 +3,7 @@ define([
     'automizy/modules/button',
     'automizy/modules/input',
     'automizy/addons/jqueryAddOns',
+    'automizy/functions/registerLocalEvents',
     'automizy/functions/getUniqueString'
 ], function () {
     var Form = function (obj) {
@@ -227,6 +228,11 @@ define([
                 for (var i = 0; i < obj.buttons.length; i++) {
                     obj.buttons[i].target = $group;
                     t.addButton(obj.buttons[i]);
+                }
+            }
+            if (typeof obj.htmls !== 'undefined') {
+                for (var i = 0; i < obj.htmls.length; i++) {
+                    obj.htmls[i].appendTo($group);
                 }
             }
             $groupSwitch.appendTo(t.d.$inputs);

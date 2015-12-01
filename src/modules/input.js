@@ -5,6 +5,7 @@ define([
     'automizy/functions/getUniqueString',
     'automizy/functions/parseBoolean',
     'automizy/functions/initBasicFunctions',
+    'automizy/functions/registerLocalEvents',
     'automizy/modules/validator',
     'automizy/images/icons'
 ], function () {

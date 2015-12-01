@@ -4,6 +4,7 @@ define([
     'automizy/modules/i18n',
     'automizy/functions/getUniqueString',
     'automizy/functions/initBasicFunctions',
+    'automizy/functions/registerLocalEvents',
     'automizy/images/icons'
 ], function () {
     var Table = function (obj) {
@@ -279,7 +280,7 @@ define([
         t.d.$inlineButtons.appendTo(t.d.$inlineButtonsBox);
         t.d.$automizyTableBorderCss.appendTo('head:first');
         t.d.$checkboxCheckAll.change(function(){
-            AutomizyJs.d.tableRowCheckBoxClick = true;
+            $A.d.tableRowCheckBoxClick = true;
             var checked = this.checked;
             var cells = t.getColByIndex(0).$cells().find('input:enabled').prop('checked', checked);
         });
@@ -586,13 +587,13 @@ define([
                 t.table().addClass('checkboxed');
                 var cbcagac = t.addCol({name:'checkbox-column', html:t.d.$checkboxCheckAll, index:0});
                 cbcagac.$cells().eq(0).click(function(){
-                    if(!AutomizyJs.d.tableRowCheckBoxClick){
+                    if(!$A.d.tableRowCheckBoxClick){
                         $(this).find('input:first').each(function(){
                             this.checked = !this.checked;
                             $(this).trigger('change');
                         });
                     }
-                    AutomizyJs.d.tableRowCheckBoxClick = false;
+                    $A.d.tableRowCheckBoxClick = false;
                 });
                 var $cbcagac = cbcagac.$cells().slice(1);
                 $cbcagac.html(function(){
@@ -894,7 +895,7 @@ define([
             var cols = [];
             this.table().find('th:first').siblings().andSelf().each(function(){
                 cols.push($A.tableCol($(this)));
-            })
+            });
             return cols;
         }
         t.deleteCols();
@@ -939,6 +940,8 @@ define([
         if (!$.isArray(arr)){
             return t.addRows([arr]);
         }
+
+        $A.runFunctions($A.events.table.functions.beforeAddRows, t, [t, arr]);
         
         var table = t.table()[0];
         for(var i = 0; i < arr.length; i++){
@@ -959,7 +962,7 @@ define([
                 setTimeout(function(){
                     if(!t.d.isCheckboxClick) {
                         t.openedRow($A.tableRow($t));
-                        if(t.d.beforeOpenInlineBox.apply($t, [t.openedRow(), t.d.openedRow.recordId()]) !== false){
+                        if(t.d.beforeOpenInlineBox.apply($t, [t.openedRow(), t.d.openedRow.recordId()]) !== false && $A.runFunctions($A.events.table.functions.beforeOpenInlineBox, $t, [$t, t.openedRow(), t.d.openedRow.recordId()]) !== false){
                             if (t.d.openableInlineBox) {
                                 t.d.$inlineButtons.attr('colspan', t.table()[0].rows[0].cells.length - t.table().find('tr:first th:not(:visible)').length);
                                 t.d.$inlineButtonsBox.insertAfter($t);
@@ -989,18 +992,21 @@ define([
                     html:'<input type="checkbox" class="automizy-table-rowcheck" onClick="AutomizyJs.d.tableRowCheckBoxClick = true" value="'+recordId+'" />',
                     click:function () {
                         t.d.isCheckboxClick = true;
-                        if(!AutomizyJs.d.tableRowCheckBoxClick){
+                        if(!$A.d.tableRowCheckBoxClick){
                             $(this).find('input:first').each(function(){
                                 this.checked = !this.checked;
                                 $(this).trigger('change');
                             });
                         }
-                        AutomizyJs.d.tableRowCheckBoxClick = false;
+                        $A.d.tableRowCheckBoxClick = false;
                     }
                 });
             }
             for (var j = 0; j < table.rows[0].cells.length; j++) {
                 var cell = row.insertCell(j);
+                if(j === 0){
+                    cell.className = 'automizy-main-cell';
+                }
 
                 var value = rowArr[j];
                 if(typeof value === 'undefined'){
@@ -1028,7 +1034,12 @@ define([
                         if(typeof t.d.settings.cols[jMod].cellData !== 'undefined') {
                             cell.automizyData = t.d.settings.cols[jMod].cellData;
                         }
-                        t.d.settings.cols[jMod].cellFunction.apply(cell, [cell, value]);
+                        t.d.settings.cols[jMod].cellFunction.apply(cell, [cell, value, i, j]);
+                    }
+                    if(typeof t.d.settings.cols[jMod].mainCell !== 'undefined') {
+                        if($A.parseBoolean(t.d.settings.cols[jMod].mainCell)){
+                            cell.className = 'automizy-main-cell';
+                        }
                     }
                 }
 
@@ -1037,6 +1048,7 @@ define([
                 }
             }
         }
+        $A.runFunctions($A.events.table.functions.addRows, t, [t, table.rows]);
         return t;
     };
     p.addRow = function (arr) {
@@ -1178,6 +1190,11 @@ define([
         return t.d.loadingCellContent;
     };
 
+
+    $A.events.table = {};
+    $A.registerLocalEvents($A.events.table, ['addRows', 'beforeAddRows', 'beforeOpenInlineBox', 'complete']);
+
     $A.initBasicFunctions(Table, "Table");
+
 
 });

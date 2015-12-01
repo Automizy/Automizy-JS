@@ -78,6 +78,7 @@ define(['automizy/core'], function () {
                     t.d.createFunctions[i]();
                 }
                 t.create();
+                $A.runFunctions($A.events[moduleNameLower].functions.complete, t, [t])
             }, 50);
             return this;
         };
@@ -251,5 +252,17 @@ define(['automizy/core'], function () {
             }
             return $A["new" + moduleName](obj);
         };
+
+        if(typeof $A.events[moduleNameLower] === 'undefined'){
+            $A.events[moduleNameLower] = {
+                functions:[]
+            };
+        }
+        $A.events[moduleNameLower].functions.complete = [];
+        $A.events[moduleNameLower].complete = function(func){
+            if(typeof func === 'function'){
+                $A.events[moduleNameLower].functions.complete.push(func);
+            }
+        }
     };
 });
