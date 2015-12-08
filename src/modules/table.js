@@ -2,9 +2,13 @@ define([
     'automizy/core',
     'automizy/modules/button',
     'automizy/modules/i18n',
+    'automizy/addons/jqueryAddOns',
+    'automizy/addons/objectAddOns',
+    'automizy/functions/setWindowScroll',
     'automizy/functions/getUniqueString',
     'automizy/functions/initBasicFunctions',
     'automizy/functions/registerLocalEvents',
+    'automizy/functions/runFunctions',
     'automizy/images/icons'
 ], function () {
     var Table = function (obj) {
@@ -1192,9 +1196,8 @@ define([
 
 
     $A.events.table = {};
-    $A.registerLocalEvents($A.events.table, ['addRows', 'beforeAddRows', 'beforeOpenInlineBox', 'complete']);
+    $A.registerLocalEvents($A.events.table, ['addRows', 'beforeAddRows', 'beforeOpenInlineBox']);
 
     $A.initBasicFunctions(Table, "Table");
-
 
 });

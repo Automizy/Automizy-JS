@@ -1,9 +1,10 @@
 define([
     'automizy/core',
     'automizy/modules/button',
-    'automizy/functions/setWindowScroll',
+    'automizy/modules/i18n',
     'automizy/addons/jqueryAddOns',
     'automizy/addons/objectAddOns',
+    'automizy/functions/setWindowScroll',
     'automizy/functions/getUniqueString',
     'automizy/functions/initBasicFunctions',
     'automizy/functions/registerLocalEvents',
@@ -321,6 +322,7 @@ define([
                 if($A.runFunctions(t.d.closeFunctions, this, [this, this.d.$widget]) !== false){
                     t.hide();
                 }
+                $A.runFunctions($A.events.dialog.functions.close, this, [this, this.d.$widget]);
             }
         }
         return t;
@@ -343,7 +345,7 @@ define([
     };
 
     $A.events.dialog = {};
-    $A.registerLocalEvents($A.events.dialog, ['open', 'beforeOpen']);
+    $A.registerLocalEvents($A.events.dialog, ['open', 'close', 'beforeOpen']);
 
     $A.initBasicFunctions(Dialog, "Dialog");
 
