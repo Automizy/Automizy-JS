@@ -67,6 +67,7 @@ $A.events.dialog.open(function(dialog){
  
 var firstDialog = $A.dialog().title("First title here");
 var secondDialog = $A.dialog().title("Second title here");
+var thirdDialog = $A.dialog().title("Third title here");
  
 $A.button().text("Open first dialog").click(function(){
     firstDialog.open();
@@ -74,6 +75,16 @@ $A.button().text("Open first dialog").click(function(){
 $A.button().text("Open second dialog").click(function(){
     secondDialog.open();
 }).draw();
+$A.button().text("Try to open third dialog").click(function(){
+    thirdDialog.open();
+}).draw();
+
+$A.events.dialog.beforeOpen(function(dialog){
+    if(dialog.id() === thirdDialog.id()){
+        alert('Open prevented!');
+        return false; //returning with false will prevent the opening
+    }
+})
             </pre>
         </article>
     </section>
