@@ -12,18 +12,19 @@
     </section>
     <section>
         <h2>Global dialog events</h2> 
-        <article id="globalEvents/dialogBeforeOpen" class='last'>
-            <h4 class='method-name'>$A.events.dialog.beforeOpen(func)</h4>
+        <article id="globalEvents/dialogBeforeOpen">
+            <h4 class='method-name'>$A.events.dialog.beforeOpen(function func(dialog))</h4>
             <p class='method-use'>
-                Use this function to register a new function on the <code>beforeOpen</code> event dialogs.
+                Use this function to register a new function on the <code>beforeOpen</code> event of dialogs.
             </p>                    
             <ul>
                 <li>
                     <div class='method-parameter'>
-                        func
+                        func(dialog)
                     </div>
                     Type: <code>function</code><br>
-                    The function to be called.
+                    The function to be called.<br>
+                    <code>dialog</code>: the Dialog object passed to the function.
                 </li>
             </ul>
             <div class='method-examples'>Code examples</div>
@@ -35,6 +36,7 @@ $A.events.dialog.beforeOpen(function(dialog){
  
 var firstDialog = $A.dialog().title("First title here");
 var secondDialog = $A.dialog().title("Second title here");
+var thirdDialog = $A.dialog().title("Third title here");
  
 $A.button().text("Open first dialog").click(function(){
     firstDialog.open();
@@ -42,13 +44,23 @@ $A.button().text("Open first dialog").click(function(){
 $A.button().text("Open second dialog").click(function(){
     secondDialog.open();
 }).draw();
+$A.button().text("Try to open third dialog").click(function(){
+    thirdDialog.open();
+}).draw();
+
+$A.events.dialog.beforeOpen(function(dialog){
+    if(dialog.id() === thirdDialog.id()){
+        alert('Open prevented!');
+        return false; //returning with false will prevent the opening
+    }
+})
             </pre>
         </article>
-        <article id="globalEvents/dialogOpen" class='last'>
-            <h4 class='method-name'>$A.events.dialog.open(func)</h4>
+        <article id="globalEvents/dialogOpen">
+            <h4 class='method-name'>$A.events.dialog.open(function func(dialog))</h4>
             <p class='method-use'>
-                Use this function to register a new function on the <code>open</code> event dialogs.
-            </p>                    
+                Use this function to register a new function on the <code>open</code> event of dialogs.
+            </p>
             <ul>
                 <li>
                     <div class='method-parameter'>
@@ -56,6 +68,7 @@ $A.button().text("Open second dialog").click(function(){
                     </div>
                     Type: <code>function</code><br>
                     The function to be called.
+                    <code>dialog</code>: the Dialog object passed to the function.
                 </li>
             </ul>
             <div class='method-examples'>Code examples</div>
@@ -74,6 +87,163 @@ $A.button().text("Open first dialog").click(function(){
 $A.button().text("Open second dialog").click(function(){
     secondDialog.open();
 }).draw();
+            </pre>
+        </article>
+        <article id="globalEvents/dialogComplete">
+            <h4 class='method-name'>$A.events.dialog.complete(function func(dialog))</h4>
+            <p class='method-use'>
+                Use this function to register a new function on the <code>complete</code> event dialogs (triggered when a dialog is drawn).
+            </p>
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        func
+                    </div>
+                    Type: <code>function</code><br>
+                    The function to be called.
+                    <code>dialog</code>: the Dialog object passed to the function.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+$A.events.dialog.complete(function(dialog){
+    // This will run when a dialog is drawn
+    alert(dialog.title());
+});
+
+var firstDialog = $A.dialog().title("First title here");
+var secondDialog = $A.dialog().title("Second title here");
+
+$A.button().text("Open first dialog").click(function(){
+    firstDialog.open();
+}).draw();
+$A.button().text("Open second dialog").click(function(){
+    secondDialog.open();
+}).draw();
+            </pre>
+        </article>
+        <article id="globalEvents/tableBeforeAddRows">
+            <h4 class='method-name'>$A.events.table.beforeAddRows(function func(table, rowsArray))</h4>
+            <p class='method-use'>
+                Use this function to register a new function, which will be called when adding rows to a table.
+            </p>
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        func
+                    </div>
+                    Type: <code>function</code><br>
+                    The function to be called.<br>
+                    <code>table</code>: the Table object passed to the function.<br>
+                    <code>rowsArray</code>: array of Row objects passed to the function.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+$A.events.table.beforeAddRows(function func(table, rowsArray){
+    alert('Adding rows to '+table.id());
+    for(var i in rowsArray){
+        rowsArray[i].value='prefix '+rowsArray[i].value;
+    }
+});
+
+var table=$A.newTable({
+    id: 'Table',
+	cols:[
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject',text: 'Subject'}
+	]
+}).draw();
+
+table.addRows({
+    values:{
+        name: 'Campaign1',
+        subject: 'test1'
+    }
+})
+            </pre>
+        </article>
+        <article id="globalEvents/tableAddRows" class='last'>
+            <h4 class='method-name'>$A.events.table.addRows(function func(table, rowsArray))</h4>
+            <p class='method-use'>
+                Use this function to register a new function, which will be called after adding rows to a table.
+            </p>
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        func
+                    </div>
+                    Type: <code>function</code><br>
+                    The function to be called.<br>
+                    <code>table</code>: the Table object passed to the function.<br>
+                    <code>rowsArray</code>: array of Row objects passed to the function.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+$A.events.table.addRows(function func(table, rowsArray){
+    alert('Added rows to '+table.id());
+    for(var i in rowsArray){
+        rowsArray[i].value='prefix '+rowsArray[i].value;
+    }
+});
+
+var table=$A.newTable({
+    id: 'Table',
+	cols:[
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject',text: 'Subject'}
+	]
+}).draw();
+
+table.addRows({
+    values:{
+        name: 'Campaign1',
+        subject: 'test1'
+    }
+})
+            </pre>
+        </article>
+        <article id="globalEvents/tableBeforeOpenInlineBox" class='last'>
+            <h4 class='method-name'>$A.events.table.beforeOpenInlineBox(function func(table, openedRow, recordId))</h4>
+            <p class='method-use'>
+                Use this function to register a new function on the <code>beforeOpenInlineBox</code> event of tables.
+            </p>
+            <ul>
+                <li>
+                    <div class='method-parameter'>
+                        func
+                    </div>
+                    Type: <code>function</code><br>
+                    The function to be called.<br>
+                    <code>table</code>: the Table object passed to the function.<br>
+                    <code>openedRow</code>: the opened Row objects passed to the function.<br>
+                    <code>recordId</code>: the id of the opened Row object passed to the function.
+                </li>
+            </ul>
+            <div class='method-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+$A.events.table.addRows(function func(table, rowsArray){
+    alert('Added rows to '+table.id());
+    for(var i in rowsArray){
+        rowsArray[i].value='prefix '+rowsArray[i].value;
+    }
+});
+
+var table=$A.newTable({
+    id: 'Table',
+	cols:[
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject',text: 'Subject'}
+	]
+}).draw();
+
+table.addRows({
+    values:{
+        name: 'Campaign1',
+        subject: 'test1'
+    }
+})
             </pre>
         </article>
     </section>
