@@ -1,6 +1,7 @@
 define([
     'automizy/core',
     'automizy/functions/getUniqueString',
+    'automizy/functions/registerLocalEvents',
     'automizy/functions/initBasicFunctions'
 ], function () {
     var TableCol = function (obj) {

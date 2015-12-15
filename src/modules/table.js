@@ -2,8 +2,13 @@ define([
     'automizy/core',
     'automizy/modules/button',
     'automizy/modules/i18n',
+    'automizy/addons/jqueryAddOns',
+    'automizy/addons/objectAddOns',
+    'automizy/functions/setWindowScroll',
     'automizy/functions/getUniqueString',
     'automizy/functions/initBasicFunctions',
+    'automizy/functions/registerLocalEvents',
+    'automizy/functions/runFunctions',
     'automizy/images/icons'
 ], function () {
     var Table = function (obj) {
@@ -70,6 +75,7 @@ define([
             settings:{
                 cols:[]
             },
+            settingsCheckboxes:{},
             orderBy:false,
             orderDir:'asc',
             hasObject:  false,
@@ -279,7 +285,7 @@ define([
         t.d.$inlineButtons.appendTo(t.d.$inlineButtonsBox);
         t.d.$automizyTableBorderCss.appendTo('head:first');
         t.d.$checkboxCheckAll.change(function(){
-            AutomizyJs.d.tableRowCheckBoxClick = true;
+            $A.d.tableRowCheckBoxClick = true;
             var checked = this.checked;
             var cells = t.getColByIndex(0).$cells().find('input:enabled').prop('checked', checked);
         });
@@ -586,13 +592,13 @@ define([
                 t.table().addClass('checkboxed');
                 var cbcagac = t.addCol({name:'checkbox-column', html:t.d.$checkboxCheckAll, index:0});
                 cbcagac.$cells().eq(0).click(function(){
-                    if(!AutomizyJs.d.tableRowCheckBoxClick){
+                    if(!$A.d.tableRowCheckBoxClick){
                         $(this).find('input:first').each(function(){
                             this.checked = !this.checked;
                             $(this).trigger('change');
                         });
                     }
-                    AutomizyJs.d.tableRowCheckBoxClick = false;
+                    $A.d.tableRowCheckBoxClick = false;
                 });
                 var $cbcagac = cbcagac.$cells().slice(1);
                 $cbcagac.html(function(){
@@ -795,29 +801,10 @@ define([
                         obj.name = $A.getUniqueString();
                     }
                     if(obj.hideable !== false){
-
-                        $A.input({
-                            id:t.id()+'-settings-checkbox-'+obj.name,
-                            type:'checkbox',
-                            label:obj.text || obj.name,
+                        t.addSettingsCheckbox({
                             name:obj.name,
-                            labelPosition:'right',
-                            checked:visibility,
-                            target:t.d.$settingsBoxContent,
-                            change:function(){
-                                var name = this.name();
-                                var col = t.getColByName(name);
-                                if(!this.checked()){
-                                    col.hide();
-                                    t.d.onHideCol.apply(col, [t, t.widget()]);
-                                }else{
-                                    col.show();
-                                    t.d.onShowCol.apply(col, [t, t.widget()]);
-                                }
-                                if(t.d.storeData){
-                                    $A.store.set(t.id()+'ActiveCols', t.d.$settingsBoxContent.serializeObject(true));
-                                }
-                            }
+                            label:obj.text,
+                            checked:visibility
                         });
                     }
 
@@ -879,6 +866,46 @@ define([
         }
         return t;
     };
+    p.addSettingsCheckbox = function(obj){
+        var t = this;
+        var name = obj.name || $A.getUniqueString();
+        var label = obj.label || name;
+        var checked = obj.checked || false;
+        t.d.settingsCheckboxes[name] = $A.input({
+            type:'checkbox',
+            label:label,
+            name:name,
+            labelPosition:'right',
+            checked:checked,
+            target:t.d.$settingsBoxContent,
+            change:function(){
+                var name = this.name();
+                var col = t.getColByName(name);
+                if(!this.checked()){
+                    col.hide();
+                    t.d.onHideCol.apply(col, [t, t.widget()]);
+                }else{
+                    col.show();
+                    t.d.onShowCol.apply(col, [t, t.widget()]);
+                }
+                if(t.d.storeData){
+                    $A.store.set(t.id()+'ActiveCols', t.d.$settingsBoxContent.serializeObject(true));
+                }
+            }
+        });
+        return t;
+    };
+    p.getSettingsCheckbox = function(name){
+        return this.d.settingsCheckboxes[name];
+    };
+    p.removeSettingsCheckbox = function(name){
+        var t = this;
+        var settingCheckbox = t.d.settingsCheckboxes[name];
+        if(typeof settingCheckbox !== 'undefined' && typeof settingCheckbox.remove === 'function') {
+            settingCheckbox.remove();
+        }
+        return t;
+    };
     p.addCol = function (obj) {
         var t = this;
         if (typeof obj === 'undefined') {
@@ -894,7 +921,7 @@ define([
             var cols = [];
             this.table().find('th:first').siblings().andSelf().each(function(){
                 cols.push($A.tableCol($(this)));
-            })
+            });
             return cols;
         }
         t.deleteCols();
@@ -908,7 +935,7 @@ define([
             for (var i = 0; i < table.rows.length; i++) {
                 for (var j = sortArr.length - 1; j >= 0; j--) {
                     if(i === 0){
-                        $A.input('table-settings-checkbox-'+$(table.rows[i].cells[j]).attr('name')).remove();
+                        t.removeSettingsCheckbox($(table.rows[i].cells[j]).attr('name'));
                     }
                     table.rows[i].deleteCell(sortArr[j]);
                 }
@@ -918,9 +945,10 @@ define([
 
         var cols = t.cols();
         for(var i = 0; i < cols.length; i++){
-            $A.input(t.id()+'-settings-checkbox-'+cols[i].name()).remove();
+            t.removeSettingsCheckbox(cols[i].name());
         }
-        $A.input(t.id()+'-settings-checkbox-'+$(table.rows[i].cells[j]).attr('name')).remove();
+        t.removeSettingsCheckbox($(table.rows[i].cells[j]).attr('name'));
+
         var lastCol = table.rows[0].cells.length - 1;
         for (var i = 0; i < table.rows.length; i++) {
             for (var j = lastCol; j > 0; j--) {
@@ -939,6 +967,8 @@ define([
         if (!$.isArray(arr)){
             return t.addRows([arr]);
         }
+
+        $A.runFunctions($A.events.table.functions.beforeAddRows, t, [t, arr]);
         
         var table = t.table()[0];
         for(var i = 0; i < arr.length; i++){
@@ -959,7 +989,7 @@ define([
                 setTimeout(function(){
                     if(!t.d.isCheckboxClick) {
                         t.openedRow($A.tableRow($t));
-                        if(t.d.beforeOpenInlineBox.apply($t, [t.openedRow(), t.d.openedRow.recordId()]) !== false){
+                        if(t.d.beforeOpenInlineBox.apply($t, [t.openedRow(), t.d.openedRow.recordId()]) !== false && $A.runFunctions($A.events.table.functions.beforeOpenInlineBox, $t, [$t, t.openedRow(), t.d.openedRow.recordId()]) !== false){
                             if (t.d.openableInlineBox) {
                                 t.d.$inlineButtons.attr('colspan', t.table()[0].rows[0].cells.length - t.table().find('tr:first th:not(:visible)').length);
                                 t.d.$inlineButtonsBox.insertAfter($t);
@@ -989,18 +1019,21 @@ define([
                     html:'<input type="checkbox" class="automizy-table-rowcheck" onClick="AutomizyJs.d.tableRowCheckBoxClick = true" value="'+recordId+'" />',
                     click:function () {
                         t.d.isCheckboxClick = true;
-                        if(!AutomizyJs.d.tableRowCheckBoxClick){
+                        if(!$A.d.tableRowCheckBoxClick){
                             $(this).find('input:first').each(function(){
                                 this.checked = !this.checked;
                                 $(this).trigger('change');
                             });
                         }
-                        AutomizyJs.d.tableRowCheckBoxClick = false;
+                        $A.d.tableRowCheckBoxClick = false;
                     }
                 });
             }
             for (var j = 0; j < table.rows[0].cells.length; j++) {
                 var cell = row.insertCell(j);
+                if(j === 0){
+                    cell.className = 'automizy-main-cell';
+                }
 
                 var value = rowArr[j];
                 if(typeof value === 'undefined'){
@@ -1016,10 +1049,12 @@ define([
                     }
                     if(typeof value.text !== 'undefined'){
                         cell.textContent = value.text;
+                        cell.title = value.text;
                     }
                     cell.onclick = value.click || function(){};
                 }else{
                     cell.textContent = value;
+                    cell.title = value;
                 }
 
                 var jMod = t.d.selectable ? j-1 : j;
@@ -1028,7 +1063,12 @@ define([
                         if(typeof t.d.settings.cols[jMod].cellData !== 'undefined') {
                             cell.automizyData = t.d.settings.cols[jMod].cellData;
                         }
-                        t.d.settings.cols[jMod].cellFunction.apply(cell, [cell, value]);
+                        t.d.settings.cols[jMod].cellFunction.apply(cell, [cell, value, i, j]);
+                    }
+                    if(typeof t.d.settings.cols[jMod].mainCell !== 'undefined') {
+                        if($A.parseBoolean(t.d.settings.cols[jMod].mainCell)){
+                            cell.className = 'automizy-main-cell';
+                        }
                     }
                 }
 
@@ -1037,6 +1077,7 @@ define([
                 }
             }
         }
+        $A.runFunctions($A.events.table.functions.addRows, t, [t, table.rows]);
         return t;
     };
     p.addRow = function (arr) {
@@ -1177,6 +1218,10 @@ define([
         }
         return t.d.loadingCellContent;
     };
+
+
+    $A.events.table = {};
+    $A.registerLocalEvents($A.events.table, ['addRows', 'beforeAddRows', 'beforeOpenInlineBox']);
 
     $A.initBasicFunctions(Table, "Table");
 

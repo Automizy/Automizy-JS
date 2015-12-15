@@ -46,8 +46,11 @@ define([
     "automizy/functions/convertToResponsive",
     "automizy/functions/numberFormat",
     "automizy/functions/decodeEntities",
-    "automizy/functions/runFunctions"
-], function (AutomizyJs) {
+    "automizy/functions/runFunctions",
+    "automizy/functions/registerEvent",
+    "automizy/functions/registerLocalEvents",
+    "automizy/functions/runEvent"
+], function ($A) {
     console.log('%c AutomizyJs module loaded! ', 'background: #000000; color: #bada55; font-size:14px');
-    return AutomizyJs;
+    return $A;
 });

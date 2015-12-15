@@ -2,6 +2,7 @@ define([
     'automizy/core',
     'automizy/addons/jqueryAddOns',
     'automizy/functions/initBasicFunctions',
+    'automizy/functions/registerLocalEvents',
     'automizy/images/icons'
 ], function () {
     var Button = function (obj) {
@@ -122,7 +123,13 @@ define([
         if (typeof func === 'function') {
             t.d.click = func;
         } else {
-            if(!t.disabled())t.d.click.apply(this, [this, this.d.$widget]);
+            if($A.runFunctions($A.events.button.functions.beforeClick, this, [this]) === false){
+                return false;
+            }
+            if(!t.disabled()){
+                t.d.click.apply(this, [this, this.d.$widget]);
+            }
+            $A.runFunctions($A.events.button.functions.click, this, [this]);
         }
         return t;
     };
@@ -130,8 +137,13 @@ define([
         var t = this;
         return t.d.$widgetButton;
     };
+
+
+    $A.events.button = {};
+    $A.registerLocalEvents($A.events.button, ['click', 'beforeClick']);
     
 
     $A.initBasicFunctions(Button, "Button");
+
 
 });

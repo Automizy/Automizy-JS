@@ -1,11 +1,13 @@
 define([
     'automizy/core',
     'automizy/modules/button',
-    'automizy/functions/setWindowScroll',
+    'automizy/modules/i18n',
     'automizy/addons/jqueryAddOns',
     'automizy/addons/objectAddOns',
+    'automizy/functions/setWindowScroll',
     'automizy/functions/getUniqueString',
     'automizy/functions/initBasicFunctions',
+    'automizy/functions/registerLocalEvents',
     'automizy/functions/runFunctions'
 ], function () {
     var Dialog = function (obj) {
@@ -30,6 +32,7 @@ define([
             hasObject: false,
             hash: false,
             closable:true,
+            buttonsBox:true,
             id: 'automizy-dialog-' + $A.getUniqueString(),
             openFunctions: [],
             beforeOpenFunctions: [],
@@ -80,6 +83,8 @@ define([
                 t.zIndex(obj.zIndex);
             if (typeof obj.closable !== 'undefined')
                 t.closable(obj.closable);
+            if (typeof obj.buttonsBox !== 'undefined')
+                t.buttonsBox(obj.buttonsBox);
             if (typeof obj.open === 'function')
                 t.open(obj.open);
             if (typeof obj.beforeOpen === 'function')
@@ -125,6 +130,17 @@ define([
             return t;
         }
         return t.d.hash;
+    };
+    p.buttonsBox = function (buttonsBox) {
+        var t = this;
+        if (typeof buttonsBox !== 'undefined') {
+            t.d.buttonsBox = $A.parseBoolean(buttonsBox);
+            if(!t.d.buttonsBox){
+                t.d.$buttons.hide();
+            }
+            return t;
+        }
+        return t.d.buttonsBox;
     };
     p.content = function (content) {
         var t = this;
@@ -266,6 +282,9 @@ define([
             t.d.openFunctions.push(func);
         } else {
             t.beforeOpen();
+            if($A.runFunctions($A.events.dialog.functions.beforeOpen, this, [this, this.d.$widget]) === false){
+                return false;
+            }
             if($A.runFunctions(t.d.openFunctions, this, [this, this.d.$widget]) !== false){
                 if (t.hash() !== false)
                     $A.hashChange(t.hash());
@@ -282,7 +301,6 @@ define([
             t.d.beforeOpenFunctions.push(func);
         } else {
             $A.runFunctions(t.d.beforeOpenFunctions, this, [this, this.d.$widget]);
-            $A.runFunctions($A.events.dialog.functions.beforeOpen, this, [this, this.d.$widget]);
         }
         return t;
     };
@@ -304,40 +322,31 @@ define([
                 if($A.runFunctions(t.d.closeFunctions, this, [this, this.d.$widget]) !== false){
                     t.hide();
                 }
+                $A.runFunctions($A.events.dialog.functions.close, this, [this, this.d.$widget]);
             }
         }
         return t;
     };
         
     p.setMaxHeight = function(){
-        var t=this;
-        var maxHeight=$(window).height()-$(t.d.$buttons).outerHeight()-$(t.d.$head).outerHeight();
-        if (parseInt(t.d.positionY)!=='NaN')
-            maxHeight-=parseInt(t.d.positionY);
-        $(t.d.$content).css({
-            'max-height':maxHeight
-        });
-    };    
-
-    $A.initBasicFunctions(Dialog, "Dialog");
-
-
-    $A.events.dialog = {
-        functions:{
-            open:[],
-            beforeOpen:[]
-        },
-        open:function(func){
-            if(typeof func === 'function'){
-                $A.events.dialog.functions.open.push(func);
-            }
-        },
-        beforeOpen:function(func){
-            if(typeof func === 'function'){
-                $A.events.dialog.functions.beforeOpen.push(func);
-            }
+        var t = this;
+        var buttonBoxHeight = 0;
+        if(t.buttonsBox()){
+            buttonBoxHeight = t.d.$buttons.outerHeight();
         }
+        var maxHeight = $(window).height() - buttonBoxHeight - t.d.$head.outerHeight();
+        if (!isNaN(parseInt(t.d.positionY))){
+            maxHeight -= parseInt(t.d.positionY);
+        }
+        t.d.$content.css({
+            maxHeight:maxHeight
+        });
+        return maxHeight;
     };
 
+    $A.events.dialog = {};
+    $A.registerLocalEvents($A.events.dialog, ['open', 'close', 'beforeOpen']);
+
+    $A.initBasicFunctions(Dialog, "Dialog");
 
 });
