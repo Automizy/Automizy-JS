@@ -186,18 +186,20 @@
 
 .automizy-table th,
 .automizy-table td{
-    margin:0;
-    border:1px solid #d2d2d2;
-    border-width:1px 0 1px 0;
-    vertical-align:middle;
-    text-align:left;
-    padding:8px 4px 8px 4px;
-    font-size:14px;
-    text-overflow:ellipsis;
-    cursor:pointer;
+    margin: 0;
+    border: 1px solid #E0E9D4;
+    border-width: 1px 1px 1px 0px;
+    vertical-align: middle;
+    text-align: left;
+    padding: 8px 14px 8px 14px;
+    font-size: 14px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    cursor: pointer;
     word-wrap: break-word;
     max-width: 250px;
     position: relative;
+    white-space: nowrap;
 }
 .automizy-table td.automizy-main-cell{
     font-weight:bold;

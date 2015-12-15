@@ -175,6 +175,9 @@ define([
         if (typeof func === 'function') {
             t.d.change = func;
         } else {
+            if($A.runFunctions($A.events.input.functions.change, this, [this]) === false){
+                return false;
+            }
             t.d.change.apply(this, [this, this.d.$widget]);
         }
         return t;
@@ -680,6 +683,9 @@ define([
         var t = this;
         return t.d.$widgetInputBoxError;
     };
+
+    $A.events.input = {};
+    $A.registerLocalEvents($A.events.input, ['change']);
 
     $A.initBasicFunctions(Input, "Input");
 });

@@ -75,6 +75,7 @@ define([
             settings:{
                 cols:[]
             },
+            settingsCheckboxes:{},
             orderBy:false,
             orderDir:'asc',
             hasObject:  false,
@@ -800,29 +801,10 @@ define([
                         obj.name = $A.getUniqueString();
                     }
                     if(obj.hideable !== false){
-
-                        $A.input({
-                            id:t.id()+'-settings-checkbox-'+obj.name,
-                            type:'checkbox',
-                            label:obj.text || obj.name,
+                        t.addSettingsCheckbox({
                             name:obj.name,
-                            labelPosition:'right',
-                            checked:visibility,
-                            target:t.d.$settingsBoxContent,
-                            change:function(){
-                                var name = this.name();
-                                var col = t.getColByName(name);
-                                if(!this.checked()){
-                                    col.hide();
-                                    t.d.onHideCol.apply(col, [t, t.widget()]);
-                                }else{
-                                    col.show();
-                                    t.d.onShowCol.apply(col, [t, t.widget()]);
-                                }
-                                if(t.d.storeData){
-                                    $A.store.set(t.id()+'ActiveCols', t.d.$settingsBoxContent.serializeObject(true));
-                                }
-                            }
+                            label:obj.text,
+                            checked:visibility
                         });
                     }
 
@@ -884,6 +866,46 @@ define([
         }
         return t;
     };
+    p.addSettingsCheckbox = function(obj){
+        var t = this;
+        var name = obj.name || $A.getUniqueString();
+        var label = obj.label || name;
+        var checked = obj.checked || false;
+        t.d.settingsCheckboxes[name] = $A.input({
+            type:'checkbox',
+            label:label,
+            name:name,
+            labelPosition:'right',
+            checked:checked,
+            target:t.d.$settingsBoxContent,
+            change:function(){
+                var name = this.name();
+                var col = t.getColByName(name);
+                if(!this.checked()){
+                    col.hide();
+                    t.d.onHideCol.apply(col, [t, t.widget()]);
+                }else{
+                    col.show();
+                    t.d.onShowCol.apply(col, [t, t.widget()]);
+                }
+                if(t.d.storeData){
+                    $A.store.set(t.id()+'ActiveCols', t.d.$settingsBoxContent.serializeObject(true));
+                }
+            }
+        });
+        return t;
+    };
+    p.getSettingsCheckbox = function(name){
+        return this.d.settingsCheckboxes[name];
+    };
+    p.removeSettingsCheckbox = function(name){
+        var t = this;
+        var settingCheckbox = t.d.settingsCheckboxes[name];
+        if(typeof settingCheckbox !== 'undefined' && typeof settingCheckbox.remove === 'function') {
+            settingCheckbox.remove();
+        }
+        return t;
+    };
     p.addCol = function (obj) {
         var t = this;
         if (typeof obj === 'undefined') {
@@ -913,7 +935,7 @@ define([
             for (var i = 0; i < table.rows.length; i++) {
                 for (var j = sortArr.length - 1; j >= 0; j--) {
                     if(i === 0){
-                        $A.input('table-settings-checkbox-'+$(table.rows[i].cells[j]).attr('name')).remove();
+                        t.removeSettingsCheckbox($(table.rows[i].cells[j]).attr('name'));
                     }
                     table.rows[i].deleteCell(sortArr[j]);
                 }
@@ -923,9 +945,10 @@ define([
 
         var cols = t.cols();
         for(var i = 0; i < cols.length; i++){
-            $A.input(t.id()+'-settings-checkbox-'+cols[i].name()).remove();
+            t.removeSettingsCheckbox(cols[i].name());
         }
-        $A.input(t.id()+'-settings-checkbox-'+$(table.rows[i].cells[j]).attr('name')).remove();
+        t.removeSettingsCheckbox($(table.rows[i].cells[j]).attr('name'));
+
         var lastCol = table.rows[0].cells.length - 1;
         for (var i = 0; i < table.rows.length; i++) {
             for (var j = lastCol; j > 0; j--) {
@@ -1026,10 +1049,12 @@ define([
                     }
                     if(typeof value.text !== 'undefined'){
                         cell.textContent = value.text;
+                        cell.title = value.text;
                     }
                     cell.onclick = value.click || function(){};
                 }else{
                     cell.textContent = value;
+                    cell.title = value;
                 }
 
                 var jMod = t.d.selectable ? j-1 : j;

@@ -1,4 +1,7 @@
-define(['automizy/core'], function () {
+define([
+    'automizy/core',
+    'automizy/functions/registerLocalEvents'
+], function () {
     $A.initBasicFunctions = function (module, moduleName) {
         var module = module || false;
         if (module === false)
@@ -78,7 +81,7 @@ define(['automizy/core'], function () {
                     t.d.createFunctions[i]();
                 }
                 t.create();
-                $A.runFunctions($A.events[moduleNameLower].functions.complete, t, [t])
+                $A.runFunctions($A.events[moduleNameLower].functions.complete, t, [t]);
             }, 50);
             return this;
         };
@@ -258,11 +261,8 @@ define(['automizy/core'], function () {
                 functions:[]
             };
         }
-        $A.events[moduleNameLower].functions.complete = [];
-        $A.events[moduleNameLower].complete = function(func){
-            if(typeof func === 'function'){
-                $A.events[moduleNameLower].functions.complete.push(func);
-            }
-        }
+
+        $A.events[moduleNameLower] = $A.events[moduleNameLower] || {};
+        $A.registerLocalEvents($A.events[moduleNameLower], ['complete']);
     };
 });

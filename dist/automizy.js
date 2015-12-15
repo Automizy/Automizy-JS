@@ -121,6 +121,51 @@ var $A = {};
 })();
 
 (function(){
+    $A.registerLocalEvents = function(obj, eventNames){
+        if (typeof obj.functions === 'undefined') {
+            obj.functions = {};
+        }
+        if (typeof obj.on === 'undefined') {
+            obj.on = {};
+        }
+        if (typeof obj.off === 'undefined') {
+            obj.off = {};
+        }
+        if (typeof obj.one === 'undefined') {
+            obj.one = {};
+        }
+        for(var i = 0; i < eventNames.length; i++) {
+            var eventName = eventNames[i];
+            (function(eventName) {
+                if ($.inArray(eventName, ['function', 'on', 'off', 'one']) >= 0) {
+                    return false;
+                }
+                if (typeof obj.functions[eventName] === 'undefined') {
+                    obj.functions[eventName] = {};
+                }
+                obj[eventName] = obj.on[eventName] = function (func, name) {
+                    if (typeof func === 'function') {
+                        obj.functions[eventName][name || $A.getUniqueString()] = {
+                            func: func,
+                            life: -1
+                        };
+                    }
+                };
+                obj.off[eventName] = function (name) {
+                    delete obj.functions[eventName][name];
+                };
+                obj.one[eventName] = function (func) {
+                    obj.functions[eventName][$A.getUniqueString()] = {
+                        func: func,
+                        life: 1
+                    };
+                };
+            })(eventName);
+        }
+    };
+})();
+
+(function(){
     $A.initBasicFunctions = function (module, moduleName) {
         var module = module || false;
         if (module === false)
@@ -200,7 +245,7 @@ var $A = {};
                     t.d.createFunctions[i]();
                 }
                 t.create();
-                $A.runFunctions($A.events[moduleNameLower].functions.complete, t, [t])
+                $A.runFunctions($A.events[moduleNameLower].functions.complete, t, [t]);
             }, 50);
             return this;
         };
@@ -380,55 +425,9 @@ var $A = {};
                 functions:[]
             };
         }
-        $A.events[moduleNameLower].functions.complete = [];
-        $A.events[moduleNameLower].complete = function(func){
-            if(typeof func === 'function'){
-                $A.events[moduleNameLower].functions.complete.push(func);
-            }
-        }
-    };
-})();
 
-(function(){
-    $A.registerLocalEvents = function(obj, eventNames){
-        if (typeof obj.functions === 'undefined') {
-            obj.functions = {};
-        }
-        if (typeof obj.on === 'undefined') {
-            obj.on = {};
-        }
-        if (typeof obj.off === 'undefined') {
-            obj.off = {};
-        }
-        if (typeof obj.one === 'undefined') {
-            obj.one = {};
-        }
-        for(var i = 0; i < eventNames.length; i++) {
-            var eventName = eventNames[i];
-            if ($.inArray(eventName, ['function', 'on', 'off', 'one']) >= 0) {
-                return false;
-            }
-            if (typeof obj.functions[eventName] === 'undefined') {
-                obj.functions[eventName] = {};
-            }
-            obj[eventName] = obj.on[eventName] = function (func, name) {
-                if (typeof func === 'function') {
-                    obj.functions[eventName][name || $A.getUniqueString()] = {
-                        func: func,
-                        life: -1
-                    };
-                }
-            };
-            obj.off[eventName] = function (name) {
-                delete obj.functions[eventName][name];
-            };
-            obj.one[eventName] = function (func) {
-                obj.functions[eventName][$A.getUniqueString()] = {
-                    func: func,
-                    life: 1
-                };
-            };
-        }
+        $A.events[moduleNameLower] = $A.events[moduleNameLower] || {};
+        $A.registerLocalEvents($A.events[moduleNameLower], ['complete']);
     };
 })();
 
@@ -1866,6 +1865,9 @@ var $A = {};
         if (typeof func === 'function') {
             t.d.change = func;
         } else {
+            if($A.runFunctions($A.events.input.functions.change, this, [this]) === false){
+                return false;
+            }
             t.d.change.apply(this, [this, this.d.$widget]);
         }
         return t;
@@ -2372,6 +2374,9 @@ var $A = {};
         return t.d.$widgetInputBoxError;
     };
 
+    $A.events.input = {};
+    $A.registerLocalEvents($A.events.input, ['change']);
+
     $A.initBasicFunctions(Input, "Input");
 })();
 
@@ -2388,6 +2393,7 @@ var $A = {};
             tables: [],
             subtitles: [],
             htmls: [],
+            groups:[],
             hasObject: false,
             id: 'automizy-form-' + $A.getUniqueString(),
             create: function () {
@@ -2607,6 +2613,12 @@ var $A = {};
             }
             $groupSwitch.appendTo(t.d.$inputs);
             $group.appendTo(t.d.$inputs);
+            t.d.groups.push({
+                $group:$group,
+                $groupSwitch:$groupSwitch,
+                $box:t.d.$inputs,
+                id:$A.getUniqueString()
+            })
         }
         return t;
     };
@@ -2614,11 +2626,11 @@ var $A = {};
         var t = this;
         if (typeof group === 'string') {
             for (var i = 0; i < t.d.groups.length; i++) {
-                if (t.d.groups[i].id === group)
-                    t.d.groups[i].remove();
+                if (t.d.groups[i].id === group) {
+                    t.d.groups[i].$group.remove();
+                    t.d.groups[i].$groupSwitch.remove();
+                }
             }
-        } else if (typeof group === 'object') {
-            group.remove();
         }
     };
     p.groups = p.addGroups = function (groups) {
@@ -3355,6 +3367,7 @@ var $A = {};
             settings:{
                 cols:[]
             },
+            settingsCheckboxes:{},
             orderBy:false,
             orderDir:'asc',
             hasObject:  false,
@@ -4080,29 +4093,10 @@ var $A = {};
                         obj.name = $A.getUniqueString();
                     }
                     if(obj.hideable !== false){
-
-                        $A.input({
-                            id:t.id()+'-settings-checkbox-'+obj.name,
-                            type:'checkbox',
-                            label:obj.text || obj.name,
+                        t.addSettingsCheckbox({
                             name:obj.name,
-                            labelPosition:'right',
-                            checked:visibility,
-                            target:t.d.$settingsBoxContent,
-                            change:function(){
-                                var name = this.name();
-                                var col = t.getColByName(name);
-                                if(!this.checked()){
-                                    col.hide();
-                                    t.d.onHideCol.apply(col, [t, t.widget()]);
-                                }else{
-                                    col.show();
-                                    t.d.onShowCol.apply(col, [t, t.widget()]);
-                                }
-                                if(t.d.storeData){
-                                    $A.store.set(t.id()+'ActiveCols', t.d.$settingsBoxContent.serializeObject(true));
-                                }
-                            }
+                            label:obj.text,
+                            checked:visibility
                         });
                     }
 
@@ -4164,6 +4158,46 @@ var $A = {};
         }
         return t;
     };
+    p.addSettingsCheckbox = function(obj){
+        var t = this;
+        var name = obj.name || $A.getUniqueString();
+        var label = obj.label || name;
+        var checked = obj.checked || false;
+        t.d.settingsCheckboxes[name] = $A.input({
+            type:'checkbox',
+            label:label,
+            name:name,
+            labelPosition:'right',
+            checked:checked,
+            target:t.d.$settingsBoxContent,
+            change:function(){
+                var name = this.name();
+                var col = t.getColByName(name);
+                if(!this.checked()){
+                    col.hide();
+                    t.d.onHideCol.apply(col, [t, t.widget()]);
+                }else{
+                    col.show();
+                    t.d.onShowCol.apply(col, [t, t.widget()]);
+                }
+                if(t.d.storeData){
+                    $A.store.set(t.id()+'ActiveCols', t.d.$settingsBoxContent.serializeObject(true));
+                }
+            }
+        });
+        return t;
+    };
+    p.getSettingsCheckbox = function(name){
+        return this.d.settingsCheckboxes[name];
+    };
+    p.removeSettingsCheckbox = function(name){
+        var t = this;
+        var settingCheckbox = t.d.settingsCheckboxes[name];
+        if(typeof settingCheckbox !== 'undefined' && typeof settingCheckbox.remove === 'function') {
+            settingCheckbox.remove();
+        }
+        return t;
+    };
     p.addCol = function (obj) {
         var t = this;
         if (typeof obj === 'undefined') {
@@ -4193,7 +4227,7 @@ var $A = {};
             for (var i = 0; i < table.rows.length; i++) {
                 for (var j = sortArr.length - 1; j >= 0; j--) {
                     if(i === 0){
-                        $A.input('table-settings-checkbox-'+$(table.rows[i].cells[j]).attr('name')).remove();
+                        t.removeSettingsCheckbox($(table.rows[i].cells[j]).attr('name'));
                     }
                     table.rows[i].deleteCell(sortArr[j]);
                 }
@@ -4203,9 +4237,10 @@ var $A = {};
 
         var cols = t.cols();
         for(var i = 0; i < cols.length; i++){
-            $A.input(t.id()+'-settings-checkbox-'+cols[i].name()).remove();
+            t.removeSettingsCheckbox(cols[i].name());
         }
-        $A.input(t.id()+'-settings-checkbox-'+$(table.rows[i].cells[j]).attr('name')).remove();
+        t.removeSettingsCheckbox($(table.rows[i].cells[j]).attr('name'));
+
         var lastCol = table.rows[0].cells.length - 1;
         for (var i = 0; i < table.rows.length; i++) {
             for (var j = lastCol; j > 0; j--) {
@@ -4306,10 +4341,12 @@ var $A = {};
                     }
                     if(typeof value.text !== 'undefined'){
                         cell.textContent = value.text;
+                        cell.title = value.text;
                     }
                     cell.onclick = value.click || function(){};
                 }else{
                     cell.textContent = value;
+                    cell.title = value;
                 }
 
                 var jMod = t.d.selectable ? j-1 : j;
@@ -4476,7 +4513,7 @@ var $A = {};
 
 
     $A.events.table = {};
-    $A.registerLocalEvents($A.events.table, ['addRows', 'beforeAddRows', 'beforeOpenInlineBox', 'complete']);
+    $A.registerLocalEvents($A.events.table, ['addRows', 'beforeAddRows', 'beforeOpenInlineBox']);
 
     $A.initBasicFunctions(Table, "Table");
 
