@@ -86,8 +86,12 @@
                     </ul>
                     <div class='labels' data-url="globalEvents.html" data-name="head">Global events</div>
                     <ul>
-                        <li data-url="globalEvents.html" data-name="dialogBeforeOpen">$A.events.dialog.beforeOpen(func)</li>
-                        <li data-url="globalEvents.html" data-name="dialogOpen">$A.events.dialog.open(func)</li>
+                        <li data-url="globalEvents.html" data-name="dialogBeforeOpen">$A.events.dialog.beforeOpen(function(dialog))</li>
+                        <li data-url="globalEvents.html" data-name="dialogOpen">$A.events.dialog.open(function(dialog))</li>
+                        <li data-url="globalEvents.html" data-name="dialogComplete">$A.events.dialog.complete(function(dialog))</li>
+                        <li data-url="globalEvents.html" data-name="tableBeforeAddRows">$A.events.table.beforeAddRows(function(table, rowsArray))</li>
+                        <li data-url="globalEvents.html" data-name="tableAddRows">$A.events.table.addRows(function(table, rowsArray))</li>
+                        <li data-url="globalEvents.html" data-name="tableBeforeOpenInlineBox">$A.events.table.beforeOpenInlineBox(function(table, openedRow, recordId))</li>
                     </ul>
                 </div>
                 <div class="module-content"></div>
