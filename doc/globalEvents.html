@@ -110,6 +110,12 @@ $A.events.dialog.on.beforeOpen(function(dialog){
         </article>
         <article id="globalEvents/dialogOpen">
             <h4 class='method-name'>$A.events.dialog.open(function func(dialog))</h4>
+            <h5>Variants:</h5>
+            <ul>
+                <li class='method-name'>$A.events.dialog.on.open(function func(dialog), id)</li>
+                <li class='method-name'>$A.events.dialog.off.open(id)</li>
+                <li class='method-name'>$A.events.dialog.one.open(function func(dialog))</li>
+            </ul>
             <p class='method-use'>
                 Use this function to register a new function on the <code>open</code> event of dialogs.
             </p>
@@ -140,9 +146,50 @@ $A.button().text("Open second dialog").click(function(){
     secondDialog.open();
 }).draw();
             </pre>
+            <pre class='prettyprint linenums'>
+//Using ON, OFF and ONE variants:
+
+var firstDialog = $A.dialog().title("First");
+var secondDialog = $A.dialog().title("Second");
+var thirdDialog = $A.dialog().title("Third");
+
+$A.button().text("Open first dialog").click(function(){
+    firstDialog.open();
+}).draw();
+$A.button().text("Open second dialog").click(function(){
+    secondDialog.open();
+}).draw();
+$A.button().text("Open third dialog").click(function(){
+    thirdDialog.open();
+}).draw();
+
+//The function will run only the first time when the open event is triggered
+$A.events.dialog.one.open(function (dialog){
+    alert('This runs only once');
+})
+
+//ON and OFF can be combined, for example this function will be called
+//when any of the dialog open, but will be shut down after the third dialog opens
+
+$A.events.dialog.on.open(function(dialog){
+    alert(dialog.title()+' opened!');
+    //if the opened dialog is the third, the event will be shut down
+    if(dialog.id() === thirdDialog.id()){
+        $A.events.dialog.off.open('dialog-on-open');
+        alert('Event turned off');
+    }
+},'dialog-on-open'); //the id of this event
+
+            </pre>
         </article>
         <article id="globalEvents/dialogComplete">
             <h4 class='method-name'>$A.events.dialog.complete(function func(dialog))</h4>
+            <h5>Variants:</h5>
+            <ul>
+                <li class='method-name'>$A.events.dialog.on.complete(function func(dialog), id)</li>
+                <li class='method-name'>$A.events.dialog.off.complete(id)</li>
+                <li class='method-name'>$A.events.dialog.one.complete(function func(dialog))</li>
+            </ul>
             <p class='method-use'>
                 Use this function to register a new function on the <code>complete</code> event of dialogs (triggered when a dialog is drawn the first time).<br>
             </p>
@@ -173,9 +220,50 @@ $A.button().text("Open second dialog").click(function(){
     secondDialog.open();
 }).draw();
             </pre>
+            <pre class='prettyprint linenums'>
+//Using ON, OFF and ONE variants:
+
+var firstDialog = $A.dialog().title("First");
+var secondDialog = $A.dialog().title("Second");
+var thirdDialog = $A.dialog().title("Third");
+
+$A.button().text("Open first dialog").click(function(){
+    firstDialog.open();
+}).draw();
+$A.button().text("Open second dialog").click(function(){
+    secondDialog.open();
+}).draw();
+$A.button().text("Open third dialog").click(function(){
+    thirdDialog.open();
+}).draw();
+
+//The function will run only the first time when the complete event is triggered
+$A.events.dialog.one.complete(function (dialog){
+    alert('This runs only once');
+})
+
+//ON and OFF can be combined, for example this function will be called
+//when any of the dialog completes, but will be shut down after the third dialog is complete
+
+$A.events.dialog.on.complete(function(dialog){
+    alert(dialog.title()+' drawn!');
+    //if the opened dialog is the third, the event will be shut down
+    if(dialog.id() === thirdDialog.id()){
+        $A.events.dialog.off.complete('dialog-on-complete');
+        alert('Event turned off');
+    }
+},'dialog-on-complete'); //the id of this event
+
+            </pre>
         </article>
         <article id="globalEvents/tableBeforeAddRows">
             <h4 class='method-name'>$A.events.table.beforeAddRows(function func(table, rowsArray))</h4>
+            <h5>Variants:</h5>
+            <ul>
+                <li class='method-name'>$A.events.table.on.beforeAddRows(function func(table, rowsArray), id)</li>
+                <li class='method-name'>$A.events.table.off.beforeAddRows(id)</li>
+                <li class='method-name'>$A.events.table.one.beforeAddRows(function func(table, rowsArray))</li>
+            </ul>
             <p class='method-use'>
                 Use this function to register a new function, which will be called when adding rows to a table.
             </p>
@@ -200,6 +288,10 @@ $A.events.table.beforeAddRows(function(table, rowsArray){
     }
 });
 
+var addRowsButton = $A.newButton({
+    text: "Add rows"
+}).draw();
+
 var table=$A.newTable({
     id: 'Table',
 	cols:[
@@ -208,24 +300,77 @@ var table=$A.newTable({
 	]
 }).draw();
 
-table.addRows([
-    {
-        values:{
-            name: 'Campaign1',
-            subject: 'test1'
+var i = 1;
+addRowsButton.click(function(){
+    table.addRows([
+        {
+            values:{
+                name: 'Campaign'+i,
+                subject: 'test'+i
+            }
         }
-    },
-    {
-        values:{
-            name: 'Campaign2',
-            subject: 'test2'
-        }
+    ]);
+    i++;
+});
+            </pre>
+            <pre class='prettyprint linenums'>
+//Using ON, OFF and ONE variants:
+
+//Using before add rows to insert prefix
+$A.events.table.one.beforeAddRows(function(table, rowsArray){
+    alert('Adding first rows to '+table.id());
+});
+
+var addRowsButton = $A.newButton({
+    text: "Add rows"
+}).draw();
+
+
+$A.events.table.on.beforeAddRows(function(table, rowsArray){
+    alert('Adding rows to '+table.id());
+    for(var i in rowsArray){
+        rowsArray[i].values.name='Best '+rowsArray[i].values.name;
     }
-])
+},'table-on-before-add-rows');
+
+var stopBeforeAddRowsEvent = $A.newButton({
+    text: "Stop add rows event",
+    click: function(){
+        $A.events.table.off.beforeAddRows('table-on-before-add-rows');
+    }
+}).draw();
+
+
+var table=$A.newTable({
+    id: 'Table',
+	cols:[
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject',text: 'Subject'}
+	]
+}).draw();
+
+var i = 1;
+addRowsButton.click(function(){
+    table.addRows([
+        {
+            values:{
+                name: 'Campaign'+i,
+                subject: 'test'+i
+            }
+        }
+    ]);
+    i++;
+});
             </pre>
         </article>
         <article id="globalEvents/tableAddRows">
             <h4 class='method-name'>$A.events.table.addRows(function func(table, htmlRowsArray))</h4>
+            <h5>Variants:</h5>
+            <ul>
+                <li class='method-name'>$A.events.table.on.addRows(function func(table, htmlRowsArray), id)</li>
+                <li class='method-name'>$A.events.table.off.addRows(id)</li>
+                <li class='method-name'>$A.events.table.one.addRows(function func(table, htmlRowsArray))</li>
+            </ul>
             <p class='method-use'>
                 Use this function to register a new function, which will be called after adding rows to a table.
             </p>
@@ -244,8 +389,12 @@ table.addRows([
             <pre class='prettyprint linenums'>
 $A.events.table.addRows(function(table, htmlRowsArray){
     alert('Added rows to '+table.id());
-    console.log("After Add Rows", table, htmlRowsArray);
+    console.log("After addRows", table, htmlRowsArray);
 });
+
+var addRowsButton = $A.newButton({
+    text: "Add rows"
+}).draw();
 
 var table=$A.newTable({
     id: 'Table',
@@ -255,24 +404,76 @@ var table=$A.newTable({
 	]
 }).draw();
 
-table.addRows([
-    {
-        values:{
-            name: 'Campaign1',
-            subject: 'test1'
+var i = 1;
+addRowsButton.click(function(){
+    table.addRows([
+        {
+            values:{
+                name: 'Campaign'+i,
+                subject: 'test'+i
+            }
         }
-    },
-    {
-        values:{
-            name: 'Campaign2',
-            subject: 'test2'
-        }
+    ]);
+    i++;
+});
+            </pre>
+
+            <pre class='prettyprint linenums'>
+//Using ON, OFF and ONE variants:
+
+//Using before add rows to insert prefix
+$A.events.table.one.addRows(function(table, htmlRowsArray){
+    alert('First rows added to '+table.id());
+});
+
+var addRowsButton = $A.newButton({
+    text: "Add rows"
+}).draw();
+
+
+$A.events.table.on.addRows(function(table, htmlRowsArray){
+    alert('Added rows to '+table.id());
+    console.log(htmlRowsArray);
+},'table-on-add-rows');
+
+var stopAddRowsEvent = $A.newButton({
+    text: "Stop add rows event",
+    click: function(){
+        $A.events.table.off.addRows('table-on-add-rows');
     }
-])
+}).draw();
+
+
+var table=$A.newTable({
+    id: 'Table',
+	cols:[
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject',text: 'Subject'}
+	]
+}).draw();
+
+var i = 1;
+addRowsButton.click(function(){
+    table.addRows([
+        {
+            values:{
+                name: 'Campaign'+i,
+                subject: 'test'+i
+            }
+        }
+    ]);
+    i++;
+});
             </pre>
         </article>
         <article id="globalEvents/tableBeforeOpenInlineBox">
             <h4 class='method-name'>$A.events.table.beforeOpenInlineBox(function func(table, openedRow, recordId))</h4>
+            <h5>Variants:</h5>
+            <ul>
+                <li class='method-name'>$A.events.table.on.beforeOpenInlineBox(function func(table, openedRow, recordId), id)</li>
+                <li class='method-name'>$A.events.table.off.beforeOpenInlineBox(id)</li>
+                <li class='method-name'>$A.events.table.one.beforeOpenInlineBox(function func(table, openedRow, recordId))</li>
+            </ul>
             <p class='method-use'>
                 Use this function to register a new function on the <code>beforeOpenInlineBox</code> event of tables.
             </p>
@@ -291,7 +492,7 @@ table.addRows([
             <div class='method-examples'>Code examples</div>
             <pre class='prettyprint linenums'>
 $A.events.table.beforeOpenInlineBox(function (table, openedRow, recordId){
-    console.log(recordId)
+    alert('Opening record '+recordId);
 })
 
 $A.newTable({
@@ -319,9 +520,57 @@ $A.newTable({
 }).draw();
 
             </pre>
+            <pre class='prettyprint linenums'>
+//Using ON, OFF and ONE variants:
+
+$A.events.table.one.beforeOpenInlineBox(function (table, openedRow, recordId){
+    alert('Record '+recordId+' opened first!');
+});
+
+$A.events.table.on.beforeOpenInlineBox(function (table, openedRow, recordId){
+    alert('Opening record '+recordId);
+},'table-on-before-openable-inline-box');
+
+var stopAddRowsEvent = $A.newButton({
+    text: "Stop beforeOpenInlineBox event",
+    click: function(){
+        $A.events.table.off.beforeOpenInlineBox('table-on-before-openable-inline-box');
+    }
+}).draw();
+
+$A.newTable({
+    id: 'Table',
+	cols:[
+            {name: 'name', text:'Campaign name'},
+            {name: 'subject',text: 'Subject'}
+	],
+    rows:[
+        {
+            values:{
+                name: 'Campaign1',
+                subject: 'test1'
+            },
+            recordId:1
+        },
+        {
+            values:{
+                name: 'Campaign2',
+                subject: 'test2'
+            },
+            recordId:2
+        }
+    ]
+}).draw();
+            </pre>
         </article>
         <article id="globalEvents/tableComplete">
             <h4 class='method-name'>$A.events.table.complete(function func(table))</h4>
+            <h5>Variants:</h5>
+            <ul>
+                <li class='method-name'>$A.events.table.on.complete(function func(table), id)</li>
+                <li class='method-name'>$A.events.table.off.complete(id)</li>
+                <li class='method-name'>$A.events.table.one.complete(function func(table))</li>
+            </ul>
             <p class='method-use'>
                 Use this function to register a new function on the <code>complete</code> event of tables (triggered when a table is drawn the first time).<br>
             </p>
@@ -364,9 +613,63 @@ $A.newTable({
 }).draw();
 
             </pre>
+            <pre class='prettyprint linenums'>
+//Using ON, OFF and ONE variants:
+
+$A.events.table.one.complete(function (table){
+    alert('First table drawn!');
+});
+
+$A.events.table.on.complete(function (table){
+    alert(table.id()+' drawn!');
+},'table-on-complete');
+
+var i = 1;
+var addTableButton = $A.newButton({
+    text: 'Add new table',
+    click: function(){
+        $A.newTable({
+            id: 'Table '+i,
+            cols:[
+                    {name: 'name', text:'Campaign name'},
+                    {name: 'subject',text: 'Subject'}
+            ],
+            rows:[
+                {
+                    values:{
+                        name: 'Campaign1',
+                        subject: 'test1'
+                    }
+                },
+                {
+                    values:{
+                        name: 'Campaign2',
+                        subject: 'test2'
+                    }
+                }
+            ]
+        }).draw();
+        i++;
+    }
+}).draw();
+
+$A.newButton({
+    text: 'Stop complete event',
+    click: function () {
+        $A.events.table.off.complete('table-on-complete');
+    }
+}).draw();
+
+            </pre>
         </article>
         <article id="globalEvents/buttonClick">
             <h4 class='method-name'>$A.events.button.click(function func(button))</h4>
+            <h5>Variants:</h5>
+            <ul>
+                <li class='method-name'>$A.events.button.on.click(function func(button), id)</li>
+                <li class='method-name'>$A.events.button.off.click(id)</li>
+                <li class='method-name'>$A.events.button.one.click(function func(button))</li>
+            </ul>
             <p class='method-use'>
                 Use this function to register a new function on the <code>click</code> event of buttons.<br>
             </p>
@@ -388,9 +691,38 @@ $A.events.button.click(function(button){
 $A.button().text("Button 1").draw();
 $A.button().text("Button 2").draw();
             </pre>
+
+            <pre class='prettyprint linenums'>
+//Using ON, OFF and ONE variants:
+
+$A.events.button.on.click(function(button){
+    alert(button.text()+' clicked!');
+},'button-on-click');
+
+$A.events.button.one.click(function(button){
+    alert('First click!');
+});
+
+$A.newButton({
+    text: 'Stop button on click event',
+    click: function(){
+        $A.events.button.off.click('button-on-click');
+    }
+}).draw();
+
+$A.newButton().text("Button 1").draw();
+$A.newButton().text("Button 2").draw();
+            </pre>
         </article>
+
         <article id="globalEvents/buttonBeforeClick">
             <h4 class='method-name'>$A.events.button.beforeClick(function func(button))</h4>
+            <h5>Variants:</h5>
+            <ul>
+                <li class='method-name'>$A.events.button.on.beforeClick(function func(button), id)</li>
+                <li class='method-name'>$A.events.button.off.beforeClick(id)</li>
+                <li class='method-name'>$A.events.button.one.beforeClick(function func(button))</li>
+            </ul>
             <p class='method-use'>
                 Use this function to register a new function on the <code>click</code> event of buttons, which will run right before their dedicated click function.<br>
             </p>
@@ -416,9 +748,40 @@ $A.button().text("Button 2").click(function(){
     alert('Button 2 dedicated click function');
 }).draw();
             </pre>
+            <pre class='prettyprint linenums'>
+//Using ON, OFF and ONE variants:
+
+$A.events.button.on.beforeClick(function(button){
+    alert(button.text()+' dedicated will run!');
+},'button-on-before-click');
+
+$A.events.button.one.beforeClick(function(button){
+    alert('Before first click!');
+});
+
+$A.newButton({
+    text: 'Stop button on beforeClick event',
+    click: function(){
+        $A.events.button.off.beforeClick('button-on-before-click');
+    }
+}).draw();
+
+$A.button().text("Button 1").click(function(){
+    alert('Button 1 dedicated click function');
+}).draw();
+$A.button().text("Button 2").click(function(){
+    alert('Button 2 dedicated click function');
+}).draw();
+            </pre>
         </article>
-        <article id="globalEvents/buttonComplete">
+        <article id="globalEvents/buttonComplete" class="last">
             <h4 class='method-name'>$A.events.button.complete(function func(button))</h4>
+            <h5>Variants:</h5>
+            <ul>
+                <li class='method-name'>$A.events.button.on.complete(function func(button), id)</li>
+                <li class='method-name'>$A.events.button.off.complete(id)</li>
+                <li class='method-name'>$A.events.button.one.complete(function func(button))</li>
+            </ul>
             <p class='method-use'>
                 Use this function to register a new function on the <code>complete</code> event of button (triggered when a button is drawn the first time).<br>
             </p>
@@ -440,6 +803,37 @@ $A.events.button.complete(function(button){
 
 $A.button().text("Button 1").draw();
 $A.button().text("Button 2").draw();
+            </pre>
+            <pre class='prettyprint linenums'>
+//Using ON, OFF and ONE variants:
+
+$A.newButton({
+    text: 'Stop button on complete event',
+    click: function(){
+        $A.events.button.off.complete('button-on-complete');
+    }
+}).draw();
+
+var i = 1;
+$A.newButton({
+    text: 'Draw new button',
+    click: function(){
+        $A.newButton({
+            text: 'Button '+i
+        }).draw();
+        i++;
+    }
+}).draw();
+
+setTimeout(function(){
+    $A.events.button.on.complete(function(button){
+        alert(button.text()+' drawn!');
+    },'button-on-complete');
+
+    $A.events.button.one.complete(function(button){
+        alert('First button drawn!');
+    });
+},500);
             </pre>
         </article>
     </section>
