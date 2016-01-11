@@ -1,5 +1,5 @@
 <div id="doc-container">
-    <h1 id="globalEvents-head">Event handling</h1>
+    <h1 id="eventHandling-head">Event handling</h1>
     <div class="description-label">Description:
         <div class="description">These methods are used for attaching/detaching handler functions for global events to whole AutomizyJs modules, or local events to single AutomizyJs module instances.<br>
             The method of attaching handlers on global and local events differs, usage will be shown in the examples.<br>
@@ -25,7 +25,7 @@
             <h4 class='event-name'>on</h4>
             <h5>Global usage: $A.events.<span class="module">module</span>.on.<span class="event">event</span>(handler,handlerName)</h5>
             <p class='event-use'>
-                Use this function to attach a handler function on a whole Automizy module.
+                Use this function to attach a handler function to a specific event of a whole Automizy module.
             </p>
             <ul>
                 <li>
@@ -84,12 +84,90 @@ $A.newButton({
     id: 'button2'
 }).draw();
             </pre>
+
+            <h5>Local usage: <span class="module">moduleInstance</span>.on(eventName,handler,handlerName)</h5>
+            <p class='event-use'>
+                Use this function to attach a handler function to the events of a single Automizy module instance.
+            </p>
+            <ul>
+                <li>
+                    <div class='event-parameter'>
+                        <span class="module">moduleInstance</span>
+                    </div>
+                    Type: <code>Automizy module instance</code><br>
+                    The Automizy module instance that has the specific events you want to handle.<br>
+                </li>
+                <li>
+                    <div class='event-parameter'>
+                        eventName
+                    </div>
+                    Type: <code>String</code><br>
+                    The specific event/events which you want to handle.<br>
+                </li>
+                <li>
+                    <div class='event-parameter'>
+                        handler
+                    </div>
+                    Type: <code>Function</code><br>
+                    The handler function you want to attach.
+                </li>
+                <li>
+                    <div class='event-parameter'>
+                        *handlerName
+                    </div>
+                    Type: <code>String</code><br>
+                    *Optional<br>
+                    The name which identifies the handler.<br>
+                    Later you can use this name to detach the handler.<br>
+                    Please note that if you attach a new handler to the same event using the same handlerName, the old handler function will be overwritten by the new, however if you attach several handlers to the same event using no handlerName, all of them will be registered.
+                </li>
+            </ul>
+            <div class='event-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var dialog1 = $A.newDialog({
+    title: 'Dialog 1'
+});
+
+var dialog2 = $A.newDialog({
+    title: 'Dialog 2'
+});
+
+var dialog3 = $A.newDialog({
+    title: 'Dialog 3'
+});
+
+$A.newButton({
+    text: 'Open dialog1',
+    click: function(){dialog1.open()}
+}).draw();
+
+$A.newButton({
+    text: 'Open dialog2',
+    click: function(){dialog2.open()}
+}).draw();
+
+$A.newButton({
+    text: 'Open dialog3',
+    click: function(){dialog3.open()}
+}).draw();
+
+//Attaching a new handler function on the 'open' event of dialog1, named 'openFunction1'
+dialog1.on('open',function(){alert('Opening dialog1!')},'openFunction1');
+
+//Attaching 2 anonymous handler functions to the 'open' event of dialog2
+dialog2.on('open',function(){alert("I'm anonymous openFunc1")});
+dialog2.on('open',function(){alert("I'm anonymous openFunc2")});
+
+//Attaching a the same handler to the 'open' and 'close' events of dialog3, named 'func1'
+dialog3.on('open close',function(){alert('Opening/Closing dialog3!')},'func1');
+
+            </pre>
         </article>
         <article id="eventHandling/off">
             <h4 class='event-name'>off</h4>
             <h5>Global usage: $A.events.<span class="module">module</span>.off.<span class="event">event</span>(handlerName)</h5>
             <p class='event-use'>
-                Use this function to detach a handler function from a whole Automizy module.
+                Use this function to detach a handler function from a specific event of a whole Automizy module.
             </p>
             <ul>
                 <li>
@@ -150,12 +228,101 @@ $A.newButton({
     }
 }).draw();
             </pre>
+
+            <h5>Local usage: <span class="module">moduleInstance</span>.off(eventName,handlerName)</h5>
+            <p class='event-use'>
+                Use this function to detach a handler function from the events of a single Automizy module instance.
+            </p>
+            <ul>
+                <li>
+                    <div class='event-parameter'>
+                        <span class="module">module</span>
+                    </div>
+                    Type: <code>Automizy module</code><br>
+                    The Automizy module that has the specific event whose handler you want to detach.<br>
+                </li>
+                <li>
+                    <div class='event-parameter'>
+                        <span class="event">event</span>
+                    </div>
+                    Type: <code>Automizy module event</code><br>
+                    The specific event which has the handler function you want to detach.<br>
+                </li>
+                <li>
+                    <div class='event-parameter'>
+                        *handlerName
+                    </div>
+                    Type: <code>String</code><br>
+                    *Optional<br>
+                    The name which identifies the handler you want to detach.<br>
+                    If no handlerName is given all handlers will be detached from the given event.
+                </li>
+            </ul>
+            <div class='event-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var dialog1 = $A.newDialog({
+    title: 'Dialog 1'
+});
+
+var dialog2 = $A.newDialog({
+    title: 'Dialog 2'
+});
+
+var dialog3 = $A.newDialog({
+    title: 'Dialog 3'
+});
+
+$A.newButton({
+    text: 'Open dialog1',
+    click: function(){dialog1.open()}
+}).draw();
+
+$A.newButton({
+    text: 'Open dialog2',
+    click: function(){dialog2.open()}
+}).draw();
+
+$A.newButton({
+    text: 'Open dialog3',
+    click: function(){dialog3.open()}
+}).draw();
+
+/*
+$A.newButton({
+    text: 'Remove all handlers from dialog2',
+    click: function(){dialog3.off()}
+}).draw();
+
+$A.newButton({
+    text: 'Remove all handlers from dialog2',
+    click: function(){dialog2.off()}
+}).draw();
+
+$A.newButton({
+    text: 'Remove func1 from dialog2 open event',
+    click: function(){dialog3.off('open','func1')}
+}).draw();
+
+
+*/
+
+//Attaching a new handler function on the 'open' event of dialog1, named 'openFunction1'
+dialog1.on('open',function(){alert('Opening dialog1!')},'openFunction1');
+
+//Attaching 2 anonymous handler functions to the 'open' event of dialog2
+dialog2.on('open',function(){alert("I'm anonymous openFunc1")});
+dialog2.on('open',function(){alert("I'm anonymous openFunc2")});
+
+//Attaching a the same handler to the 'open' and 'close' events of dialog3, named 'func1'
+dialog3.on('open close',function(){alert('Opening/Closing dialog3!')},'func1');
+
+            </pre>
         </article>
         <article id="eventHandling/one">
             <h4 class='event-name'>one</h4>
             <h5>Global usage: $A.events.<span class="module">module</span>.one.<span class="event">event</span>(handler)</h5>
             <p class='event-use'>
-                Use this function to attach a handler function from a whole Automizy module.<br>
+                Use this function to attach a handler function to a whole Automizy module.<br>
                 The handler will run only once, right after the first run it will be detached automatically.
             </p>
             <ul>
