@@ -18,8 +18,8 @@ define([
             $widgetInputBoxError: $('<span class="automizy-input-box-error"></span>'),
             $widgetLabel: $('<label></label>'),
             $widgetLabelAfter: $('<span></span>'),
-            $widgetHelp: $('<img src="'+$A.images.helpIcon+'" class="automizy-input-help" />'),
-            $widgetHelpContent: $('<div class="automizy-input-help-content"><img src="'+$A.images.helpArrow+'" class="automizy-input-help-content-arrow" /></div>'),
+            $widgetHelp: $('<img src="' + $A.images.helpIcon + '" class="automizy-input-help" />'),
+            $widgetHelpContent: $('<div class="automizy-input-help-content"><img src="' + $A.images.helpArrow + '" class="automizy-input-help-content-arrow" /></div>'),
             $widgetHelpContentInner: $('<span></span>'),
             $input: $('<input />'),
             $textarea: $('<textarea></textarea>'),
@@ -27,6 +27,13 @@ define([
             specialElements: [],
             type: 'text',
             skin: 'simple-automizy',
+            triggers:{
+                enter:0,
+                change:0,
+                focus:0,
+                blur:0,
+                click:0
+            },
             multiple: false,
             multiselect: false,
             readonly: false,
@@ -34,9 +41,10 @@ define([
             isDatepicker: false,
             newRow: true,
             breakInput: false,
-            needModify:false,
-            labelPosition:'left',
-            labelWidth:'',
+            needModify: false,
+            disabled:false,
+            labelPosition: 'left',
+            labelWidth: '',
             value: '',
             placeholder: '',
             name: '',
@@ -47,19 +55,11 @@ define([
             accept: [],
             items: {},
             validator: $A.newValidator(),
-            validate: function () {
-            },
+            validate: function () {},
             createFunctions: [],
-            id: 'automizy-input-' + $A.getUniqueString(),
-            click: function () {
-            },
-            change: function () {
-            },
-            enter: function () {
-            },
-            create: function () {
-            }
+            id: 'automizy-input-' + $A.getUniqueString()
         };
+        t.f = {};
         t.init();
 
         t.d.$input.addClass('automizy-input');
@@ -67,9 +67,6 @@ define([
         t.d.$select.addClass('automizy-input');
         t.d.$widgetLabel.appendTo(t.d.$widget).attr('for', t.d.id + '-input').ahide();
         t.d.$widgetInput.appendTo(t.d.$widgetInputBox).attr('id', t.d.id + '-input');
-        t.d.$widgetInput.click(function () {
-            t.click();
-        });
         t.d.$widgetInputBox.appendTo(t.d.$widget);
         t.d.$widgetLabelAfter.appendTo(t.d.$widget).ahide();
         t.d.$widgetInputBoxError.appendTo(t.d.$widget);
@@ -89,134 +86,288 @@ define([
         }).ahide();
         t.d.$widgetInputBoxError.appendTo(t.d.$widget);
         t.d.$widget.attr('type', 'text').attr('id', t.id()).addClass('automizy-skin-' + t.d.skin);
-        t.d.$widgetInput.on('change keyup paste', function () {
-            t.change();
-        }).blur(function(){
-            t.validate();
-        }).keypress(function(e) {
-            if (e.which == 13) {
-                t.enter();
-            }
-        });
+        t.setupJQueryEvents();
         if (typeof obj !== 'undefined') {
-            if (typeof obj.label !== 'undefined')
+            if (typeof obj.label !== 'undefined') {
                 t.label(obj.label);
-            if (typeof obj.labelAfter !== 'undefined')
+            }
+            if (typeof obj.labelAfter !== 'undefined') {
                 t.labelAfter(obj.labelAfter);
-            if (typeof obj.type !== 'undefined')
+            }
+            if (typeof obj.type !== 'undefined') {
                 t.type(obj.type);
+            }
             if (typeof obj.disable !== 'undefined') {
-                if (obj.disable)
+                if (obj.disable) {
                     t.disable();
-                else
+                } else {
                     t.enable();
+                }
             }
             if (typeof obj.enable !== 'undefined') {
-                if (obj.enable)
+                if (obj.enable) {
                     t.enable();
-                else
+                } else {
                     t.disable();
+                }
             }
-            if (typeof obj.checked !== 'undefined')
+            if (typeof obj.checked !== 'undefined') {
                 t.checked(obj.checked);
-            if (typeof obj.click !== 'undefined')
+            }
+            if (typeof obj.click !== 'undefined') {
                 t.click(obj.click);
-            if (typeof obj.help !== 'undefined')
+            }
+            if (typeof obj.help !== 'undefined') {
                 t.help(obj.help);
-            if (typeof obj.height !== 'undefined')
+            }
+            if (typeof obj.height !== 'undefined') {
                 t.height(obj.height);
-            if (typeof obj.name !== 'undefined')
+            }
+            if (typeof obj.name !== 'undefined') {
                 t.name(obj.name);
-            if (typeof obj.multiple !== 'undefined')
+            }
+            if (typeof obj.multiple !== 'undefined') {
                 t.multiple(obj.multiple);
-            if (typeof obj.datepicker !== 'undefined')
+            }
+            if (typeof obj.datepicker !== 'undefined') {
                 t.datepicker(obj.datepicker);
-            if (typeof obj.multiselect !== 'undefined' && obj.multiselect !== false)
+            }
+            if (typeof obj.multiselect !== 'undefined' && obj.multiselect !== false) {
                 t.multiselect(obj.multiselect);
-            if (typeof obj.options !== 'undefined')
+            }
+            if (typeof obj.options !== 'undefined') {
                 t.options(obj.options);
-            if (typeof obj.accept !== 'undefined')
+            }
+            if (typeof obj.accept !== 'undefined') {
                 t.accept(obj.accept);
-            if (typeof obj.readonly !== 'undefined')
+            }
+            if (typeof obj.readonly !== 'undefined') {
                 t.readonly(obj.readonly);
-            if (typeof obj.newRow !== 'undefined')
+            }
+            if (typeof obj.newRow !== 'undefined') {
                 t.newRow(obj.newRow);
-            if (typeof obj.width !== 'undefined')
+            }
+            if (typeof obj.width !== 'undefined') {
                 t.width(obj.width);
-            if (typeof obj.placeholder !== 'undefined')
+            }
+            if (typeof obj.placeholder !== 'undefined') {
                 t.placeholder(obj.placeholder);
-            if (typeof obj.breakInput !== 'undefined')
+            }
+            if (typeof obj.breakInput !== 'undefined') {
                 t.breakInput(obj.breakInput);
-            if (typeof obj.labelPosition !== 'undefined')
+            }
+            if (typeof obj.labelPosition !== 'undefined') {
                 t.labelPosition(obj.labelPosition);
-            if (typeof obj.labelWidth !== 'undefined')
+            }
+            if (typeof obj.labelWidth !== 'undefined') {
                 t.labelWidth(obj.labelWidth);
-            if (typeof obj.change === 'function')
+            }
+            if (typeof obj.change === 'function') {
                 t.change(obj.change);
-            if (typeof obj.enter === 'function')
+            }
+            if (typeof obj.enter === 'function') {
                 t.enter(obj.enter);
-            if (typeof obj.needModify !== 'undefined')
-                t.needModify(obj.needModify);
-            if (typeof obj.val !== 'undefined' || typeof obj.value !== 'undefined')
-                t.val(obj.val || obj.value);
-            if (typeof obj.validator !== 'undefined')
-                t.validator(obj.validator);
-            if (typeof obj.validate !== 'undefined')
-                t.validate(obj.validate);
-            if (typeof obj.focus !== 'undefined')
+            }
+            if (typeof obj.focus === 'function') {
                 t.focus(obj.focus);
+            }
+            if (typeof obj.blur === 'function') {
+                t.blur(obj.blur);
+            }
+            if (typeof obj.disabled === 'function') {
+                t.disabled(obj.disabled);
+            }
+            if (typeof obj.needModify !== 'undefined') {
+                t.needModify(obj.needModify);
+            }
+            if (typeof obj.val !== 'undefined' || typeof obj.value !== 'undefined') {
+                t.val(obj.val || obj.value);
+            }
+            if (typeof obj.validator !== 'undefined') {
+                t.validator(obj.validator);
+            }
+            if (typeof obj.validate !== 'undefined') {
+                t.validate(obj.validate);
+            }
+            if (typeof obj.focus !== 'undefined') {
+                t.focus(obj.focus);
+            }
             t.initParameter(obj);
         }
     };
 
     var p = Input.prototype;
-    p.change = function (func) {
+    p.setupJQueryEvents = function(){
         var t = this;
-        if (typeof func === 'function') {
-            t.d.change = func;
-        } else {
-            if($A.runFunctions($A.events.input.functions.change, this, [this]) === false){
-                return false;
+        t.d.$widgetInput.off().on('change', function () { //change keyup paste
+            if(t.d.triggers.change === 'jQuery'){
+                t.d.triggers.change = 0;
+            }else{
+                if(t.d.triggers.change === 0){
+                    t.d.triggers.change = 'jQuery';
+                }
+                if (t.change().returnValue() === false) {
+                    return false;
+                }
             }
-            t.d.change.apply(this, [this, this.d.$widget]);
-        }
-        return t;
+        }).focus(function () {
+            if(t.d.triggers.focus === 'jQuery'){
+                t.d.triggers.focus = 0;
+            }else{
+                if(t.d.triggers.focus === 0){
+                    t.d.triggers.focus = 'jQuery';
+                }
+                if (t.focus().returnValue() === false) {
+                    return false;
+                }
+            }
+        }).blur(function () {
+            if(t.d.triggers.blur === 'jQuery'){
+                t.d.triggers.blur = 0;
+            }else{
+                if(t.d.triggers.blur === 0){
+                    t.d.triggers.blur = 'jQuery';
+                }
+                if (t.blur().returnValue() === false) {
+                    return false;
+                }
+                t.validate();
+            }
+        }).keypress(function (e) {
+            if (e.which == 13) {
+                if (t.enter().returnValue() === false) {
+                    return false;
+                }
+            }
+        }).click(function () {
+            if(t.d.triggers.click === 'jQuery'){
+                t.d.triggers.click = 0;
+            }else{
+                if(t.d.triggers.click === 0){
+                    t.d.triggers.click = 'jQuery';
+                }
+                if (t.click().returnValue() === false) {
+                    return false;
+                }
+            }
+        });
     };
-    p.enter = function (func) {
+    p.disabled = function (disabled) {
+        var t = this;
+        if (typeof disabled !== 'undefined') {
+            t.d.disabled = $A.parseBoolean(disabled);
+            t.input().prop('disabled', t.d.disabled);
+            t.d.$widget.toggleClass('disabled', t.d.disabled);
+            return t;
+        }
+        return t.d.disabled;
+    };
+    p.enter = function (func, name, life) {
         var t = this;
         if (typeof func === 'function') {
-            t.d.enter = func;
+            t.addFunction('enter', func, name, life);
         } else {
-            t.d.enter.apply(this, [this, this.d.$widget]);
+            var a = t.runFunctions('enter');
+            t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
         }
         return t;
     };
-    p.focus = function () {
+    p.change = function (func, name, life) {
         var t = this;
-        t.d.$widgetInput.focus();
+        if (typeof func === 'function') {
+            t.addFunction('change', func, name, life);
+        } else {
+            if(t.d.triggers.change === 'AutomizyJs'){
+                t.d.triggers.change = 0;
+            }else{
+                if(t.d.triggers.change === 0){
+                    t.d.triggers.change = 'AutomizyJs';
+                }
+                var a = t.runFunctions('change');
+                t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
+                t.d.$widgetInput.trigger('change');
+            }
+        }
         return t;
     };
+    p.focus = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('focus', func, name, life);
+        } else {
+            if(t.d.triggers.focus === 'AutomizyJs'){
+                t.d.triggers.focus = 0;
+            }else{
+                if(t.d.triggers.focus === 0){
+                    t.d.triggers.focus = 'AutomizyJs';
+                }
+                var a = t.runFunctions('focus');
+                t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
+                t.d.$widgetInput.trigger('focus');
+            }
+        }
+        return t;
+    };
+    p.blur = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('blur', func, name, life);
+        } else {
+            if(t.d.triggers.blur === 'AutomizyJs'){
+                t.d.triggers.blur = 0;
+            }else{
+                if(t.d.triggers.blur === 0){
+                    t.d.triggers.blur = 'AutomizyJs';
+                }
+                var a = t.runFunctions('blur');
+                t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
+                t.d.$widgetInput.trigger('blur');
+            }
+        }
+        return t;
+    };
+    p.click = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('click', func, name, life);
+        } else {
+            if(t.d.triggers.click === 'AutomizyJs'){
+                t.d.triggers.click = 0;
+            }else{
+                if(t.d.triggers.click === 0){
+                    t.d.triggers.click = 'AutomizyJs';
+                }
+                var a = t.runFunctions('click');
+                t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
+                t.d.$widgetInput.trigger('click');
+            }
+        }
+        return t;
+    };
+
     p.disable = function () {
         var t = this;
         t.d.$widgetInput.prop('disabled', true);
-        if (t.d.multiselect)
+        if (t.d.multiselect) {
             t.multiselect('disable');
+        }
         return t;
     };
     p.enable = function () {
         var t = this;
         t.d.$widgetInput.prop('disabled', false);
-        if (t.d.multiselect)
+        if (t.d.multiselect) {
             t.multiselect('enable');
+        }
         return t;
     };
     p.checked = function (checked) {
         var t = this;
         if (typeof checked !== 'undefined') {
             checked = $A.parseBoolean(checked);
-            if (t.d.hasObject){
+            if (t.d.hasObject) {
                 t.d.$widgetInput.prop('checked', checked);
-            }else {
+            } else {
                 t.d.createFunctions.push(function () {
                     t.d.$widgetInput.prop('checked', checked);
                 });
@@ -266,9 +417,9 @@ define([
         if (typeof labelPosition !== 'undefined') {
             t.d.labelPosition = labelPosition;
             //t.d.$widgetLabel.html(label).ashow();
-            if(t.d.labelPosition === 'left'){
+            if (t.d.labelPosition === 'left') {
                 t.d.$widgetLabel.insertBefore(t.d.$widgetInput);
-            }else{
+            } else {
                 t.d.$widgetLabel.insertAfter(t.d.$widgetInput);
             }
             return t;
@@ -290,10 +441,10 @@ define([
             t.d.help = help;
             t.d.$widgetHelpContentInner.html(help);
             t.d.$widgetHelp.ashow();
-            
+
             /*Sizing input if it has help icon*/
             t.d.$widgetInputBox.addClass('automizy-input-has-help');
-            
+
             return t;
         }
         return t.d.help;
@@ -302,21 +453,22 @@ define([
         var t = this;
         if (typeof value !== 'undefined') {
             t.d.value = value;
-            if (t.d.type === 'file')
+            if (t.d.type === 'file') {
                 t.input().data('value', value);
-            else if(t.d.type === 'html')
+            } else if (t.d.type === 'html') {
                 t.input().html(value);
-            else
+            } else {
                 t.input().val(value);
-            if(t.d.multiselect){
+            }
+            if (t.d.multiselect) {
                 t.input().multiselect('refresh');
             }
-            if(t.d.needModify){
+            if (t.d.needModify) {
                 t.input().data('originalValue', value);
             }
             return t;
         }
-        if(t.d.type === 'html'){
+        if (t.d.type === 'html') {
             return t.input().html();
         }
         return t.input().val();
@@ -349,8 +501,8 @@ define([
             } else {
                 t.widget().width('auto');
                 t.input().add(t.d.$widgetInputBox).width(width);
-                if(t.d.multiselect){
-                    t.input().next().css({maxWidth:width});
+                if (t.d.multiselect) {
+                    t.input().next().css({maxWidth: width});
                 }
             }
             return t;
@@ -391,20 +543,9 @@ define([
             t.d.$widgetInputBox.ashow().empty();
             t.d.$widgetInput.attr(attributes).show();
             t.d.$widgetInput.appendTo(t.d.$widgetInputBox);
-            t.d.$widgetInput.on('change keyup paste', function () {});
             setTimeout(function(){
-                t.d.$widgetInput.on('change keyup paste', function () {
-                    t.validate();
-                    t.change();
-                }).keypress(function(e) {
-                    if (e.which == 13) {
-                        t.enter();
-                    }
-                });
+                t.setupJQueryEvents();
             }, 10);
-            t.d.$widgetInput.click(function () {
-                t.click();
-            });
             if (t.d.type === 'hidden' && t.d.label.length < 1) {
                 t.d.createFunctions.push(function () {
                     t.widget().ahide();
@@ -462,10 +603,11 @@ define([
         var t = this;
         if (typeof multiple !== 'undefined') {
             multiple = $A.parseBoolean(multiple);
-            if (multiple)
+            if (multiple) {
                 t.d.$widgetInput.attr('multiple', 'multiple');
-            else
+            } else {
                 t.d.$widgetInput.removeAttr('multiple');
+            }
             t.d.multiple = multiple;
             return t;
         }
@@ -530,7 +672,7 @@ define([
                 for (var i in arr) {
                     var inVal = arr[i];
                     var inSelected = false;
-                    if((typeof inVal === 'object' || typeof inVal === 'array') && !$.isArray(inVal)){
+                    if ((typeof inVal === 'object' || typeof inVal === 'array') && !$.isArray(inVal)) {
                         inSelected = inVal.selected;
                         inVal = inVal.value;
                     }
@@ -544,25 +686,27 @@ define([
                     var $option = $('<option></option>');
 
                     var value = arr[i];
-                    if(typeof value !== 'string' && typeof value !== 'number'){
+                    if (typeof value !== 'string' && typeof value !== 'number') {
                         value = arr[i][0];
                     }
 
                     var text = arr[i];
-                    if(typeof text !== 'string' && typeof text !== 'number'){
+                    if (typeof text !== 'string' && typeof text !== 'number') {
                         text = arr[i][1] || arr[i][0];
                     }
 
                     $option.attr('value', value);
                     $option.html(text);
-                    if (typeof arr[i] !== 'string' && typeof arr[i] !== 'number' && typeof arr[i][2] !== 'undefined' && $A.parseBoolean(arr[i][2]))
+                    if (typeof arr[i] !== 'string' && typeof arr[i] !== 'number' && typeof arr[i][2] !== 'undefined' && $A.parseBoolean(arr[i][2])) {
                         values.push(arr[i][0]);
+                    }
                     if (before) {
                         var $of = t.d.$widgetInput.find('option:first');
-                        if ($of.val() == 0)
+                        if ($of.val() == 0) {
                             $option.insertAfter($of);
-                        else
+                        } else {
                             $option.prependTo(t.d.$widgetInput);
+                        }
                     } else {
                         $option.appendTo(t.d.$widgetInput);
                     }
@@ -571,8 +715,9 @@ define([
                 //t.d.$widgetInput.val(values);
             }
         }
-        if (t.d.multiselect)
+        if (t.d.multiselect) {
             t.multiselect('refresh');
+        }
         t.val(values || val);
         return t;
     };
@@ -666,15 +811,6 @@ define([
         }
         return t.d.breakInput;
     };
-    p.click = function (func) {
-        var t = this;
-        if (typeof func === 'function') {
-            t.d.click = func;
-        } else {
-            t.d.click.apply(this, [this, this.d.$widget]);
-        }
-        return t;
-    };
     p.input = function () {
         var t = this;
         return t.d.$widgetInput;
@@ -687,5 +823,5 @@ define([
     $A.events.input = {};
     $A.registerLocalEvents($A.events.input, ['change']);
 
-    $A.initBasicFunctions(Input, "Input");
+    $A.initBasicFunctions(Input, "Input", ["change", "enter", "focus", "blur", "click"]);
 });

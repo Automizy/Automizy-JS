@@ -14,10 +14,12 @@ define([
         if (typeof obj.one === 'undefined') {
             obj.one = {};
         }
+        var eventNames = eventNames || [];
         for(var i = 0; i < eventNames.length; i++) {
             var eventName = eventNames[i];
             (function(eventName) {
-                if ($.inArray(eventName, ['function', 'on', 'off', 'one']) >= 0) {
+                if ($.inArray(eventName, ["function", "on", "off", "one"]) >= 0) {
+                    console.error('Invalid event name! Do not use "function", "on", "off", "one"');
                     return false;
                 }
                 if (typeof obj.functions[eventName] === 'undefined') {
