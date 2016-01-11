@@ -134,10 +134,12 @@ var $A = {};
         if (typeof obj.one === 'undefined') {
             obj.one = {};
         }
+        var eventNames = eventNames || [];
         for(var i = 0; i < eventNames.length; i++) {
             var eventName = eventNames[i];
             (function(eventName) {
-                if ($.inArray(eventName, ['function', 'on', 'off', 'one']) >= 0) {
+                if ($.inArray(eventName, ["function", "on", "off", "one"]) >= 0) {
+                    console.error('Invalid event name! Do not use "function", "on", "off", "one"');
                     return false;
                 }
                 if (typeof obj.functions[eventName] === 'undefined') {
@@ -166,217 +168,310 @@ var $A = {};
 })();
 
 (function(){
-    $A.initBasicFunctions = function (module, moduleName) {
+    $A.initBasicFunctions = function (module, moduleName, moduleEvents) {
         var module = module || false;
-        if (module === false)
+        if (module === false) {
             return false;
+        }
         var moduleName = moduleName || false;
-        if (moduleName === false)
+        if (moduleName === false) {
             return false;
+        }
+        var moduleEvents = moduleEvents || [];
+
         var moduleNameLower = moduleName.toLowerCase();
         var moduleNameLowerFirst = moduleName.charAt(0).toLowerCase() + moduleName.slice(1);
 
         var p = module.prototype;
-        p.init = p.init || function(){
-            var t = this;
-            if(typeof t.d.create === 'undefined'){
-                t.d.create = function(){};
-            }
-            if(typeof t.d.createFunctions === 'undefined'){
-                t.d.createFunctions = [];
-            }
-            if(typeof t.d.remove === 'undefined'){
-                t.d.remove = function(){};
-            }
+        p.init = p.init || function () {
+                var t = this;
+                if (typeof t.d.create === 'undefined') {
+                    t.d.create = function () {};
+                }
+                if (typeof t.d.createFunctions === 'undefined') {
+                    t.d.createFunctions = [];
+                }
+                if (typeof t.d.remove === 'undefined') {
+                    t.d.remove = function () {};
+                }
+                if (typeof t.d.returnValue === 'undefined') {
+                    t.d.returnValue = true;
+                }
 
-            for(var i in t.d){
-                if(typeof $A.default[moduleNameLowerFirst][i] !== 'undefined'){
-                    if ($A.default[moduleNameLowerFirst][i] instanceof jQuery) {
-                        $A.default[moduleNameLowerFirst][i] = $A.default[moduleNameLowerFirst][i].clone();
+                for (var i in t.d) {
+                    if (typeof $A.default[moduleNameLowerFirst][i] !== 'undefined') {
+                        if ($A.default[moduleNameLowerFirst][i] instanceof jQuery) {
+                            $A.default[moduleNameLowerFirst][i] = $A.default[moduleNameLowerFirst][i].clone();
+                        }
+                        t.d[i] = $A.default[moduleNameLowerFirst][i];
                     }
-                    t.d[i] = $A.default[moduleNameLowerFirst][i];
                 }
-            }
-        };
-        p.initParameter = p.initParameter || function(obj){
-            var t = this;
-            if (typeof obj.id === 'string' || typeof obj.id === 'number')
-                t.id(obj.id);
-            if (typeof obj.create === 'function')
-                t.create(obj.create);
-            if (typeof obj.remove === 'function')
-                t.remove(obj.remove);
-            if (typeof obj.buttons === 'array' || typeof obj.buttons === 'object')
-                t.buttons(obj.buttons);
-            if (typeof obj.target !== 'undefined')
-                t.drawTo(obj.target);
-            if (typeof obj.data !== 'undefined')
-                t.data(obj.data);
-            if (typeof obj.skin !== 'undefined')
-                t.skin(obj.skin);
-        };
+            };
+        p.initParameter = p.initParameter || function (obj) {
+                var t = this;
+                if (typeof obj.id === 'string' || typeof obj.id === 'number') {
+                    t.id(obj.id);
+                }
+                if (typeof obj.create === 'function') {
+                    t.create(obj.create);
+                }
+                if (typeof obj.remove === 'function') {
+                    t.remove(obj.remove);
+                }
+                if (typeof obj.buttons === 'array' || typeof obj.buttons === 'object') {
+                    t.buttons(obj.buttons);
+                }
+                if (typeof obj.target !== 'undefined') {
+                    t.drawTo(obj.target);
+                }
+                if (typeof obj.data !== 'undefined') {
+                    t.data(obj.data);
+                }
+                if (typeof obj.skin !== 'undefined') {
+                    t.skin(obj.skin);
+                }
+            };
         p.create = p.create || function (func) {
-            if (typeof func === 'function') {
-                this.d.create = func;
-            } else {
-                return this.d.create.apply(this, [this, this.d.$widget]);
-            }
-            return this;
-        };
+                var t = this;
+                if (typeof func === 'function') {
+                    this.d.create = func;
+                } else {
+                    return this.d.create.apply(this, [this, this.d.$widget]);
+                }
+                return this;
+            };
         p.widget = p.widget || function () {
-            return this.d.$widget;
-        };
+                return this.d.$widget;
+            };
         p.skin = p.skin || function (skin) {
-            if (typeof skin !== 'undefined') {
-                this.d.skin = skin;
-                this.d.$widget.removeClassPrefix('automizy-skin-');
-                this.d.$widget.addClass('automizy-skin-' + skin);
-                return this;
-            }
-            return this.d.skin;
-        };
+                if (typeof skin !== 'undefined') {
+                    this.d.skin = skin;
+                    this.d.$widget.removeClassPrefix('automizy-skin-');
+                    this.d.$widget.addClass('automizy-skin-' + skin);
+                    return this;
+                }
+                return this.d.skin;
+            };
         p.draw = p.drawTo = p.draw || function ($target) {
-            var t = this;
-            var $target = $target || $('body');
-            t.d.$widget.appendTo($target);
-            t.d.hasObject = true;
-            setTimeout(function () {
-                for (var i = 0; i < t.d.createFunctions.length; i++) {
-                    t.d.createFunctions[i]();
-                }
-                t.create();
-                $A.runFunctions($A.events[moduleNameLower].functions.complete, t, [t]);
-            }, 50);
-            return this;
-        };
+                var t = this;
+                var $target = $target || $('body');
+                t.d.$widget.appendTo($target);
+                t.d.hasObject = true;
+                setTimeout(function () {
+                    for (var i = 0; i < t.d.createFunctions.length; i++) {
+                        t.d.createFunctions[i]();
+                    }
+                    t.create();
+                    $A.runFunctions($A.events[moduleNameLower].functions.complete, t, [t]);
+                }, 50);
+                return this;
+            };
         p.show = p.show || function () {
-            var t = this;
-            if (!t.d.hasObject) {
-                t.draw();
-            }
-            this.d.$widget.ashow();
-            return this;
-        };
+                var t = this;
+                if (!t.d.hasObject) {
+                    t.draw();
+                }
+                this.d.$widget.ashow();
+                return this;
+            };
         p.hide = p.hide || function () {
-            var t = this;
-            $A.setWindowScroll(true, this.id());
-            if (typeof this.d.close === 'function')
-                this.d.close(this, t.d.$widget);
-            if (typeof this.hash === 'function' && this.hash() !== false)
-                $A.hashChange(this.hash(), false);
-            this.d.$widget.ahide();
-            return this;
-        };
+                var t = this;
+                $A.setWindowScroll(true, this.id());
+                if (typeof this.d.close === 'function') {
+                    this.d.close(this, t.d.$widget);
+                }
+                if (typeof this.hash === 'function' && this.hash() !== false) {
+                    $A.hashChange(this.hash(), false);
+                }
+                this.d.$widget.ahide();
+                return this;
+            };
         p.remove = p.remove || function (func) {
-            if (typeof func === 'function') {
-                this.d.remove = func;
-                return this;
-            }
-            if(!this.d.hasObject){
-                this.d.$widget.appendTo($('body:first'));
-            }
-            if(typeof this.d.removeAnimation === 'function'){
-                this.d.removeAnimation.apply(this, [this, this.d.$widget]);
-            }else {
-                var parent = this.d.$widget[0].parentElement;
-                if(typeof parent !== 'undefined' && parent !== null && typeof parent.removeChild === 'function') {
-                    parent.removeChild(this.d.$widget[0]);
+                if (typeof func === 'function') {
+                    this.d.remove = func;
+                    return this;
                 }
-            }
-            $A.setWindowScroll(true, this.id());
-            delete $A.d[moduleNameLower + "s"][this.id()];
-            this.d.remove.apply(this, [this, this.d.$widget]);
-            return true;
-        };
+                if (!this.d.hasObject) {
+                    this.d.$widget.appendTo($('body:first'));
+                }
+                if (typeof this.d.removeAnimation === 'function') {
+                    this.d.removeAnimation.apply(this, [this, this.d.$widget]);
+                } else {
+                    var parent = this.d.$widget[0].parentElement;
+                    if (typeof parent !== 'undefined' && parent !== null && typeof parent.removeChild === 'function') {
+                        parent.removeChild(this.d.$widget[0]);
+                    }
+                }
+                $A.setWindowScroll(true, this.id());
+                delete $A.d[moduleNameLower + "s"][this.id()];
+                this.d.remove.apply(this, [this, this.d.$widget]);
+                return true;
+            };
         p.id = p.id || function (id) {
-            if (typeof id === 'number' || typeof id === 'string') {
-                if ($A.setWindowScroll(true, this.d.id)) {
-                    $A.setWindowScroll(false, id);
+                if (typeof id === 'number' || typeof id === 'string') {
+                    if ($A.setWindowScroll(true, this.d.id)) {
+                        $A.setWindowScroll(false, id);
+                    }
+                    $A.d[moduleNameLower + "s"].renameProperty(this.d.id, id);
+                    this.d.$widget.attr('id', id);
+                    this.d.id = id;
+                    return this;
                 }
-                $A.d[moduleNameLower + "s"].renameProperty(this.d.id, id);
-                this.d.$widget.attr('id', id);
-                this.d.id = id;
-                return this;
-            }
-            if (typeof this.d.id === 'undefined') {
-                this.d.id = this.widget().attr('id') || 'automizy-' + moduleNameLower + '-' + $A.getUniqueString();
-                this.id(this.d.id);
-            }
-            return this.d.id;
-        };
+                if (typeof this.d.id === 'undefined') {
+                    this.d.id = this.widget().attr('id') || 'automizy-' + moduleNameLower + '-' + $A.getUniqueString();
+                    this.id(this.d.id);
+                }
+                return this.d.id;
+            };
         p.data = p.data || function (data, value) {
-            var t = this;
-            if (typeof t.d.data === 'undefined')
-                t.d.data = {};
-                t.d.$widget[0].automizyData = {};
-            if (typeof data === 'undefined') {
-                return t.d.data;
-            }
-            if(typeof data === 'array' || typeof data === 'object'){
-                for(var i in data){
-                    t.d.data[i] = data[i];
-                    t.d.$widget[0].automizyData[i] = data[i];
+                var t = this;
+                if (typeof t.d.data === 'undefined') {
+                    t.d.data = {};
                 }
-                return t;
-            }
-            if (typeof value === 'undefined') {
-                return t.d.data[data];
-            }
+                t.d.$widget[0].automizyData = {};
+                if (typeof data === 'undefined') {
+                    return t.d.data;
+                }
+                if (typeof data === 'array' || typeof data === 'object') {
+                    for (var i in data) {
+                        t.d.data[i] = data[i];
+                        t.d.$widget[0].automizyData[i] = data[i];
+                    }
+                    return t;
+                }
+                if (typeof value === 'undefined') {
+                    return t.d.data[data];
+                }
 
-            t.d.data[data] = value;
-            t.d.$widget[0].automizyData[data] = value;
-            return t;
-        };
+                t.d.data[data] = value;
+                t.d.$widget[0].automizyData[data] = value;
+                return t;
+            };
 
         p.addButton = p.addButton || function (obj) {
-            var t = this;
-            if (typeof t.d.buttons === 'undefined')
-                return t;
-            if (typeof obj !== 'undefined') {
-                if (obj instanceof $A.m.Button || obj instanceof $A.m.Input) {
-                    obj.drawTo(t.d.$buttons || t.d.$widget);
-                } else {
-                    obj.target = obj.target || t.d.$buttons || t.d.$widget;
-                    var button = $A.newButton(obj);
-                    t.d.buttons.push(button);
+                var t = this;
+                if (typeof t.d.buttons === 'undefined') {
+                    return t;
                 }
-                t.d.$widget.addClass('has-button');
-                return t;
-            }
-            var button = $A.newButton();
-            t.d.buttons.push(button);
-            button.drawTo(t.d.$buttons || t.d.$widget);
-            return button;
-        };
+                if (typeof obj !== 'undefined') {
+                    if (obj instanceof $A.m.Button || obj instanceof $A.m.Input) {
+                        obj.drawTo(t.d.$buttons || t.d.$widget);
+                    } else {
+                        obj.target = obj.target || t.d.$buttons || t.d.$widget;
+                        var button = $A.newButton(obj);
+                        t.d.buttons.push(button);
+                    }
+                    t.d.$widget.addClass('has-button');
+                    return t;
+                }
+                var button = $A.newButton();
+                t.d.buttons.push(button);
+                button.drawTo(t.d.$buttons || t.d.$widget);
+                return button;
+            };
         p.removeButton = p.removeButton || function (button) {
-            var t = this;
-            if (typeof t.d.buttons === 'undefined')
-                return t;
-            if (typeof button === 'string') {
-                for (var i = 0; i < t.d.buttons.length; i++) {
-                    if (t.d.buttons[i].id === button)
-                        t.d.buttons[i].remove();
+                var t = this;
+                if (typeof t.d.buttons === 'undefined') {
+                    return t;
                 }
-            } else if (typeof button === 'object') {
-                button.remove();
-            }
-            return t;
-        };
+                if (typeof button === 'string') {
+                    for (var i = 0; i < t.d.buttons.length; i++) {
+                        if (t.d.buttons[i].id === button) {
+                            t.d.buttons[i].remove();
+                        }
+                    }
+                } else if (typeof button === 'object') {
+                    button.remove();
+                }
+                return t;
+            };
         p.buttons = p.buttons || function (buttons) {
+                var t = this;
+                if (typeof t.d.buttons === 'undefined') {
+                    t.d.buttons = [];
+                }
+                if (typeof buttons !== 'undefined') {
+                    for (var i = 0; i < t.d.buttons.length; i++) {
+                        t.d.buttons[i].remove();
+                    }
+                    for (var i in buttons) {
+                        t.addButton(buttons[i]);
+                    }
+                    return t;
+                }
+                return t.d.buttons;
+            };
+        p.returnValue = function (value) {
             var t = this;
-            if (typeof t.d.buttons === 'undefined')
-                t.d.buttons = [];
-            if (typeof buttons !== 'undefined') {
-                for (var i = 0; i < t.d.buttons.length; i++) {
-                    t.d.buttons[i].remove();
-                }
-                for (var i in buttons) {
-                    t.addButton(buttons[i]);
-                }
+            if (typeof value !== 'undefined') {
+                t.d.returnValue = value;
                 return t;
             }
-            return t.d.buttons;
+            return t.d.returnValue;
         };
+
+        p.addFunction = function (functionName, func, name, life) {
+            var t = this;
+            if (typeof t.f[functionName] === 'undefined') {
+                t.f[functionName] = {};
+            }
+            t.f[functionName][name || $A.getUniqueString()] = {
+                func: func,
+                life: (typeof life !== 'undefined') ? life : -1
+            };
+        };
+        p.runFunctions = function (functionName, thisParameter, parameters) {
+            var t = this;
+            return [
+                $A.runFunctions(t.f[functionName], thisParameter || t, parameters || [t, t.d.$widget]),
+                $A.runFunctions($A.events[moduleNameLower].functions[functionName], thisParameter || t, parameters || [t, t.d.$widget])
+            ];
+        };
+        p.on = function (events, func, name) {
+            var t = this;
+            var events = events || [];
+            if (typeof events === 'string') {
+                events = events.split(' ');
+            }
+            for (var i = 0; i < events.length; i++) {
+                t[events[i]].apply(t, [func, name || $A.getUniqueString(), -1]);
+            }
+        };
+        p.one = function (events, func) {
+            var t = this;
+            var events = events || [];
+            if (typeof events === 'string') {
+                events = events.split(' ');
+            }
+            for (var i = 0; i < events.length; i++) {
+                t[events[i]].apply(t, [func, $A.getUniqueString(), 1]);
+            }
+        };
+        p.off = function (events, name) {
+            var t = this;
+            var events = events || [];
+            if (typeof events === 'string') {
+                events = events.split(' ');
+            }
+            if (events.length <= 0) {
+                for (var i in t.f) {
+                    for (var j in t.f[i]) {
+                        delete t.f[i][j];
+                    }
+                }
+            } else {
+                for (var i = 0; i < events.length; i++) {
+                    delete t.f[events[i]][name];
+                }
+            }
+        };
+
+
+        $A.events[moduleNameLower] = {};
+        if ($.inArray('complete', moduleEvents) < 0) {
+            moduleEvents.push('complete');
+        }
+        $A.registerLocalEvents($A.events[moduleNameLower], moduleEvents);
 
         $A.m[moduleName] = module;
         $A.d[moduleNameLower + "s"] = {};
@@ -394,8 +489,9 @@ var $A = {};
         };
         $A["remove" + moduleName] = function (id) {
             var elem = $A["get" + moduleName](id) || {};
-            if (typeof elem.remove !== 'undefined')
+            if (typeof elem.remove !== 'undefined') {
                 return elem.remove();
+            }
             return true;
         };
         $A["removeAll" + moduleName] = function () {
@@ -404,30 +500,31 @@ var $A = {};
             }
             return true;
         };
-        $A[moduleNameLowerFirst] = function(obj){
-            if(typeof obj === 'undefined'){
+        $A[moduleNameLowerFirst] = function (obj) {
+            if (typeof obj === 'undefined') {
                 return $A["new" + moduleName]();
-            }else if(typeof obj === 'string' || typeof obj === 'number'){
+            } else if (typeof obj === 'string' || typeof obj === 'number') {
                 return $A["get" + moduleName](obj) || $A["new" + moduleName]().id(obj);
-            }else{
-                if(obj instanceof HTMLElement){
+            } else {
+                if (obj instanceof HTMLElement) {
                     obj = $(obj);
                 }
-                if(obj instanceof jQuery){
+                if (obj instanceof jQuery) {
                     return $A["get" + moduleName](obj.attr('id')) || $A["new" + moduleName](obj);
                 }
             }
             return $A["new" + moduleName](obj);
         };
+        /*
+         if(typeof $A.events[moduleNameLower] === 'undefined'){
+         $A.events[moduleNameLower] = {
+         functions:[]
+         };
+         }
 
-        if(typeof $A.events[moduleNameLower] === 'undefined'){
-            $A.events[moduleNameLower] = {
-                functions:[]
-            };
-        }
-
-        $A.events[moduleNameLower] = $A.events[moduleNameLower] || {};
-        $A.registerLocalEvents($A.events[moduleNameLower], ['complete']);
+         $A.events[moduleNameLower] = $A.events[moduleNameLower] || {};
+         $A.registerLocalEvents($A.events[moduleNameLower], ['complete']);
+         */
     };
 })();
 
@@ -435,43 +532,62 @@ var $A = {};
     var Button = function (obj) {
         var t = this;
         t.d = {
-            $widget:$('<span class="automizy-button"></span>'),
+            $widget: $('<span class="automizy-button"></span>'),
             $widgetButton: $('<a href="javascript:;"></a>'),
             text: 'My Button',
             skin: 'simple-white',
             float: 'none',
             width: '',
             hasObject: false,
-            newRow:false,
-            disabled:false,
-            click:function(){},
+            newRow: false,
+            disabled: false,
+            triggers:{
+                click:0
+            },
             create: function () {
             },
             id: 'automizy-button-' + $A.getUniqueString()
         };
+        t.f = {};
         t.init();
 
         t.d.$widgetButton.appendTo(t.d.$widget);
         t.d.$widgetButton.text(t.d.text);
         t.d.$widget.addClass('automizy-skin-' + t.d.skin).attr('id', t.id());
         t.d.$widgetButton.click(function () {
-            t.click();
+            if(t.d.triggers.click === 'jQuery'){
+                t.d.triggers.click = 0;
+            }else{
+                if(t.d.triggers.click === 0){
+                    t.d.triggers.click = 'jQuery';
+                }
+                if (t.click().returnValue() === false) {
+                    return false;
+                }
+            }
         });
         if (typeof obj !== 'undefined') {
-            if (typeof obj.disabled !== 'undefined')
+            if (typeof obj.disabled !== 'undefined') {
                 t.disabled(obj.disabled);
-            if (typeof obj.text !== 'undefined')
+            }
+            if (typeof obj.text !== 'undefined') {
                 t.text(obj.text);
-            if (typeof obj.html !== 'undefined')
+            }
+            if (typeof obj.html !== 'undefined') {
                 t.html(obj.html);
-            if (typeof obj.float !== 'undefined')
+            }
+            if (typeof obj.float !== 'undefined') {
                 t.float(obj.float);
-            if (typeof obj.width !== 'undefined')
+            }
+            if (typeof obj.width !== 'undefined') {
                 t.width(obj.width);
-            if (typeof obj.click !== 'undefined')
+            }
+            if (typeof obj.click !== 'undefined') {
                 t.click(obj.click);
-            if (typeof obj.newRow !== 'undefined')
+            }
+            if (typeof obj.newRow !== 'undefined') {
                 t.newRow(obj.newRow);
+            }
             t.initParameter(obj);
         }
     };
@@ -501,7 +617,7 @@ var $A = {};
             t.d.width = width;
             t.d.$widget.width(width);
             t.d.$widgetButton.width('100%');
-            t.d.$widgetButton.css('width','100%');
+            t.d.$widgetButton.css('width', '100%');
             return t;
         }
         return t.d.width;
@@ -536,41 +652,39 @@ var $A = {};
         if (typeof newRow !== 'undefined') {
             newRow = $A.parseBoolean(newRow);
             t.d.newRow = newRow;
-            if(newRow){
+            if (newRow) {
                 t.d.$widget.addClass('new-row');
-            }else{
+            } else {
                 t.d.$widget.removeClass('new-row');
             }
             return t;
         }
         return t.d.newRow;
     };
-    p.click = function (func) {
-        var t = this;
-        if (typeof func === 'function') {
-            t.d.click = func;
-        } else {
-            if($A.runFunctions($A.events.button.functions.beforeClick, this, [this]) === false){
-                return false;
-            }
-            if(!t.disabled()){
-                t.d.click.apply(this, [this, this.d.$widget]);
-            }
-            $A.runFunctions($A.events.button.functions.click, this, [this]);
-        }
-        return t;
-    };
     p.button = function () {
         var t = this;
         return t.d.$widgetButton;
     };
 
-
-    $A.events.button = {};
-    $A.registerLocalEvents($A.events.button, ['click', 'beforeClick']);
-    
-
-    $A.initBasicFunctions(Button, "Button");
+    p.click = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('click', func, name, life);
+        } else {
+            if(t.d.triggers.click === 'AutomizyJs'){
+                t.d.triggers.click = 0;
+            }else{
+                if(t.d.triggers.click === 0){
+                    t.d.triggers.click = 'AutomizyJs';
+                }
+                var a = t.runFunctions('click');
+                t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
+                t.d.$widgetButton.trigger('click');
+            }
+        }
+        return t;
+    };
+    $A.initBasicFunctions(Button, "Button", ['click']);
 
 
 })();
@@ -816,15 +930,14 @@ var $A = {};
             isClose: true,
             hasObject: false,
             hash: false,
+            openable:true,
             closable:true,
             buttonsBox:true,
             id: 'automizy-dialog-' + $A.getUniqueString(),
-            openFunctions: [],
-            beforeOpenFunctions: [],
-            closeFunctions: [],
             create: function () {
             }
         };
+        t.f = {};
         t.init();
 
         var $tr = $('<tr></tr>');
@@ -1051,68 +1164,6 @@ var $A = {};
         }
         return t.d.zIndex;
     };
-    p.show = function (func) {
-        var t = this;
-        $A.setWindowScroll(false, this.d.id);
-        if (!t.d.hasObject) {
-            t.draw();
-        }
-        this.d.$widget.ashow();        
-        t.setMaxHeight();
-        return this;
-    };
-    p.open = function (func) {
-        var t = this;
-        if (typeof func === 'function') {
-            t.d.openFunctions.push(func);
-        } else {
-            t.beforeOpen();
-            if($A.runFunctions($A.events.dialog.functions.beforeOpen, this, [this, this.d.$widget]) === false){
-                return false;
-            }
-            if($A.runFunctions(t.d.openFunctions, this, [this, this.d.$widget]) !== false){
-                if (t.hash() !== false)
-                    $A.hashChange(t.hash());
-                t.show();
-            }
-            $A.runFunctions($A.events.dialog.functions.open, this, [this, this.d.$widget]);
-        }
-        t.setMaxHeight();
-        return t;
-    };
-    p.beforeOpen = function (func) {
-        var t = this;
-        if (typeof func === 'function') {
-            t.d.beforeOpenFunctions.push(func);
-        } else {
-            $A.runFunctions(t.d.beforeOpenFunctions, this, [this, this.d.$widget]);
-        }
-        return t;
-    };
-    p.closable = function (closable) {
-        var t = this;
-        if (typeof closable !== 'undefined') {
-            t.d.closable = closable;
-        } else {
-            return t.d.closable;
-        }
-        return t;
-    };
-    p.close = function (func) {
-        var t = this;
-        if (typeof func === 'function') {
-            t.d.closeFunctions.push(func);
-        } else {
-            if(t.d.closable){
-                if($A.runFunctions(t.d.closeFunctions, this, [this, this.d.$widget]) !== false){
-                    t.hide();
-                }
-                $A.runFunctions($A.events.dialog.functions.close, this, [this, this.d.$widget]);
-            }
-        }
-        return t;
-    };
-        
     p.setMaxHeight = function(){
         var t = this;
         var buttonBoxHeight = 0;
@@ -1128,11 +1179,85 @@ var $A = {};
         });
         return maxHeight;
     };
+    p.show = function (func) {
+        var t = this;
+        $A.setWindowScroll(false, this.d.id);
+        if (!t.d.hasObject) {
+            t.draw();
+        }
+        this.d.$widget.ashow();        
+        t.setMaxHeight();
+        return this;
+    };
 
-    $A.events.dialog = {};
-    $A.registerLocalEvents($A.events.dialog, ['open', 'close', 'beforeOpen']);
+    p.openable = function (value) {
+        var t = this;
+        if (typeof value !== 'undefined') {
+            t.d.openable = $A.parseBoolean(value);
+        } else {
+            return t.d.openable;
+        }
+        return t;
+    };
+    p.open = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction.apply(t, ['open', func, name, life]);
+        } else {
+            if(t.beforeOpen().returnValue() !== false) {
+                if(t.hash() !== false){
+                    $A.hashChange(t.hash());
+                }
+                t.show();
+                t.runFunctions('open');
+            }
+        }
+        t.setMaxHeight();
+        return t;
+    };
+    p.beforeOpen = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('beforeOpen', func, name, life);
+        } else {
+            var a = t.runFunctions('beforeOpen');
+            t.returnValue(!(t.openable() === false || a[0] === false || a[1] === false));
+        }
+        return t;
+    };
+    p.closable = function (value) {
+        var t = this;
+        if (typeof value !== 'undefined') {
+            t.d.closable = $A.parseBoolean(value);
+        } else {
+            return t.d.closable;
+        }
+        return t;
+    };
+    p.close = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('close', func, name, life);
+        } else {
+            if(t.beforeClose().returnValue() !== false) {
+                t.hide();
+                t.runFunctions('close');
+            }
+        }
+        return t;
+    };
+    p.beforeClose = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('beforeClose', func, name, life);
+        } else {
+            var a = t.runFunctions('beforeClose');
+            t.returnValue(!(t.closable() === false || a[0] === false || a[1] === false));
+        }
+        return t;
+    };
 
-    $A.initBasicFunctions(Dialog, "Dialog");
+    $A.initBasicFunctions(Dialog, "Dialog", ['open', 'close', 'beforeOpen', 'beforeClose']);
 
 })();
 
@@ -1708,8 +1833,8 @@ var $A = {};
             $widgetInputBoxError: $('<span class="automizy-input-box-error"></span>'),
             $widgetLabel: $('<label></label>'),
             $widgetLabelAfter: $('<span></span>'),
-            $widgetHelp: $('<img src="'+$A.images.helpIcon+'" class="automizy-input-help" />'),
-            $widgetHelpContent: $('<div class="automizy-input-help-content"><img src="'+$A.images.helpArrow+'" class="automizy-input-help-content-arrow" /></div>'),
+            $widgetHelp: $('<img src="' + $A.images.helpIcon + '" class="automizy-input-help" />'),
+            $widgetHelpContent: $('<div class="automizy-input-help-content"><img src="' + $A.images.helpArrow + '" class="automizy-input-help-content-arrow" /></div>'),
             $widgetHelpContentInner: $('<span></span>'),
             $input: $('<input />'),
             $textarea: $('<textarea></textarea>'),
@@ -1717,6 +1842,13 @@ var $A = {};
             specialElements: [],
             type: 'text',
             skin: 'simple-automizy',
+            triggers:{
+                enter:0,
+                change:0,
+                focus:0,
+                blur:0,
+                click:0
+            },
             multiple: false,
             multiselect: false,
             readonly: false,
@@ -1724,9 +1856,10 @@ var $A = {};
             isDatepicker: false,
             newRow: true,
             breakInput: false,
-            needModify:false,
-            labelPosition:'left',
-            labelWidth:'',
+            needModify: false,
+            disabled:false,
+            labelPosition: 'left',
+            labelWidth: '',
             value: '',
             placeholder: '',
             name: '',
@@ -1737,19 +1870,11 @@ var $A = {};
             accept: [],
             items: {},
             validator: $A.newValidator(),
-            validate: function () {
-            },
+            validate: function () {},
             createFunctions: [],
-            id: 'automizy-input-' + $A.getUniqueString(),
-            click: function () {
-            },
-            change: function () {
-            },
-            enter: function () {
-            },
-            create: function () {
-            }
+            id: 'automizy-input-' + $A.getUniqueString()
         };
+        t.f = {};
         t.init();
 
         t.d.$input.addClass('automizy-input');
@@ -1757,9 +1882,6 @@ var $A = {};
         t.d.$select.addClass('automizy-input');
         t.d.$widgetLabel.appendTo(t.d.$widget).attr('for', t.d.id + '-input').ahide();
         t.d.$widgetInput.appendTo(t.d.$widgetInputBox).attr('id', t.d.id + '-input');
-        t.d.$widgetInput.click(function () {
-            t.click();
-        });
         t.d.$widgetInputBox.appendTo(t.d.$widget);
         t.d.$widgetLabelAfter.appendTo(t.d.$widget).ahide();
         t.d.$widgetInputBoxError.appendTo(t.d.$widget);
@@ -1779,134 +1901,288 @@ var $A = {};
         }).ahide();
         t.d.$widgetInputBoxError.appendTo(t.d.$widget);
         t.d.$widget.attr('type', 'text').attr('id', t.id()).addClass('automizy-skin-' + t.d.skin);
-        t.d.$widgetInput.on('change keyup paste', function () {
-            t.change();
-        }).blur(function(){
-            t.validate();
-        }).keypress(function(e) {
-            if (e.which == 13) {
-                t.enter();
-            }
-        });
+        t.setupJQueryEvents();
         if (typeof obj !== 'undefined') {
-            if (typeof obj.label !== 'undefined')
+            if (typeof obj.label !== 'undefined') {
                 t.label(obj.label);
-            if (typeof obj.labelAfter !== 'undefined')
+            }
+            if (typeof obj.labelAfter !== 'undefined') {
                 t.labelAfter(obj.labelAfter);
-            if (typeof obj.type !== 'undefined')
+            }
+            if (typeof obj.type !== 'undefined') {
                 t.type(obj.type);
+            }
             if (typeof obj.disable !== 'undefined') {
-                if (obj.disable)
+                if (obj.disable) {
                     t.disable();
-                else
+                } else {
                     t.enable();
+                }
             }
             if (typeof obj.enable !== 'undefined') {
-                if (obj.enable)
+                if (obj.enable) {
                     t.enable();
-                else
+                } else {
                     t.disable();
+                }
             }
-            if (typeof obj.checked !== 'undefined')
+            if (typeof obj.checked !== 'undefined') {
                 t.checked(obj.checked);
-            if (typeof obj.click !== 'undefined')
+            }
+            if (typeof obj.click !== 'undefined') {
                 t.click(obj.click);
-            if (typeof obj.help !== 'undefined')
+            }
+            if (typeof obj.help !== 'undefined') {
                 t.help(obj.help);
-            if (typeof obj.height !== 'undefined')
+            }
+            if (typeof obj.height !== 'undefined') {
                 t.height(obj.height);
-            if (typeof obj.name !== 'undefined')
+            }
+            if (typeof obj.name !== 'undefined') {
                 t.name(obj.name);
-            if (typeof obj.multiple !== 'undefined')
+            }
+            if (typeof obj.multiple !== 'undefined') {
                 t.multiple(obj.multiple);
-            if (typeof obj.datepicker !== 'undefined')
+            }
+            if (typeof obj.datepicker !== 'undefined') {
                 t.datepicker(obj.datepicker);
-            if (typeof obj.multiselect !== 'undefined' && obj.multiselect !== false)
+            }
+            if (typeof obj.multiselect !== 'undefined' && obj.multiselect !== false) {
                 t.multiselect(obj.multiselect);
-            if (typeof obj.options !== 'undefined')
+            }
+            if (typeof obj.options !== 'undefined') {
                 t.options(obj.options);
-            if (typeof obj.accept !== 'undefined')
+            }
+            if (typeof obj.accept !== 'undefined') {
                 t.accept(obj.accept);
-            if (typeof obj.readonly !== 'undefined')
+            }
+            if (typeof obj.readonly !== 'undefined') {
                 t.readonly(obj.readonly);
-            if (typeof obj.newRow !== 'undefined')
+            }
+            if (typeof obj.newRow !== 'undefined') {
                 t.newRow(obj.newRow);
-            if (typeof obj.width !== 'undefined')
+            }
+            if (typeof obj.width !== 'undefined') {
                 t.width(obj.width);
-            if (typeof obj.placeholder !== 'undefined')
+            }
+            if (typeof obj.placeholder !== 'undefined') {
                 t.placeholder(obj.placeholder);
-            if (typeof obj.breakInput !== 'undefined')
+            }
+            if (typeof obj.breakInput !== 'undefined') {
                 t.breakInput(obj.breakInput);
-            if (typeof obj.labelPosition !== 'undefined')
+            }
+            if (typeof obj.labelPosition !== 'undefined') {
                 t.labelPosition(obj.labelPosition);
-            if (typeof obj.labelWidth !== 'undefined')
+            }
+            if (typeof obj.labelWidth !== 'undefined') {
                 t.labelWidth(obj.labelWidth);
-            if (typeof obj.change === 'function')
+            }
+            if (typeof obj.change === 'function') {
                 t.change(obj.change);
-            if (typeof obj.enter === 'function')
+            }
+            if (typeof obj.enter === 'function') {
                 t.enter(obj.enter);
-            if (typeof obj.needModify !== 'undefined')
-                t.needModify(obj.needModify);
-            if (typeof obj.val !== 'undefined' || typeof obj.value !== 'undefined')
-                t.val(obj.val || obj.value);
-            if (typeof obj.validator !== 'undefined')
-                t.validator(obj.validator);
-            if (typeof obj.validate !== 'undefined')
-                t.validate(obj.validate);
-            if (typeof obj.focus !== 'undefined')
+            }
+            if (typeof obj.focus === 'function') {
                 t.focus(obj.focus);
+            }
+            if (typeof obj.blur === 'function') {
+                t.blur(obj.blur);
+            }
+            if (typeof obj.disabled === 'function') {
+                t.disabled(obj.disabled);
+            }
+            if (typeof obj.needModify !== 'undefined') {
+                t.needModify(obj.needModify);
+            }
+            if (typeof obj.val !== 'undefined' || typeof obj.value !== 'undefined') {
+                t.val(obj.val || obj.value);
+            }
+            if (typeof obj.validator !== 'undefined') {
+                t.validator(obj.validator);
+            }
+            if (typeof obj.validate !== 'undefined') {
+                t.validate(obj.validate);
+            }
+            if (typeof obj.focus !== 'undefined') {
+                t.focus(obj.focus);
+            }
             t.initParameter(obj);
         }
     };
 
     var p = Input.prototype;
-    p.change = function (func) {
+    p.setupJQueryEvents = function(){
         var t = this;
-        if (typeof func === 'function') {
-            t.d.change = func;
-        } else {
-            if($A.runFunctions($A.events.input.functions.change, this, [this]) === false){
-                return false;
+        t.d.$widgetInput.off().on('change', function () { //change keyup paste
+            if(t.d.triggers.change === 'jQuery'){
+                t.d.triggers.change = 0;
+            }else{
+                if(t.d.triggers.change === 0){
+                    t.d.triggers.change = 'jQuery';
+                }
+                if (t.change().returnValue() === false) {
+                    return false;
+                }
             }
-            t.d.change.apply(this, [this, this.d.$widget]);
-        }
-        return t;
+        }).focus(function () {
+            if(t.d.triggers.focus === 'jQuery'){
+                t.d.triggers.focus = 0;
+            }else{
+                if(t.d.triggers.focus === 0){
+                    t.d.triggers.focus = 'jQuery';
+                }
+                if (t.focus().returnValue() === false) {
+                    return false;
+                }
+            }
+        }).blur(function () {
+            if(t.d.triggers.blur === 'jQuery'){
+                t.d.triggers.blur = 0;
+            }else{
+                if(t.d.triggers.blur === 0){
+                    t.d.triggers.blur = 'jQuery';
+                }
+                if (t.blur().returnValue() === false) {
+                    return false;
+                }
+                t.validate();
+            }
+        }).keypress(function (e) {
+            if (e.which == 13) {
+                if (t.enter().returnValue() === false) {
+                    return false;
+                }
+            }
+        }).click(function () {
+            if(t.d.triggers.click === 'jQuery'){
+                t.d.triggers.click = 0;
+            }else{
+                if(t.d.triggers.click === 0){
+                    t.d.triggers.click = 'jQuery';
+                }
+                if (t.click().returnValue() === false) {
+                    return false;
+                }
+            }
+        });
     };
-    p.enter = function (func) {
+    p.disabled = function (disabled) {
+        var t = this;
+        if (typeof disabled !== 'undefined') {
+            t.d.disabled = $A.parseBoolean(disabled);
+            t.input().prop('disabled', t.d.disabled);
+            t.d.$widget.toggleClass('disabled', t.d.disabled);
+            return t;
+        }
+        return t.d.disabled;
+    };
+    p.enter = function (func, name, life) {
         var t = this;
         if (typeof func === 'function') {
-            t.d.enter = func;
+            t.addFunction('enter', func, name, life);
         } else {
-            t.d.enter.apply(this, [this, this.d.$widget]);
+            var a = t.runFunctions('enter');
+            t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
         }
         return t;
     };
-    p.focus = function () {
+    p.change = function (func, name, life) {
         var t = this;
-        t.d.$widgetInput.focus();
+        if (typeof func === 'function') {
+            t.addFunction('change', func, name, life);
+        } else {
+            if(t.d.triggers.change === 'AutomizyJs'){
+                t.d.triggers.change = 0;
+            }else{
+                if(t.d.triggers.change === 0){
+                    t.d.triggers.change = 'AutomizyJs';
+                }
+                var a = t.runFunctions('change');
+                t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
+                t.d.$widgetInput.trigger('change');
+            }
+        }
         return t;
     };
+    p.focus = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('focus', func, name, life);
+        } else {
+            if(t.d.triggers.focus === 'AutomizyJs'){
+                t.d.triggers.focus = 0;
+            }else{
+                if(t.d.triggers.focus === 0){
+                    t.d.triggers.focus = 'AutomizyJs';
+                }
+                var a = t.runFunctions('focus');
+                t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
+                t.d.$widgetInput.trigger('focus');
+            }
+        }
+        return t;
+    };
+    p.blur = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('blur', func, name, life);
+        } else {
+            if(t.d.triggers.blur === 'AutomizyJs'){
+                t.d.triggers.blur = 0;
+            }else{
+                if(t.d.triggers.blur === 0){
+                    t.d.triggers.blur = 'AutomizyJs';
+                }
+                var a = t.runFunctions('blur');
+                t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
+                t.d.$widgetInput.trigger('blur');
+            }
+        }
+        return t;
+    };
+    p.click = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('click', func, name, life);
+        } else {
+            if(t.d.triggers.click === 'AutomizyJs'){
+                t.d.triggers.click = 0;
+            }else{
+                if(t.d.triggers.click === 0){
+                    t.d.triggers.click = 'AutomizyJs';
+                }
+                var a = t.runFunctions('click');
+                t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
+                t.d.$widgetInput.trigger('click');
+            }
+        }
+        return t;
+    };
+
     p.disable = function () {
         var t = this;
         t.d.$widgetInput.prop('disabled', true);
-        if (t.d.multiselect)
+        if (t.d.multiselect) {
             t.multiselect('disable');
+        }
         return t;
     };
     p.enable = function () {
         var t = this;
         t.d.$widgetInput.prop('disabled', false);
-        if (t.d.multiselect)
+        if (t.d.multiselect) {
             t.multiselect('enable');
+        }
         return t;
     };
     p.checked = function (checked) {
         var t = this;
         if (typeof checked !== 'undefined') {
             checked = $A.parseBoolean(checked);
-            if (t.d.hasObject){
+            if (t.d.hasObject) {
                 t.d.$widgetInput.prop('checked', checked);
-            }else {
+            } else {
                 t.d.createFunctions.push(function () {
                     t.d.$widgetInput.prop('checked', checked);
                 });
@@ -1956,9 +2232,9 @@ var $A = {};
         if (typeof labelPosition !== 'undefined') {
             t.d.labelPosition = labelPosition;
             //t.d.$widgetLabel.html(label).ashow();
-            if(t.d.labelPosition === 'left'){
+            if (t.d.labelPosition === 'left') {
                 t.d.$widgetLabel.insertBefore(t.d.$widgetInput);
-            }else{
+            } else {
                 t.d.$widgetLabel.insertAfter(t.d.$widgetInput);
             }
             return t;
@@ -1980,10 +2256,10 @@ var $A = {};
             t.d.help = help;
             t.d.$widgetHelpContentInner.html(help);
             t.d.$widgetHelp.ashow();
-            
+
             /*Sizing input if it has help icon*/
             t.d.$widgetInputBox.addClass('automizy-input-has-help');
-            
+
             return t;
         }
         return t.d.help;
@@ -1992,21 +2268,22 @@ var $A = {};
         var t = this;
         if (typeof value !== 'undefined') {
             t.d.value = value;
-            if (t.d.type === 'file')
+            if (t.d.type === 'file') {
                 t.input().data('value', value);
-            else if(t.d.type === 'html')
+            } else if (t.d.type === 'html') {
                 t.input().html(value);
-            else
+            } else {
                 t.input().val(value);
-            if(t.d.multiselect){
+            }
+            if (t.d.multiselect) {
                 t.input().multiselect('refresh');
             }
-            if(t.d.needModify){
+            if (t.d.needModify) {
                 t.input().data('originalValue', value);
             }
             return t;
         }
-        if(t.d.type === 'html'){
+        if (t.d.type === 'html') {
             return t.input().html();
         }
         return t.input().val();
@@ -2039,8 +2316,8 @@ var $A = {};
             } else {
                 t.widget().width('auto');
                 t.input().add(t.d.$widgetInputBox).width(width);
-                if(t.d.multiselect){
-                    t.input().next().css({maxWidth:width});
+                if (t.d.multiselect) {
+                    t.input().next().css({maxWidth: width});
                 }
             }
             return t;
@@ -2081,20 +2358,9 @@ var $A = {};
             t.d.$widgetInputBox.ashow().empty();
             t.d.$widgetInput.attr(attributes).show();
             t.d.$widgetInput.appendTo(t.d.$widgetInputBox);
-            t.d.$widgetInput.on('change keyup paste', function () {});
             setTimeout(function(){
-                t.d.$widgetInput.on('change keyup paste', function () {
-                    t.validate();
-                    t.change();
-                }).keypress(function(e) {
-                    if (e.which == 13) {
-                        t.enter();
-                    }
-                });
+                t.setupJQueryEvents();
             }, 10);
-            t.d.$widgetInput.click(function () {
-                t.click();
-            });
             if (t.d.type === 'hidden' && t.d.label.length < 1) {
                 t.d.createFunctions.push(function () {
                     t.widget().ahide();
@@ -2152,10 +2418,11 @@ var $A = {};
         var t = this;
         if (typeof multiple !== 'undefined') {
             multiple = $A.parseBoolean(multiple);
-            if (multiple)
+            if (multiple) {
                 t.d.$widgetInput.attr('multiple', 'multiple');
-            else
+            } else {
                 t.d.$widgetInput.removeAttr('multiple');
+            }
             t.d.multiple = multiple;
             return t;
         }
@@ -2220,7 +2487,7 @@ var $A = {};
                 for (var i in arr) {
                     var inVal = arr[i];
                     var inSelected = false;
-                    if((typeof inVal === 'object' || typeof inVal === 'array') && !$.isArray(inVal)){
+                    if ((typeof inVal === 'object' || typeof inVal === 'array') && !$.isArray(inVal)) {
                         inSelected = inVal.selected;
                         inVal = inVal.value;
                     }
@@ -2234,25 +2501,27 @@ var $A = {};
                     var $option = $('<option></option>');
 
                     var value = arr[i];
-                    if(typeof value !== 'string' && typeof value !== 'number'){
+                    if (typeof value !== 'string' && typeof value !== 'number') {
                         value = arr[i][0];
                     }
 
                     var text = arr[i];
-                    if(typeof text !== 'string' && typeof text !== 'number'){
+                    if (typeof text !== 'string' && typeof text !== 'number') {
                         text = arr[i][1] || arr[i][0];
                     }
 
                     $option.attr('value', value);
                     $option.html(text);
-                    if (typeof arr[i] !== 'string' && typeof arr[i] !== 'number' && typeof arr[i][2] !== 'undefined' && $A.parseBoolean(arr[i][2]))
+                    if (typeof arr[i] !== 'string' && typeof arr[i] !== 'number' && typeof arr[i][2] !== 'undefined' && $A.parseBoolean(arr[i][2])) {
                         values.push(arr[i][0]);
+                    }
                     if (before) {
                         var $of = t.d.$widgetInput.find('option:first');
-                        if ($of.val() == 0)
+                        if ($of.val() == 0) {
                             $option.insertAfter($of);
-                        else
+                        } else {
                             $option.prependTo(t.d.$widgetInput);
+                        }
                     } else {
                         $option.appendTo(t.d.$widgetInput);
                     }
@@ -2261,8 +2530,9 @@ var $A = {};
                 //t.d.$widgetInput.val(values);
             }
         }
-        if (t.d.multiselect)
+        if (t.d.multiselect) {
             t.multiselect('refresh');
+        }
         t.val(values || val);
         return t;
     };
@@ -2356,15 +2626,6 @@ var $A = {};
         }
         return t.d.breakInput;
     };
-    p.click = function (func) {
-        var t = this;
-        if (typeof func === 'function') {
-            t.d.click = func;
-        } else {
-            t.d.click.apply(this, [this, this.d.$widget]);
-        }
-        return t;
-    };
     p.input = function () {
         var t = this;
         return t.d.$widgetInput;
@@ -2377,7 +2638,7 @@ var $A = {};
     $A.events.input = {};
     $A.registerLocalEvents($A.events.input, ['change']);
 
-    $A.initBasicFunctions(Input, "Input");
+    $A.initBasicFunctions(Input, "Input", ["change", "enter", "focus", "blur", "click"]);
 })();
 
 (function(){
