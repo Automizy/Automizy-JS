@@ -1,0 +1,205 @@
+<div id="doc-container">
+    <h1 id="globalEvents-head">Event handling</h1>
+    <div class="description-label">Description:
+        <div class="description">These methods are used for attaching/detaching handler functions for global events to whole AutomizyJs modules, or local events to single AutomizyJs module instances.<br>
+            The method of attaching handlers on global and local events differs, usage will be shown in the examples.<br>
+            The difference between global and local events:
+            <ul>
+                <li>Handlers attached to global events are called when the event occurs to ANY of the module instances.</li>
+                <li>Handlers attached to local events are called when the event occurs to A SPECIFIC module instance.</li>
+            </ul>
+            When the an event occurs, all handler functions attached to the event will be called.
+        </div>
+    </div>
+    <section>
+        <h2 class="quick-nav">Quick navigation</h2>
+        <ul>
+            <li class="global-event-name"><a href="#eventHandling/on" class="eventHandling-on">on</a></li>
+            <li class="global-event-name"><a href="#eventHandling/off" class="eventHandling-off">off</a></li>
+            <li class="global-event-name"><a href="#eventHandling/one" class="eventHandling-one">one</a></li>
+         </ul>
+    </section>
+    <section>
+        <h2>Event handling methods</h2>
+        <article id="eventHandling/on">
+            <h4 class='event-name'>on</h4>
+            <h5>Global usage: $A.events.<span class="module">module</span>.on.<span class="event">event</span>(handler,handlerName)</h5>
+            <p class='event-use'>
+                Use this function to attach a handler function on a whole Automizy module.
+            </p>
+            <ul>
+                <li>
+                    <div class='event-parameter'>
+                        <span class="module">module</span>
+                    </div>
+                    Type: <code>Automizy module</code><br>
+                    The Automizy module that has the specific event you want to handle.<br>
+                </li>
+                <li>
+                    <div class='event-parameter'>
+                        <span class="event">event</span>
+                    </div>
+                    Type: <code>Automizy module event</code><br>
+                    The specific event on which you want to attach the handler function.<br>
+                </li>
+                <li>
+                    <div class='event-parameter'>
+                        handler
+                    </div>
+                    Type: <code>Function</code><br>
+                    The handler function you want to attach.<br>
+                    You can pass the module instance on which the event occurred to the handler function by giving it as argument.<br>
+                </li>
+                <li>
+                    <div class='event-parameter'>
+                        *handlerName
+                    </div>
+                    Type: <code>String</code><br>
+                    *Optional<br>
+                    The name which identifies the handler.<br>
+                    Later you can use this name to detach the handler.<br>
+                    Please note that if you attach a new handler to the same event using the same handlerName, the old handler function will be overwritten by the new.
+                </li>
+            </ul>
+            <div class='event-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+//Attaching a new handler function on the 'click' event of the 'Button' module
+
+$A.events.button.on.click(function(){
+    alert('globalEventHandler1: A button was clicked');
+},'globalEventHandler1');
+
+//You can also pass the module instance which triggered the event to the handler:
+$A.events.button.on.click(function(button){
+    alert('globalEventHandler2: '+button.id()+' is the clicked one!');
+},'globalEventHandler2');
+
+$A.newButton({
+    text: 'Button 1',
+    id: 'button1'
+}).draw();
+
+$A.newButton({
+    text: 'Button 2',
+    id: 'button2'
+}).draw();
+            </pre>
+        </article>
+        <article id="eventHandling/off">
+            <h4 class='event-name'>off</h4>
+            <h5>Global usage: $A.events.<span class="module">module</span>.off.<span class="event">event</span>(handlerName)</h5>
+            <p class='event-use'>
+                Use this function to detach a handler function from a whole Automizy module.
+            </p>
+            <ul>
+                <li>
+                    <div class='event-parameter'>
+                        <span class="module">module</span>
+                    </div>
+                    Type: <code>Automizy module</code><br>
+                    The Automizy module that has the specific event whose handler you want to detach.<br>
+                </li>
+                <li>
+                    <div class='event-parameter'>
+                        <span class="event">event</span>
+                    </div>
+                    Type: <code>Automizy module event</code><br>
+                    The specific event which has the handler function you want to detach.<br>
+                </li>
+                <li>
+                    <div class='event-parameter'>
+                        *handlerName
+                    </div>
+                    Type: <code>String</code><br>
+                    *Optional<br>
+                    The name which identifies the handler you want to detach.<br>
+                    If no handlerName is given all handlers will be detached from the given event.
+                </li>
+            </ul>
+            <div class='event-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+//Registering a new handler function on the 'click' event of the 'Button' module
+
+$A.events.button.on.click(function(){
+    alert('globalEventHandler1: A button was clicked');
+},'globalEventHandler1');
+
+$A.events.button.on.click(function(){
+    alert("annoyingEventHandler: I'm here!");
+},'annoyingEventHandler');
+
+$A.newButton({
+    text: 'Button 1',
+}).draw();
+
+//After clicking this button, annoyingEventHandler will run no more.
+$A.newButton({
+    text: 'Off annoyingEventHandler!',
+    click: function(){
+        $A.events.button.off.click('annoyingEventHandler');
+        alert('Turning annoyingEventHandler off');
+    }
+}).draw();
+
+//After clicking this button, all event handlers will be detached.
+$A.newButton({
+    text: 'Off all!',
+    click: function(){
+        $A.events.button.off.click();
+        alert('Turning all event handler off');
+    }
+}).draw();
+            </pre>
+        </article>
+        <article id="eventHandling/one">
+            <h4 class='event-name'>one</h4>
+            <h5>Global usage: $A.events.<span class="module">module</span>.one.<span class="event">event</span>(handler)</h5>
+            <p class='event-use'>
+                Use this function to attach a handler function from a whole Automizy module.<br>
+                The handler will run only once, right after the first run it will be detached automatically.
+            </p>
+            <ul>
+                <li>
+                    <div class='event-parameter'>
+                        <span class="module">module</span>
+                    </div>
+                    Type: <code>Automizy module</code><br>
+                    The Automizy module that has the specific event you want to handle.<br>
+                </li>
+                <li>
+                    <div class='event-parameter'>
+                        <span class="event">event</span>
+                    </div>
+                    Type: <code>Automizy module event</code><br>
+                    The specific event on which you want to attach the handler function.<br>
+                </li>
+                <li>
+                    <div class='event-parameter'>
+                        handler
+                    </div>
+                    Type: <code>Function</code><br>
+                    The handler function you want to attach.<br>
+                    You can pass the module instance on which the event occurred to the handler function by giving it as argument.<br>
+                </li>
+            </ul>
+            <div class='event-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+//Attaching a new handler function on the 'click' event of the 'Button' module which will run only once
+
+$A.events.button.one.click(function(button){
+    alert(button.id()+' was clicked first');
+},'globalEventHandler2');
+
+$A.newButton({
+    text: 'Button 1',
+    id: 'button1'
+}).draw();
+
+$A.newButton({
+    text: 'Button 2',
+    id: 'button2'
+}).draw();
+            </pre>
+        </article>
+    </section>
+</div>
