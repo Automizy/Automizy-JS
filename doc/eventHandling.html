@@ -48,7 +48,7 @@
                     </div>
                     Type: <code>Function</code><br>
                     The handler function you want to attach.<br>
-                    You can pass the module instance on which the event occurred to the handler function by giving it as argument.<br>
+                    You can pass the module instance on which the event occurred to the handler function by giving it as argument.
                 </li>
                 <li>
                     <div class='event-parameter'>
@@ -236,17 +236,17 @@ $A.newButton({
             <ul>
                 <li>
                     <div class='event-parameter'>
-                        <span class="module">module</span>
+                        <span class="module">moduleInstance</span>
                     </div>
-                    Type: <code>Automizy module</code><br>
-                    The Automizy module that has the specific event whose handler you want to detach.<br>
+                    Type: <code>Automizy module instance</code><br>
+                    The Automizy module instance that has the specific event whose handler you want to detach.<br>
                 </li>
                 <li>
                     <div class='event-parameter'>
-                        <span class="event">event</span>
+                        <span class="event">eventName</span>
                     </div>
-                    Type: <code>Automizy module event</code><br>
-                    The specific event which has the handler function you want to detach.<br>
+                    Type: <code>String</code><br>
+                    The specific event/events whose handler function you want to detach.<br>
                 </li>
                 <li>
                     <div class='event-parameter'>
@@ -260,65 +260,38 @@ $A.newButton({
             </ul>
             <div class='event-examples'>Code examples</div>
             <pre class='prettyprint linenums'>
-var dialog1 = $A.newDialog({
-    title: 'Dialog 1'
-});
-
-var dialog2 = $A.newDialog({
-    title: 'Dialog 2'
-});
-
-var dialog3 = $A.newDialog({
-    title: 'Dialog 3'
+var dialog = $A.newDialog({
+    title: 'Dialog'
 });
 
 $A.newButton({
-    text: 'Open dialog1',
-    click: function(){dialog1.open()}
+    text: 'Open dialog',
+    click: function(){dialog.open()}
 }).draw();
 
+
+//Attaching 2 anonymous handler functions to the 'open' event of dialog
+dialog.on('open',function(){alert("I'm anonymous openFunc1")});
+dialog.on('open',function(){alert("I'm anonymous openFunc2")});
+
+//Removing all functions
 $A.newButton({
-    text: 'Open dialog2',
-    click: function(){dialog2.open()}
+    text: 'Remove all handlers from dialog',
+    click: function(){dialog.off()}
 }).draw();
 
+
+//Attaching a the same handler to the 'open' and 'close' events of dialog, named 'func1'
+dialog.on('open close',function(){alert('Opening/Closing dialog!')},'func1');
+
+//Removing 'func1' function from only the 'open'event
 $A.newButton({
-    text: 'Open dialog3',
-    click: function(){dialog3.open()}
+    text: "Remove func1 from dialog 'open' event",
+    click: function(){dialog.off('open','func1')}
 }).draw();
-
-/*
-$A.newButton({
-    text: 'Remove all handlers from dialog2',
-    click: function(){dialog3.off()}
-}).draw();
-
-$A.newButton({
-    text: 'Remove all handlers from dialog2',
-    click: function(){dialog2.off()}
-}).draw();
-
-$A.newButton({
-    text: 'Remove func1 from dialog2 open event',
-    click: function(){dialog3.off('open','func1')}
-}).draw();
-
-
-*/
-
-//Attaching a new handler function on the 'open' event of dialog1, named 'openFunction1'
-dialog1.on('open',function(){alert('Opening dialog1!')},'openFunction1');
-
-//Attaching 2 anonymous handler functions to the 'open' event of dialog2
-dialog2.on('open',function(){alert("I'm anonymous openFunc1")});
-dialog2.on('open',function(){alert("I'm anonymous openFunc2")});
-
-//Attaching a the same handler to the 'open' and 'close' events of dialog3, named 'func1'
-dialog3.on('open close',function(){alert('Opening/Closing dialog3!')},'func1');
-
             </pre>
         </article>
-        <article id="eventHandling/one">
+        <article id="eventHandling/one" class="last">
             <h4 class='event-name'>one</h4>
             <h5>Global usage: $A.events.<span class="module">module</span>.one.<span class="event">event</span>(handler)</h5>
             <p class='event-use'>
@@ -346,7 +319,7 @@ dialog3.on('open close',function(){alert('Opening/Closing dialog3!')},'func1');
                     </div>
                     Type: <code>Function</code><br>
                     The handler function you want to attach.<br>
-                    You can pass the module instance on which the event occurred to the handler function by giving it as argument.<br>
+                    You can pass the module instance on which the event occurred to the handler function by giving it as argument.
                 </li>
             </ul>
             <div class='event-examples'>Code examples</div>
@@ -366,6 +339,62 @@ $A.newButton({
     text: 'Button 2',
     id: 'button2'
 }).draw();
+            </pre>
+
+            <h5>Local usage: <span class="module">moduleInstance</span>.one(eventName,handler)</h5>
+            <p class='event-use'>
+                Use this function to attach a handler function to the events of a single Automizy module instance.<br>
+                The handler will run only once, right after the first run it will be detached automatically.
+            </p>
+            <ul>
+                <li>
+                    <div class='event-parameter'>
+                        <span class="module">moduleInstance</span>
+                    </div>
+                    Type: <code>Automizy module instance</code><br>
+                    The Automizy module instance that has the specific events you want to handle.<br>
+                </li>
+                <li>
+                    <div class='event-parameter'>
+                        eventName
+                    </div>
+                    Type: <code>String</code><br>
+                    The specific event/events which you want to handle.<br>
+                </li>
+                <li>
+                    <div class='event-parameter'>
+                        handler
+                    </div>
+                    Type: <code>Function</code><br>
+                    The handler function you want to attach.<br>
+                    You can pass the module instance on which the event occurred to the handler function by giving it as argument.
+                </li>
+            </ul>
+            <div class='event-examples'>Code examples</div>
+            <pre class='prettyprint linenums'>
+var dialog1 = $A.newDialog({
+    title: 'Dialog 1'
+});
+
+var dialog2 = $A.newDialog({
+    title: 'Dialog 2'
+});
+
+$A.newButton({
+    text: 'Open dialog1',
+    click: function(){dialog1.open()}
+}).draw();
+
+$A.newButton({
+    text: 'Open dialog2',
+    click: function(){dialog2.open()}
+}).draw();
+
+
+//Attaching a new handler function on the 'open' event of dialog1 and dialog2, which only on the first open
+
+dialog1.one('open',function(){alert("Dialog1 first open")});
+dialog2.one('open',function(){alert("Dialog2 first open")});
             </pre>
         </article>
     </section>
