@@ -353,6 +353,18 @@ table.doc-content-table td li a:hover{
     font-weight: bold;
 }
 
+span.module{
+    color: #ff7500;
+}
+
+span.event{
+    color: #38b02d;
+}
+
+h5 {
+    font-size: 14px;
+}
+
 iframe {
     overflow-x: auto;
     width: 100%;
