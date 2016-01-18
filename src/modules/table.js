@@ -684,7 +684,7 @@ define([
 
     p.getCell = function (colIndex, rowIndex) {
         var t = this;
-        var $cell = t.table().find('tr:first').siblings().andSelf().eq(rowIndex).find('td, th').eq(colIndex);
+        var $cell = t.table().find('tr:first').siblings().addBack().eq(rowIndex).find('td, th').eq(colIndex);
         return $A.tableCell($cell);
     };
     
@@ -723,7 +723,7 @@ define([
     
     
     p.getRowByIndex = function (index) {
-        var $row = this.table().find('tr:first').siblings().andSelf().eq(index);
+        var $row = this.table().find('tr:first').siblings().addBack().eq(index);
         if($row.length === 0){
             return false;
         }
@@ -731,7 +731,7 @@ define([
     };
     p.getRowByRecordId = function (recordId) {
         var t = this;
-        var $row = t.table().find('tr:first').siblings().andSelf().filter(function(){
+        var $row = t.table().find('tr:first').siblings().addBack().filter(function(){
             return $(this).data('recordId') == recordId;
         });
         if($row.length === 0){
@@ -740,7 +740,7 @@ define([
         return $A.tableRow($row);
     };
     p.getColByIndex = function (index) {
-        var $col = this.table().find('th:first').siblings().andSelf().eq(index);
+        var $col = this.table().find('th:first').siblings().addBack().eq(index);
         if($col.length === 0){
             return false;
         }
@@ -748,7 +748,7 @@ define([
     };
     p.getColByName = function (name) {
         var t = this;
-        var $col = t.table().find('th:first').siblings().andSelf().filter(function(){
+        var $col = t.table().find('th:first').siblings().addBack().filter(function(){
             return $(this).data('name') == name;
         });
         if($col.length === 0){
@@ -919,7 +919,7 @@ define([
         var t = this;
         if (typeof arr === 'undefined') {
             var cols = [];
-            this.table().find('th:first').siblings().andSelf().each(function(){
+            this.table().find('th:first').siblings().addBack().each(function(){
                 cols.push($A.tableCol($(this)));
             });
             return cols;
@@ -1093,7 +1093,7 @@ define([
         var t = this;
         if (typeof arr === 'undefined') {
             var rows = [];
-            this.table().find('tr:first').siblings().andSelf().each(function(){
+            this.table().find('tr:first').siblings().addBack().each(function(){
                 rows.push($A.tableRow($(this)));
             });
             return rows;

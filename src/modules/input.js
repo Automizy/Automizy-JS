@@ -199,7 +199,7 @@ define([
     var p = Input.prototype;
     p.setupJQueryEvents = function(){
         var t = this;
-        t.d.$widgetInput.off().on('change', function () { //change keyup paste
+        t.d.$widgetInput.off('change').on('change', function () { //change keyup paste
             if(t.d.triggers.change === 'jQuery'){
                 t.d.triggers.change = 0;
             }else{
@@ -390,7 +390,12 @@ define([
         var t = this;
         if (typeof label !== 'undefined') {
             t.d.label = label;
-            t.d.$widgetLabel.html(label).ashow();
+            if (label instanceof jQuery) {
+                label.appendTo(t.d.$widgetLabel.empty());
+            }else{
+                t.d.$widgetLabel.html(label);
+            }
+            t.d.$widgetLabel.ashow();
             return t;
         }
         return t.d.label;
@@ -399,7 +404,12 @@ define([
         var t = this;
         if (typeof labelAfter !== 'undefined') {
             t.d.labelAfter = labelAfter;
-            t.d.$widgetLabelAfter.html(labelAfter).ashow();
+            if (labelAfter instanceof jQuery) {
+                labelAfter.appendTo(t.d.$widgetLabelAfter.empty());
+            }else{
+                t.d.$widgetLabelAfter.html(labelAfter);
+            }
+            t.d.$widgetLabelAfter.ashow();
             return t;
         }
         return t.d.labelAfter;

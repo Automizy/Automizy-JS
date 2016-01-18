@@ -62,7 +62,7 @@ var $A = {};
                 img.removeAttr(item);
             });
         });
-    }
+    };
     $.fn.getAttributes = function () {
         var obj = {};
         $.each(this[0].attributes, function () {
@@ -71,7 +71,7 @@ var $A = {};
             }
         });
         return obj;
-    }
+    };
     $.fn.removeClassPrefix = function (prefix) {
         this.each(function (i, el) {
             var classes = el.className.split(" ").filter(function (c) {
@@ -117,7 +117,57 @@ var $A = {};
 
         $.each(values, extend);
         return result;
-    }
+    };
+    var restrict = function(t){
+        var v = false;
+        var min = Number.NEGATIVE_INFINITY;
+        var max = Number.POSITIVE_INFINITY;
+        if(typeof t.value !== 'undefined'){
+            v = parseFloat(t.value);
+        }else{
+            return false;
+        }
+        if(typeof t.min !== 'undefined' && t.min.toString().length > 0){
+            min = parseFloat(t.min);
+        }
+        if(typeof t.max !== 'undefined' && t.max.toString().length > 0){
+            max = parseFloat(t.max);
+        }
+        if (v >= min && v <= max){
+            t.value = v;
+        }else{
+            t.value = v < min ? min : max;
+        }
+    };
+    var restricted = false;
+    $.fn.pbmInput = function () {
+        return this.each(function(){
+            if (this.type && 'number' === this.type.toLowerCase()) {
+                $(this).on('change', function(){
+                    if(!restricted){
+                        restricted = true;
+                        restrict(this);
+                        $(this).trigger('change');
+                        return false;
+                    }else{
+                        setTimeout(function(){restricted = false}, 10);
+                    }
+                }).bind('mousewheel DOMMouseScroll', function(event){
+                    event.preventDefault();
+                    event.stopPropagation();
+                    var t = this,
+                        v = parseFloat(t.value);
+                    if (event.originalEvent.wheelDelta > 0 || event.originalEvent.detail < 0) {
+                        t.value = v + 1;
+                    }else{
+                        t.value = v - 1;
+                    }
+                    $(this).trigger('change');
+                    return false;
+                });
+            }
+        });
+    };
 })();
 
 (function(){
@@ -436,6 +486,7 @@ var $A = {};
             for (var i = 0; i < events.length; i++) {
                 t[events[i]].apply(t, [func, name || $A.getUniqueString(), -1]);
             }
+            return t;
         };
         p.one = function (events, func) {
             var t = this;
@@ -446,6 +497,7 @@ var $A = {};
             for (var i = 0; i < events.length; i++) {
                 t[events[i]].apply(t, [func, $A.getUniqueString(), 1]);
             }
+            return t;
         };
         p.off = function (events, name) {
             var t = this;
@@ -461,9 +513,13 @@ var $A = {};
                 }
             } else {
                 for (var i = 0; i < events.length; i++) {
-                    delete t.f[events[i]][name];
+                    console.log(t.f);
+                    if(typeof t.f !== 'undefined' && typeof t.f[events[i]] !== 'undefined' && typeof t.f[events[i]][name] !== 'undefined') {
+                        delete t.f[events[i]][name];
+                    }
                 }
             }
+            return t;
         };
 
 
@@ -2014,7 +2070,7 @@ var $A = {};
     var p = Input.prototype;
     p.setupJQueryEvents = function(){
         var t = this;
-        t.d.$widgetInput.off().on('change', function () { //change keyup paste
+        t.d.$widgetInput.off('change').on('change', function () { //change keyup paste
             if(t.d.triggers.change === 'jQuery'){
                 t.d.triggers.change = 0;
             }else{
@@ -2205,7 +2261,12 @@ var $A = {};
         var t = this;
         if (typeof label !== 'undefined') {
             t.d.label = label;
-            t.d.$widgetLabel.html(label).ashow();
+            if (label instanceof jQuery) {
+                label.appendTo(t.d.$widgetLabel.empty());
+            }else{
+                t.d.$widgetLabel.html(label);
+            }
+            t.d.$widgetLabel.ashow();
             return t;
         }
         return t.d.label;
@@ -2214,7 +2275,12 @@ var $A = {};
         var t = this;
         if (typeof labelAfter !== 'undefined') {
             t.d.labelAfter = labelAfter;
-            t.d.$widgetLabelAfter.html(labelAfter).ashow();
+            if (labelAfter instanceof jQuery) {
+                labelAfter.appendTo(t.d.$widgetLabelAfter.empty());
+            }else{
+                t.d.$widgetLabelAfter.html(labelAfter);
+            }
+            t.d.$widgetLabelAfter.ashow();
             return t;
         }
         return t.d.labelAfter;
@@ -4237,7 +4303,7 @@ var $A = {};
 
     p.getCell = function (colIndex, rowIndex) {
         var t = this;
-        var $cell = t.table().find('tr:first').siblings().andSelf().eq(rowIndex).find('td, th').eq(colIndex);
+        var $cell = t.table().find('tr:first').siblings().addBack().eq(rowIndex).find('td, th').eq(colIndex);
         return $A.tableCell($cell);
     };
     
@@ -4276,7 +4342,7 @@ var $A = {};
     
     
     p.getRowByIndex = function (index) {
-        var $row = this.table().find('tr:first').siblings().andSelf().eq(index);
+        var $row = this.table().find('tr:first').siblings().addBack().eq(index);
         if($row.length === 0){
             return false;
         }
@@ -4284,7 +4350,7 @@ var $A = {};
     };
     p.getRowByRecordId = function (recordId) {
         var t = this;
-        var $row = t.table().find('tr:first').siblings().andSelf().filter(function(){
+        var $row = t.table().find('tr:first').siblings().addBack().filter(function(){
             return $(this).data('recordId') == recordId;
         });
         if($row.length === 0){
@@ -4293,7 +4359,7 @@ var $A = {};
         return $A.tableRow($row);
     };
     p.getColByIndex = function (index) {
-        var $col = this.table().find('th:first').siblings().andSelf().eq(index);
+        var $col = this.table().find('th:first').siblings().addBack().eq(index);
         if($col.length === 0){
             return false;
         }
@@ -4301,7 +4367,7 @@ var $A = {};
     };
     p.getColByName = function (name) {
         var t = this;
-        var $col = t.table().find('th:first').siblings().andSelf().filter(function(){
+        var $col = t.table().find('th:first').siblings().addBack().filter(function(){
             return $(this).data('name') == name;
         });
         if($col.length === 0){
@@ -4472,7 +4538,7 @@ var $A = {};
         var t = this;
         if (typeof arr === 'undefined') {
             var cols = [];
-            this.table().find('th:first').siblings().andSelf().each(function(){
+            this.table().find('th:first').siblings().addBack().each(function(){
                 cols.push($A.tableCol($(this)));
             });
             return cols;
@@ -4646,7 +4712,7 @@ var $A = {};
         var t = this;
         if (typeof arr === 'undefined') {
             var rows = [];
-            this.table().find('tr:first').siblings().andSelf().each(function(){
+            this.table().find('tr:first').siblings().addBack().each(function(){
                 rows.push($A.tableRow($(this)));
             });
             return rows;
@@ -4819,7 +4885,7 @@ var $A = {};
         if (typeof table !== 'undefined') {
             t.d.table = table;
             var rowIndex = t.d.index;
-            var trs = t.d.table.table().find('tr:first').siblings().andSelf();
+            var trs = t.d.table.table().find('tr:first').siblings().addBack();
             var id = trs.eq(rowIndex).attr('id') || 0;
             
             if(typeof $A.getTableRow(id) === 'undefined'){
@@ -4943,7 +5009,7 @@ var $A = {};
         if (typeof table !== 'undefined') {
             t.d.table = table;
             var colIndex = t.d.index;
-            var $cols = t.d.table.table().find('th, td').eq(0).siblings().andSelf();
+            var $cols = t.d.table.table().find('th, td').eq(0).siblings().addBack();
             var colLen = $cols.length;
             var id = $cols.eq(colIndex).attr('id') || 0;
             
@@ -5129,10 +5195,10 @@ var $A = {};
     };
     
     p.row = function () {
-        return $A.tableRow(this.table().table().find('tr:first').siblings().andSelf().eq(this.widget().parent().index()));
+        return $A.tableRow(this.table().table().find('tr:first').siblings().addBack().eq(this.widget().parent().index()));
     };
     p.col = function () {
-        return $A.tableCol(this.table().table().find('th, td').eq(0).siblings().andSelf().eq(this.widget().index()));
+        return $A.tableCol(this.table().table().find('th, td').eq(0).siblings().addBack().eq(this.widget().index()));
     };
     p.index = function () {
         return [this.col().index(), this.row().index()];
@@ -5373,10 +5439,10 @@ var $A = {};
                             $automizyTd2:$td2
                         });
                         input.data('automizyButton', fileButton);
-                        input.change(function () {
+                        input.off('change', 'automizy-change').on('change', function () {
                             var filename = input.val().split('\\').pop();
                             fileText.val(filename);
-                        });
+                        }, 'automizy-change');
                         $fileBox.insertAfter($input);
                         $input.data('table', $table).css({
                             position: 'absolute',
@@ -5386,7 +5452,7 @@ var $A = {};
                             opacity:0,
                             height: '33px',
                             width: '100%'
-                        });
+                        }).off('click');
                         success = true;
                     }
                 } else if (type === 'slider') {

@@ -270,6 +270,7 @@ define([
             for (var i = 0; i < events.length; i++) {
                 t[events[i]].apply(t, [func, name || $A.getUniqueString(), -1]);
             }
+            return t;
         };
         p.one = function (events, func) {
             var t = this;
@@ -280,6 +281,7 @@ define([
             for (var i = 0; i < events.length; i++) {
                 t[events[i]].apply(t, [func, $A.getUniqueString(), 1]);
             }
+            return t;
         };
         p.off = function (events, name) {
             var t = this;
@@ -295,9 +297,13 @@ define([
                 }
             } else {
                 for (var i = 0; i < events.length; i++) {
-                    delete t.f[events[i]][name];
+                    console.log(t.f);
+                    if(typeof t.f !== 'undefined' && typeof t.f[events[i]] !== 'undefined' && typeof t.f[events[i]][name] !== 'undefined') {
+                        delete t.f[events[i]][name];
+                    }
                 }
             }
+            return t;
         };
 
 
