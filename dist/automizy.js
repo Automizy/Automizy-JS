@@ -611,15 +611,8 @@ var $A = {};
         t.d.$widgetButton.text(t.d.text);
         t.d.$widget.addClass('automizy-skin-' + t.d.skin).attr('id', t.id());
         t.d.$widgetButton.click(function () {
-            if(t.d.triggers.click === 'jQuery'){
-                t.d.triggers.click = 0;
-            }else{
-                if(t.d.triggers.click === 0){
-                    t.d.triggers.click = 'jQuery';
-                }
-                if (t.click().returnValue() === false) {
-                    return false;
-                }
+            if (t.click().returnValue() === false) {
+                return false;
             }
         });
         if (typeof obj !== 'undefined') {
@@ -727,16 +720,8 @@ var $A = {};
         if (typeof func === 'function') {
             t.addFunction('click', func, name, life);
         } else {
-            if(t.d.triggers.click === 'AutomizyJs'){
-                t.d.triggers.click = 0;
-            }else{
-                if(t.d.triggers.click === 0){
-                    t.d.triggers.click = 'AutomizyJs';
-                }
-                var a = t.runFunctions('click');
-                t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
-                t.d.$widgetButton.trigger('click');
-            }
+            var a = t.runFunctions('click');
+            t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
         }
         return t;
     };
@@ -803,7 +788,7 @@ var $A = {};
     p.translate = function (text) {
         var t = this;
         if (typeof t.d.translate[text] === 'undefined') {
-            if ($A.d.settings.logTranslateMissings === true) {
+            if (1 === 2 && $A.d.settings.logTranslateMissings === true) {
                 if($.inArray(text, t.d.missingTranslates) <= -1){
                     t.d.missingTranslates.push(text);
                     
@@ -2070,40 +2055,19 @@ var $A = {};
     var p = Input.prototype;
     p.setupJQueryEvents = function(){
         var t = this;
-        t.d.$widgetInput.off('change').on('change', function () { //change keyup paste
-            if(t.d.triggers.change === 'jQuery'){
-                t.d.triggers.change = 0;
-            }else{
-                if(t.d.triggers.change === 0){
-                    t.d.triggers.change = 'jQuery';
-                }
-                if (t.change().returnValue() === false) {
-                    return false;
-                }
+        t.d.$widgetInput.change(function () { //change keyup paste
+            if (t.change().returnValue() === false) {
+                return false;
             }
         }).focus(function () {
-            if(t.d.triggers.focus === 'jQuery'){
-                t.d.triggers.focus = 0;
-            }else{
-                if(t.d.triggers.focus === 0){
-                    t.d.triggers.focus = 'jQuery';
-                }
-                if (t.focus().returnValue() === false) {
-                    return false;
-                }
+            if (t.focus().returnValue() === false) {
+                return false;
             }
         }).blur(function () {
-            if(t.d.triggers.blur === 'jQuery'){
-                t.d.triggers.blur = 0;
-            }else{
-                if(t.d.triggers.blur === 0){
-                    t.d.triggers.blur = 'jQuery';
-                }
-                if (t.blur().returnValue() === false) {
-                    return false;
-                }
-                t.validate();
+            if (t.blur().returnValue() === false) {
+                return false;
             }
+            t.validate();
         }).keypress(function (e) {
             if (e.which == 13) {
                 if (t.enter().returnValue() === false) {
@@ -2111,15 +2075,8 @@ var $A = {};
                 }
             }
         }).click(function () {
-            if(t.d.triggers.click === 'jQuery'){
-                t.d.triggers.click = 0;
-            }else{
-                if(t.d.triggers.click === 0){
-                    t.d.triggers.click = 'jQuery';
-                }
-                if (t.click().returnValue() === false) {
-                    return false;
-                }
+            if (t.click().returnValue() === false) {
+                return false;
             }
         });
     };
@@ -2148,16 +2105,8 @@ var $A = {};
         if (typeof func === 'function') {
             t.addFunction('change', func, name, life);
         } else {
-            if(t.d.triggers.change === 'AutomizyJs'){
-                t.d.triggers.change = 0;
-            }else{
-                if(t.d.triggers.change === 0){
-                    t.d.triggers.change = 'AutomizyJs';
-                }
-                var a = t.runFunctions('change');
-                t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
-                t.d.$widgetInput.trigger('change');
-            }
+            var a = t.runFunctions('change');
+            t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
         }
         return t;
     };
@@ -2166,16 +2115,8 @@ var $A = {};
         if (typeof func === 'function') {
             t.addFunction('focus', func, name, life);
         } else {
-            if(t.d.triggers.focus === 'AutomizyJs'){
-                t.d.triggers.focus = 0;
-            }else{
-                if(t.d.triggers.focus === 0){
-                    t.d.triggers.focus = 'AutomizyJs';
-                }
-                var a = t.runFunctions('focus');
-                t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
-                t.d.$widgetInput.trigger('focus');
-            }
+            var a = t.runFunctions('focus');
+            t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
         }
         return t;
     };
@@ -2184,16 +2125,8 @@ var $A = {};
         if (typeof func === 'function') {
             t.addFunction('blur', func, name, life);
         } else {
-            if(t.d.triggers.blur === 'AutomizyJs'){
-                t.d.triggers.blur = 0;
-            }else{
-                if(t.d.triggers.blur === 0){
-                    t.d.triggers.blur = 'AutomizyJs';
-                }
-                var a = t.runFunctions('blur');
-                t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
-                t.d.$widgetInput.trigger('blur');
-            }
+            var a = t.runFunctions('blur');
+            t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
         }
         return t;
     };
@@ -2202,16 +2135,8 @@ var $A = {};
         if (typeof func === 'function') {
             t.addFunction('click', func, name, life);
         } else {
-            if(t.d.triggers.click === 'AutomizyJs'){
-                t.d.triggers.click = 0;
-            }else{
-                if(t.d.triggers.click === 0){
-                    t.d.triggers.click = 'AutomizyJs';
-                }
-                var a = t.runFunctions('click');
-                t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
-                t.d.$widgetInput.trigger('click');
-            }
+            var a = t.runFunctions('click');
+            t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
         }
         return t;
     };
@@ -2700,9 +2625,6 @@ var $A = {};
         var t = this;
         return t.d.$widgetInputBoxError;
     };
-
-    $A.events.input = {};
-    $A.registerLocalEvents($A.events.input, ['change']);
 
     $A.initBasicFunctions(Input, "Input", ["change", "enter", "focus", "blur", "click"]);
 })();
@@ -3973,6 +3895,8 @@ var $A = {};
                     t.onPerPage(obj.onPerPage);
                 if (typeof obj.onShowCol === 'function')
                     t.onShowCol(obj.onShowCol);
+                if (typeof obj.onSearch === 'function')
+                    t.onSearch(obj.onSearch);
                 if (typeof obj.onExport === 'function')
                     t.onExport(obj.onExport);
                 if (typeof obj.buttons !== 'undefined')
@@ -4067,6 +3991,15 @@ var $A = {};
             t.d.onPerPage = func;
         } else {
             return t.d.onPerPage.apply(t, [t, t.d.$widget]);
+        }
+        return this;
+    };
+    p.onSearch = function (func) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.d.onSearch = func;
+        } else {
+            return t.d.onSearch.apply(t, [t, t.d.$widget]);
         }
         return this;
     };
@@ -4822,6 +4755,7 @@ var $A = {};
             var $td = $('<td colspan="'+t.getRowByIndex(0).$cells().length+'"></td>').appendTo($tr);
             t.d.$loadingCellContent.appendTo($td);
             $tr.appendTo(t.table());
+            $A.runFunctions($A.events.table.functions.loading, t, [t]);
         //}, 10);
         return t;
     };
@@ -4838,11 +4772,7 @@ var $A = {};
         return t.d.loadingCellContent;
     };
 
-
-    $A.events.table = {};
-    $A.registerLocalEvents($A.events.table, ['addRows', 'beforeAddRows', 'beforeOpenInlineBox']);
-
-    $A.initBasicFunctions(Table, "Table");
+    $A.initBasicFunctions(Table, "Table", ['addRows', 'beforeAddRows', 'beforeOpenInlineBox', 'loading']);
 
 })();
 
@@ -5452,7 +5382,7 @@ var $A = {};
                             opacity:0,
                             height: '33px',
                             width: '100%'
-                        }).off('click');
+                        });
                         success = true;
                     }
                 } else if (type === 'slider') {

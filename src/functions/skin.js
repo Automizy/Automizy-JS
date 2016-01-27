@@ -47,7 +47,7 @@ define([
                             opacity:0,
                             height: '33px',
                             width: '100%'
-                        }).off('click');
+                        });
                         success = true;
                     }
                 } else if (type === 'slider') {

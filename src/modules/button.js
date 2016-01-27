@@ -31,15 +31,8 @@ define([
         t.d.$widgetButton.text(t.d.text);
         t.d.$widget.addClass('automizy-skin-' + t.d.skin).attr('id', t.id());
         t.d.$widgetButton.click(function () {
-            if(t.d.triggers.click === 'jQuery'){
-                t.d.triggers.click = 0;
-            }else{
-                if(t.d.triggers.click === 0){
-                    t.d.triggers.click = 'jQuery';
-                }
-                if (t.click().returnValue() === false) {
-                    return false;
-                }
+            if (t.click().returnValue() === false) {
+                return false;
             }
         });
         if (typeof obj !== 'undefined') {
@@ -147,16 +140,8 @@ define([
         if (typeof func === 'function') {
             t.addFunction('click', func, name, life);
         } else {
-            if(t.d.triggers.click === 'AutomizyJs'){
-                t.d.triggers.click = 0;
-            }else{
-                if(t.d.triggers.click === 0){
-                    t.d.triggers.click = 'AutomizyJs';
-                }
-                var a = t.runFunctions('click');
-                t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
-                t.d.$widgetButton.trigger('click');
-            }
+            var a = t.runFunctions('click');
+            t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
         }
         return t;
     };
