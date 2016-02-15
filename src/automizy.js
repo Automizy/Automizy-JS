@@ -49,6 +49,8 @@ define([
     "automizy/functions/runFunctions",
     "automizy/functions/registerEvent",
     "automizy/functions/registerLocalEvents",
+    "automizy/functions/getExtension",
+    "automizy/functions/getGetParameter",
     "automizy/functions/runEvent"
 ], function ($A) {
     console.log('%c AutomizyJs module loaded! ', 'background: #000000; color: #bada55; font-size:14px');

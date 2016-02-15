@@ -1249,6 +1249,9 @@ var $A = {};
                 if(t.hash() !== false){
                     $A.hashChange(t.hash());
                 }
+                //t.widget().insertAfter($('.automizy-dialog').last());
+                var zIndex = parseInt($('.automizy-dialog').last().css('z-index')) + 1;
+                t.widget().css('z-index', zIndex);
                 t.show();
                 t.runFunctions('open');
             }
@@ -5954,6 +5957,32 @@ var $A = {};
                 life: 1
             };
         };
+    };
+})();
+
+(function(){
+    $A.getExtension = function (fname) {
+        return fname.substr((~-fname.lastIndexOf(".") >>> 0) + 2).toLowerCase();
+    };
+})();
+
+(function(){
+    $A.getGetParameter = function (param) {
+        var vars = {};
+        var href = window.location.href;
+        var indexOfValue = href.indexOf("#");
+        if(indexOfValue >= 0){
+            href = href.substring(0, indexOfValue);
+        }
+        href.replace(/[?&]+([^=&]+)=?([^&]*)?/gi, function( m, key, value ) {
+                vars[key] = value !== undefined ? value : '';
+            }
+        );
+
+        if ( param ) {
+            return vars[param] ? vars[param] : null;
+        }
+        return vars;
     };
 })();
 
