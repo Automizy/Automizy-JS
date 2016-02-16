@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto");
+
 .automizy-input{
     display: inline-block;
     position: relative;
@@ -16,38 +18,60 @@
 .automizy-input.automizy-skin-simple-automizy input[type='password'],
 .automizy-input.automizy-skin-simple-automizy select,
 .automizy-input.automizy-skin-simple-automizy textarea{
-    background-color: #f7f8f0;
-    border: 1px solid #b6c5a4;
     box-sizing: border-box;
-    color: #555555;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
     width: 300px;
-    height: 32px;
-    padding-left:8px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+    height: 30px;
+    border-width: 1px;
+    border-color: rgb( 204, 204, 204 );
+    border-style: solid;
+    background-color: rgb( 255, 255, 255 );
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
     outline: none;
     max-width: 100%;
+    padding-left:8px;
 }
 .automizy-input.automizy-skin-simple-automizy textarea{
     height:80px;
 }
+
+.automizy-input.automizy-skin-simple-automizy input::-webkit-input-placeholder,
+.automizy-input.automizy-skin-simple-automizy textarea::-webkit-input-placeholder{ /* Chrome/Opera/Safari */
+    color: rgb( 158, 158, 158 );
+}
+.automizy-input.automizy-skin-simple-automizy input::-moz-placeholder,
+.automizy-input.automizy-skin-simple-automizy textarea::-moz-placeholder{ /* Firefox 19+ */
+    color: rgb( 158, 158, 158 );
+}
+.automizy-input.automizy-skin-simple-automizy input:-ms-input-placeholder,
+.automizy-input.automizy-skin-simple-automizy textarea:-ms-input-placeholder { /* IE 10+ */
+    color: rgb( 158, 158, 158 );
+}
+.automizy-input.automizy-skin-simple-automizy input:-moz-placeholder,
+.automizy-input.automizy-skin-simple-automizy textarea:-moz-placeholder{ /* Firefox 18- */
+    color: rgb( 158, 158, 158 );
+}
+
 .automizy-input.automizy-skin-simple-automizy input[type='text']:focus,
 .automizy-input.automizy-skin-simple-automizy input[type='number']:focus,
 .automizy-input.automizy-skin-simple-automizy input[type='password']:focus,
 .automizy-input.automizy-skin-simple-automizy select:focus,
 .automizy-input.automizy-skin-simple-automizy textarea:focus{
+    /*
     background-color:#ffffff;
     color:#000000;
     border-color:#79aa41;
+    */
 }
 .automizy-input.automizy-skin-simple-automizy input[type='text']:disabled,
 .automizy-input.automizy-skin-simple-automizy input[type='number']:disabled,
 .automizy-input.automizy-skin-simple-automizy input[type='password']:disabled,
 .automizy-input.automizy-skin-simple-automizy select:disabled,
 .automizy-input.automizy-skin-simple-automizy textarea:disabled{
-    background-color:#d5d6cf;
-    color:#555555;
+    background-color: #e9eae6;
 }
 .automizy-input.automizy-skin-simple-automizy.error input{
     border-color:red;
@@ -194,6 +218,17 @@
     display:block;
     height:33px;
 }
+
+.automizy-skin-simple-automizy .simple-automizy-file-box .automizy-button a{
+    padding: 6.5px 10px;
+    min-width:85px;
+    left: -3px;
+}
+
+.automizy-skin-simple-automizy .simple-automizy-file-box .automizy-input input{
+    color: rgb( 158, 158, 158 );
+}
+
 .automizy-skin-simple-automizy .simple-automizy-file-box td{
     vertical-align:top;
 }
