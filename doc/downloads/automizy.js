@@ -2628,6 +2628,14 @@ var $A = {};
         var t = this;
         return t.d.$widgetInputBoxError;
     };
+    p.rowSpacing = function(value){
+        var t = this;
+        if (typeof value !== 'undefined') {
+            t.widget().css('padding-bottom', value);
+            return t;
+        }
+        return t.widget().css('padding-bottom');
+    };
 
     $A.initBasicFunctions(Input, "Input", ["change", "enter", "focus", "blur", "click"]);
 })();
