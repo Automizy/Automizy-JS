@@ -17,6 +17,7 @@ define([
             $cell: $('<td class="automizy-dialog-cell"></td>'),
             $box: $('<div class="automizy-dialog-box"></div>'),
             $head: $('<div class="automizy-dialog-head"></div>'),
+            $close: $('<div class="automizy-dialog-close">&#10006;</div>'),
             $buttons: $('<div class="automizy-dialog-buttons"></div>'),
             $content: $('<div class="automizy-dialog-content"></div>'),
             buttons: [],
@@ -54,6 +55,7 @@ define([
             else
                 t.d.isClose = true;
         });
+        t.d.$close.appendTo(t.d.$box);
         t.d.$head.appendTo(t.d.$box);
         t.d.$content.appendTo(t.d.$box);
         t.d.$buttons.appendTo(t.d.$box);
