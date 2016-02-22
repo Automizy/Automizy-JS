@@ -17,7 +17,11 @@ var $A = {};
             forms:{},
             validators:{},
             feedbacks: {},
-            hashes:[]
+            hashes:[],
+            elements:{
+                $tmp:$('<div></div>'),
+                $loading:$('<div class="automizy-loading" style="margin-top: 8px;"><div class="automizy-loading-in automizy-loading-in-1"></div><div class="automizy-loading-in automizy-loading-in-2"></div><div class="automizy-loading-in automizy-loading-in-3"></div></div>')
+            }
         };
         t.m = {};
         t.mt = {};
@@ -637,6 +641,9 @@ var $A = {};
             if (typeof obj.newRow !== 'undefined') {
                 t.newRow(obj.newRow);
             }
+            if (typeof obj.thin !== 'undefined') {
+                t.thin(obj.thin);
+            }
             t.initParameter(obj);
         }
     };
@@ -720,11 +727,28 @@ var $A = {};
         if (typeof func === 'function') {
             t.addFunction('click', func, name, life);
         } else {
+            if(t.disabled()){
+                return t;
+            }
             var a = t.runFunctions('click');
-            t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
+            t.returnValue(!(a[0] === false || a[1] === false));
         }
         return t;
     };
+    p.thin = function(value){
+        var t = this;
+        if (typeof value !== 'undefined') {
+            value = $A.parseBoolean(value);
+            if(!value){
+                t.widget().removeClass('automizy-button-thin');
+                return t;
+            }
+        }
+        t.widget().addClass('automizy-button-thin');
+        return t;
+    };
+
+
     $A.initBasicFunctions(Button, "Button", ['click']);
 
 
@@ -957,6 +981,7 @@ var $A = {};
             $cell: $('<td class="automizy-dialog-cell"></td>'),
             $box: $('<div class="automizy-dialog-box"></div>'),
             $head: $('<div class="automizy-dialog-head"></div>'),
+            $close: $('<div class="automizy-dialog-close">&#10006;</div>'),
             $buttons: $('<div class="automizy-dialog-buttons"></div>'),
             $content: $('<div class="automizy-dialog-content"></div>'),
             buttons: [],
@@ -975,6 +1000,9 @@ var $A = {};
             closable:true,
             buttonsBox:true,
             id: 'automizy-dialog-' + $A.getUniqueString(),
+            openFunctions: [],
+            beforeOpenFunctions: [],
+            closeFunctions: [],
             create: function () {
             }
         };
@@ -993,6 +1021,10 @@ var $A = {};
             else
                 t.d.isClose = true;
         });
+        t.d.$close.click(function(){
+            t.close();
+        });
+        t.d.$close.appendTo(t.d.$box);
         t.d.$head.appendTo(t.d.$box);
         t.d.$content.appendTo(t.d.$box);
         t.d.$buttons.appendTo(t.d.$box);
@@ -1255,6 +1287,7 @@ var $A = {};
                 t.show();
                 t.runFunctions('open');
             }
+            $A.runFunctions($A.events.dialog.functions.open, this, [this, this.d.$widget]);
         }
         t.setMaxHeight();
         return t;
@@ -1273,6 +1306,12 @@ var $A = {};
         var t = this;
         if (typeof value !== 'undefined') {
             t.d.closable = $A.parseBoolean(value);
+            if(value){
+                t.d.$close.show();
+            }
+            else{
+                t.d.$close.hide();
+            }
         } else {
             return t.d.closable;
         }
@@ -1883,6 +1922,7 @@ var $A = {};
             $input: $('<input />'),
             $textarea: $('<textarea></textarea>'),
             $select: $('<select></select>'),
+            $loadingBox:$('<div class="automizy-input-loading-box"></div>'),
             specialElements: [],
             type: 'text',
             skin: 'simple-automizy',
@@ -1926,6 +1966,7 @@ var $A = {};
         t.d.$select.addClass('automizy-input');
         t.d.$widgetLabel.appendTo(t.d.$widget).attr('for', t.d.id + '-input').ahide();
         t.d.$widgetInput.appendTo(t.d.$widgetInputBox).attr('id', t.d.id + '-input');
+        t.d.$loadingBox.appendTo(t.d.$widgetInputBox).html($A.d.elements.$loading.clone());
         t.d.$widgetInputBox.appendTo(t.d.$widget);
         t.d.$widgetLabelAfter.appendTo(t.d.$widget).ahide();
         t.d.$widgetInputBoxError.appendTo(t.d.$widget);
@@ -2024,6 +2065,9 @@ var $A = {};
             if (typeof obj.change === 'function') {
                 t.change(obj.change);
             }
+            if (typeof obj.keyup === 'function') {
+                t.keyup(obj.keyup);
+            }
             if (typeof obj.enter === 'function') {
                 t.enter(obj.enter);
             }
@@ -2077,6 +2121,10 @@ var $A = {};
                     return false;
                 }
             }
+        }).keyup(function (e) {
+            if (t.keyup().returnValue() === false) {
+                return false;
+            }
         }).click(function () {
             if (t.click().returnValue() === false) {
                 return false;
@@ -2109,6 +2157,16 @@ var $A = {};
             t.addFunction('change', func, name, life);
         } else {
             var a = t.runFunctions('change');
+            t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
+        }
+        return t;
+    };
+    p.keyup = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('keyup', func, name, life);
+        } else {
+            var a = t.runFunctions('keyup');
             t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
         }
         return t;
@@ -2282,6 +2340,9 @@ var $A = {};
         }
         return t.input().val();
     };
+    p.optionValue = function () {
+        return this.options()[this.val()];
+    };
     p.name = function (name) {
         var t = this;
         if (typeof name !== 'undefined') {
@@ -2349,9 +2410,11 @@ var $A = {};
             } else {
                 t.d.$widgetInput = $('<input/>').attr('type', t.d.type);
             }
+            t.d.$loadingBox.appendTo($A.d.elements.$tmp);
             t.d.$widgetInputBox.ashow().empty();
             t.d.$widgetInput.attr(attributes).show();
             t.d.$widgetInput.appendTo(t.d.$widgetInputBox);
+            t.d.$loadingBox.appendTo(t.d.$widgetInputBox);
             setTimeout(function(){
                 t.setupJQueryEvents();
             }, 10);
@@ -2636,8 +2699,18 @@ var $A = {};
         }
         return t.widget().css('padding-bottom');
     };
+    p.loadingOn = function(){
+        var t = this;
+        t.d.$loadingBox.show();
+        return t;
+    };
+    p.loadingOff = function(){
+        var t = this;
+        t.d.$loadingBox.hide();
+        return t;
+    };
 
-    $A.initBasicFunctions(Input, "Input", ["change", "enter", "focus", "blur", "click"]);
+    $A.initBasicFunctions(Input, "Input", ["change", "keyup", "enter", "focus", "blur", "click"]);
 })();
 
 (function(){
@@ -3769,7 +3842,7 @@ var $A = {};
         t.d.$stepPageBox.appendTo(t.d.$actions);
 
         t.d.$perPageBox.appendTo(t.d.$actions);
-        t.d.perPageSelect.type('select').multiple(false).multiselect(true).options(t.d.perPageList).val(t.d.perPage).label(t.d.perPageLabel).width('83px').change(function(){
+        t.d.perPageSelect.type('select').options(t.d.perPageList).val(t.d.perPage).label(t.d.perPageLabel).width('83px').change(function(){
             t.d.perPage = this.val();
             if(t.d.storeData){
                 $A.store.set(t.id()+'PerPage', t.d.perPage);
@@ -4774,7 +4847,7 @@ var $A = {};
         var t = this;
         if (typeof loadingCellContent !== 'undefined') {
             if (loadingCellContent instanceof jQuery) {
-                var loadingCellContent = loadingCellContent.clone();
+                loadingCellContent = loadingCellContent.clone();
             }
             t.d.loadingCellContent = loadingCellContent;
             t.d.$loadingCellContent.html(loadingCellContent);
@@ -4782,6 +4855,29 @@ var $A = {};
         }
         return t.d.loadingCellContent;
     };
+    p.addButton = p.addButton || function (obj) {
+            var t = this;
+            if (typeof t.d.buttons === 'undefined') {
+                return t;
+            }
+            if (typeof obj !== 'undefined') {
+                if (obj instanceof $A.m.Button || obj instanceof $A.m.Input) {
+                    obj.drawTo(t.d.$buttons || t.d.$widget);
+                    obj.thin(true);
+                } else {
+                    obj.thin = true;
+                    obj.target = obj.target || t.d.$buttons || t.d.$widget;
+                    var button = $A.newButton(obj);
+                    t.d.buttons.push(button);
+                }
+                t.d.$widget.addClass('has-button');
+                return t;
+            }
+            var button = $A.newButton();
+            t.d.buttons.push(button);
+            button.drawTo(t.d.$buttons || t.d.$widget);
+            return button;
+        };
 
     $A.initBasicFunctions(Table, "Table", ['addRows', 'beforeAddRows', 'beforeOpenInlineBox', 'loading']);
 

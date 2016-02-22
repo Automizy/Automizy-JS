@@ -54,6 +54,16 @@
     -webkit-transition: background-color 0.2s;
     transition: background-color 0.2s;
 }
+.automizy-button.automizy-skin-image-white a{
+    min-width: 50px;
+}
+
+.automizy-button.automizy-skin-simple-white.automizy-button-thin a,
+.automizy-button.automizy-skin-image-white.automizy-button-thin a,
+.automizy-button.automizy-skin-simple-orange.automizy-button-thin a,
+.automizy-button.automizy-skin-simple-green.automizy-button-thin a{
+    padding:6px 10px 6px 10px;
+}
 
 .automizy-button.disabled a{
     cursor:default !important;
@@ -70,15 +80,18 @@
 .automizy-input-box input[type="file"]:hover + span .automizy-skin-simple-white a{
     background-color: rgb( 226, 226, 226 )
 }
-
-.automizy-button.disabled.automizy-skin-simple-white a,
-.automizy-button.disabled.automizy-skin-image-white a{
-    background-color: rgb( 238, 237, 237 );
-    color: rgb( 169, 168, 168 );
-}
 .automizy-button.automizy-skin-image-white a{
     line-height: 0;
     padding: 7px 20px 8px 20px;
+}
+
+.automizy-button.automizy-skin-simple-white.disabled a,
+.automizy-button.automizy-skin-image-white.disabled a{
+    background-color: rgb( 238, 237, 237 );
+    color: rgb( 169, 168, 168 );
+}
+.automizy-button.automizy-skin-image-white.disabled a img{
+    opacity:0.4;
 }
 
 

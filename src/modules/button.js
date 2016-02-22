@@ -57,6 +57,9 @@ define([
             if (typeof obj.newRow !== 'undefined') {
                 t.newRow(obj.newRow);
             }
+            if (typeof obj.thin !== 'undefined') {
+                t.thin(obj.thin);
+            }
             t.initParameter(obj);
         }
     };
@@ -140,11 +143,28 @@ define([
         if (typeof func === 'function') {
             t.addFunction('click', func, name, life);
         } else {
+            if(t.disabled()){
+                return t;
+            }
             var a = t.runFunctions('click');
-            t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
+            t.returnValue(!(a[0] === false || a[1] === false));
         }
         return t;
     };
+    p.thin = function(value){
+        var t = this;
+        if (typeof value !== 'undefined') {
+            value = $A.parseBoolean(value);
+            if(!value){
+                t.widget().removeClass('automizy-button-thin');
+                return t;
+            }
+        }
+        t.widget().addClass('automizy-button-thin');
+        return t;
+    };
+
+
     $A.initBasicFunctions(Button, "Button", ['click']);
 
 

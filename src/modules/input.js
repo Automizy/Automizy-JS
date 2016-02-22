@@ -24,6 +24,7 @@ define([
             $input: $('<input />'),
             $textarea: $('<textarea></textarea>'),
             $select: $('<select></select>'),
+            $loadingBox:$('<div class="automizy-input-loading-box"></div>'),
             specialElements: [],
             type: 'text',
             skin: 'simple-automizy',
@@ -67,6 +68,7 @@ define([
         t.d.$select.addClass('automizy-input');
         t.d.$widgetLabel.appendTo(t.d.$widget).attr('for', t.d.id + '-input').ahide();
         t.d.$widgetInput.appendTo(t.d.$widgetInputBox).attr('id', t.d.id + '-input');
+        t.d.$loadingBox.appendTo(t.d.$widgetInputBox).html($A.d.elements.$loading.clone());
         t.d.$widgetInputBox.appendTo(t.d.$widget);
         t.d.$widgetLabelAfter.appendTo(t.d.$widget).ahide();
         t.d.$widgetInputBoxError.appendTo(t.d.$widget);
@@ -165,6 +167,9 @@ define([
             if (typeof obj.change === 'function') {
                 t.change(obj.change);
             }
+            if (typeof obj.keyup === 'function') {
+                t.keyup(obj.keyup);
+            }
             if (typeof obj.enter === 'function') {
                 t.enter(obj.enter);
             }
@@ -218,6 +223,10 @@ define([
                     return false;
                 }
             }
+        }).keyup(function (e) {
+            if (t.keyup().returnValue() === false) {
+                return false;
+            }
         }).click(function () {
             if (t.click().returnValue() === false) {
                 return false;
@@ -250,6 +259,16 @@ define([
             t.addFunction('change', func, name, life);
         } else {
             var a = t.runFunctions('change');
+            t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
+        }
+        return t;
+    };
+    p.keyup = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('keyup', func, name, life);
+        } else {
+            var a = t.runFunctions('keyup');
             t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
         }
         return t;
@@ -423,6 +442,9 @@ define([
         }
         return t.input().val();
     };
+    p.optionValue = function () {
+        return this.options()[this.val()];
+    };
     p.name = function (name) {
         var t = this;
         if (typeof name !== 'undefined') {
@@ -490,9 +512,11 @@ define([
             } else {
                 t.d.$widgetInput = $('<input/>').attr('type', t.d.type);
             }
+            t.d.$loadingBox.appendTo($A.d.elements.$tmp);
             t.d.$widgetInputBox.ashow().empty();
             t.d.$widgetInput.attr(attributes).show();
             t.d.$widgetInput.appendTo(t.d.$widgetInputBox);
+            t.d.$loadingBox.appendTo(t.d.$widgetInputBox);
             setTimeout(function(){
                 t.setupJQueryEvents();
             }, 10);
@@ -777,6 +801,16 @@ define([
         }
         return t.widget().css('padding-bottom');
     };
+    p.loadingOn = function(){
+        var t = this;
+        t.d.$loadingBox.show();
+        return t;
+    };
+    p.loadingOff = function(){
+        var t = this;
+        t.d.$loadingBox.hide();
+        return t;
+    };
 
-    $A.initBasicFunctions(Input, "Input", ["change", "enter", "focus", "blur", "click"]);
+    $A.initBasicFunctions(Input, "Input", ["change", "keyup", "enter", "focus", "blur", "click"]);
 });
