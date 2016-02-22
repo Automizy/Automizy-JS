@@ -145,6 +145,7 @@
                                 label: 'Email',
                                 help: "...",
                                 name: 'simpleText',
+                                placeholder: 'Type email address here',
                                 validator: 'email'
                             },
                             {
@@ -167,6 +168,16 @@
                                 help: "...",
                                 name: 'simpleText',
                                 validator: $A.newValidator({num: true, min: 0})
+                            },
+                            {
+                                type:'radio',
+                                name:'radio group',
+                                label:'First'
+                            },
+                            {
+                                type:'radio',
+                                name:'radio group',
+                                label:'Second'
                             },
                             {
                                 label: 'Százalékos cucc',
@@ -233,9 +244,9 @@
                         hash: 'ImportContacts',
                         buttons: [
                             {
-                                skin: 'nobox-green',
+                                skin: 'simple-white',
                                 text: $A.translate('Cancel'),
-                                float: 'left',
+                                float: 'none',
                                 click: function () {
                                     alert('CANCEL');
                                     dialog.hide();
@@ -244,7 +255,7 @@
                             {
                                 skin: 'simple-orange',
                                 text: 'Next',
-                                float: 'right',
+                                float: 'none',
                                 click: function () {
                                     var a = form.inputs();
                                     var send = true;
