@@ -233,6 +233,10 @@
     vertical-align:top;
 }
 
+.automizy-input-box:hover .simple-automizy-file-box .automizy-button a{
+    background-color: red;
+}
+
 .simple-automizy-slider{
     width:250px;
     margin:5px 0 0 0;

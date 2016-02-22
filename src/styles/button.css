@@ -67,13 +67,8 @@
 
 .automizy-button.automizy-skin-simple-white a:hover,
 .automizy-button.automizy-skin-image-white a:hover,
-.automizy-input-box input[type="file"]:hover + span a{
+.automizy-input-box input[type="file"]:hover + span .automizy-skin-simple-white a{
     background-color: rgb( 226, 226, 226 )
-}
-.automizy-button.automizy-skin-simple-white a:active,
-.automizy-button.automizy-skin-image-white a:active,
-.automizy-input-box input[type="file"]:active + span a{
-    background-color: rgb( 207, 207, 207 );
 }
 
 .automizy-button.disabled.automizy-skin-simple-white a,
@@ -92,11 +87,13 @@
     color: rgb( 255, 255, 255 );
 }
 
-.automizy-button.automizy-skin-simple-orange a:hover{
+.automizy-button.automizy-skin-simple-orange a:hover,
+.automizy-input-box input[type="file"]:hover + span .automizy-skin-simple-orange a{
     background-color: rgb( 255, 121, 31 );
 }
 
-.automizy-button.automizy-skin-simple-orange a:active{
+.automizy-button.automizy-skin-simple-orange a:active,
+.automizy-input-box input[type="file"]:active + span .automizy-skin-simple-orange a{
     background-color: rgb( 237, 92, 28 );
 }
 

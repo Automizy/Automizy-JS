@@ -55,6 +55,9 @@ define([
             else
                 t.d.isClose = true;
         });
+        t.d.$close.click(function(){
+            t.close();
+        });
         t.d.$close.appendTo(t.d.$box);
         t.d.$head.appendTo(t.d.$box);
         t.d.$content.appendTo(t.d.$box);
@@ -310,6 +313,12 @@ define([
         var t = this;
         if (typeof closable !== 'undefined') {
             t.d.closable = closable;
+            if(closable){
+                t.d.$close.show();
+            }
+            else{
+                t.d.$close.hide();
+            }
         } else {
             return t.d.closable;
         }
