@@ -217,7 +217,7 @@ define([
         t.d.$stepPageBox.appendTo(t.d.$actions);
 
         t.d.$perPageBox.appendTo(t.d.$actions);
-        t.d.perPageSelect.type('select').multiple(false).multiselect(true).options(t.d.perPageList).val(t.d.perPage).label(t.d.perPageLabel).width('83px').change(function(){
+        t.d.perPageSelect.type('select').options(t.d.perPageList).val(t.d.perPage).label(t.d.perPageLabel).width('83px').change(function(){
             t.d.perPage = this.val();
             if(t.d.storeData){
                 $A.store.set(t.id()+'PerPage', t.d.perPage);
@@ -261,7 +261,7 @@ define([
             t.d.$searchIcon.append('<img src="' + $A.images.searchIcon + '" />').insertAfter(t.d.$searchBox).click(function () {
                 t.d.$searchBoxContent.stop().slideToggle();
                 t.d.searchBoxCanClose = false;
-                t.d.$searchInput.focus();
+                t.d.$searchInput.input().focus().select();
             });
             t.d.$exportIcon.append('<img src="' + $A.images.exportIcon + '" />').appendTo(t.d.$panel).click(function () {
                 t.d.onExport.apply(t, [t, t.d.$widget]);
@@ -354,6 +354,8 @@ define([
                     t.onPerPage(obj.onPerPage);
                 if (typeof obj.onShowCol === 'function')
                     t.onShowCol(obj.onShowCol);
+                if (typeof obj.onSearch === 'function')
+                    t.onSearch(obj.onSearch);
                 if (typeof obj.onExport === 'function')
                     t.onExport(obj.onExport);
                 if (typeof obj.buttons !== 'undefined')
@@ -448,6 +450,15 @@ define([
             t.d.onPerPage = func;
         } else {
             return t.d.onPerPage.apply(t, [t, t.d.$widget]);
+        }
+        return this;
+    };
+    p.onSearch = function (func) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.d.onSearch = func;
+        } else {
+            return t.d.onSearch.apply(t, [t, t.d.$widget]);
         }
         return this;
     };
@@ -1203,6 +1214,7 @@ define([
             var $td = $('<td colspan="'+t.getRowByIndex(0).$cells().length+'"></td>').appendTo($tr);
             t.d.$loadingCellContent.appendTo($td);
             $tr.appendTo(t.table());
+            $A.runFunctions($A.events.table.functions.loading, t, [t]);
         //}, 10);
         return t;
     };
@@ -1210,7 +1222,7 @@ define([
         var t = this;
         if (typeof loadingCellContent !== 'undefined') {
             if (loadingCellContent instanceof jQuery) {
-                var loadingCellContent = loadingCellContent.clone();
+                loadingCellContent = loadingCellContent.clone();
             }
             t.d.loadingCellContent = loadingCellContent;
             t.d.$loadingCellContent.html(loadingCellContent);
@@ -1218,11 +1230,30 @@ define([
         }
         return t.d.loadingCellContent;
     };
+    p.addButton = p.addButton || function (obj) {
+            var t = this;
+            if (typeof t.d.buttons === 'undefined') {
+                return t;
+            }
+            if (typeof obj !== 'undefined') {
+                if (obj instanceof $A.m.Button || obj instanceof $A.m.Input) {
+                    obj.drawTo(t.d.$buttons || t.d.$widget);
+                    obj.thin(true);
+                } else {
+                    obj.thin = true;
+                    obj.target = obj.target || t.d.$buttons || t.d.$widget;
+                    var button = $A.newButton(obj);
+                    t.d.buttons.push(button);
+                }
+                t.d.$widget.addClass('has-button');
+                return t;
+            }
+            var button = $A.newButton();
+            t.d.buttons.push(button);
+            button.drawTo(t.d.$buttons || t.d.$widget);
+            return button;
+        };
 
-
-    $A.events.table = {};
-    $A.registerLocalEvents($A.events.table, ['addRows', 'beforeAddRows', 'beforeOpenInlineBox']);
-
-    $A.initBasicFunctions(Table, "Table");
+    $A.initBasicFunctions(Table, "Table", ['addRows', 'beforeAddRows', 'beforeOpenInlineBox', 'loading']);
 
 });
