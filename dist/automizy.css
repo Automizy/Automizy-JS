@@ -427,7 +427,7 @@ input[type='checkbox'], input[type='radio']{
     appearance: none;
     outline: none !important;
 }
-input[type='checkbox'], input[type='radio']{
+input[type='checkbox']{
     width: 15px;
     height: 15px;
 }
