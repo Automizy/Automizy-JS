@@ -306,10 +306,31 @@ var $A = {};
                 }
                 return this.d.skin;
             };
-        p.draw = p.drawTo = p.draw || function ($target) {
+
+
+        p.drawAfter = p.insertAfter = p.drawAfter || function($target){
                 var t = this;
                 var $target = $target || $('body');
-                t.d.$widget.appendTo($target);
+                return p.drawTo($target, 'after');
+            };
+
+        p.drawBefore = p.insertBefore = p.drawBefore || function($target){
+                var t = this;
+                var $target = $target || $('body');
+                return p.drawTo($target, 'before');
+            };
+
+        p.drawTo = p.appendTo = p.drawTo || function ($target, where) {
+                var t = this;
+                var $target = $target || $('body');
+                var where = where || 'in';
+                if(where === 'after'){
+                    t.d.$widget.insertAfter($target);
+                }else if(where === 'before'){
+                    t.d.$widget.insertBefore($target);
+                }else{
+                    t.d.$widget.appendTo($target);
+                }
                 t.d.hasObject = true;
                 setTimeout(function () {
                     for (var i = 0; i < t.d.createFunctions.length; i++) {
@@ -318,15 +339,17 @@ var $A = {};
                     t.create();
                     $A.runFunctions($A.events[moduleNameLower].functions.complete, t, [t]);
                 }, 50);
-                return this;
+                return t;
             };
+        p.draw = p.drawTo || p.appendTo;
+
         p.show = p.show || function () {
                 var t = this;
                 if (!t.d.hasObject) {
                     t.draw();
                 }
                 this.d.$widget.ashow();
-                return this;
+                return t;
             };
         p.hide = p.hide || function () {
                 var t = this;
@@ -338,7 +361,7 @@ var $A = {};
                     $A.hashChange(this.hash(), false);
                 }
                 this.d.$widget.ahide();
-                return this;
+                return t;
             };
         p.remove = p.remove || function (func) {
                 if (typeof func === 'function') {
@@ -860,31 +883,35 @@ var $A = {};
 })();
 
 (function(){
-    Object.defineProperty(Object.prototype, "renameProperty", {
-        value: function (oldName, newName) {
-            if (this.hasOwnProperty(oldName)) {
-                this[newName] = this[oldName];
-                delete this[oldName];
-            }
-            return this;
-        },
-        enumerable: false
-    });
-    Object.defineProperty(Array.prototype, "remove", {
-        value: function (item) {
-            var removeCounter = 0;
-
-            for (var index = 0; index < this.length; index++) {
-                if (this[index] === item) {
-                    this.splice(index, 1);
-                    removeCounter++;
-                    index--;
+    if(typeof Object.prototype.renameProperty === 'undefined') {
+        Object.defineProperty(Object.prototype, "renameProperty", {
+            value: function (oldName, newName) {
+                if (this.hasOwnProperty(oldName)) {
+                    this[newName] = this[oldName];
+                    delete this[oldName];
                 }
-            }
-            return removeCounter;
-        },
-        enumerable: false
-    });
+                return this;
+            },
+            enumerable: false
+        });
+    }
+    if(typeof Array.prototype.remove === 'undefined') {
+        Object.defineProperty(Array.prototype, "remove", {
+            value: function (item) {
+                var removeCounter = 0;
+
+                for (var index = 0; index < this.length; index++) {
+                    if (this[index] === item) {
+                        this.splice(index, 1);
+                        removeCounter++;
+                        index--;
+                    }
+                }
+                return removeCounter;
+            },
+            enumerable: false
+        });
+    }
 })();
 
 (function(){
@@ -1953,6 +1980,7 @@ var $A = {};
             labelAfter: '',
             accept: [],
             items: {},
+            itemsArray: [],
             validator: $A.newValidator(),
             validate: function () {},
             createFunctions: [],
@@ -2340,7 +2368,19 @@ var $A = {};
         }
         return t.input().val();
     };
-    p.optionValue = function () {
+    p.valEq = function(value){
+        var t = this;
+        if(t.d.itemsArray.length < value){
+            return t;
+        }
+        if(typeof t.d.itemsArray[value] === 'undefined'){
+            return t;
+        }
+        var value = t.d.itemsArray[value][0];
+        t.val(value);
+        return t;
+    };
+    p.optionValue = p.optionVal = function () {
         return this.options()[this.val()];
     };
     p.name = function (name) {
@@ -2434,6 +2474,49 @@ var $A = {};
             return t;
         }
         return t.d.type;
+    };
+    p.displayType = function(type, settings){
+        var t = this;
+        var input = t.input();
+        var type = type || false;
+        if(!type){
+            return t;
+        }
+        var settings = settings || false;
+        if(t.type() === 'select'){
+            t.multiselect(false);
+        }
+        if (t.input().hasClass('hasDatepicker')) {
+            t.input().datepicker("destroy");
+            t.input().removeClass("hasDatepicker");
+        }
+        type = type.toLowerCase();
+        if(type === 'text' || type === 'string'){
+            t.type('text');
+        }else if(type === 'number' || type === 'integer'){
+            t.type('number');
+        }else if(type === 'datetime') {
+            t.type('text');
+            t.input().datetimepicker(settings || {
+                dateFormat: 'yy-mm-dd',
+                timeFormat: 'HH:mm:ss',
+                changeYear: true,
+                changeMonth: true,
+                showOtherMonths: true,
+                selectOtherMonths: false,
+                yearRange: '1900:c',
+                showButtonPanel: true,
+                showSecond: true,
+                showMillisec: false,
+                showMicrosec: false,
+                showTimezone: false,
+                showTime: true,
+                controlType: 'slider'
+            });
+        }else if(type === 'select') {
+            t.type('select');
+        }
+        return t;
     };
     p.datepicker = function () {
         var t = this;
@@ -2585,6 +2668,7 @@ var $A = {};
                     t.d.items[value] = text;
                 }
                 //t.d.$widgetInput.val(values);
+                t.d.itemsArray = arr;
             }
         }
         if (t.d.multiselect) {
@@ -3644,6 +3728,7 @@ var $A = {};
             $tableContainerBox:$('<div class="automizy-table-container-box"></div>'),
             $tableContainer:$('<div class="automizy-table-container"></div>'),
             $table:  $('<table cellpadding="0" cellspacing="0" border="0" class="automizy-table collapsed"></table>'),
+            $tbody:  $('<tbody></tbody>'),
             $header:  $('<tr class="automizy-table-header"></tr>'),
             $title: $('<div class="automizy-table-title"></div>'),
             $actions: $('<div class="automizy-table-actions"></div>'),
@@ -3850,7 +3935,8 @@ var $A = {};
             t.d.onPerPage.apply(this, [t, t.d.$widget]);
         }).drawTo(t.d.$perPageBox);
         t.d.$widget.attr('id', t.id());
-        t.d.$header.appendTo(t.d.$table);
+        t.d.$tbody.appendTo(t.d.$table);
+        t.d.$header.appendTo(t.d.$tbody);
         t.d.$title.html(t.d.title).appendTo(t.d.$widget);
         t.d.$actions.appendTo(t.d.$widget);
         t.d.$buttons.appendTo(t.d.$actions);
@@ -3912,7 +3998,10 @@ var $A = {};
         t.d.$checkboxCheckAll.change(function(){
             $A.d.tableRowCheckBoxClick = true;
             var checked = this.checked;
-            var cells = t.getColByIndex(0).$cells().find('input:enabled').prop('checked', checked);
+            var col = t.getColByIndex(0);
+            if(typeof col.$cells === 'function'){
+                col.$cells().find('input:enabled').prop('checked', checked);
+            }
         });
         t.border(t.d.border);
         t.borderCollapse(t.d.borderCollapse);
@@ -4008,6 +4097,9 @@ var $A = {};
 
     p.table = function () {
         return this.d.$table;
+    };
+    p.tbody = function () {
+        return this.d.$tbody;
     };
 
     p.storeData = function(storeData){
@@ -4296,11 +4388,20 @@ var $A = {};
     };
     p.selectedIds = function(){
         var t = this;
-        return t.getColByIndex(0).$cells().find('input[type="checkbox"][value]:checked').map(function(){return this.value}).get()
+        var col = t.getColByIndex(0);
+        if(typeof col.$cells === 'function'){
+            return col.$cells().find('input[type="checkbox"][value]:checked').map(function(){return this.value}).get();
+        }
+        return [];
     };
     p.selectedId = function(){
         var t = this;
-        return t.getColByIndex(0).$cells().find('input[type="checkbox"][value]:checked:first').val();
+
+        var col = t.getColByIndex(0);
+        if(typeof col.$cells === 'function'){
+            return col.$cells().find('input[type="checkbox"][value]:checked:first').val();
+        }
+        return [];
     };
     p.openedRow = function(openedRow){
         var t = this;
@@ -4745,7 +4846,7 @@ var $A = {};
         var table = t.table()[0];
         if (typeof arr !== 'undefined'){
             var sortArr = arr.sort();
-            for (var i = sortArr.length - 1; i >= 0; i--) {
+            for (var i = (sortArr.length - 1); i >= 0; i--) {
                 table.deleteRow(sortArr[i]);
             }
             return t;
@@ -6088,6 +6189,74 @@ var $A = {};
         }
         return vars;
     };
+})();
+
+(function(){
+    $A.iphoneStyle = function(input){
+        var input = input || $(':checkbox.iphone');
+        input.each(function () {
+            var $t = $(this);
+            var counter = 0;
+            if ($t.hasClass("inited")) {
+                $t.siblings().remove();
+                if ($t.parent().hasClass("iPhoneCheckContainer")) {
+                    $t.unwrap();
+                }
+                var $clone = $t.clone();
+                $t.after($clone);
+                $t.remove();
+                $t = $clone;
+            }
+            $t.iphoneStyle({
+                checkedLabel: '&nbsp;&nbsp;&nbsp;',
+                uncheckedLabel: '&nbsp;&nbsp;&nbsp;',
+                resizeContainer: false,
+                resizeHandle: false,
+                onChange: function (elem, value) {
+                    var box = this.container[0];
+                    var $box = $(box);
+                    var $input = $box.find("input");
+                    var $handler = $box.find(".iPhoneCheckHandleCenter");
+                    var stringOn = $input.attr("data-on") || $input.data('on') || $A.translate('On');
+                    var stringOff = $input.attr("data-off") || $input.data('off') || $A.translate('Off');
+                    if (value) {
+                        $handler.html(stringOn);
+                        $box.removeClass("off")
+                    } else {
+                        $handler.html(stringOff);
+                        $box.addClass("off");
+                    }
+                    var target = $input.attr("data-target");
+                    if (target) {
+                        var targetElement = $box.closest("form").find('[name="' + target + '"]');
+                        targetElement.prop("disabled", !value);
+                    }
+                    $input.trigger("forceChange", [counter]);
+                    counter++;
+                }
+            });
+            if ($t.hasClass("inline")) {
+                $t.parent().css({'display': 'inline-block', 'vertical-align': 'middle'});
+            }
+            if (!$t.is(":checked")) {
+                $t.parent().addClass("off");
+            }
+            $t.addClass("inited");
+
+            $(this).parent().parent().removeClass('automizy-input-has-help');
+        });
+        input.parent().css({display: 'inline-block', verticalAlign: 'middle'});
+        $(".iPhoneCheckHandleCenter").html(function () {
+            var $container = $(this).closest(".iPhoneCheckContainer");
+            if ($container.find("input").is(":checked")) {
+                return $container.find("input").attr("data-on");
+            } else {
+                return $container.find("input").attr("data-off");
+            }
+        });
+
+        input.iphoneStyle("refresh");
+    }
 })();
 
 (function(){

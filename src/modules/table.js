@@ -19,6 +19,7 @@ define([
             $tableContainerBox:$('<div class="automizy-table-container-box"></div>'),
             $tableContainer:$('<div class="automizy-table-container"></div>'),
             $table:  $('<table cellpadding="0" cellspacing="0" border="0" class="automizy-table collapsed"></table>'),
+            $tbody:  $('<tbody></tbody>'),
             $header:  $('<tr class="automizy-table-header"></tr>'),
             $title: $('<div class="automizy-table-title"></div>'),
             $actions: $('<div class="automizy-table-actions"></div>'),
@@ -225,7 +226,8 @@ define([
             t.d.onPerPage.apply(this, [t, t.d.$widget]);
         }).drawTo(t.d.$perPageBox);
         t.d.$widget.attr('id', t.id());
-        t.d.$header.appendTo(t.d.$table);
+        t.d.$tbody.appendTo(t.d.$table);
+        t.d.$header.appendTo(t.d.$tbody);
         t.d.$title.html(t.d.title).appendTo(t.d.$widget);
         t.d.$actions.appendTo(t.d.$widget);
         t.d.$buttons.appendTo(t.d.$actions);
@@ -287,7 +289,10 @@ define([
         t.d.$checkboxCheckAll.change(function(){
             $A.d.tableRowCheckBoxClick = true;
             var checked = this.checked;
-            var cells = t.getColByIndex(0).$cells().find('input:enabled').prop('checked', checked);
+            var col = t.getColByIndex(0);
+            if(typeof col.$cells === 'function'){
+                col.$cells().find('input:enabled').prop('checked', checked);
+            }
         });
         t.border(t.d.border);
         t.borderCollapse(t.d.borderCollapse);
@@ -383,6 +388,9 @@ define([
 
     p.table = function () {
         return this.d.$table;
+    };
+    p.tbody = function () {
+        return this.d.$tbody;
     };
 
     p.storeData = function(storeData){
@@ -671,11 +679,20 @@ define([
     };
     p.selectedIds = function(){
         var t = this;
-        return t.getColByIndex(0).$cells().find('input[type="checkbox"][value]:checked').map(function(){return this.value}).get()
+        var col = t.getColByIndex(0);
+        if(typeof col.$cells === 'function'){
+            return col.$cells().find('input[type="checkbox"][value]:checked').map(function(){return this.value}).get();
+        }
+        return [];
     };
     p.selectedId = function(){
         var t = this;
-        return t.getColByIndex(0).$cells().find('input[type="checkbox"][value]:checked:first').val();
+
+        var col = t.getColByIndex(0);
+        if(typeof col.$cells === 'function'){
+            return col.$cells().find('input[type="checkbox"][value]:checked:first').val();
+        }
+        return [];
     };
     p.openedRow = function(openedRow){
         var t = this;
@@ -1120,7 +1137,7 @@ define([
         var table = t.table()[0];
         if (typeof arr !== 'undefined'){
             var sortArr = arr.sort();
-            for (var i = sortArr.length - 1; i >= 0; i--) {
+            for (var i = (sortArr.length - 1); i >= 0; i--) {
                 table.deleteRow(sortArr[i]);
             }
             return t;

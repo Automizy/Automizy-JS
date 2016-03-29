@@ -86,10 +86,31 @@ define([
                 }
                 return this.d.skin;
             };
-        p.draw = p.drawTo = p.draw || function ($target) {
+
+
+        p.drawAfter = p.insertAfter = p.drawAfter || function($target){
                 var t = this;
                 var $target = $target || $('body');
-                t.d.$widget.appendTo($target);
+                return p.drawTo($target, 'after');
+            };
+
+        p.drawBefore = p.insertBefore = p.drawBefore || function($target){
+                var t = this;
+                var $target = $target || $('body');
+                return p.drawTo($target, 'before');
+            };
+
+        p.drawTo = p.appendTo = p.drawTo || function ($target, where) {
+                var t = this;
+                var $target = $target || $('body');
+                var where = where || 'in';
+                if(where === 'after'){
+                    t.d.$widget.insertAfter($target);
+                }else if(where === 'before'){
+                    t.d.$widget.insertBefore($target);
+                }else{
+                    t.d.$widget.appendTo($target);
+                }
                 t.d.hasObject = true;
                 setTimeout(function () {
                     for (var i = 0; i < t.d.createFunctions.length; i++) {
@@ -98,15 +119,17 @@ define([
                     t.create();
                     $A.runFunctions($A.events[moduleNameLower].functions.complete, t, [t]);
                 }, 50);
-                return this;
+                return t;
             };
+        p.draw = p.drawTo || p.appendTo;
+
         p.show = p.show || function () {
                 var t = this;
                 if (!t.d.hasObject) {
                     t.draw();
                 }
                 this.d.$widget.ashow();
-                return this;
+                return t;
             };
         p.hide = p.hide || function () {
                 var t = this;
@@ -118,7 +141,7 @@ define([
                     $A.hashChange(this.hash(), false);
                 }
                 this.d.$widget.ahide();
-                return this;
+                return t;
             };
         p.remove = p.remove || function (func) {
                 if (typeof func === 'function') {

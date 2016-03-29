@@ -55,6 +55,7 @@ define([
             labelAfter: '',
             accept: [],
             items: {},
+            itemsArray: [],
             validator: $A.newValidator(),
             validate: function () {},
             createFunctions: [],
@@ -442,7 +443,19 @@ define([
         }
         return t.input().val();
     };
-    p.optionValue = function () {
+    p.valEq = function(value){
+        var t = this;
+        if(t.d.itemsArray.length < value){
+            return t;
+        }
+        if(typeof t.d.itemsArray[value] === 'undefined'){
+            return t;
+        }
+        var value = t.d.itemsArray[value][0];
+        t.val(value);
+        return t;
+    };
+    p.optionValue = p.optionVal = function () {
         return this.options()[this.val()];
     };
     p.name = function (name) {
@@ -536,6 +549,49 @@ define([
             return t;
         }
         return t.d.type;
+    };
+    p.displayType = function(type, settings){
+        var t = this;
+        var input = t.input();
+        var type = type || false;
+        if(!type){
+            return t;
+        }
+        var settings = settings || false;
+        if(t.type() === 'select'){
+            t.multiselect(false);
+        }
+        if (t.input().hasClass('hasDatepicker')) {
+            t.input().datepicker("destroy");
+            t.input().removeClass("hasDatepicker");
+        }
+        type = type.toLowerCase();
+        if(type === 'text' || type === 'string'){
+            t.type('text');
+        }else if(type === 'number' || type === 'integer'){
+            t.type('number');
+        }else if(type === 'datetime') {
+            t.type('text');
+            t.input().datetimepicker(settings || {
+                dateFormat: 'yy-mm-dd',
+                timeFormat: 'HH:mm:ss',
+                changeYear: true,
+                changeMonth: true,
+                showOtherMonths: true,
+                selectOtherMonths: false,
+                yearRange: '1900:c',
+                showButtonPanel: true,
+                showSecond: true,
+                showMillisec: false,
+                showMicrosec: false,
+                showTimezone: false,
+                showTime: true,
+                controlType: 'slider'
+            });
+        }else if(type === 'select') {
+            t.type('select');
+        }
+        return t;
     };
     p.datepicker = function () {
         var t = this;
@@ -687,6 +743,7 @@ define([
                     t.d.items[value] = text;
                 }
                 //t.d.$widgetInput.val(values);
+                t.d.itemsArray = arr;
             }
         }
         if (t.d.multiselect) {
