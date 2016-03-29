@@ -916,6 +916,7 @@ var $A = {};
             $cell: $('<td class="automizy-dialog-cell"></td>'),
             $box: $('<div class="automizy-dialog-box"></div>'),
             $head: $('<div class="automizy-dialog-head"></div>'),
+            $close: $('<div class="automizy-dialog-close">&#10006;</div>'),
             $buttons: $('<div class="automizy-dialog-buttons"></div>'),
             $content: $('<div class="automizy-dialog-content"></div>'),
             buttons: [],
@@ -930,14 +931,15 @@ var $A = {};
             isClose: true,
             hasObject: false,
             hash: false,
-            openable:true,
             closable:true,
             buttonsBox:true,
             id: 'automizy-dialog-' + $A.getUniqueString(),
+            openFunctions: [],
+            beforeOpenFunctions: [],
+            closeFunctions: [],
             create: function () {
             }
         };
-        t.f = {};
         t.init();
 
         var $tr = $('<tr></tr>');
@@ -952,6 +954,10 @@ var $A = {};
             else
                 t.d.isClose = true;
         });
+        t.d.$close.click(function(){
+            t.close();
+        });
+        t.d.$close.appendTo(t.d.$box);
         t.d.$head.appendTo(t.d.$box);
         t.d.$content.appendTo(t.d.$box);
         t.d.$buttons.appendTo(t.d.$box);
@@ -1164,6 +1170,74 @@ var $A = {};
         }
         return t.d.zIndex;
     };
+    p.show = function (func) {
+        var t = this;
+        $A.setWindowScroll(false, this.d.id);
+        if (!t.d.hasObject) {
+            t.draw();
+        }
+        this.d.$widget.ashow();        
+        t.setMaxHeight();
+        return this;
+    };
+    p.open = function (func) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.d.openFunctions.push(func);
+        } else {
+            t.beforeOpen();
+            if($A.runFunctions($A.events.dialog.functions.beforeOpen, this, [this, this.d.$widget]) === false){
+                return false;
+            }
+            if($A.runFunctions(t.d.openFunctions, this, [this, this.d.$widget]) !== false){
+                if (t.hash() !== false)
+                    $A.hashChange(t.hash());
+                t.show();
+            }
+            $A.runFunctions($A.events.dialog.functions.open, this, [this, this.d.$widget]);
+        }
+        t.setMaxHeight();
+        return t;
+    };
+    p.beforeOpen = function (func) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.d.beforeOpenFunctions.push(func);
+        } else {
+            $A.runFunctions(t.d.beforeOpenFunctions, this, [this, this.d.$widget]);
+        }
+        return t;
+    };
+    p.closable = function (closable) {
+        var t = this;
+        if (typeof closable !== 'undefined') {
+            t.d.closable = closable;
+            if(closable){
+                t.d.$close.show();
+            }
+            else{
+                t.d.$close.hide();
+            }
+        } else {
+            return t.d.closable;
+        }
+        return t;
+    };
+    p.close = function (func) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.d.closeFunctions.push(func);
+        } else {
+            if(t.d.closable){
+                if($A.runFunctions(t.d.closeFunctions, this, [this, this.d.$widget]) !== false){
+                    t.hide();
+                }
+                $A.runFunctions($A.events.dialog.functions.close, this, [this, this.d.$widget]);
+            }
+        }
+        return t;
+    };
+        
     p.setMaxHeight = function(){
         var t = this;
         var buttonBoxHeight = 0;
@@ -1179,85 +1253,11 @@ var $A = {};
         });
         return maxHeight;
     };
-    p.show = function (func) {
-        var t = this;
-        $A.setWindowScroll(false, this.d.id);
-        if (!t.d.hasObject) {
-            t.draw();
-        }
-        this.d.$widget.ashow();        
-        t.setMaxHeight();
-        return this;
-    };
 
-    p.openable = function (value) {
-        var t = this;
-        if (typeof value !== 'undefined') {
-            t.d.openable = $A.parseBoolean(value);
-        } else {
-            return t.d.openable;
-        }
-        return t;
-    };
-    p.open = function (func, name, life) {
-        var t = this;
-        if (typeof func === 'function') {
-            t.addFunction.apply(t, ['open', func, name, life]);
-        } else {
-            if(t.beforeOpen().returnValue() !== false) {
-                if(t.hash() !== false){
-                    $A.hashChange(t.hash());
-                }
-                t.show();
-                t.runFunctions('open');
-            }
-        }
-        t.setMaxHeight();
-        return t;
-    };
-    p.beforeOpen = function (func, name, life) {
-        var t = this;
-        if (typeof func === 'function') {
-            t.addFunction('beforeOpen', func, name, life);
-        } else {
-            var a = t.runFunctions('beforeOpen');
-            t.returnValue(!(t.openable() === false || a[0] === false || a[1] === false));
-        }
-        return t;
-    };
-    p.closable = function (value) {
-        var t = this;
-        if (typeof value !== 'undefined') {
-            t.d.closable = $A.parseBoolean(value);
-        } else {
-            return t.d.closable;
-        }
-        return t;
-    };
-    p.close = function (func, name, life) {
-        var t = this;
-        if (typeof func === 'function') {
-            t.addFunction('close', func, name, life);
-        } else {
-            if(t.beforeClose().returnValue() !== false) {
-                t.hide();
-                t.runFunctions('close');
-            }
-        }
-        return t;
-    };
-    p.beforeClose = function (func, name, life) {
-        var t = this;
-        if (typeof func === 'function') {
-            t.addFunction('beforeClose', func, name, life);
-        } else {
-            var a = t.runFunctions('beforeClose');
-            t.returnValue(!(t.closable() === false || a[0] === false || a[1] === false));
-        }
-        return t;
-    };
+    $A.events.dialog = {};
+    $A.registerLocalEvents($A.events.dialog, ['open', 'close', 'beforeOpen']);
 
-    $A.initBasicFunctions(Dialog, "Dialog", ['open', 'close', 'beforeOpen', 'beforeClose']);
+    $A.initBasicFunctions(Dialog, "Dialog");
 
 })();
 
@@ -2154,9 +2154,10 @@ var $A = {};
                 }
                 var a = t.runFunctions('click');
                 t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
-                t.d.$widgetInput.trigger('click');
+                //t.d.$widgetInput.trigger('click');
             }
         }
+        console.log('click')
         return t;
     };
 

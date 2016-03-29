@@ -339,9 +339,10 @@ define([
                 }
                 var a = t.runFunctions('click');
                 t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
-                t.d.$widgetInput.trigger('click');
+                //t.d.$widgetInput.trigger('click');
             }
         }
+        console.log('click')
         return t;
     };
 
