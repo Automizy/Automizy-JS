@@ -2227,6 +2227,7 @@ var $A = {};
             var a = t.runFunctions('click');
             t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
         }
+        console.log('click')
         return t;
     };
 
