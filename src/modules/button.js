@@ -31,15 +31,8 @@ define([
         t.d.$widgetButton.text(t.d.text);
         t.d.$widget.addClass('automizy-skin-' + t.d.skin).attr('id', t.id());
         t.d.$widgetButton.click(function () {
-            if(t.d.triggers.click === 'jQuery'){
-                t.d.triggers.click = 0;
-            }else{
-                if(t.d.triggers.click === 0){
-                    t.d.triggers.click = 'jQuery';
-                }
-                if (t.click().returnValue() === false) {
-                    return false;
-                }
+            if (t.click().returnValue() === false) {
+                return false;
             }
         });
         if (typeof obj !== 'undefined') {
@@ -63,6 +56,9 @@ define([
             }
             if (typeof obj.newRow !== 'undefined') {
                 t.newRow(obj.newRow);
+            }
+            if (typeof obj.thin !== 'undefined') {
+                t.thin(obj.thin);
             }
             t.initParameter(obj);
         }
@@ -147,19 +143,28 @@ define([
         if (typeof func === 'function') {
             t.addFunction('click', func, name, life);
         } else {
-            if(t.d.triggers.click === 'AutomizyJs'){
-                t.d.triggers.click = 0;
-            }else{
-                if(t.d.triggers.click === 0){
-                    t.d.triggers.click = 'AutomizyJs';
-                }
-                var a = t.runFunctions('click');
-                t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
-                t.d.$widgetButton.trigger('click');
+            if(t.disabled()){
+                return t;
             }
+            var a = t.runFunctions('click');
+            t.returnValue(!(a[0] === false || a[1] === false));
         }
         return t;
     };
+    p.thin = function(value){
+        var t = this;
+        if (typeof value !== 'undefined') {
+            value = $A.parseBoolean(value);
+            if(!value){
+                t.widget().removeClass('automizy-button-thin');
+                return t;
+            }
+        }
+        t.widget().addClass('automizy-button-thin');
+        return t;
+    };
+
+
     $A.initBasicFunctions(Button, "Button", ['click']);
 
 

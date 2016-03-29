@@ -70,13 +70,16 @@
     text-align: right;
     font-size:15px;
     padding:1px 5px 1px 5px;
-    width:25px;
+    width:28px;
     margin: 0 7px 0 0;
 }
 .automizy-table-pagenumber::-webkit-outer-spin-button,
 .automizy-table-pagenumber::-webkit-inner-spin-button{
     -webkit-appearance: none;
     margin: 0;
+}
+.automizy-table-container-box{
+    width:100%;
 }
 .automizy-table-container{
     width: calc(100% - 34px);

@@ -59,18 +59,13 @@ module.exports = function (grunt) {
 				}
 			}
 		},
-		compress: {
-			main: {
-				options: {
-					archive: 'dist/automizyjs.zip'
-				},
-				files: [
-					{expand: true, src: ['**/*.js', '**/*.map', '**/*.css'], cwd : "dist/"}
-				]
-			}
-		},
 		copy: {
 			main: {
+				files: [
+					{expand: true, cwd: 'src/images/', src: '**/*', dest: 'dist/images/'}
+				]
+			},
+			copytodist: {
 				files: [
 					{expand: true, cwd: 'dist/', src: '**/automizy.min.js', dest: 'doc/js/'},
 					{expand: true, cwd: 'dist/', src: '**/automizy.min.map', dest: 'doc/js/'},
@@ -78,7 +73,18 @@ module.exports = function (grunt) {
 					{expand: true, cwd: 'dist/', src: '**/automizy.min.js', dest: 'doc/example/js/'},
 					{expand: true, cwd: 'dist/', src: '**/automizy.min.map', dest: 'doc/example/js/'},
 					{expand: true, cwd: 'dist/', src: '**/automizy.min.css', dest: 'doc/example/css/'},
+					{expand: true, cwd: 'dist/', src: 'images/*', dest: 'doc/example/'},
 					{expand: true, cwd: 'dist/', src: '**/*', dest: 'doc/downloads/'}
+				]
+			}
+		},
+		compress: {
+			main: {
+				options: {
+					archive: 'dist/automizyjs.zip'
+				},
+				files: [
+					{expand: true, src: ['**/*.js', '**/*.map', '**/*.css', 'images/*'], cwd : "dist/"}
 				]
 			}
 		}
@@ -89,6 +95,6 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-compress');
     grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadTasks('build/tasks');
-    grunt.registerTask("default", ["requirejs", "require_clear", "uglify", "compress", "copy"]);
+    grunt.registerTask("default", ["requirejs", "require_clear", "uglify", "copy:main", "copy:copytodist", "compress"]);
 };
 

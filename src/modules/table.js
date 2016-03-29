@@ -19,6 +19,7 @@ define([
             $tableContainerBox:$('<div class="automizy-table-container-box"></div>'),
             $tableContainer:$('<div class="automizy-table-container"></div>'),
             $table:  $('<table cellpadding="0" cellspacing="0" border="0" class="automizy-table collapsed"></table>'),
+            $tbody:  $('<tbody></tbody>'),
             $header:  $('<tr class="automizy-table-header"></tr>'),
             $title: $('<div class="automizy-table-title"></div>'),
             $actions: $('<div class="automizy-table-actions"></div>'),
@@ -217,7 +218,7 @@ define([
         t.d.$stepPageBox.appendTo(t.d.$actions);
 
         t.d.$perPageBox.appendTo(t.d.$actions);
-        t.d.perPageSelect.type('select').multiple(false).multiselect(true).options(t.d.perPageList).val(t.d.perPage).label(t.d.perPageLabel).width('83px').change(function(){
+        t.d.perPageSelect.type('select').options(t.d.perPageList).val(t.d.perPage).label(t.d.perPageLabel).width('83px').change(function(){
             t.d.perPage = this.val();
             if(t.d.storeData){
                 $A.store.set(t.id()+'PerPage', t.d.perPage);
@@ -225,7 +226,8 @@ define([
             t.d.onPerPage.apply(this, [t, t.d.$widget]);
         }).drawTo(t.d.$perPageBox);
         t.d.$widget.attr('id', t.id());
-        t.d.$header.appendTo(t.d.$table);
+        t.d.$tbody.appendTo(t.d.$table);
+        t.d.$header.appendTo(t.d.$tbody);
         t.d.$title.html(t.d.title).appendTo(t.d.$widget);
         t.d.$actions.appendTo(t.d.$widget);
         t.d.$buttons.appendTo(t.d.$actions);
@@ -261,7 +263,7 @@ define([
             t.d.$searchIcon.append('<img src="' + $A.images.searchIcon + '" />').insertAfter(t.d.$searchBox).click(function () {
                 t.d.$searchBoxContent.stop().slideToggle();
                 t.d.searchBoxCanClose = false;
-                t.d.$searchInput.focus();
+                t.d.$searchInput.input().focus().select();
             });
             t.d.$exportIcon.append('<img src="' + $A.images.exportIcon + '" />').appendTo(t.d.$panel).click(function () {
                 t.d.onExport.apply(t, [t, t.d.$widget]);
@@ -287,7 +289,10 @@ define([
         t.d.$checkboxCheckAll.change(function(){
             $A.d.tableRowCheckBoxClick = true;
             var checked = this.checked;
-            var cells = t.getColByIndex(0).$cells().find('input:enabled').prop('checked', checked);
+            var col = t.getColByIndex(0);
+            if(typeof col.$cells === 'function'){
+                col.$cells().find('input:enabled').prop('checked', checked);
+            }
         });
         t.border(t.d.border);
         t.borderCollapse(t.d.borderCollapse);
@@ -354,6 +359,8 @@ define([
                     t.onPerPage(obj.onPerPage);
                 if (typeof obj.onShowCol === 'function')
                     t.onShowCol(obj.onShowCol);
+                if (typeof obj.onSearch === 'function')
+                    t.onSearch(obj.onSearch);
                 if (typeof obj.onExport === 'function')
                     t.onExport(obj.onExport);
                 if (typeof obj.buttons !== 'undefined')
@@ -381,6 +388,9 @@ define([
 
     p.table = function () {
         return this.d.$table;
+    };
+    p.tbody = function () {
+        return this.d.$tbody;
     };
 
     p.storeData = function(storeData){
@@ -448,6 +458,15 @@ define([
             t.d.onPerPage = func;
         } else {
             return t.d.onPerPage.apply(t, [t, t.d.$widget]);
+        }
+        return this;
+    };
+    p.onSearch = function (func) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.d.onSearch = func;
+        } else {
+            return t.d.onSearch.apply(t, [t, t.d.$widget]);
         }
         return this;
     };
@@ -660,11 +679,20 @@ define([
     };
     p.selectedIds = function(){
         var t = this;
-        return t.getColByIndex(0).$cells().find('input[type="checkbox"][value]:checked').map(function(){return this.value}).get()
+        var col = t.getColByIndex(0);
+        if(typeof col.$cells === 'function'){
+            return col.$cells().find('input[type="checkbox"][value]:checked').map(function(){return this.value}).get();
+        }
+        return [];
     };
     p.selectedId = function(){
         var t = this;
-        return t.getColByIndex(0).$cells().find('input[type="checkbox"][value]:checked:first').val();
+
+        var col = t.getColByIndex(0);
+        if(typeof col.$cells === 'function'){
+            return col.$cells().find('input[type="checkbox"][value]:checked:first').val();
+        }
+        return [];
     };
     p.openedRow = function(openedRow){
         var t = this;
@@ -684,7 +712,7 @@ define([
 
     p.getCell = function (colIndex, rowIndex) {
         var t = this;
-        var $cell = t.table().find('tr:first').siblings().andSelf().eq(rowIndex).find('td, th').eq(colIndex);
+        var $cell = t.table().find('tr:first').siblings().addBack().eq(rowIndex).find('td, th').eq(colIndex);
         return $A.tableCell($cell);
     };
     
@@ -723,7 +751,7 @@ define([
     
     
     p.getRowByIndex = function (index) {
-        var $row = this.table().find('tr:first').siblings().andSelf().eq(index);
+        var $row = this.table().find('tr:first').siblings().addBack().eq(index);
         if($row.length === 0){
             return false;
         }
@@ -731,7 +759,7 @@ define([
     };
     p.getRowByRecordId = function (recordId) {
         var t = this;
-        var $row = t.table().find('tr:first').siblings().andSelf().filter(function(){
+        var $row = t.table().find('tr:first').siblings().addBack().filter(function(){
             return $(this).data('recordId') == recordId;
         });
         if($row.length === 0){
@@ -740,7 +768,7 @@ define([
         return $A.tableRow($row);
     };
     p.getColByIndex = function (index) {
-        var $col = this.table().find('th:first').siblings().andSelf().eq(index);
+        var $col = this.table().find('th:first').siblings().addBack().eq(index);
         if($col.length === 0){
             return false;
         }
@@ -748,7 +776,7 @@ define([
     };
     p.getColByName = function (name) {
         var t = this;
-        var $col = t.table().find('th:first').siblings().andSelf().filter(function(){
+        var $col = t.table().find('th:first').siblings().addBack().filter(function(){
             return $(this).data('name') == name;
         });
         if($col.length === 0){
@@ -919,7 +947,7 @@ define([
         var t = this;
         if (typeof arr === 'undefined') {
             var cols = [];
-            this.table().find('th:first').siblings().andSelf().each(function(){
+            this.table().find('th:first').siblings().addBack().each(function(){
                 cols.push($A.tableCol($(this)));
             });
             return cols;
@@ -1093,7 +1121,7 @@ define([
         var t = this;
         if (typeof arr === 'undefined') {
             var rows = [];
-            this.table().find('tr:first').siblings().andSelf().each(function(){
+            this.table().find('tr:first').siblings().addBack().each(function(){
                 rows.push($A.tableRow($(this)));
             });
             return rows;
@@ -1109,7 +1137,7 @@ define([
         var table = t.table()[0];
         if (typeof arr !== 'undefined'){
             var sortArr = arr.sort();
-            for (var i = sortArr.length - 1; i >= 0; i--) {
+            for (var i = (sortArr.length - 1); i >= 0; i--) {
                 table.deleteRow(sortArr[i]);
             }
             return t;
@@ -1203,6 +1231,7 @@ define([
             var $td = $('<td colspan="'+t.getRowByIndex(0).$cells().length+'"></td>').appendTo($tr);
             t.d.$loadingCellContent.appendTo($td);
             $tr.appendTo(t.table());
+            $A.runFunctions($A.events.table.functions.loading, t, [t]);
         //}, 10);
         return t;
     };
@@ -1210,7 +1239,7 @@ define([
         var t = this;
         if (typeof loadingCellContent !== 'undefined') {
             if (loadingCellContent instanceof jQuery) {
-                var loadingCellContent = loadingCellContent.clone();
+                loadingCellContent = loadingCellContent.clone();
             }
             t.d.loadingCellContent = loadingCellContent;
             t.d.$loadingCellContent.html(loadingCellContent);
@@ -1218,11 +1247,30 @@ define([
         }
         return t.d.loadingCellContent;
     };
+    p.addButton = p.addButton || function (obj) {
+            var t = this;
+            if (typeof t.d.buttons === 'undefined') {
+                return t;
+            }
+            if (typeof obj !== 'undefined') {
+                if (obj instanceof $A.m.Button || obj instanceof $A.m.Input) {
+                    obj.drawTo(t.d.$buttons || t.d.$widget);
+                    obj.thin(true);
+                } else {
+                    obj.thin = true;
+                    obj.target = obj.target || t.d.$buttons || t.d.$widget;
+                    var button = $A.newButton(obj);
+                    t.d.buttons.push(button);
+                }
+                t.d.$widget.addClass('has-button');
+                return t;
+            }
+            var button = $A.newButton();
+            t.d.buttons.push(button);
+            button.drawTo(t.d.$buttons || t.d.$widget);
+            return button;
+        };
 
-
-    $A.events.table = {};
-    $A.registerLocalEvents($A.events.table, ['addRows', 'beforeAddRows', 'beforeOpenInlineBox']);
-
-    $A.initBasicFunctions(Table, "Table");
+    $A.initBasicFunctions(Table, "Table", ['addRows', 'beforeAddRows', 'beforeOpenInlineBox', 'loading']);
 
 });

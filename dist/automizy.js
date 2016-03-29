@@ -17,7 +17,11 @@ var $A = {};
             forms:{},
             validators:{},
             feedbacks: {},
-            hashes:[]
+            hashes:[],
+            elements:{
+                $tmp:$('<div></div>'),
+                $loading:$('<div class="automizy-loading" style="margin-top: 8px;"><div class="automizy-loading-in automizy-loading-in-1"></div><div class="automizy-loading-in automizy-loading-in-2"></div><div class="automizy-loading-in automizy-loading-in-3"></div></div>')
+            }
         };
         t.m = {};
         t.mt = {};
@@ -62,7 +66,7 @@ var $A = {};
                 img.removeAttr(item);
             });
         });
-    }
+    };
     $.fn.getAttributes = function () {
         var obj = {};
         $.each(this[0].attributes, function () {
@@ -71,7 +75,7 @@ var $A = {};
             }
         });
         return obj;
-    }
+    };
     $.fn.removeClassPrefix = function (prefix) {
         this.each(function (i, el) {
             var classes = el.className.split(" ").filter(function (c) {
@@ -117,7 +121,57 @@ var $A = {};
 
         $.each(values, extend);
         return result;
-    }
+    };
+    var restrict = function(t){
+        var v = false;
+        var min = Number.NEGATIVE_INFINITY;
+        var max = Number.POSITIVE_INFINITY;
+        if(typeof t.value !== 'undefined'){
+            v = parseFloat(t.value);
+        }else{
+            return false;
+        }
+        if(typeof t.min !== 'undefined' && t.min.toString().length > 0){
+            min = parseFloat(t.min);
+        }
+        if(typeof t.max !== 'undefined' && t.max.toString().length > 0){
+            max = parseFloat(t.max);
+        }
+        if (v >= min && v <= max){
+            t.value = v;
+        }else{
+            t.value = v < min ? min : max;
+        }
+    };
+    var restricted = false;
+    $.fn.pbmInput = function () {
+        return this.each(function(){
+            if (this.type && 'number' === this.type.toLowerCase()) {
+                $(this).on('change', function(){
+                    if(!restricted){
+                        restricted = true;
+                        restrict(this);
+                        $(this).trigger('change');
+                        return false;
+                    }else{
+                        setTimeout(function(){restricted = false}, 10);
+                    }
+                }).bind('mousewheel DOMMouseScroll', function(event){
+                    event.preventDefault();
+                    event.stopPropagation();
+                    var t = this,
+                        v = parseFloat(t.value);
+                    if (event.originalEvent.wheelDelta > 0 || event.originalEvent.detail < 0) {
+                        t.value = v + 1;
+                    }else{
+                        t.value = v - 1;
+                    }
+                    $(this).trigger('change');
+                    return false;
+                });
+            }
+        });
+    };
 })();
 
 (function(){
@@ -252,10 +306,31 @@ var $A = {};
                 }
                 return this.d.skin;
             };
-        p.draw = p.drawTo = p.draw || function ($target) {
+
+
+        p.drawAfter = p.insertAfter = p.drawAfter || function($target){
                 var t = this;
                 var $target = $target || $('body');
-                t.d.$widget.appendTo($target);
+                return p.drawTo($target, 'after');
+            };
+
+        p.drawBefore = p.insertBefore = p.drawBefore || function($target){
+                var t = this;
+                var $target = $target || $('body');
+                return p.drawTo($target, 'before');
+            };
+
+        p.drawTo = p.appendTo = p.drawTo || function ($target, where) {
+                var t = this;
+                var $target = $target || $('body');
+                var where = where || 'in';
+                if(where === 'after'){
+                    t.d.$widget.insertAfter($target);
+                }else if(where === 'before'){
+                    t.d.$widget.insertBefore($target);
+                }else{
+                    t.d.$widget.appendTo($target);
+                }
                 t.d.hasObject = true;
                 setTimeout(function () {
                     for (var i = 0; i < t.d.createFunctions.length; i++) {
@@ -264,15 +339,17 @@ var $A = {};
                     t.create();
                     $A.runFunctions($A.events[moduleNameLower].functions.complete, t, [t]);
                 }, 50);
-                return this;
+                return t;
             };
+        p.draw = p.drawTo || p.appendTo;
+
         p.show = p.show || function () {
                 var t = this;
                 if (!t.d.hasObject) {
                     t.draw();
                 }
                 this.d.$widget.ashow();
-                return this;
+                return t;
             };
         p.hide = p.hide || function () {
                 var t = this;
@@ -284,7 +361,7 @@ var $A = {};
                     $A.hashChange(this.hash(), false);
                 }
                 this.d.$widget.ahide();
-                return this;
+                return t;
             };
         p.remove = p.remove || function (func) {
                 if (typeof func === 'function') {
@@ -436,6 +513,7 @@ var $A = {};
             for (var i = 0; i < events.length; i++) {
                 t[events[i]].apply(t, [func, name || $A.getUniqueString(), -1]);
             }
+            return t;
         };
         p.one = function (events, func) {
             var t = this;
@@ -446,6 +524,7 @@ var $A = {};
             for (var i = 0; i < events.length; i++) {
                 t[events[i]].apply(t, [func, $A.getUniqueString(), 1]);
             }
+            return t;
         };
         p.off = function (events, name) {
             var t = this;
@@ -461,9 +540,13 @@ var $A = {};
                 }
             } else {
                 for (var i = 0; i < events.length; i++) {
-                    delete t.f[events[i]][name];
+                    console.log(t.f);
+                    if(typeof t.f !== 'undefined' && typeof t.f[events[i]] !== 'undefined' && typeof t.f[events[i]][name] !== 'undefined') {
+                        delete t.f[events[i]][name];
+                    }
                 }
             }
+            return t;
         };
 
 
@@ -555,15 +638,8 @@ var $A = {};
         t.d.$widgetButton.text(t.d.text);
         t.d.$widget.addClass('automizy-skin-' + t.d.skin).attr('id', t.id());
         t.d.$widgetButton.click(function () {
-            if(t.d.triggers.click === 'jQuery'){
-                t.d.triggers.click = 0;
-            }else{
-                if(t.d.triggers.click === 0){
-                    t.d.triggers.click = 'jQuery';
-                }
-                if (t.click().returnValue() === false) {
-                    return false;
-                }
+            if (t.click().returnValue() === false) {
+                return false;
             }
         });
         if (typeof obj !== 'undefined') {
@@ -587,6 +663,9 @@ var $A = {};
             }
             if (typeof obj.newRow !== 'undefined') {
                 t.newRow(obj.newRow);
+            }
+            if (typeof obj.thin !== 'undefined') {
+                t.thin(obj.thin);
             }
             t.initParameter(obj);
         }
@@ -671,19 +750,28 @@ var $A = {};
         if (typeof func === 'function') {
             t.addFunction('click', func, name, life);
         } else {
-            if(t.d.triggers.click === 'AutomizyJs'){
-                t.d.triggers.click = 0;
-            }else{
-                if(t.d.triggers.click === 0){
-                    t.d.triggers.click = 'AutomizyJs';
-                }
-                var a = t.runFunctions('click');
-                t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
-                t.d.$widgetButton.trigger('click');
+            if(t.disabled()){
+                return t;
             }
+            var a = t.runFunctions('click');
+            t.returnValue(!(a[0] === false || a[1] === false));
         }
         return t;
     };
+    p.thin = function(value){
+        var t = this;
+        if (typeof value !== 'undefined') {
+            value = $A.parseBoolean(value);
+            if(!value){
+                t.widget().removeClass('automizy-button-thin');
+                return t;
+            }
+        }
+        t.widget().addClass('automizy-button-thin');
+        return t;
+    };
+
+
     $A.initBasicFunctions(Button, "Button", ['click']);
 
 
@@ -747,7 +835,7 @@ var $A = {};
     p.translate = function (text) {
         var t = this;
         if (typeof t.d.translate[text] === 'undefined') {
-            if ($A.d.settings.logTranslateMissings === true) {
+            if (1 === 2 && $A.d.settings.logTranslateMissings === true) {
                 if($.inArray(text, t.d.missingTranslates) <= -1){
                     t.d.missingTranslates.push(text);
                     
@@ -795,31 +883,35 @@ var $A = {};
 })();
 
 (function(){
-    Object.defineProperty(Object.prototype, "renameProperty", {
-        value: function (oldName, newName) {
-            if (this.hasOwnProperty(oldName)) {
-                this[newName] = this[oldName];
-                delete this[oldName];
-            }
-            return this;
-        },
-        enumerable: false
-    });
-    Object.defineProperty(Array.prototype, "remove", {
-        value: function (item) {
-            var removeCounter = 0;
-
-            for (var index = 0; index < this.length; index++) {
-                if (this[index] === item) {
-                    this.splice(index, 1);
-                    removeCounter++;
-                    index--;
+    if(typeof Object.prototype.renameProperty === 'undefined') {
+        Object.defineProperty(Object.prototype, "renameProperty", {
+            value: function (oldName, newName) {
+                if (this.hasOwnProperty(oldName)) {
+                    this[newName] = this[oldName];
+                    delete this[oldName];
                 }
-            }
-            return removeCounter;
-        },
-        enumerable: false
-    });
+                return this;
+            },
+            enumerable: false
+        });
+    }
+    if(typeof Array.prototype.remove === 'undefined') {
+        Object.defineProperty(Array.prototype, "remove", {
+            value: function (item) {
+                var removeCounter = 0;
+
+                for (var index = 0; index < this.length; index++) {
+                    if (this[index] === item) {
+                        this.splice(index, 1);
+                        removeCounter++;
+                        index--;
+                    }
+                }
+                return removeCounter;
+            },
+            enumerable: false
+        });
+    }
 })();
 
 (function(){
@@ -931,6 +1023,7 @@ var $A = {};
             isClose: true,
             hasObject: false,
             hash: false,
+            openable:true,
             closable:true,
             buttonsBox:true,
             id: 'automizy-dialog-' + $A.getUniqueString(),
@@ -940,6 +1033,7 @@ var $A = {};
             create: function () {
             }
         };
+        t.f = {};
         t.init();
 
         var $tr = $('<tr></tr>');
@@ -1170,74 +1264,6 @@ var $A = {};
         }
         return t.d.zIndex;
     };
-    p.show = function (func) {
-        var t = this;
-        $A.setWindowScroll(false, this.d.id);
-        if (!t.d.hasObject) {
-            t.draw();
-        }
-        this.d.$widget.ashow();        
-        t.setMaxHeight();
-        return this;
-    };
-    p.open = function (func) {
-        var t = this;
-        if (typeof func === 'function') {
-            t.d.openFunctions.push(func);
-        } else {
-            t.beforeOpen();
-            if($A.runFunctions($A.events.dialog.functions.beforeOpen, this, [this, this.d.$widget]) === false){
-                return false;
-            }
-            if($A.runFunctions(t.d.openFunctions, this, [this, this.d.$widget]) !== false){
-                if (t.hash() !== false)
-                    $A.hashChange(t.hash());
-                t.show();
-            }
-            $A.runFunctions($A.events.dialog.functions.open, this, [this, this.d.$widget]);
-        }
-        t.setMaxHeight();
-        return t;
-    };
-    p.beforeOpen = function (func) {
-        var t = this;
-        if (typeof func === 'function') {
-            t.d.beforeOpenFunctions.push(func);
-        } else {
-            $A.runFunctions(t.d.beforeOpenFunctions, this, [this, this.d.$widget]);
-        }
-        return t;
-    };
-    p.closable = function (closable) {
-        var t = this;
-        if (typeof closable !== 'undefined') {
-            t.d.closable = closable;
-            if(closable){
-                t.d.$close.show();
-            }
-            else{
-                t.d.$close.hide();
-            }
-        } else {
-            return t.d.closable;
-        }
-        return t;
-    };
-    p.close = function (func) {
-        var t = this;
-        if (typeof func === 'function') {
-            t.d.closeFunctions.push(func);
-        } else {
-            if(t.d.closable){
-                if($A.runFunctions(t.d.closeFunctions, this, [this, this.d.$widget]) !== false){
-                    t.hide();
-                }
-                $A.runFunctions($A.events.dialog.functions.close, this, [this, this.d.$widget]);
-            }
-        }
-        return t;
-    };
-        
     p.setMaxHeight = function(){
         var t = this;
         var buttonBoxHeight = 0;
@@ -1253,11 +1279,95 @@ var $A = {};
         });
         return maxHeight;
     };
+    p.show = function (func) {
+        var t = this;
+        $A.setWindowScroll(false, this.d.id);
+        if (!t.d.hasObject) {
+            t.draw();
+        }
+        this.d.$widget.ashow();        
+        t.setMaxHeight();
+        return this;
+    };
 
-    $A.events.dialog = {};
-    $A.registerLocalEvents($A.events.dialog, ['open', 'close', 'beforeOpen']);
+    p.openable = function (value) {
+        var t = this;
+        if (typeof value !== 'undefined') {
+            t.d.openable = $A.parseBoolean(value);
+        } else {
+            return t.d.openable;
+        }
+        return t;
+    };
+    p.open = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction.apply(t, ['open', func, name, life]);
+        } else {
+            if(t.beforeOpen().returnValue() !== false) {
+                if(t.hash() !== false){
+                    $A.hashChange(t.hash());
+                }
+                //t.widget().insertAfter($('.automizy-dialog').last());
+                var zIndex = parseInt($('.automizy-dialog').last().css('z-index')) + 1;
+                t.widget().css('z-index', zIndex);
+                t.show();
+                t.runFunctions('open');
+            }
+            $A.runFunctions($A.events.dialog.functions.open, this, [this, this.d.$widget]);
+        }
+        t.setMaxHeight();
+        return t;
+    };
+    p.beforeOpen = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('beforeOpen', func, name, life);
+        } else {
+            var a = t.runFunctions('beforeOpen');
+            t.returnValue(!(t.openable() === false || a[0] === false || a[1] === false));
+        }
+        return t;
+    };
+    p.closable = function (value) {
+        var t = this;
+        if (typeof value !== 'undefined') {
+            t.d.closable = $A.parseBoolean(value);
+            if(value){
+                t.d.$close.show();
+            }
+            else{
+                t.d.$close.hide();
+            }
+        } else {
+            return t.d.closable;
+        }
+        return t;
+    };
+    p.close = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('close', func, name, life);
+        } else {
+            if(t.beforeClose().returnValue() !== false) {
+                t.hide();
+                t.runFunctions('close');
+            }
+        }
+        return t;
+    };
+    p.beforeClose = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('beforeClose', func, name, life);
+        } else {
+            var a = t.runFunctions('beforeClose');
+            t.returnValue(!(t.closable() === false || a[0] === false || a[1] === false));
+        }
+        return t;
+    };
 
-    $A.initBasicFunctions(Dialog, "Dialog");
+    $A.initBasicFunctions(Dialog, "Dialog", ['open', 'close', 'beforeOpen', 'beforeClose']);
 
 })();
 
@@ -1839,6 +1949,7 @@ var $A = {};
             $input: $('<input />'),
             $textarea: $('<textarea></textarea>'),
             $select: $('<select></select>'),
+            $loadingBox:$('<div class="automizy-input-loading-box"></div>'),
             specialElements: [],
             type: 'text',
             skin: 'simple-automizy',
@@ -1869,6 +1980,7 @@ var $A = {};
             labelAfter: '',
             accept: [],
             items: {},
+            itemsArray: [],
             validator: $A.newValidator(),
             validate: function () {},
             createFunctions: [],
@@ -1882,6 +1994,7 @@ var $A = {};
         t.d.$select.addClass('automizy-input');
         t.d.$widgetLabel.appendTo(t.d.$widget).attr('for', t.d.id + '-input').ahide();
         t.d.$widgetInput.appendTo(t.d.$widgetInputBox).attr('id', t.d.id + '-input');
+        t.d.$loadingBox.appendTo(t.d.$widgetInputBox).html($A.d.elements.$loading.clone());
         t.d.$widgetInputBox.appendTo(t.d.$widget);
         t.d.$widgetLabelAfter.appendTo(t.d.$widget).ahide();
         t.d.$widgetInputBoxError.appendTo(t.d.$widget);
@@ -1980,6 +2093,9 @@ var $A = {};
             if (typeof obj.change === 'function') {
                 t.change(obj.change);
             }
+            if (typeof obj.keyup === 'function') {
+                t.keyup(obj.keyup);
+            }
             if (typeof obj.enter === 'function') {
                 t.enter(obj.enter);
             }
@@ -2014,56 +2130,32 @@ var $A = {};
     var p = Input.prototype;
     p.setupJQueryEvents = function(){
         var t = this;
-        t.d.$widgetInput.off().on('change', function () { //change keyup paste
-            if(t.d.triggers.change === 'jQuery'){
-                t.d.triggers.change = 0;
-            }else{
-                if(t.d.triggers.change === 0){
-                    t.d.triggers.change = 'jQuery';
-                }
-                if (t.change().returnValue() === false) {
-                    return false;
-                }
+        t.d.$widgetInput.change(function () { //change keyup paste
+            if (t.change().returnValue() === false) {
+                return false;
             }
         }).focus(function () {
-            if(t.d.triggers.focus === 'jQuery'){
-                t.d.triggers.focus = 0;
-            }else{
-                if(t.d.triggers.focus === 0){
-                    t.d.triggers.focus = 'jQuery';
-                }
-                if (t.focus().returnValue() === false) {
-                    return false;
-                }
+            if (t.focus().returnValue() === false) {
+                return false;
             }
         }).blur(function () {
-            if(t.d.triggers.blur === 'jQuery'){
-                t.d.triggers.blur = 0;
-            }else{
-                if(t.d.triggers.blur === 0){
-                    t.d.triggers.blur = 'jQuery';
-                }
-                if (t.blur().returnValue() === false) {
-                    return false;
-                }
-                t.validate();
+            if (t.blur().returnValue() === false) {
+                return false;
             }
+            t.validate();
         }).keypress(function (e) {
             if (e.which == 13) {
                 if (t.enter().returnValue() === false) {
                     return false;
                 }
             }
+        }).keyup(function (e) {
+            if (t.keyup().returnValue() === false) {
+                return false;
+            }
         }).click(function () {
-            if(t.d.triggers.click === 'jQuery'){
-                t.d.triggers.click = 0;
-            }else{
-                if(t.d.triggers.click === 0){
-                    t.d.triggers.click = 'jQuery';
-                }
-                if (t.click().returnValue() === false) {
-                    return false;
-                }
+            if (t.click().returnValue() === false) {
+                return false;
             }
         });
     };
@@ -2092,16 +2184,18 @@ var $A = {};
         if (typeof func === 'function') {
             t.addFunction('change', func, name, life);
         } else {
-            if(t.d.triggers.change === 'AutomizyJs'){
-                t.d.triggers.change = 0;
-            }else{
-                if(t.d.triggers.change === 0){
-                    t.d.triggers.change = 'AutomizyJs';
-                }
-                var a = t.runFunctions('change');
-                t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
-                t.d.$widgetInput.trigger('change');
-            }
+            var a = t.runFunctions('change');
+            t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
+        }
+        return t;
+    };
+    p.keyup = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('keyup', func, name, life);
+        } else {
+            var a = t.runFunctions('keyup');
+            t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
         }
         return t;
     };
@@ -2110,16 +2204,8 @@ var $A = {};
         if (typeof func === 'function') {
             t.addFunction('focus', func, name, life);
         } else {
-            if(t.d.triggers.focus === 'AutomizyJs'){
-                t.d.triggers.focus = 0;
-            }else{
-                if(t.d.triggers.focus === 0){
-                    t.d.triggers.focus = 'AutomizyJs';
-                }
-                var a = t.runFunctions('focus');
-                t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
-                t.d.$widgetInput.trigger('focus');
-            }
+            var a = t.runFunctions('focus');
+            t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
         }
         return t;
     };
@@ -2128,16 +2214,8 @@ var $A = {};
         if (typeof func === 'function') {
             t.addFunction('blur', func, name, life);
         } else {
-            if(t.d.triggers.blur === 'AutomizyJs'){
-                t.d.triggers.blur = 0;
-            }else{
-                if(t.d.triggers.blur === 0){
-                    t.d.triggers.blur = 'AutomizyJs';
-                }
-                var a = t.runFunctions('blur');
-                t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
-                t.d.$widgetInput.trigger('blur');
-            }
+            var a = t.runFunctions('blur');
+            t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
         }
         return t;
     };
@@ -2146,18 +2224,9 @@ var $A = {};
         if (typeof func === 'function') {
             t.addFunction('click', func, name, life);
         } else {
-            if(t.d.triggers.click === 'AutomizyJs'){
-                t.d.triggers.click = 0;
-            }else{
-                if(t.d.triggers.click === 0){
-                    t.d.triggers.click = 'AutomizyJs';
-                }
-                var a = t.runFunctions('click');
-                t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
-                //t.d.$widgetInput.trigger('click');
-            }
+            var a = t.runFunctions('click');
+            t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
         }
-        console.log('click')
         return t;
     };
 
@@ -2206,7 +2275,12 @@ var $A = {};
         var t = this;
         if (typeof label !== 'undefined') {
             t.d.label = label;
-            t.d.$widgetLabel.html(label).ashow();
+            if (label instanceof jQuery) {
+                label.appendTo(t.d.$widgetLabel.empty());
+            }else{
+                t.d.$widgetLabel.html(label);
+            }
+            t.d.$widgetLabel.ashow();
             return t;
         }
         return t.d.label;
@@ -2215,7 +2289,12 @@ var $A = {};
         var t = this;
         if (typeof labelAfter !== 'undefined') {
             t.d.labelAfter = labelAfter;
-            t.d.$widgetLabelAfter.html(labelAfter).ashow();
+            if (labelAfter instanceof jQuery) {
+                labelAfter.appendTo(t.d.$widgetLabelAfter.empty());
+            }else{
+                t.d.$widgetLabelAfter.html(labelAfter);
+            }
+            t.d.$widgetLabelAfter.ashow();
             return t;
         }
         return t.d.labelAfter;
@@ -2289,6 +2368,21 @@ var $A = {};
         }
         return t.input().val();
     };
+    p.valEq = function(value){
+        var t = this;
+        if(t.d.itemsArray.length < value){
+            return t;
+        }
+        if(typeof t.d.itemsArray[value] === 'undefined'){
+            return t;
+        }
+        var value = t.d.itemsArray[value][0];
+        t.val(value);
+        return t;
+    };
+    p.optionValue = p.optionVal = function () {
+        return this.options()[this.val()];
+    };
     p.name = function (name) {
         var t = this;
         if (typeof name !== 'undefined') {
@@ -2356,9 +2450,11 @@ var $A = {};
             } else {
                 t.d.$widgetInput = $('<input/>').attr('type', t.d.type);
             }
+            t.d.$loadingBox.appendTo($A.d.elements.$tmp);
             t.d.$widgetInputBox.ashow().empty();
             t.d.$widgetInput.attr(attributes).show();
             t.d.$widgetInput.appendTo(t.d.$widgetInputBox);
+            t.d.$loadingBox.appendTo(t.d.$widgetInputBox);
             setTimeout(function(){
                 t.setupJQueryEvents();
             }, 10);
@@ -2378,6 +2474,49 @@ var $A = {};
             return t;
         }
         return t.d.type;
+    };
+    p.displayType = function(type, settings){
+        var t = this;
+        var input = t.input();
+        var type = type || false;
+        if(!type){
+            return t;
+        }
+        var settings = settings || false;
+        if(t.type() === 'select'){
+            t.multiselect(false);
+        }
+        if (t.input().hasClass('hasDatepicker')) {
+            t.input().datepicker("destroy");
+            t.input().removeClass("hasDatepicker");
+        }
+        type = type.toLowerCase();
+        if(type === 'text' || type === 'string'){
+            t.type('text');
+        }else if(type === 'number' || type === 'integer'){
+            t.type('number');
+        }else if(type === 'datetime') {
+            t.type('text');
+            t.input().datetimepicker(settings || {
+                dateFormat: 'yy-mm-dd',
+                timeFormat: 'HH:mm:ss',
+                changeYear: true,
+                changeMonth: true,
+                showOtherMonths: true,
+                selectOtherMonths: false,
+                yearRange: '1900:c',
+                showButtonPanel: true,
+                showSecond: true,
+                showMillisec: false,
+                showMicrosec: false,
+                showTimezone: false,
+                showTime: true,
+                controlType: 'slider'
+            });
+        }else if(type === 'select') {
+            t.type('select');
+        }
+        return t;
     };
     p.datepicker = function () {
         var t = this;
@@ -2529,6 +2668,7 @@ var $A = {};
                     t.d.items[value] = text;
                 }
                 //t.d.$widgetInput.val(values);
+                t.d.itemsArray = arr;
             }
         }
         if (t.d.multiselect) {
@@ -2635,11 +2775,26 @@ var $A = {};
         var t = this;
         return t.d.$widgetInputBoxError;
     };
+    p.rowSpacing = function(value){
+        var t = this;
+        if (typeof value !== 'undefined') {
+            t.widget().css('padding-bottom', value);
+            return t;
+        }
+        return t.widget().css('padding-bottom');
+    };
+    p.loadingOn = function(){
+        var t = this;
+        t.d.$loadingBox.show();
+        return t;
+    };
+    p.loadingOff = function(){
+        var t = this;
+        t.d.$loadingBox.hide();
+        return t;
+    };
 
-    $A.events.input = {};
-    $A.registerLocalEvents($A.events.input, ['change']);
-
-    $A.initBasicFunctions(Input, "Input", ["change", "enter", "focus", "blur", "click"]);
+    $A.initBasicFunctions(Input, "Input", ["change", "keyup", "enter", "focus", "blur", "click"]);
 })();
 
 (function(){
@@ -3573,6 +3728,7 @@ var $A = {};
             $tableContainerBox:$('<div class="automizy-table-container-box"></div>'),
             $tableContainer:$('<div class="automizy-table-container"></div>'),
             $table:  $('<table cellpadding="0" cellspacing="0" border="0" class="automizy-table collapsed"></table>'),
+            $tbody:  $('<tbody></tbody>'),
             $header:  $('<tr class="automizy-table-header"></tr>'),
             $title: $('<div class="automizy-table-title"></div>'),
             $actions: $('<div class="automizy-table-actions"></div>'),
@@ -3771,7 +3927,7 @@ var $A = {};
         t.d.$stepPageBox.appendTo(t.d.$actions);
 
         t.d.$perPageBox.appendTo(t.d.$actions);
-        t.d.perPageSelect.type('select').multiple(false).multiselect(true).options(t.d.perPageList).val(t.d.perPage).label(t.d.perPageLabel).width('83px').change(function(){
+        t.d.perPageSelect.type('select').options(t.d.perPageList).val(t.d.perPage).label(t.d.perPageLabel).width('83px').change(function(){
             t.d.perPage = this.val();
             if(t.d.storeData){
                 $A.store.set(t.id()+'PerPage', t.d.perPage);
@@ -3779,7 +3935,8 @@ var $A = {};
             t.d.onPerPage.apply(this, [t, t.d.$widget]);
         }).drawTo(t.d.$perPageBox);
         t.d.$widget.attr('id', t.id());
-        t.d.$header.appendTo(t.d.$table);
+        t.d.$tbody.appendTo(t.d.$table);
+        t.d.$header.appendTo(t.d.$tbody);
         t.d.$title.html(t.d.title).appendTo(t.d.$widget);
         t.d.$actions.appendTo(t.d.$widget);
         t.d.$buttons.appendTo(t.d.$actions);
@@ -3815,7 +3972,7 @@ var $A = {};
             t.d.$searchIcon.append('<img src="' + $A.images.searchIcon + '" />').insertAfter(t.d.$searchBox).click(function () {
                 t.d.$searchBoxContent.stop().slideToggle();
                 t.d.searchBoxCanClose = false;
-                t.d.$searchInput.focus();
+                t.d.$searchInput.input().focus().select();
             });
             t.d.$exportIcon.append('<img src="' + $A.images.exportIcon + '" />').appendTo(t.d.$panel).click(function () {
                 t.d.onExport.apply(t, [t, t.d.$widget]);
@@ -3841,7 +3998,10 @@ var $A = {};
         t.d.$checkboxCheckAll.change(function(){
             $A.d.tableRowCheckBoxClick = true;
             var checked = this.checked;
-            var cells = t.getColByIndex(0).$cells().find('input:enabled').prop('checked', checked);
+            var col = t.getColByIndex(0);
+            if(typeof col.$cells === 'function'){
+                col.$cells().find('input:enabled').prop('checked', checked);
+            }
         });
         t.border(t.d.border);
         t.borderCollapse(t.d.borderCollapse);
@@ -3908,6 +4068,8 @@ var $A = {};
                     t.onPerPage(obj.onPerPage);
                 if (typeof obj.onShowCol === 'function')
                     t.onShowCol(obj.onShowCol);
+                if (typeof obj.onSearch === 'function')
+                    t.onSearch(obj.onSearch);
                 if (typeof obj.onExport === 'function')
                     t.onExport(obj.onExport);
                 if (typeof obj.buttons !== 'undefined')
@@ -3935,6 +4097,9 @@ var $A = {};
 
     p.table = function () {
         return this.d.$table;
+    };
+    p.tbody = function () {
+        return this.d.$tbody;
     };
 
     p.storeData = function(storeData){
@@ -4002,6 +4167,15 @@ var $A = {};
             t.d.onPerPage = func;
         } else {
             return t.d.onPerPage.apply(t, [t, t.d.$widget]);
+        }
+        return this;
+    };
+    p.onSearch = function (func) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.d.onSearch = func;
+        } else {
+            return t.d.onSearch.apply(t, [t, t.d.$widget]);
         }
         return this;
     };
@@ -4214,11 +4388,20 @@ var $A = {};
     };
     p.selectedIds = function(){
         var t = this;
-        return t.getColByIndex(0).$cells().find('input[type="checkbox"][value]:checked').map(function(){return this.value}).get()
+        var col = t.getColByIndex(0);
+        if(typeof col.$cells === 'function'){
+            return col.$cells().find('input[type="checkbox"][value]:checked').map(function(){return this.value}).get();
+        }
+        return [];
     };
     p.selectedId = function(){
         var t = this;
-        return t.getColByIndex(0).$cells().find('input[type="checkbox"][value]:checked:first').val();
+
+        var col = t.getColByIndex(0);
+        if(typeof col.$cells === 'function'){
+            return col.$cells().find('input[type="checkbox"][value]:checked:first').val();
+        }
+        return [];
     };
     p.openedRow = function(openedRow){
         var t = this;
@@ -4238,7 +4421,7 @@ var $A = {};
 
     p.getCell = function (colIndex, rowIndex) {
         var t = this;
-        var $cell = t.table().find('tr:first').siblings().andSelf().eq(rowIndex).find('td, th').eq(colIndex);
+        var $cell = t.table().find('tr:first').siblings().addBack().eq(rowIndex).find('td, th').eq(colIndex);
         return $A.tableCell($cell);
     };
     
@@ -4277,7 +4460,7 @@ var $A = {};
     
     
     p.getRowByIndex = function (index) {
-        var $row = this.table().find('tr:first').siblings().andSelf().eq(index);
+        var $row = this.table().find('tr:first').siblings().addBack().eq(index);
         if($row.length === 0){
             return false;
         }
@@ -4285,7 +4468,7 @@ var $A = {};
     };
     p.getRowByRecordId = function (recordId) {
         var t = this;
-        var $row = t.table().find('tr:first').siblings().andSelf().filter(function(){
+        var $row = t.table().find('tr:first').siblings().addBack().filter(function(){
             return $(this).data('recordId') == recordId;
         });
         if($row.length === 0){
@@ -4294,7 +4477,7 @@ var $A = {};
         return $A.tableRow($row);
     };
     p.getColByIndex = function (index) {
-        var $col = this.table().find('th:first').siblings().andSelf().eq(index);
+        var $col = this.table().find('th:first').siblings().addBack().eq(index);
         if($col.length === 0){
             return false;
         }
@@ -4302,7 +4485,7 @@ var $A = {};
     };
     p.getColByName = function (name) {
         var t = this;
-        var $col = t.table().find('th:first').siblings().andSelf().filter(function(){
+        var $col = t.table().find('th:first').siblings().addBack().filter(function(){
             return $(this).data('name') == name;
         });
         if($col.length === 0){
@@ -4473,7 +4656,7 @@ var $A = {};
         var t = this;
         if (typeof arr === 'undefined') {
             var cols = [];
-            this.table().find('th:first').siblings().andSelf().each(function(){
+            this.table().find('th:first').siblings().addBack().each(function(){
                 cols.push($A.tableCol($(this)));
             });
             return cols;
@@ -4647,7 +4830,7 @@ var $A = {};
         var t = this;
         if (typeof arr === 'undefined') {
             var rows = [];
-            this.table().find('tr:first').siblings().andSelf().each(function(){
+            this.table().find('tr:first').siblings().addBack().each(function(){
                 rows.push($A.tableRow($(this)));
             });
             return rows;
@@ -4663,7 +4846,7 @@ var $A = {};
         var table = t.table()[0];
         if (typeof arr !== 'undefined'){
             var sortArr = arr.sort();
-            for (var i = sortArr.length - 1; i >= 0; i--) {
+            for (var i = (sortArr.length - 1); i >= 0; i--) {
                 table.deleteRow(sortArr[i]);
             }
             return t;
@@ -4757,6 +4940,7 @@ var $A = {};
             var $td = $('<td colspan="'+t.getRowByIndex(0).$cells().length+'"></td>').appendTo($tr);
             t.d.$loadingCellContent.appendTo($td);
             $tr.appendTo(t.table());
+            $A.runFunctions($A.events.table.functions.loading, t, [t]);
         //}, 10);
         return t;
     };
@@ -4764,7 +4948,7 @@ var $A = {};
         var t = this;
         if (typeof loadingCellContent !== 'undefined') {
             if (loadingCellContent instanceof jQuery) {
-                var loadingCellContent = loadingCellContent.clone();
+                loadingCellContent = loadingCellContent.clone();
             }
             t.d.loadingCellContent = loadingCellContent;
             t.d.$loadingCellContent.html(loadingCellContent);
@@ -4772,12 +4956,31 @@ var $A = {};
         }
         return t.d.loadingCellContent;
     };
+    p.addButton = p.addButton || function (obj) {
+            var t = this;
+            if (typeof t.d.buttons === 'undefined') {
+                return t;
+            }
+            if (typeof obj !== 'undefined') {
+                if (obj instanceof $A.m.Button || obj instanceof $A.m.Input) {
+                    obj.drawTo(t.d.$buttons || t.d.$widget);
+                    obj.thin(true);
+                } else {
+                    obj.thin = true;
+                    obj.target = obj.target || t.d.$buttons || t.d.$widget;
+                    var button = $A.newButton(obj);
+                    t.d.buttons.push(button);
+                }
+                t.d.$widget.addClass('has-button');
+                return t;
+            }
+            var button = $A.newButton();
+            t.d.buttons.push(button);
+            button.drawTo(t.d.$buttons || t.d.$widget);
+            return button;
+        };
 
-
-    $A.events.table = {};
-    $A.registerLocalEvents($A.events.table, ['addRows', 'beforeAddRows', 'beforeOpenInlineBox']);
-
-    $A.initBasicFunctions(Table, "Table");
+    $A.initBasicFunctions(Table, "Table", ['addRows', 'beforeAddRows', 'beforeOpenInlineBox', 'loading']);
 
 })();
 
@@ -4820,7 +5023,7 @@ var $A = {};
         if (typeof table !== 'undefined') {
             t.d.table = table;
             var rowIndex = t.d.index;
-            var trs = t.d.table.table().find('tr:first').siblings().andSelf();
+            var trs = t.d.table.table().find('tr:first').siblings().addBack();
             var id = trs.eq(rowIndex).attr('id') || 0;
             
             if(typeof $A.getTableRow(id) === 'undefined'){
@@ -4944,7 +5147,7 @@ var $A = {};
         if (typeof table !== 'undefined') {
             t.d.table = table;
             var colIndex = t.d.index;
-            var $cols = t.d.table.table().find('th, td').eq(0).siblings().andSelf();
+            var $cols = t.d.table.table().find('th, td').eq(0).siblings().addBack();
             var colLen = $cols.length;
             var id = $cols.eq(colIndex).attr('id') || 0;
             
@@ -5130,10 +5333,10 @@ var $A = {};
     };
     
     p.row = function () {
-        return $A.tableRow(this.table().table().find('tr:first').siblings().andSelf().eq(this.widget().parent().index()));
+        return $A.tableRow(this.table().table().find('tr:first').siblings().addBack().eq(this.widget().parent().index()));
     };
     p.col = function () {
-        return $A.tableCol(this.table().table().find('th, td').eq(0).siblings().andSelf().eq(this.widget().index()));
+        return $A.tableCol(this.table().table().find('th, td').eq(0).siblings().addBack().eq(this.widget().index()));
     };
     p.index = function () {
         return [this.col().index(), this.row().index()];
@@ -5374,10 +5577,10 @@ var $A = {};
                             $automizyTd2:$td2
                         });
                         input.data('automizyButton', fileButton);
-                        input.change(function () {
+                        input.off('change', 'automizy-change').on('change', function () {
                             var filename = input.val().split('\\').pop();
                             fileText.val(filename);
-                        });
+                        }, 'automizy-change');
                         $fileBox.insertAfter($input);
                         $input.data('table', $table).css({
                             position: 'absolute',
@@ -5960,6 +6163,100 @@ var $A = {};
             };
         };
     };
+})();
+
+(function(){
+    $A.getExtension = function (fname) {
+        return fname.substr((~-fname.lastIndexOf(".") >>> 0) + 2).toLowerCase();
+    };
+})();
+
+(function(){
+    $A.getGetParameter = function (param) {
+        var vars = {};
+        var href = window.location.href;
+        var indexOfValue = href.indexOf("#");
+        if(indexOfValue >= 0){
+            href = href.substring(0, indexOfValue);
+        }
+        href.replace(/[?&]+([^=&]+)=?([^&]*)?/gi, function( m, key, value ) {
+                vars[key] = value !== undefined ? value : '';
+            }
+        );
+
+        if ( param ) {
+            return vars[param] ? vars[param] : null;
+        }
+        return vars;
+    };
+})();
+
+(function(){
+    $A.iphoneStyle = function(input){
+        var input = input || $(':checkbox.iphone');
+        input.each(function () {
+            var $t = $(this);
+            var counter = 0;
+            if ($t.hasClass("inited")) {
+                $t.siblings().remove();
+                if ($t.parent().hasClass("iPhoneCheckContainer")) {
+                    $t.unwrap();
+                }
+                var $clone = $t.clone();
+                $t.after($clone);
+                $t.remove();
+                $t = $clone;
+            }
+            $t.iphoneStyle({
+                checkedLabel: '&nbsp;&nbsp;&nbsp;',
+                uncheckedLabel: '&nbsp;&nbsp;&nbsp;',
+                resizeContainer: false,
+                resizeHandle: false,
+                onChange: function (elem, value) {
+                    var box = this.container[0];
+                    var $box = $(box);
+                    var $input = $box.find("input");
+                    var $handler = $box.find(".iPhoneCheckHandleCenter");
+                    var stringOn = $input.attr("data-on") || $input.data('on') || $A.translate('On');
+                    var stringOff = $input.attr("data-off") || $input.data('off') || $A.translate('Off');
+                    if (value) {
+                        $handler.html(stringOn);
+                        $box.removeClass("off")
+                    } else {
+                        $handler.html(stringOff);
+                        $box.addClass("off");
+                    }
+                    var target = $input.attr("data-target");
+                    if (target) {
+                        var targetElement = $box.closest("form").find('[name="' + target + '"]');
+                        targetElement.prop("disabled", !value);
+                    }
+                    $input.trigger("forceChange", [counter]);
+                    counter++;
+                }
+            });
+            if ($t.hasClass("inline")) {
+                $t.parent().css({'display': 'inline-block', 'vertical-align': 'middle'});
+            }
+            if (!$t.is(":checked")) {
+                $t.parent().addClass("off");
+            }
+            $t.addClass("inited");
+
+            $(this).parent().parent().removeClass('automizy-input-has-help');
+        });
+        input.parent().css({display: 'inline-block', verticalAlign: 'middle'});
+        $(".iPhoneCheckHandleCenter").html(function () {
+            var $container = $(this).closest(".iPhoneCheckContainer");
+            if ($container.find("input").is(":checked")) {
+                return $container.find("input").attr("data-on");
+            } else {
+                return $container.find("input").attr("data-off");
+            }
+        });
+
+        input.iphoneStyle("refresh");
+    }
 })();
 
 (function(){

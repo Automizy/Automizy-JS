@@ -32,6 +32,7 @@ define([
             isClose: true,
             hasObject: false,
             hash: false,
+            openable:true,
             closable:true,
             buttonsBox:true,
             id: 'automizy-dialog-' + $A.getUniqueString(),
@@ -41,6 +42,7 @@ define([
             create: function () {
             }
         };
+        t.f = {};
         t.init();
 
         var $tr = $('<tr></tr>');
@@ -271,74 +273,6 @@ define([
         }
         return t.d.zIndex;
     };
-    p.show = function (func) {
-        var t = this;
-        $A.setWindowScroll(false, this.d.id);
-        if (!t.d.hasObject) {
-            t.draw();
-        }
-        this.d.$widget.ashow();        
-        t.setMaxHeight();
-        return this;
-    };
-    p.open = function (func) {
-        var t = this;
-        if (typeof func === 'function') {
-            t.d.openFunctions.push(func);
-        } else {
-            t.beforeOpen();
-            if($A.runFunctions($A.events.dialog.functions.beforeOpen, this, [this, this.d.$widget]) === false){
-                return false;
-            }
-            if($A.runFunctions(t.d.openFunctions, this, [this, this.d.$widget]) !== false){
-                if (t.hash() !== false)
-                    $A.hashChange(t.hash());
-                t.show();
-            }
-            $A.runFunctions($A.events.dialog.functions.open, this, [this, this.d.$widget]);
-        }
-        t.setMaxHeight();
-        return t;
-    };
-    p.beforeOpen = function (func) {
-        var t = this;
-        if (typeof func === 'function') {
-            t.d.beforeOpenFunctions.push(func);
-        } else {
-            $A.runFunctions(t.d.beforeOpenFunctions, this, [this, this.d.$widget]);
-        }
-        return t;
-    };
-    p.closable = function (closable) {
-        var t = this;
-        if (typeof closable !== 'undefined') {
-            t.d.closable = closable;
-            if(closable){
-                t.d.$close.show();
-            }
-            else{
-                t.d.$close.hide();
-            }
-        } else {
-            return t.d.closable;
-        }
-        return t;
-    };
-    p.close = function (func) {
-        var t = this;
-        if (typeof func === 'function') {
-            t.d.closeFunctions.push(func);
-        } else {
-            if(t.d.closable){
-                if($A.runFunctions(t.d.closeFunctions, this, [this, this.d.$widget]) !== false){
-                    t.hide();
-                }
-                $A.runFunctions($A.events.dialog.functions.close, this, [this, this.d.$widget]);
-            }
-        }
-        return t;
-    };
-        
     p.setMaxHeight = function(){
         var t = this;
         var buttonBoxHeight = 0;
@@ -354,10 +288,94 @@ define([
         });
         return maxHeight;
     };
+    p.show = function (func) {
+        var t = this;
+        $A.setWindowScroll(false, this.d.id);
+        if (!t.d.hasObject) {
+            t.draw();
+        }
+        this.d.$widget.ashow();        
+        t.setMaxHeight();
+        return this;
+    };
 
-    $A.events.dialog = {};
-    $A.registerLocalEvents($A.events.dialog, ['open', 'close', 'beforeOpen']);
+    p.openable = function (value) {
+        var t = this;
+        if (typeof value !== 'undefined') {
+            t.d.openable = $A.parseBoolean(value);
+        } else {
+            return t.d.openable;
+        }
+        return t;
+    };
+    p.open = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction.apply(t, ['open', func, name, life]);
+        } else {
+            if(t.beforeOpen().returnValue() !== false) {
+                if(t.hash() !== false){
+                    $A.hashChange(t.hash());
+                }
+                //t.widget().insertAfter($('.automizy-dialog').last());
+                var zIndex = parseInt($('.automizy-dialog').last().css('z-index')) + 1;
+                t.widget().css('z-index', zIndex);
+                t.show();
+                t.runFunctions('open');
+            }
+            $A.runFunctions($A.events.dialog.functions.open, this, [this, this.d.$widget]);
+        }
+        t.setMaxHeight();
+        return t;
+    };
+    p.beforeOpen = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('beforeOpen', func, name, life);
+        } else {
+            var a = t.runFunctions('beforeOpen');
+            t.returnValue(!(t.openable() === false || a[0] === false || a[1] === false));
+        }
+        return t;
+    };
+    p.closable = function (value) {
+        var t = this;
+        if (typeof value !== 'undefined') {
+            t.d.closable = $A.parseBoolean(value);
+            if(value){
+                t.d.$close.show();
+            }
+            else{
+                t.d.$close.hide();
+            }
+        } else {
+            return t.d.closable;
+        }
+        return t;
+    };
+    p.close = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('close', func, name, life);
+        } else {
+            if(t.beforeClose().returnValue() !== false) {
+                t.hide();
+                t.runFunctions('close');
+            }
+        }
+        return t;
+    };
+    p.beforeClose = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('beforeClose', func, name, life);
+        } else {
+            var a = t.runFunctions('beforeClose');
+            t.returnValue(!(t.closable() === false || a[0] === false || a[1] === false));
+        }
+        return t;
+    };
 
-    $A.initBasicFunctions(Dialog, "Dialog");
+    $A.initBasicFunctions(Dialog, "Dialog", ['open', 'close', 'beforeOpen', 'beforeClose']);
 
 });

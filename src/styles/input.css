@@ -143,6 +143,15 @@
     padding:0;
     float:left;
 }
+.automizy-input-loading-box{
+    display:none;
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:#ffffff url('') left center;
+}
 
 
 
@@ -220,9 +229,8 @@
 }
 
 .automizy-skin-simple-automizy .simple-automizy-file-box .automizy-button a{
-    padding: 6.5px 10px;
+    padding: 6px 10px 5px 10px;
     min-width:85px;
-    left: -3px;
 }
 
 .automizy-skin-simple-automizy .simple-automizy-file-box .automizy-input input{
@@ -231,10 +239,6 @@
 
 .automizy-skin-simple-automizy .simple-automizy-file-box td{
     vertical-align:top;
-}
-
-.automizy-input-box:hover .simple-automizy-file-box .automizy-button a{
-    background-color: red;
 }
 
 .simple-automizy-slider{
@@ -264,7 +268,7 @@ input[type='checkbox'], input[type='radio']{
     outline: none !important;
 }
 
-input[type='checkbox'], input[type='radio']{
+input[type='checkbox']{
     width: 15px;
     height: 15px;
 }

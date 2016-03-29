@@ -24,6 +24,7 @@ define([
             $input: $('<input />'),
             $textarea: $('<textarea></textarea>'),
             $select: $('<select></select>'),
+            $loadingBox:$('<div class="automizy-input-loading-box"></div>'),
             specialElements: [],
             type: 'text',
             skin: 'simple-automizy',
@@ -54,6 +55,7 @@ define([
             labelAfter: '',
             accept: [],
             items: {},
+            itemsArray: [],
             validator: $A.newValidator(),
             validate: function () {},
             createFunctions: [],
@@ -67,6 +69,7 @@ define([
         t.d.$select.addClass('automizy-input');
         t.d.$widgetLabel.appendTo(t.d.$widget).attr('for', t.d.id + '-input').ahide();
         t.d.$widgetInput.appendTo(t.d.$widgetInputBox).attr('id', t.d.id + '-input');
+        t.d.$loadingBox.appendTo(t.d.$widgetInputBox).html($A.d.elements.$loading.clone());
         t.d.$widgetInputBox.appendTo(t.d.$widget);
         t.d.$widgetLabelAfter.appendTo(t.d.$widget).ahide();
         t.d.$widgetInputBoxError.appendTo(t.d.$widget);
@@ -165,6 +168,9 @@ define([
             if (typeof obj.change === 'function') {
                 t.change(obj.change);
             }
+            if (typeof obj.keyup === 'function') {
+                t.keyup(obj.keyup);
+            }
             if (typeof obj.enter === 'function') {
                 t.enter(obj.enter);
             }
@@ -199,56 +205,32 @@ define([
     var p = Input.prototype;
     p.setupJQueryEvents = function(){
         var t = this;
-        t.d.$widgetInput.off().on('change', function () { //change keyup paste
-            if(t.d.triggers.change === 'jQuery'){
-                t.d.triggers.change = 0;
-            }else{
-                if(t.d.triggers.change === 0){
-                    t.d.triggers.change = 'jQuery';
-                }
-                if (t.change().returnValue() === false) {
-                    return false;
-                }
+        t.d.$widgetInput.change(function () { //change keyup paste
+            if (t.change().returnValue() === false) {
+                return false;
             }
         }).focus(function () {
-            if(t.d.triggers.focus === 'jQuery'){
-                t.d.triggers.focus = 0;
-            }else{
-                if(t.d.triggers.focus === 0){
-                    t.d.triggers.focus = 'jQuery';
-                }
-                if (t.focus().returnValue() === false) {
-                    return false;
-                }
+            if (t.focus().returnValue() === false) {
+                return false;
             }
         }).blur(function () {
-            if(t.d.triggers.blur === 'jQuery'){
-                t.d.triggers.blur = 0;
-            }else{
-                if(t.d.triggers.blur === 0){
-                    t.d.triggers.blur = 'jQuery';
-                }
-                if (t.blur().returnValue() === false) {
-                    return false;
-                }
-                t.validate();
+            if (t.blur().returnValue() === false) {
+                return false;
             }
+            t.validate();
         }).keypress(function (e) {
             if (e.which == 13) {
                 if (t.enter().returnValue() === false) {
                     return false;
                 }
             }
+        }).keyup(function (e) {
+            if (t.keyup().returnValue() === false) {
+                return false;
+            }
         }).click(function () {
-            if(t.d.triggers.click === 'jQuery'){
-                t.d.triggers.click = 0;
-            }else{
-                if(t.d.triggers.click === 0){
-                    t.d.triggers.click = 'jQuery';
-                }
-                if (t.click().returnValue() === false) {
-                    return false;
-                }
+            if (t.click().returnValue() === false) {
+                return false;
             }
         });
     };
@@ -277,16 +259,18 @@ define([
         if (typeof func === 'function') {
             t.addFunction('change', func, name, life);
         } else {
-            if(t.d.triggers.change === 'AutomizyJs'){
-                t.d.triggers.change = 0;
-            }else{
-                if(t.d.triggers.change === 0){
-                    t.d.triggers.change = 'AutomizyJs';
-                }
-                var a = t.runFunctions('change');
-                t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
-                t.d.$widgetInput.trigger('change');
-            }
+            var a = t.runFunctions('change');
+            t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
+        }
+        return t;
+    };
+    p.keyup = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('keyup', func, name, life);
+        } else {
+            var a = t.runFunctions('keyup');
+            t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
         }
         return t;
     };
@@ -295,16 +279,8 @@ define([
         if (typeof func === 'function') {
             t.addFunction('focus', func, name, life);
         } else {
-            if(t.d.triggers.focus === 'AutomizyJs'){
-                t.d.triggers.focus = 0;
-            }else{
-                if(t.d.triggers.focus === 0){
-                    t.d.triggers.focus = 'AutomizyJs';
-                }
-                var a = t.runFunctions('focus');
-                t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
-                t.d.$widgetInput.trigger('focus');
-            }
+            var a = t.runFunctions('focus');
+            t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
         }
         return t;
     };
@@ -313,16 +289,8 @@ define([
         if (typeof func === 'function') {
             t.addFunction('blur', func, name, life);
         } else {
-            if(t.d.triggers.blur === 'AutomizyJs'){
-                t.d.triggers.blur = 0;
-            }else{
-                if(t.d.triggers.blur === 0){
-                    t.d.triggers.blur = 'AutomizyJs';
-                }
-                var a = t.runFunctions('blur');
-                t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
-                t.d.$widgetInput.trigger('blur');
-            }
+            var a = t.runFunctions('blur');
+            t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
         }
         return t;
     };
@@ -331,16 +299,8 @@ define([
         if (typeof func === 'function') {
             t.addFunction('click', func, name, life);
         } else {
-            if(t.d.triggers.click === 'AutomizyJs'){
-                t.d.triggers.click = 0;
-            }else{
-                if(t.d.triggers.click === 0){
-                    t.d.triggers.click = 'AutomizyJs';
-                }
-                var a = t.runFunctions('click');
-                t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
-                //t.d.$widgetInput.trigger('click');
-            }
+            var a = t.runFunctions('click');
+            t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
         }
         console.log('click')
         return t;
@@ -391,7 +351,12 @@ define([
         var t = this;
         if (typeof label !== 'undefined') {
             t.d.label = label;
-            t.d.$widgetLabel.html(label).ashow();
+            if (label instanceof jQuery) {
+                label.appendTo(t.d.$widgetLabel.empty());
+            }else{
+                t.d.$widgetLabel.html(label);
+            }
+            t.d.$widgetLabel.ashow();
             return t;
         }
         return t.d.label;
@@ -400,7 +365,12 @@ define([
         var t = this;
         if (typeof labelAfter !== 'undefined') {
             t.d.labelAfter = labelAfter;
-            t.d.$widgetLabelAfter.html(labelAfter).ashow();
+            if (labelAfter instanceof jQuery) {
+                labelAfter.appendTo(t.d.$widgetLabelAfter.empty());
+            }else{
+                t.d.$widgetLabelAfter.html(labelAfter);
+            }
+            t.d.$widgetLabelAfter.ashow();
             return t;
         }
         return t.d.labelAfter;
@@ -474,6 +444,21 @@ define([
         }
         return t.input().val();
     };
+    p.valEq = function(value){
+        var t = this;
+        if(t.d.itemsArray.length < value){
+            return t;
+        }
+        if(typeof t.d.itemsArray[value] === 'undefined'){
+            return t;
+        }
+        var value = t.d.itemsArray[value][0];
+        t.val(value);
+        return t;
+    };
+    p.optionValue = p.optionVal = function () {
+        return this.options()[this.val()];
+    };
     p.name = function (name) {
         var t = this;
         if (typeof name !== 'undefined') {
@@ -541,9 +526,11 @@ define([
             } else {
                 t.d.$widgetInput = $('<input/>').attr('type', t.d.type);
             }
+            t.d.$loadingBox.appendTo($A.d.elements.$tmp);
             t.d.$widgetInputBox.ashow().empty();
             t.d.$widgetInput.attr(attributes).show();
             t.d.$widgetInput.appendTo(t.d.$widgetInputBox);
+            t.d.$loadingBox.appendTo(t.d.$widgetInputBox);
             setTimeout(function(){
                 t.setupJQueryEvents();
             }, 10);
@@ -563,6 +550,49 @@ define([
             return t;
         }
         return t.d.type;
+    };
+    p.displayType = function(type, settings){
+        var t = this;
+        var input = t.input();
+        var type = type || false;
+        if(!type){
+            return t;
+        }
+        var settings = settings || false;
+        if(t.type() === 'select'){
+            t.multiselect(false);
+        }
+        if (t.input().hasClass('hasDatepicker')) {
+            t.input().datepicker("destroy");
+            t.input().removeClass("hasDatepicker");
+        }
+        type = type.toLowerCase();
+        if(type === 'text' || type === 'string'){
+            t.type('text');
+        }else if(type === 'number' || type === 'integer'){
+            t.type('number');
+        }else if(type === 'datetime') {
+            t.type('text');
+            t.input().datetimepicker(settings || {
+                dateFormat: 'yy-mm-dd',
+                timeFormat: 'HH:mm:ss',
+                changeYear: true,
+                changeMonth: true,
+                showOtherMonths: true,
+                selectOtherMonths: false,
+                yearRange: '1900:c',
+                showButtonPanel: true,
+                showSecond: true,
+                showMillisec: false,
+                showMicrosec: false,
+                showTimezone: false,
+                showTime: true,
+                controlType: 'slider'
+            });
+        }else if(type === 'select') {
+            t.type('select');
+        }
+        return t;
     };
     p.datepicker = function () {
         var t = this;
@@ -714,6 +744,7 @@ define([
                     t.d.items[value] = text;
                 }
                 //t.d.$widgetInput.val(values);
+                t.d.itemsArray = arr;
             }
         }
         if (t.d.multiselect) {
@@ -820,9 +851,24 @@ define([
         var t = this;
         return t.d.$widgetInputBoxError;
     };
+    p.rowSpacing = function(value){
+        var t = this;
+        if (typeof value !== 'undefined') {
+            t.widget().css('padding-bottom', value);
+            return t;
+        }
+        return t.widget().css('padding-bottom');
+    };
+    p.loadingOn = function(){
+        var t = this;
+        t.d.$loadingBox.show();
+        return t;
+    };
+    p.loadingOff = function(){
+        var t = this;
+        t.d.$loadingBox.hide();
+        return t;
+    };
 
-    $A.events.input = {};
-    $A.registerLocalEvents($A.events.input, ['change']);
-
-    $A.initBasicFunctions(Input, "Input", ["change", "enter", "focus", "blur", "click"]);
+    $A.initBasicFunctions(Input, "Input", ["change", "keyup", "enter", "focus", "blur", "click"]);
 });

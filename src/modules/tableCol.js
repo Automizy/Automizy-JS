@@ -57,7 +57,7 @@ define([
         if (typeof table !== 'undefined') {
             t.d.table = table;
             var colIndex = t.d.index;
-            var $cols = t.d.table.table().find('th, td').eq(0).siblings().andSelf();
+            var $cols = t.d.table.table().find('th, td').eq(0).siblings().addBack();
             var colLen = $cols.length;
             var id = $cols.eq(colIndex).attr('id') || 0;
             
