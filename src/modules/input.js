@@ -559,7 +559,8 @@ define([
         }
         var settings = settings || false;
         if(t.type() === 'select'){
-            t.multiselect(false);
+            t.d.multiselect=false;
+            t.multiple(false);
         }
         if (t.input().hasClass('hasDatepicker')) {
             t.input().datepicker("destroy");
