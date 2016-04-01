@@ -431,7 +431,7 @@ define([
                 t.input().val(value);
             }
             if (t.d.multiselect) {
-                t.input().multiselect('refresh');
+                t.input().multiselect().multiselect('refresh');
             }
             if (t.d.needModify) {
                 t.input().data('originalValue', value);
@@ -664,7 +664,7 @@ define([
         t.d.multiselect = true;
         var $w = t.d.$widgetInput;
         setTimeout(function () {
-            $w.multiselect('refresh');
+            $w.multiselect().multiselect('refresh');
         }, 1);
         if (args.length <= 0 || args[0] === true) {
             if (t.d.multiple) {
@@ -748,7 +748,7 @@ define([
             }
         }
         if (t.d.multiselect) {
-            t.multiselect('refresh');
+            t.multiselect().multiselect('refresh');
         }
         t.val(values || val);
         return t;
