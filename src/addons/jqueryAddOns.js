@@ -115,4 +115,14 @@ define([], function () {
             }
         });
     };
+    $.fn.disableScroll = function () {
+        return this.each(function(){
+            if (window.addEventListener) // older FF
+                window.addEventListener('DOMMouseScroll', preventDefault, false);
+            this.onwheel = preventDefault; // modern standard
+            window.onmousewheel = document.onmousewheel = preventDefault; // older browsers, IE
+            window.ontouchmove  = preventDefault; // mobile
+            document.onkeydown  = preventDefaultForScrollKeys;
+        });
+    };
 });

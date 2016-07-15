@@ -15,7 +15,7 @@ define([
         if(typeof obj.ok === 'function'){
             data.ok = obj.ok;
         }
-        if(typeof obj.cancel === 'function'){
+        if(typeof obj.cancel !== 'undefined'){
             data.cancel = obj.cancel;
         }
         if(typeof obj.okText !== 'undefined'){
@@ -31,28 +31,37 @@ define([
             data.title = obj.title;
         }
 
+        var buttons = [];
+
+        if(data.cancel !== false){
+            buttons.push({
+                text: data.cancelText,
+                click: function () {
+                    data.cancel();
+                    dialog.close();
+                }
+            });
+        }
+        if(data.ok !== false){
+            buttons.push({
+                text: data.okText,
+                skin: 'simple-orange',
+                click: function () {
+                    data.ok();
+                    dialog.close();
+                }
+            });
+        }
+
         var dialog = $A.newDialog({
             content:data.content,
             width:'500px',
             positionY:'40px',
             title:data.title,
-            buttons:[
-                {
-                    text: data.cancelText,
-                    click: function () {
-                        data.cancel();
-                        dialog.close().remove();
-                    }
-                },
-                {
-                    text: data.okText,
-                    skin:'simple-orange',
-                    click: function () {
-                        data.ok();
-                        dialog.close().remove();
-                    }
-                }
-            ]
+            close:function(){
+                this.remove();
+            },
+            buttons:buttons
         }).open();
 
     };

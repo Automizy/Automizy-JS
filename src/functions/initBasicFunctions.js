@@ -19,6 +19,9 @@ define([
         var p = module.prototype;
         p.init = p.init || function () {
                 var t = this;
+                if (typeof t.d.permission === 'undefined') {
+                    t.d.permission = true;
+                }
                 if (typeof t.d.create === 'undefined') {
                     t.d.create = function () {};
                 }
@@ -64,15 +67,21 @@ define([
                 if (typeof obj.skin !== 'undefined') {
                     t.skin(obj.skin);
                 }
+                if (typeof obj.permission !== 'undefined') {
+                    t.permission(obj.permission);
+                }
             };
         p.create = p.create || function (func) {
                 var t = this;
                 if (typeof func === 'function') {
-                    this.d.create = func;
+                    t.d.create = func;
                 } else {
-                    return this.d.create.apply(this, [this, this.d.$widget]);
+                    if(!t.permission()){
+                        return t;
+                    }
+                    return t.d.create.apply(t, [t, t.d.$widget]);
                 }
-                return this;
+                return t;
             };
         p.widget = p.widget || function () {
                 return this.d.$widget;
@@ -104,14 +113,18 @@ define([
                 var t = this;
                 var $target = $target || $('body');
                 var where = where || 'in';
+                var $elem = t.d.$widget;
                 if(where === 'after'){
-                    t.d.$widget.insertAfter($target);
+                    $elem.insertAfter($target);
                 }else if(where === 'before'){
-                    t.d.$widget.insertBefore($target);
+                    $elem.insertBefore($target);
                 }else{
-                    t.d.$widget.appendTo($target);
+                    $elem.appendTo($target);
                 }
                 t.d.hasObject = true;
+                if(!t.permission()){
+                    return t;
+                }
                 setTimeout(function () {
                     for (var i = 0; i < t.d.createFunctions.length; i++) {
                         t.d.createFunctions[i]();
@@ -327,6 +340,20 @@ define([
                 }
             }
             return t;
+        };
+        p.permission = function(value){
+            var t = this;
+            if (typeof value !== 'undefined') {
+                var currentPermission = t.permission();
+                t.d.permission = $A.parseBoolean(value);
+                if(!t.d.permission && currentPermission){
+                    t.widget().addClass('automizy-permission-trap');
+                }else if(t.d.permission && !currentPermission){
+                    t.widget().removeClass('automizy-permission-trap');
+                }
+                return t;
+            }
+            return t.d.permission;
         };
 
 

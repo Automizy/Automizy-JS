@@ -53,7 +53,10 @@ define([
     "automizy/functions/getGetParameter",
     "automizy/functions/iphoneStyle",
     "automizy/functions/confirm",
-    "automizy/functions/runEvent"
+    "automizy/functions/alert",
+    "automizy/functions/runEvent",
+    "automizy/functions/isPageVisibility",
+    "automizy/functions/sameAs"
 ], function ($A) {
     console.log('%c AutomizyJs module loaded! ', 'background: #000000; color: #bada55; font-size:14px');
     return $A;

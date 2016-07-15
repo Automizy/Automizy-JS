@@ -27,14 +27,15 @@ define([
             width: '60%',
             maxWidth: '100%',
             minWidth: '250px',
-            minHeight:'0px',
+            minHeight: '0px',
             zIndex: 2501,
             isClose: true,
             hasObject: false,
             hash: false,
-            openable:true,
-            closable:true,
-            buttonsBox:true,
+            openable: true,
+            closable: true,
+            buttonsBox: true,
+            clickOutClose:false,
             id: 'automizy-dialog-' + $A.getUniqueString(),
             openFunctions: [],
             beforeOpenFunctions: [],
@@ -52,12 +53,15 @@ define([
             t.d.isClose = false;
         }).appendTo(t.d.$cell);
         t.d.$widget.attr('id', t.id()).click(function () {
-            if (t.d.isClose)
-                t.close();
-            else
+            if (t.d.isClose) {
+                if(t.d.clickOutClose) {
+                    t.close();
+                }
+            } else {
                 t.d.isClose = true;
+            }
         });
-        t.d.$close.click(function(){
+        t.d.$close.click(function () {
             t.close();
         });
         t.d.$close.appendTo(t.d.$box);
@@ -66,42 +70,63 @@ define([
         t.d.$buttons.appendTo(t.d.$box);
 
         if (typeof obj !== 'undefined') {
-            if (typeof obj.title !== 'undefined')
+            if (typeof obj.title !== 'undefined') {
                 t.title(obj.title);
-            if (typeof obj.displayHeader !== 'undefined')
+            }
+            if (typeof obj.displayHeader !== 'undefined') {
                 t.displayHeader(obj.displayHeader);
-            if (typeof obj.positionX !== 'undefined')
+            }
+            if (typeof obj.positionX !== 'undefined') {
                 t.positionX(obj.positionX);
-            if (typeof obj.positionY !== 'undefined')
+            }
+            if (typeof obj.positionY !== 'undefined') {
                 t.positionY(obj.positionY);
-            if (typeof obj.position !== 'undefined')
+            }
+            if (typeof obj.position !== 'undefined') {
                 t.position(obj.position);
-            if (typeof obj.width !== 'undefined')
+            }
+            if (typeof obj.width !== 'undefined') {
                 t.width(obj.width);
-            if (typeof obj.maxWidth !== 'undefined')
+            }
+            if (typeof obj.maxWidth !== 'undefined') {
                 t.maxWidth(obj.maxWidth);
-            if (typeof obj.minWidth !== 'undefined')
+            }
+            if (typeof obj.minWidth !== 'undefined') {
                 t.minWidth(obj.minWidth);
-            if (typeof obj.maxWidth !== 'undefined')
+            }
+            if (typeof obj.maxWidth !== 'undefined') {
                 t.maxWidth(obj.maxWidth);
-            if (typeof obj.minHeight !== 'undefined')
+            }
+            if (typeof obj.minHeight !== 'undefined') {
                 t.minHeight(obj.minHeight);
-            if (typeof obj.zIndex !== 'undefined')
+            }
+            if (typeof obj.zIndex !== 'undefined') {
                 t.zIndex(obj.zIndex);
-            if (typeof obj.closable !== 'undefined')
+            }
+            if (typeof obj.closable !== 'undefined') {
                 t.closable(obj.closable);
-            if (typeof obj.buttonsBox !== 'undefined')
+            }
+            if (typeof obj.buttonsBox !== 'undefined') {
                 t.buttonsBox(obj.buttonsBox);
-            if (typeof obj.open === 'function')
+            }
+            if (typeof obj.open === 'function') {
                 t.open(obj.open);
-            if (typeof obj.beforeOpen === 'function')
+            }
+            if (typeof obj.beforeOpen === 'function') {
                 t.beforeOpen(obj.beforeOpen);
-            if (typeof obj.close === 'function')
+            }
+            if (typeof obj.close === 'function') {
                 t.close(obj.close);
-            if (typeof obj.content !== 'undefined')
+            }
+            if (typeof obj.clickOutClose !== 'undefined') {
+                t.clickOutClose(obj.clickOutClose);
+            }
+            if (typeof obj.content !== 'undefined') {
                 t.content(obj.content);
-            if (typeof obj.hash !== 'undefined')
+            }
+            if (typeof obj.hash !== 'undefined') {
                 t.hash(obj.hash);
+            }
             t.initParameter(obj);
         }
     };
@@ -121,9 +146,9 @@ define([
         var t = this;
         if (typeof displayHeader !== 'undefined') {
             t.d.displayHeader = $A.parseBoolean(displayHeader);
-            if(t.d.displayHeader){
+            if (t.d.displayHeader) {
                 t.d.$head.hide();
-            }else{
+            } else {
                 t.d.$head.hide();
             }
             return t;
@@ -142,7 +167,7 @@ define([
         var t = this;
         if (typeof buttonsBox !== 'undefined') {
             t.d.buttonsBox = $A.parseBoolean(buttonsBox);
-            if(!t.d.buttonsBox){
+            if (!t.d.buttonsBox) {
                 t.d.$buttons.hide();
             }
             return t;
@@ -196,11 +221,11 @@ define([
                 $cell.css({verticalAlign: 'middle', paddingTop: 0, paddingBottom: 0});
             } else {
                 /*
-                if ($(t.d.$box).height()+parseInt(y)>$(window).height()){
-                    $(t.d.$content).height($(t.d.$content).height()+($(window).height()-$(t.d.$box).height()-parseInt(y)));
-                }
-                */
-               
+                 if ($(t.d.$box).height()+parseInt(y)>$(window).height()){
+                 $(t.d.$content).height($(t.d.$content).height()+($(window).height()-$(t.d.$box).height()-parseInt(y)));
+                 }
+                 */
+
                 $cell.css({verticalAlign: 'top', paddingTop: y, paddingBottom: y});
             }
             t.d.positionY = y;
@@ -215,8 +240,8 @@ define([
             var pos = xy.split(" ");
             t.positionX(pos[0]);
             t.positionY(pos[1]);
-            t.d.positionX=pos[0];
-            t.d.positionY=pos[1];
+            t.d.positionX = pos[0];
+            t.d.positionY = pos[1];
             t.setMaxHeight();
             return t;
         } else if (typeof xy !== 'undefined') {
@@ -273,18 +298,26 @@ define([
         }
         return t.d.zIndex;
     };
-    p.setMaxHeight = function(){
+    p.clickOutClose = function (clickOutClose) {
+        var t = this;
+        if (typeof clickOutClose !== 'undefined') {
+            t.d.clickOutClose = $A.parseBoolean(clickOutClose);
+            return t;
+        }
+        return t.d.clickOutClose;
+    };
+    p.setMaxHeight = function () {
         var t = this;
         var buttonBoxHeight = 0;
-        if(t.buttonsBox()){
+        if (t.buttonsBox()) {
             buttonBoxHeight = t.d.$buttons.outerHeight();
         }
         var maxHeight = $(window).height() - buttonBoxHeight - t.d.$head.outerHeight();
-        if (!isNaN(parseInt(t.d.positionY))){
+        if (!isNaN(parseInt(t.d.positionY))) {
             maxHeight -= parseInt(t.d.positionY);
         }
         t.d.$content.css({
-            maxHeight:maxHeight
+            maxHeight: maxHeight
         });
         return maxHeight;
     };
@@ -294,7 +327,7 @@ define([
         if (!t.d.hasObject) {
             t.draw();
         }
-        this.d.$widget.ashow();        
+        this.d.$widget.ashow();
         t.setMaxHeight();
         return this;
     };
@@ -313,13 +346,21 @@ define([
         if (typeof func === 'function') {
             t.addFunction.apply(t, ['open', func, name, life]);
         } else {
-            if(t.beforeOpen().returnValue() !== false) {
-                if(t.hash() !== false){
+            if (t.beforeOpen().returnValue() !== false) {
+                if (t.hash() !== false) {
                     $A.hashChange(t.hash());
                 }
                 //t.widget().insertAfter($('.automizy-dialog').last());
-                var zIndex = parseInt($('.automizy-dialog').last().css('z-index')) + 1;
-                t.widget().css('z-index', zIndex);
+                //var zIndex = parseInt($('.automizy-dialog').last().css('z-index')) + 1;
+                var dialogs = $A.getAllDialog();
+                var maxZIndex = 0;
+                for(var i in dialogs){
+                    var dialogZIndex = dialogs[i].zIndex();
+                    if(dialogZIndex  > maxZIndex){
+                        maxZIndex = dialogZIndex;
+                    }
+                }
+                t.zIndex(maxZIndex+1);
                 t.show();
                 t.runFunctions('open');
             }
@@ -342,10 +383,10 @@ define([
         var t = this;
         if (typeof value !== 'undefined') {
             t.d.closable = $A.parseBoolean(value);
-            if(value){
+            if (value) {
                 t.d.$close.show();
             }
-            else{
+            else {
                 t.d.$close.hide();
             }
         } else {
@@ -358,7 +399,7 @@ define([
         if (typeof func === 'function') {
             t.addFunction('close', func, name, life);
         } else {
-            if(t.beforeClose().returnValue() !== false) {
+            if (t.beforeClose().returnValue() !== false) {
                 t.hide();
                 t.runFunctions('close');
             }

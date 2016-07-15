@@ -5,6 +5,7 @@
     position: relative;
     padding:0 0 12px 0;
     max-width: 100%;
+    vertical-align: top;
 }
 .automizy-input .automizy-input{
     padding:0;
@@ -33,6 +34,7 @@
     outline: none;
     max-width: 100%;
     padding-left:8px;
+    position: relative;
 }
 .automizy-input.automizy-skin-simple-automizy textarea{
     height:80px;
@@ -73,8 +75,9 @@
 .automizy-input.automizy-skin-simple-automizy textarea:disabled{
     background-color: #e9eae6;
 }
-.automizy-input.automizy-skin-simple-automizy.error input{
-    border-color:red;
+.automizy-input.automizy-skin-simple-automizy.error input,
+.automizy-input.automizy-skin-simple-automizy.error textarea{
+    border-color:#da4b50;
 }
 .automizy-input.automizy-skin-simple-automizy label{
     width: 240px;
@@ -117,9 +120,18 @@
 }
 .automizy-input .automizy-input-box-error{
     display:none;
-    margin:0 0 0 270px;
+    /*margin:0 0 0 270px;*/
     position:relative;
-    color:red;
+    box-sizing: border-box;
+    color: #da4b50;
+    text-align: left;
+    border: 1px solid #da4b50;
+    width: 100%;
+    margin: -2px 0 0 0;
+    padding: 12px 6px 9px 9px;
+    font-weight: bold;
+    font-size: 14px;
+    background-color:#fafafa;
 }
 .automizy-input.error .automizy-input-box-error{
     display:block;
@@ -176,7 +188,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width:100%;
+    max-width:89%;
 }
 .automizy-skin-simple-automizy .ui-multiselect.ui-state-hover{
     border:1px solid #b6c5a4;
@@ -254,6 +266,26 @@
     vertical-align: top;
     text-align:left;
 }
+
+.automizy-input-icon{
+    width:30px;
+    height:30px;
+    display:none;
+    position:absolute;
+    top:0;
+    right:0;
+    opacity:0.5;
+    background:transparent url('') no-repeat center center;
+    cursor:pointer;
+}
+.automizy-input-icon:hover{
+    opacity:0.7;
+}
+.automizy-input-icon.automizy-icon-add-box{
+    background-image: url('data:image/svg+xml;utf8, <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/><path d="M0 0h24v24H0z" fill="none"/> </svg>');
+}
+
+
 
 input[type='checkbox'], input[type='radio']{
     background-image: url('../images/checkbox-radio.png');

@@ -222,7 +222,7 @@ define([
         t.d.perPageSelect.type('select').options(t.d.perPageList).val(t.d.perPage).label(t.d.perPageLabel).width('83px').change(function(){
             t.d.perPage = this.val();
             if(t.d.storeData){
-                $A.store.set(t.id()+'PerPage', t.d.perPage);
+                $A.store.set(t.id()+'-per-page', t.d.perPage);
             }
             t.d.onPerPage.apply(this, [t, t.d.$widget]);
         }).drawTo(t.d.$perPageBox);
@@ -570,7 +570,7 @@ define([
             t.d.perPage = perPage;
             t.d.perPageSelect.val(perPage);
             if(t.d.storeData){
-                $A.store.set(t.id()+'PerPage', t.d.perPage);
+                $A.store.set(t.id()+'-per-page', t.d.perPage);
             }
             if(t.d.hasObject)t.d.onPerPage.apply(t.d.perPageSelect, [t, t.d.$widget]);
             return t;
@@ -1226,13 +1226,16 @@ define([
             t.d.inlineButtons = inlineButtons;
             for(var i = 0; i < inlineButtons.length; i++){
                 var inlineButton = inlineButtons[i];
-                $('<a>'+inlineButton.text+'</a>').data('click', inlineButton.click || function(){}).click(function(){
+                var $button = $('<a>'+inlineButton.text+'</a>').data('click', inlineButton.click || function(){}).click(function(){
                     var $t = $(this);
                     var $row = $t.closest('tr').prev();
                     var row = $A.tableRow($row);
                     t.openedRow(row);
                     $t.data('click').apply(row, [t, t.d.$widget]);
                 }).appendTo(t.d.$inlineButtons);
+                if(!inlineButton.permission){
+                    $button.wrap('<span class="automizy-permission-trap"></span>');
+                }
             }
             return t;
         }
