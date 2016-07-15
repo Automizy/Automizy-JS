@@ -3727,7 +3727,7 @@ var $A = {};
             $widget:$('<div class="automizy-table-box"></div>'),
             $tableContainerBox:$('<div class="automizy-table-container-box"></div>'),
             $tableContainer:$('<div class="automizy-table-container"></div>'),
-            $table:  $('<table cellpadding="0" cellspacing="0" border="0" class="automizy-table collapsed"></table>'),
+            $table:  $('<table cellpadding="0" cellspacing="0" border="0" class="automizy-table automizy-table-clickable collapsed"></table>'),
             $tbody:  $('<tbody></tbody>'),
             $header:  $('<tr class="automizy-table-header"></tr>'),
             $title: $('<div class="automizy-table-title"></div>'),
@@ -3792,6 +3792,7 @@ var $A = {};
             selectable:false,
             exportable:true,
             openableInlineBox:true,
+            clickableRow:true,
             storeData:false,
             id: 'automizy-table-' + $A.getUniqueString(),
             onPerPage: function(){},
@@ -4078,6 +4079,8 @@ var $A = {};
                     t.inlineButtons(obj.inlineButtons);
                 if (typeof obj.openableInlineBox !== 'undefined')
                     t.openableInlineBox(obj.openableInlineBox);
+                if (typeof obj.clickableRow !== 'undefined')
+                    t.clickableRow(obj.clickableRow);
                 if (typeof obj.beforeOpenInlineBox === 'function')
                     t.beforeOpenInlineBox(obj.beforeOpenInlineBox);
                 if (typeof obj.loadingCellContent !== 'undefined')
@@ -4357,11 +4360,27 @@ var $A = {};
         var t = this;
         if (typeof openableInlineBox !== 'undefined') {
             t.d.openableInlineBox = $A.parseBoolean(openableInlineBox);
-            if (openableInlineBox===false)
+            if (openableInlineBox === false) {
                 t.d.$inlineButtonsBox.hide();
+            }else{
+                t.d.$inlineButtonsBox.show();
+            }
             return t;
         }
         return t.d.openableInlineBox;
+    };
+    p.clickableRow = function (clickableRow) {
+        var t = this;
+        if (typeof clickableRow !== 'undefined') {
+            t.d.clickableRow = $A.parseBoolean(clickableRow);
+            if (clickableRow === false) {
+                t.d.$table.removeClass('automizy-table-clickable');
+            }else{
+                t.d.$table.addClass('automizy-table-clickable');
+            }
+            return t;
+        }
+        return t.d.clickableRow;
     };
     p.beforeOpenInlineBox = function (func) {
         var t = this;
@@ -4773,10 +4792,10 @@ var $A = {};
                 }
 
                 var value = rowArr[j];
-                if(typeof value === 'undefined'){
+                if(typeof value === 'undefined' || !value){
                     value = '';
                 }
-                if (value instanceof $A.m.Input) {
+                if (typeof value.drawTo === 'function') {
                     value.drawTo($(cell));
                 }else if(value instanceof jQuery){
                     value.appendTo($(cell));
@@ -6257,6 +6276,65 @@ var $A = {};
 
         input.iphoneStyle("refresh");
     }
+})();
+
+(function(){
+
+    $A.confirm = function (obj) {
+        var obj = obj || {};
+        var data = {
+            ok:function(){},
+            okText:$A.translate('OK'),
+            cancel:function(){},
+            cancelText:$A.translate('Cancel'),
+            content:'',
+            title:$A.translate('Please confirm your action.')
+        };
+        if(typeof obj.ok === 'function'){
+            data.ok = obj.ok;
+        }
+        if(typeof obj.cancel === 'function'){
+            data.cancel = obj.cancel;
+        }
+        if(typeof obj.okText !== 'undefined'){
+            data.okText = obj.okText;
+        }
+        if(typeof obj.cancelText !== 'undefined'){
+            data.cancelText = obj.cancelText;
+        }
+        if(typeof obj.content !== 'undefined'){
+            data.content = obj.content;
+        }
+        if(typeof obj.title !== 'undefined'){
+            data.title = obj.title;
+        }
+
+        var dialog = $A.newDialog({
+            content:data.content,
+            width:'500px',
+            positionY:'40px',
+            title:data.title,
+            buttons:[
+                {
+                    text: data.cancelText,
+                    click: function () {
+                        data.cancel();
+                        dialog.close().remove();
+                    }
+                },
+                {
+                    text: data.okText,
+                    skin:'simple-orange',
+                    click: function () {
+                        data.ok();
+                        dialog.close().remove();
+                    }
+                }
+            ]
+        }).open();
+
+    };
+
 })();
 
 (function(){

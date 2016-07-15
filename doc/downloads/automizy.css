@@ -921,7 +921,6 @@ input[type='radio']{
     font-size: 14px;
     text-overflow: ellipsis;
     overflow: hidden;
-    cursor: pointer;
     word-wrap: break-word;
     max-width: 250px;
     position: relative;
@@ -953,7 +952,11 @@ input[type='radio']{
 .automizy-table.checkboxed td:nth-child(2){
     font-weight:bold;
 }
-.automizy-table tr:hover td{
+.automizy-table-clickable td,
+.automizy-table-clickable th{
+    cursor:pointer;
+}
+.automizy-table-clickable tr:hover td{
     background-color:#f4f4f4;
 }
 .automizy-table tr.selected{

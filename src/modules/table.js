@@ -18,7 +18,7 @@ define([
             $widget:$('<div class="automizy-table-box"></div>'),
             $tableContainerBox:$('<div class="automizy-table-container-box"></div>'),
             $tableContainer:$('<div class="automizy-table-container"></div>'),
-            $table:  $('<table cellpadding="0" cellspacing="0" border="0" class="automizy-table collapsed"></table>'),
+            $table:  $('<table cellpadding="0" cellspacing="0" border="0" class="automizy-table automizy-table-clickable collapsed"></table>'),
             $tbody:  $('<tbody></tbody>'),
             $header:  $('<tr class="automizy-table-header"></tr>'),
             $title: $('<div class="automizy-table-title"></div>'),
@@ -83,6 +83,7 @@ define([
             selectable:false,
             exportable:true,
             openableInlineBox:true,
+            clickableRow:true,
             storeData:false,
             id: 'automizy-table-' + $A.getUniqueString(),
             onPerPage: function(){},
@@ -369,6 +370,8 @@ define([
                     t.inlineButtons(obj.inlineButtons);
                 if (typeof obj.openableInlineBox !== 'undefined')
                     t.openableInlineBox(obj.openableInlineBox);
+                if (typeof obj.clickableRow !== 'undefined')
+                    t.clickableRow(obj.clickableRow);
                 if (typeof obj.beforeOpenInlineBox === 'function')
                     t.beforeOpenInlineBox(obj.beforeOpenInlineBox);
                 if (typeof obj.loadingCellContent !== 'undefined')
@@ -648,11 +651,27 @@ define([
         var t = this;
         if (typeof openableInlineBox !== 'undefined') {
             t.d.openableInlineBox = $A.parseBoolean(openableInlineBox);
-            if (openableInlineBox===false)
+            if (openableInlineBox === false) {
                 t.d.$inlineButtonsBox.hide();
+            }else{
+                t.d.$inlineButtonsBox.show();
+            }
             return t;
         }
         return t.d.openableInlineBox;
+    };
+    p.clickableRow = function (clickableRow) {
+        var t = this;
+        if (typeof clickableRow !== 'undefined') {
+            t.d.clickableRow = $A.parseBoolean(clickableRow);
+            if (clickableRow === false) {
+                t.d.$table.removeClass('automizy-table-clickable');
+            }else{
+                t.d.$table.addClass('automizy-table-clickable');
+            }
+            return t;
+        }
+        return t.d.clickableRow;
     };
     p.beforeOpenInlineBox = function (func) {
         var t = this;
@@ -1064,10 +1083,10 @@ define([
                 }
 
                 var value = rowArr[j];
-                if(typeof value === 'undefined'){
+                if(typeof value === 'undefined' || !value){
                     value = '';
                 }
-                if (value instanceof $A.m.Input) {
+                if (typeof value.drawTo === 'function') {
                     value.drawTo($(cell));
                 }else if(value instanceof jQuery){
                     value.appendTo($(cell));
