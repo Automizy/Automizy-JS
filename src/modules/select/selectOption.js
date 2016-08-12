@@ -9,7 +9,7 @@ define([
         var t = this;
         t.d = {
             $widget: $('<div class="automizy-select-option"></div>'),
-            $widgetTable: $('<table border="none" cellpadding="0" cellspacing="0" class="automizy-select-option-table"></table>'),
+            $widgetTable: $('<table border="0" cellpadding="0" cellspacing="0" class="automizy-select-option-table"></table>'),
             $widgetTr: $('<tr class="automizy-select-option-tr"></tr>'),
             $widgetTdIcon: $('<td class="automizy-select-option-td-icon"></td>'),
             $widgetTdContent: $('<td class="automizy-select-option-td-content"></td>'),
