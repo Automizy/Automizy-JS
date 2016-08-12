@@ -9,7 +9,7 @@ define([
         var t = this;
         t.d = {
             $widget: $('<span class="automizy-select-option-box"></span>'),
-            $options:$('<div class="automizy-select-option-box-options"></div>'),
+            $options:$('<table border="0" cellpadding="0" cellspacing="0" class="automizy-select-option-table"></table>'),
             selectModule:false,
             maxHeight: '150px',
             position:'auto',

@@ -1464,26 +1464,25 @@ label.iPhoneCheckLabelOff span {
 }
 .automizy-select-option-box-options{
 }
-.automizy-select-option{
+.automizy-select-option-table{
     background-color:white;
+    width:100%;
 }
-.automizy-select-option.automizy-selected{
+.automizy-select-option-table .automizy-select-option-tr{    
+}
+.automizy-select-option-table .automizy-select-option-tr.automizy-selected{
     background-color:lightgreen;
 }
-.automizy-select-option .automizy-select-option-table{
-}
-.automizy-select-option .automizy-select-option-tr{
-}
-.automizy-select-option .automizy-select-option-td-icon{
+.automizy-select-option-table .automizy-select-option-tr .automizy-select-option-td-icon{
     vertical-align:middle;
 }
-.automizy-select-option .automizy-select-option-td-content{
+.automizy-select-option-table .automizy-select-option-tr .automizy-select-option-td-content{
     vertical-align:middle;
 }
-.automizy-select-option .automizy-select-option-td-check{
+.automizy-select-option-table .automizy-select-option-tr .automizy-select-option-td-check{
     vertical-align:middle;
     background-color:gray;
 }
-.automizy-select-option.automizy-selected .automizy-select-option-td-check{
+.automizy-select-option-table .automizy-select-option-tr.automizy-selected .automizy-select-option-td-check{
     background-color:green;
 }
