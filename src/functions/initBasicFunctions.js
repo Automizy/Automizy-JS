@@ -280,6 +280,7 @@ define([
             return t.d.returnValue;
         };
 
+
         p.addFunction = function (functionName, func, name, life) {
             var t = this;
             if (typeof t.f[functionName] === 'undefined') {

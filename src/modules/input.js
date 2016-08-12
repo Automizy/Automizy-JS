@@ -718,7 +718,7 @@ define([
             t.d.items = {};
             t.d.itemsArray = [];
             t.removeOptions();
-            t.addItems(arr);
+            t.addOptions(arr);
             return t;
         }
         return t.d.items;

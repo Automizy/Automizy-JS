@@ -20,7 +20,8 @@ define([
     "automizy/modules/tableCol",
     "automizy/modules/tableCell",
     "automizy/modules/i18n",
-    
+    "automizy/modules/select/select",
+
     "automizy/defines/input",
     
     "automizy/addons/jqueryAddOns",

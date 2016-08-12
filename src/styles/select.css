@@ -1,0 +1,51 @@
+.automizy-select{
+
+}
+.automizy-select-table{
+
+}
+.automizy-select-tr{
+
+}
+.automizy-select-td-icon{
+
+}
+
+
+.automizy-select-option-box{
+    position:absolute;
+    z-index:16777270;
+}
+.automizy-select-option-box-options{
+
+}
+
+
+.automizy-select-option{
+    background-color:white;
+}
+.automizy-select-option.automizy-selected{
+    background-color:lightgreen;
+}
+.automizy-select-option .automizy-select-option-table{
+
+}
+.automizy-select-option .automizy-select-option-tr{
+
+}
+.automizy-select-option .automizy-select-option-td-icon{
+    vertical-align:middle;
+}
+.automizy-select-option .automizy-select-option-td-content{
+    vertical-align:middle;
+}
+.automizy-select-option .automizy-select-option-td-check{
+    vertical-align:middle;
+    background-color:gray;
+}
+.automizy-select-option.automizy-selected .automizy-select-option-td-check{
+    background-color:green;
+}
+
+
+
