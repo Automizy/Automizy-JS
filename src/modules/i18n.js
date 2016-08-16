@@ -91,11 +91,20 @@ define([
         }
         return text;
     };
+    p.noTranslate = function (text) {
+        for (var i = 1; i < arguments.length; i++) {
+            text = text.replace("%s", arguments[i]);
+        }
+        return text;
+    };
 
     $A.m.i18n = i18n;
     $A.d.i18n = new $A.m.i18n();
     $A.translate = function(){
         return $A.d.i18n.translate.apply($A.d.i18n, arguments);
+    };
+    $A.noTranslate = function(){
+        return $A.d.i18n.noTranslate.apply($A.d.i18n, arguments);
     };
     $A.setTranslate = function(){
         return $A.d.i18n.setTranslate.apply($A.d.i18n, arguments);

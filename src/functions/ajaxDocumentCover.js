@@ -4,14 +4,47 @@ define([
 ], function () {
 
     $A.ajaxDocumentCover = function (a, b) {
-        if(typeof a === 'undefined')var a = false;
-        if(typeof b !== 'array' && typeof b !== 'object')b = [];
-        
-        var text = [
-            b[0] || '',
-            b[1] || $A.translate("Still working."),
-            b[2] || $A.translate("Little more patience please, I'm still working.")
-        ]
+        if(typeof a === 'undefined'){
+            var a = false;
+        }
+        if(typeof b === 'undefined'){
+            var b = ['auto', 'auto', 'auto'];
+        }
+
+        if(typeof b[0] === 'undefined'){
+            b[0] = {
+                text:'',
+                time:0
+            }
+        }else if(b[0] === 'auto'){
+            b[0] = {
+                text:'',
+                time:3000
+            };
+        }
+        if(typeof b[1] === 'undefined'){
+            b[1] = {
+                text:'',
+                time:0
+            }
+        }else if(b[1] === 'auto'){
+            b[1] = {
+                text:$A.translate("Still working."),
+                time:5000
+            };
+        }
+        if(typeof b[2] === 'undefined'){
+            b[2] = {
+                text:'',
+                time:0
+            }
+        }else if(b[2] === 'auto'){
+            b[2] = {
+                text:$A.translate("Little more patience please, I'm still working."),
+                time:15000
+            };
+        }
+
         if ($A.parseBoolean(a) === true) {
             clearTimeout($A.d.ajaxDocumentCoverFalseTimeout);
             var $oldCover = $("#automizy-document-cover");
@@ -20,16 +53,18 @@ define([
             $text.appendTo($cover);
             $cover.prependTo('body:first');
             $oldCover.remove();
-            $text.html(text[0]);
+
+            $text.html(b[0].text);
             $A.d.ajaxDocumentCoverTimeout = setTimeout(function () {
-                $text.html(text[1]);
+                $text.html(b[1].text);
                 $A.d.ajaxDocumentCoverTimeout = setTimeout(function () {
-                    $text.html(text[2]);
+                    $text.html(b[2].text);
                     $A.d.ajaxDocumentCoverTimeout = setTimeout(function () {
                         $A.ajaxDocumentCover(0);
-                    }, 15000);
-                }, 5000);
-            }, 3000);
+                    }, b[2].time);
+                }, b[1].time);
+            }, b[0].time);
+
         }else{
             $A.d.ajaxDocumentCoverFalseTimeout = setTimeout(function(){
                 clearTimeout($A.d.ajaxDocumentCoverTimeout);

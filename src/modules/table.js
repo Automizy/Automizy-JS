@@ -18,7 +18,7 @@ define([
             $widget:$('<div class="automizy-table-box"></div>'),
             $tableContainerBox:$('<div class="automizy-table-container-box"></div>'),
             $tableContainer:$('<div class="automizy-table-container"></div>'),
-            $table:  $('<table cellpadding="0" cellspacing="0" border="0" class="automizy-table collapsed"></table>'),
+            $table:  $('<table cellpadding="0" cellspacing="0" border="0" class="automizy-table automizy-table-clickable collapsed"></table>'),
             $tbody:  $('<tbody></tbody>'),
             $header:  $('<tr class="automizy-table-header"></tr>'),
             $title: $('<div class="automizy-table-title"></div>'),
@@ -83,6 +83,7 @@ define([
             selectable:false,
             exportable:true,
             openableInlineBox:true,
+            clickableRow:true,
             storeData:false,
             id: 'automizy-table-' + $A.getUniqueString(),
             onPerPage: function(){},
@@ -221,7 +222,7 @@ define([
         t.d.perPageSelect.type('select').options(t.d.perPageList).val(t.d.perPage).label(t.d.perPageLabel).width('83px').change(function(){
             t.d.perPage = this.val();
             if(t.d.storeData){
-                $A.store.set(t.id()+'PerPage', t.d.perPage);
+                $A.store.set(t.id()+'-per-page', t.d.perPage);
             }
             t.d.onPerPage.apply(this, [t, t.d.$widget]);
         }).drawTo(t.d.$perPageBox);
@@ -369,6 +370,8 @@ define([
                     t.inlineButtons(obj.inlineButtons);
                 if (typeof obj.openableInlineBox !== 'undefined')
                     t.openableInlineBox(obj.openableInlineBox);
+                if (typeof obj.clickableRow !== 'undefined')
+                    t.clickableRow(obj.clickableRow);
                 if (typeof obj.beforeOpenInlineBox === 'function')
                     t.beforeOpenInlineBox(obj.beforeOpenInlineBox);
                 if (typeof obj.loadingCellContent !== 'undefined')
@@ -567,7 +570,7 @@ define([
             t.d.perPage = perPage;
             t.d.perPageSelect.val(perPage);
             if(t.d.storeData){
-                $A.store.set(t.id()+'PerPage', t.d.perPage);
+                $A.store.set(t.id()+'-per-page', t.d.perPage);
             }
             if(t.d.hasObject)t.d.onPerPage.apply(t.d.perPageSelect, [t, t.d.$widget]);
             return t;
@@ -648,11 +651,27 @@ define([
         var t = this;
         if (typeof openableInlineBox !== 'undefined') {
             t.d.openableInlineBox = $A.parseBoolean(openableInlineBox);
-            if (openableInlineBox===false)
+            if (openableInlineBox === false) {
                 t.d.$inlineButtonsBox.hide();
+            }else{
+                t.d.$inlineButtonsBox.show();
+            }
             return t;
         }
         return t.d.openableInlineBox;
+    };
+    p.clickableRow = function (clickableRow) {
+        var t = this;
+        if (typeof clickableRow !== 'undefined') {
+            t.d.clickableRow = $A.parseBoolean(clickableRow);
+            if (clickableRow === false) {
+                t.d.$table.removeClass('automizy-table-clickable');
+            }else{
+                t.d.$table.addClass('automizy-table-clickable');
+            }
+            return t;
+        }
+        return t.d.clickableRow;
     };
     p.beforeOpenInlineBox = function (func) {
         var t = this;
@@ -1064,10 +1083,10 @@ define([
                 }
 
                 var value = rowArr[j];
-                if(typeof value === 'undefined'){
+                if(typeof value === 'undefined' || !value){
                     value = '';
                 }
-                if (value instanceof $A.m.Input) {
+                if (typeof value.drawTo === 'function') {
                     value.drawTo($(cell));
                 }else if(value instanceof jQuery){
                     value.appendTo($(cell));
@@ -1207,13 +1226,16 @@ define([
             t.d.inlineButtons = inlineButtons;
             for(var i = 0; i < inlineButtons.length; i++){
                 var inlineButton = inlineButtons[i];
-                $('<a>'+inlineButton.text+'</a>').data('click', inlineButton.click || function(){}).click(function(){
+                var $button = $('<a>'+inlineButton.text+'</a>').data('click', inlineButton.click || function(){}).click(function(){
                     var $t = $(this);
                     var $row = $t.closest('tr').prev();
                     var row = $A.tableRow($row);
                     t.openedRow(row);
                     $t.data('click').apply(row, [t, t.d.$widget]);
                 }).appendTo(t.d.$inlineButtons);
+                if(!inlineButton.permission){
+                    $button.wrap('<span class="automizy-permission-trap"></span>');
+                }
             }
             return t;
         }

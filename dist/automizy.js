@@ -172,6 +172,16 @@ var $A = {};
             }
         });
     };
+    $.fn.disableScroll = function () {
+        return this.each(function(){
+            if (window.addEventListener) // older FF
+                window.addEventListener('DOMMouseScroll', preventDefault, false);
+            this.onwheel = preventDefault; // modern standard
+            window.onmousewheel = document.onmousewheel = preventDefault; // older browsers, IE
+            window.ontouchmove  = preventDefault; // mobile
+            document.onkeydown  = preventDefaultForScrollKeys;
+        });
+    };
 })();
 
 (function(){
@@ -239,6 +249,9 @@ var $A = {};
         var p = module.prototype;
         p.init = p.init || function () {
                 var t = this;
+                if (typeof t.d.permission === 'undefined') {
+                    t.d.permission = true;
+                }
                 if (typeof t.d.create === 'undefined') {
                     t.d.create = function () {};
                 }
@@ -284,15 +297,21 @@ var $A = {};
                 if (typeof obj.skin !== 'undefined') {
                     t.skin(obj.skin);
                 }
+                if (typeof obj.permission !== 'undefined') {
+                    t.permission(obj.permission);
+                }
             };
         p.create = p.create || function (func) {
                 var t = this;
                 if (typeof func === 'function') {
-                    this.d.create = func;
+                    t.d.create = func;
                 } else {
-                    return this.d.create.apply(this, [this, this.d.$widget]);
+                    if(!t.permission()){
+                        return t;
+                    }
+                    return t.d.create.apply(t, [t, t.d.$widget]);
                 }
-                return this;
+                return t;
             };
         p.widget = p.widget || function () {
                 return this.d.$widget;
@@ -324,14 +343,18 @@ var $A = {};
                 var t = this;
                 var $target = $target || $('body');
                 var where = where || 'in';
+                var $elem = t.d.$widget;
                 if(where === 'after'){
-                    t.d.$widget.insertAfter($target);
+                    $elem.insertAfter($target);
                 }else if(where === 'before'){
-                    t.d.$widget.insertBefore($target);
+                    $elem.insertBefore($target);
                 }else{
-                    t.d.$widget.appendTo($target);
+                    $elem.appendTo($target);
                 }
                 t.d.hasObject = true;
+                if(!t.permission()){
+                    return t;
+                }
                 setTimeout(function () {
                     for (var i = 0; i < t.d.createFunctions.length; i++) {
                         t.d.createFunctions[i]();
@@ -487,6 +510,7 @@ var $A = {};
             return t.d.returnValue;
         };
 
+
         p.addFunction = function (functionName, func, name, life) {
             var t = this;
             if (typeof t.f[functionName] === 'undefined') {
@@ -547,6 +571,20 @@ var $A = {};
                 }
             }
             return t;
+        };
+        p.permission = function(value){
+            var t = this;
+            if (typeof value !== 'undefined') {
+                var currentPermission = t.permission();
+                t.d.permission = $A.parseBoolean(value);
+                if(!t.d.permission && currentPermission){
+                    t.widget().addClass('automizy-permission-trap');
+                }else if(t.d.permission && !currentPermission){
+                    t.widget().removeClass('automizy-permission-trap');
+                }
+                return t;
+            }
+            return t.d.permission;
         };
 
 
@@ -868,11 +906,20 @@ var $A = {};
         }
         return text;
     };
+    p.noTranslate = function (text) {
+        for (var i = 1; i < arguments.length; i++) {
+            text = text.replace("%s", arguments[i]);
+        }
+        return text;
+    };
 
     $A.m.i18n = i18n;
     $A.d.i18n = new $A.m.i18n();
     $A.translate = function(){
         return $A.d.i18n.translate.apply($A.d.i18n, arguments);
+    };
+    $A.noTranslate = function(){
+        return $A.d.i18n.noTranslate.apply($A.d.i18n, arguments);
     };
     $A.setTranslate = function(){
         return $A.d.i18n.setTranslate.apply($A.d.i18n, arguments);
@@ -967,12 +1014,18 @@ var $A = {};
 })();
 
 (function(){
+    function pad (str, max) {
+        str = str.toString();
+        return str.length < max ? pad("0" + str, max) : str;
+    }
+    var index = 0;
     $A.getUniqueString = function(){
-        var str = (Math.random() + 1).toString(36).substring(2);
+        var str = pad(index, 8) + '-' + (Math.random() + 1).toString(36).substring(2);
         if($.inArray(str, $A.d.uniques) >= 0){
             return $A.getUniqueString();
         }
         $A.d.uniques.push(str);
+        index++;
         return str;
     }
 })();
@@ -1018,14 +1071,15 @@ var $A = {};
             width: '60%',
             maxWidth: '100%',
             minWidth: '250px',
-            minHeight:'0px',
+            minHeight: '0px',
             zIndex: 2501,
             isClose: true,
             hasObject: false,
             hash: false,
-            openable:true,
-            closable:true,
-            buttonsBox:true,
+            openable: true,
+            closable: true,
+            buttonsBox: true,
+            clickOutClose:false,
             id: 'automizy-dialog-' + $A.getUniqueString(),
             openFunctions: [],
             beforeOpenFunctions: [],
@@ -1043,12 +1097,15 @@ var $A = {};
             t.d.isClose = false;
         }).appendTo(t.d.$cell);
         t.d.$widget.attr('id', t.id()).click(function () {
-            if (t.d.isClose)
-                t.close();
-            else
+            if (t.d.isClose) {
+                if(t.d.clickOutClose) {
+                    t.close();
+                }
+            } else {
                 t.d.isClose = true;
+            }
         });
-        t.d.$close.click(function(){
+        t.d.$close.click(function () {
             t.close();
         });
         t.d.$close.appendTo(t.d.$box);
@@ -1057,42 +1114,63 @@ var $A = {};
         t.d.$buttons.appendTo(t.d.$box);
 
         if (typeof obj !== 'undefined') {
-            if (typeof obj.title !== 'undefined')
+            if (typeof obj.title !== 'undefined') {
                 t.title(obj.title);
-            if (typeof obj.displayHeader !== 'undefined')
+            }
+            if (typeof obj.displayHeader !== 'undefined') {
                 t.displayHeader(obj.displayHeader);
-            if (typeof obj.positionX !== 'undefined')
+            }
+            if (typeof obj.positionX !== 'undefined') {
                 t.positionX(obj.positionX);
-            if (typeof obj.positionY !== 'undefined')
+            }
+            if (typeof obj.positionY !== 'undefined') {
                 t.positionY(obj.positionY);
-            if (typeof obj.position !== 'undefined')
+            }
+            if (typeof obj.position !== 'undefined') {
                 t.position(obj.position);
-            if (typeof obj.width !== 'undefined')
+            }
+            if (typeof obj.width !== 'undefined') {
                 t.width(obj.width);
-            if (typeof obj.maxWidth !== 'undefined')
+            }
+            if (typeof obj.maxWidth !== 'undefined') {
                 t.maxWidth(obj.maxWidth);
-            if (typeof obj.minWidth !== 'undefined')
+            }
+            if (typeof obj.minWidth !== 'undefined') {
                 t.minWidth(obj.minWidth);
-            if (typeof obj.maxWidth !== 'undefined')
+            }
+            if (typeof obj.maxWidth !== 'undefined') {
                 t.maxWidth(obj.maxWidth);
-            if (typeof obj.minHeight !== 'undefined')
+            }
+            if (typeof obj.minHeight !== 'undefined') {
                 t.minHeight(obj.minHeight);
-            if (typeof obj.zIndex !== 'undefined')
+            }
+            if (typeof obj.zIndex !== 'undefined') {
                 t.zIndex(obj.zIndex);
-            if (typeof obj.closable !== 'undefined')
+            }
+            if (typeof obj.closable !== 'undefined') {
                 t.closable(obj.closable);
-            if (typeof obj.buttonsBox !== 'undefined')
+            }
+            if (typeof obj.buttonsBox !== 'undefined') {
                 t.buttonsBox(obj.buttonsBox);
-            if (typeof obj.open === 'function')
+            }
+            if (typeof obj.open === 'function') {
                 t.open(obj.open);
-            if (typeof obj.beforeOpen === 'function')
+            }
+            if (typeof obj.beforeOpen === 'function') {
                 t.beforeOpen(obj.beforeOpen);
-            if (typeof obj.close === 'function')
+            }
+            if (typeof obj.close === 'function') {
                 t.close(obj.close);
-            if (typeof obj.content !== 'undefined')
+            }
+            if (typeof obj.clickOutClose !== 'undefined') {
+                t.clickOutClose(obj.clickOutClose);
+            }
+            if (typeof obj.content !== 'undefined') {
                 t.content(obj.content);
-            if (typeof obj.hash !== 'undefined')
+            }
+            if (typeof obj.hash !== 'undefined') {
                 t.hash(obj.hash);
+            }
             t.initParameter(obj);
         }
     };
@@ -1112,9 +1190,9 @@ var $A = {};
         var t = this;
         if (typeof displayHeader !== 'undefined') {
             t.d.displayHeader = $A.parseBoolean(displayHeader);
-            if(t.d.displayHeader){
+            if (t.d.displayHeader) {
                 t.d.$head.hide();
-            }else{
+            } else {
                 t.d.$head.hide();
             }
             return t;
@@ -1133,7 +1211,7 @@ var $A = {};
         var t = this;
         if (typeof buttonsBox !== 'undefined') {
             t.d.buttonsBox = $A.parseBoolean(buttonsBox);
-            if(!t.d.buttonsBox){
+            if (!t.d.buttonsBox) {
                 t.d.$buttons.hide();
             }
             return t;
@@ -1187,11 +1265,11 @@ var $A = {};
                 $cell.css({verticalAlign: 'middle', paddingTop: 0, paddingBottom: 0});
             } else {
                 /*
-                if ($(t.d.$box).height()+parseInt(y)>$(window).height()){
-                    $(t.d.$content).height($(t.d.$content).height()+($(window).height()-$(t.d.$box).height()-parseInt(y)));
-                }
-                */
-               
+                 if ($(t.d.$box).height()+parseInt(y)>$(window).height()){
+                 $(t.d.$content).height($(t.d.$content).height()+($(window).height()-$(t.d.$box).height()-parseInt(y)));
+                 }
+                 */
+
                 $cell.css({verticalAlign: 'top', paddingTop: y, paddingBottom: y});
             }
             t.d.positionY = y;
@@ -1206,8 +1284,8 @@ var $A = {};
             var pos = xy.split(" ");
             t.positionX(pos[0]);
             t.positionY(pos[1]);
-            t.d.positionX=pos[0];
-            t.d.positionY=pos[1];
+            t.d.positionX = pos[0];
+            t.d.positionY = pos[1];
             t.setMaxHeight();
             return t;
         } else if (typeof xy !== 'undefined') {
@@ -1264,18 +1342,26 @@ var $A = {};
         }
         return t.d.zIndex;
     };
-    p.setMaxHeight = function(){
+    p.clickOutClose = function (clickOutClose) {
+        var t = this;
+        if (typeof clickOutClose !== 'undefined') {
+            t.d.clickOutClose = $A.parseBoolean(clickOutClose);
+            return t;
+        }
+        return t.d.clickOutClose;
+    };
+    p.setMaxHeight = function () {
         var t = this;
         var buttonBoxHeight = 0;
-        if(t.buttonsBox()){
+        if (t.buttonsBox()) {
             buttonBoxHeight = t.d.$buttons.outerHeight();
         }
         var maxHeight = $(window).height() - buttonBoxHeight - t.d.$head.outerHeight();
-        if (!isNaN(parseInt(t.d.positionY))){
+        if (!isNaN(parseInt(t.d.positionY))) {
             maxHeight -= parseInt(t.d.positionY);
         }
         t.d.$content.css({
-            maxHeight:maxHeight
+            maxHeight: maxHeight
         });
         return maxHeight;
     };
@@ -1285,7 +1371,7 @@ var $A = {};
         if (!t.d.hasObject) {
             t.draw();
         }
-        this.d.$widget.ashow();        
+        this.d.$widget.ashow();
         t.setMaxHeight();
         return this;
     };
@@ -1304,13 +1390,21 @@ var $A = {};
         if (typeof func === 'function') {
             t.addFunction.apply(t, ['open', func, name, life]);
         } else {
-            if(t.beforeOpen().returnValue() !== false) {
-                if(t.hash() !== false){
+            if (t.beforeOpen().returnValue() !== false) {
+                if (t.hash() !== false) {
                     $A.hashChange(t.hash());
                 }
                 //t.widget().insertAfter($('.automizy-dialog').last());
-                var zIndex = parseInt($('.automizy-dialog').last().css('z-index')) + 1;
-                t.widget().css('z-index', zIndex);
+                //var zIndex = parseInt($('.automizy-dialog').last().css('z-index')) + 1;
+                var dialogs = $A.getAllDialog();
+                var maxZIndex = 0;
+                for(var i in dialogs){
+                    var dialogZIndex = dialogs[i].zIndex();
+                    if(dialogZIndex  > maxZIndex){
+                        maxZIndex = dialogZIndex;
+                    }
+                }
+                t.zIndex(maxZIndex+1);
                 t.show();
                 t.runFunctions('open');
             }
@@ -1333,10 +1427,10 @@ var $A = {};
         var t = this;
         if (typeof value !== 'undefined') {
             t.d.closable = $A.parseBoolean(value);
-            if(value){
+            if (value) {
                 t.d.$close.show();
             }
-            else{
+            else {
                 t.d.$close.hide();
             }
         } else {
@@ -1349,7 +1443,7 @@ var $A = {};
         if (typeof func === 'function') {
             t.addFunction('close', func, name, life);
         } else {
-            if(t.beforeClose().returnValue() !== false) {
+            if (t.beforeClose().returnValue() !== false) {
                 t.hide();
                 t.runFunctions('close');
             }
@@ -1946,6 +2040,7 @@ var $A = {};
             $widgetHelp: $('<img src="' + $A.images.helpIcon + '" class="automizy-input-help" />'),
             $widgetHelpContent: $('<div class="automizy-input-help-content"><img src="' + $A.images.helpArrow + '" class="automizy-input-help-content-arrow" /></div>'),
             $widgetHelpContentInner: $('<span></span>'),
+            $widgetInputIcon: $('<span class="automizy-input-icon"></span>'),
             $input: $('<input />'),
             $textarea: $('<textarea></textarea>'),
             $select: $('<select></select>'),
@@ -1960,6 +2055,8 @@ var $A = {};
                 blur:0,
                 click:0
             },
+            icon:false,
+            iconPosition:'right',
             multiple: false,
             multiselect: false,
             readonly: false,
@@ -1969,6 +2066,7 @@ var $A = {};
             breakInput: false,
             needModify: false,
             disabled:false,
+            float: 'none',
             labelPosition: 'left',
             labelWidth: '',
             value: '',
@@ -1981,9 +2079,12 @@ var $A = {};
             accept: [],
             items: {},
             itemsArray: [],
+            groups:{},
+            activeGroup:false,
             validator: $A.newValidator(),
             validate: function () {},
             createFunctions: [],
+            automizySelect:false,
             id: 'automizy-input-' + $A.getUniqueString()
         };
         t.f = {};
@@ -1997,7 +2098,9 @@ var $A = {};
         t.d.$loadingBox.appendTo(t.d.$widgetInputBox).html($A.d.elements.$loading.clone());
         t.d.$widgetInputBox.appendTo(t.d.$widget);
         t.d.$widgetLabelAfter.appendTo(t.d.$widget).ahide();
-        t.d.$widgetInputBoxError.appendTo(t.d.$widget);
+        //t.d.$widgetInputBoxError.appendTo(t.d.$widget);
+        t.d.$widgetInputBoxError.appendTo(t.d.$widgetInputBox);
+        t.d.$widgetInputIcon.appendTo(t.d.$widgetInputBox);
         t.d.$widgetHelpContentInner.appendTo(t.d.$widgetHelpContent);
         t.d.$widgetHelpContent.appendTo('body:first');
         t.d.$widgetHelp.appendTo(t.d.$widget).on('mouseenter click', function () {
@@ -2012,7 +2115,6 @@ var $A = {};
             t.d.$widgetHelpContent.stop().fadeOut();
             t.d.$widgetHelp.stop().fadeTo(250, 0.5);
         }).ahide();
-        t.d.$widgetInputBoxError.appendTo(t.d.$widget);
         t.d.$widget.attr('type', 'text').attr('id', t.id()).addClass('automizy-skin-' + t.d.skin);
         t.setupJQueryEvents();
         if (typeof obj !== 'undefined') {
@@ -2090,6 +2192,9 @@ var $A = {};
             if (typeof obj.labelWidth !== 'undefined') {
                 t.labelWidth(obj.labelWidth);
             }
+            if (typeof obj.float !== 'undefined') {
+                t.float(obj.float);
+            }
             if (typeof obj.change === 'function') {
                 t.change(obj.change);
             }
@@ -2122,6 +2227,15 @@ var $A = {};
             }
             if (typeof obj.focus !== 'undefined') {
                 t.focus(obj.focus);
+            }
+            if (typeof obj.icon !== 'undefined') {
+                t.icon(obj.icon);
+            }
+            if (typeof obj.iconPosition !== 'undefined') {
+                t.iconPosition(obj.iconPosition);
+            }
+            if (typeof obj.iconClick === 'function') {
+                t.iconClick(obj.iconClick);
             }
             t.initParameter(obj);
         }
@@ -2299,6 +2413,15 @@ var $A = {};
         }
         return t.d.labelAfter;
     };
+    p.float = function (float) {
+        var t = this;
+        if (typeof float !== 'undefined') {
+            t.d.float = float;
+            t.d.$widget.css('float', float);
+            return t;
+        }
+        return t.d.float;
+    };
     p.needModify = function (needModify) {
         var t = this;
         if (typeof needModify !== 'undefined') {
@@ -2347,6 +2470,9 @@ var $A = {};
     p.val = p.value = function (value) {
         var t = this;
         if (typeof value !== 'undefined') {
+            if (typeof value === 'function') {
+                value = value.call(t, [t]);
+            }
             t.d.value = value;
             if (t.d.type === 'file') {
                 t.input().data('value', value);
@@ -2356,7 +2482,7 @@ var $A = {};
                 t.input().val(value);
             }
             if (t.d.multiselect) {
-                t.input().multiselect('refresh');
+                t.input().multiselect().multiselect('refresh');
             }
             if (t.d.needModify) {
                 t.input().data('originalValue', value);
@@ -2437,7 +2563,7 @@ var $A = {};
             var attributes = t.d.$widgetInput.getAttributes();
             delete attributes.type;
             delete attributes.checked;
-            if (t.d.type === 'select') {
+            if (t.d.type === 'select' || t.d.type === 'automizy-select') {
                 t.d.$widgetInput = $('<select></select>');
             } else if (t.d.type === 'textarea') {
                 t.d.$widgetInput = $('<textarea></textarea>');
@@ -2483,8 +2609,10 @@ var $A = {};
             return t;
         }
         var settings = settings || false;
-        if(t.type() === 'select'){
-            t.multiselect(false);
+        var thisType = t.type();
+        if(thisType === 'select' || thisType === 'automizy-select'){
+            t.d.multiselect=false;
+            t.multiple(false);
         }
         if (t.input().hasClass('hasDatepicker')) {
             t.input().datepicker("destroy");
@@ -2513,8 +2641,10 @@ var $A = {};
                 showTime: true,
                 controlType: 'slider'
             });
-        }else if(type === 'select') {
+        }else if(type === 'select' || type === 'automizy-select') {
             t.type('select');
+        }else if(type === 'multiple_choices') {
+            t.type('select').multiple(true).multiselect(true);
         }
         return t;
     };
@@ -2567,7 +2697,6 @@ var $A = {};
             return t;
         }
         t.d.$widgetInput.attr('multiple', 'multiple');
-        t.d.multiple = true;
 
         return t.d.multiple;
     };
@@ -2588,7 +2717,7 @@ var $A = {};
         t.d.multiselect = true;
         var $w = t.d.$widgetInput;
         setTimeout(function () {
-            $w.multiselect('refresh');
+            $w.multiselect().multiselect('refresh');
         }, 1);
         if (args.length <= 0 || args[0] === true) {
             if (t.d.multiple) {
@@ -2606,11 +2735,19 @@ var $A = {};
     p.options = p.items = function (arr) {
         var t = this;
         if (typeof arr !== 'undefined') {
-            t.d.$widgetInput.find('option').remove();
-            t.addItems(arr);
+            t.d.items = {};
+            t.d.itemsArray = [];
+            t.removeOptions();
+            t.addOptions(arr);
             return t;
         }
         return t.d.items;
+    };
+
+    p.removeOptions = function () {
+        var t = this;
+        t.d.$widgetInput.find('option, optgroup').remove();
+        return t;
     };
 
     p.addOptions = p.addItems = function (arr, before) {
@@ -2656,14 +2793,22 @@ var $A = {};
                         values.push(arr[i][0]);
                     }
                     if (before) {
-                        var $of = t.d.$widgetInput.find('option:first');
+                        var $container = t.d.$widgetInput;
+                        if(!$.isEmptyObject(t.d.groups) && t.d.activeGroup !== false && typeof t.d.groups[t.d.activeGroup] !== 'undefined'){
+                            $container = t.d.groups[t.d.activeGroup];
+                        }
+                        var $of = $container.find('option:first');
                         if ($of.val() == 0) {
                             $option.insertAfter($of);
                         } else {
-                            $option.prependTo(t.d.$widgetInput);
+                            $option.prependTo($container);
                         }
                     } else {
-                        $option.appendTo(t.d.$widgetInput);
+                        if($.isEmptyObject(t.d.groups) || t.d.activeGroup === false || typeof t.d.groups[t.d.activeGroup] === 'undefined'){
+                            $option.appendTo(t.d.$widgetInput);
+                        }else{
+                            $option.appendTo(t.d.groups[t.d.activeGroup]);
+                        }
                     }
                     t.d.items[value] = text;
                 }
@@ -2672,7 +2817,7 @@ var $A = {};
             }
         }
         if (t.d.multiselect) {
-            t.multiselect('refresh');
+            t.multiselect().multiselect('refresh');
         }
         t.val(values || val);
         return t;
@@ -2684,6 +2829,23 @@ var $A = {};
     p.addOptionBefore = p.addItemBefore = function (key, value) {
         var t = this;
         return t.addOptions([[key, (value || key)]], true);
+    };
+    p.group = function(groupName){
+        var t = this;
+
+        if(typeof groupName !== 'undefined'){
+            if(groupName === false){
+                t.d.activeGroup = false;
+            }else if(typeof t.d.groups[groupName] !== 'undefined'){
+                t.d.activeGroup = groupName;
+            }else{
+                t.d.groups[groupName] = $('<optgroup label="' + groupName + '"></optgroup>').appendTo(t.d.$widgetInput);
+                t.d.activeGroup = groupName;
+            }
+            return t;
+        }
+
+        return t.d.activeGroup;
     };
     p.accept = function (arr) {
         var t = this;
@@ -2726,7 +2888,9 @@ var $A = {};
     p.validator = function (validator) {
         var t = this;
         if (typeof validator !== 'undefined') {
-            if (validator instanceof $A.m.Validator) {
+            if(validator === false){
+                t.d.validator = $A.newValidator();
+            }else if (validator instanceof $A.m.Validator) {
                 t.d.validator = validator;
             } else {
                 t.d.validator.set(validator);
@@ -2742,10 +2906,9 @@ var $A = {};
         } else {
             var a = t.validator().execute(t.val());
             if (!a) {
-                t.d.$widgetInputBoxError.html(t.validator().errors().join('<br/>'));
-                t.d.$widget.addClass('error');
+                t.showError(t.validator().errors().join('<br/>'));
             } else {
-                t.d.$widget.removeClass('error');
+                t.hideError();
             }
             t.d.validate.apply(this, [a, this, this.d.$widget]);
             return a;
@@ -2771,9 +2934,21 @@ var $A = {};
         var t = this;
         return t.d.$widgetInput;
     };
-    p.errorBox = function () {
+    p.showError = p.error = function(msg){
         var t = this;
-        return t.d.$widgetInputBoxError;
+        if(typeof msg !== 'undefined') {
+            t.errorBox().html(msg);
+        }
+        t.widget().addClass('error');
+        return t;
+    };
+    p.hideError = function(){
+        var t = this;
+        t.widget().removeClass('error');
+        return t;
+    };
+    p.errorBox = function () {
+        return this.d.$widgetInputBoxError;
     };
     p.rowSpacing = function(value){
         var t = this;
@@ -2793,6 +2968,85 @@ var $A = {};
         t.d.$loadingBox.hide();
         return t;
     };
+    p.thin = function(value){
+        var t = this;
+        if (typeof value !== 'undefined') {
+            value = $A.parseBoolean(value);
+            if(!value){
+                t.widget().removeClass('automizy-input-thin');
+                return t;
+            }
+        }
+        t.widget().addClass('automizy-input-thin');
+        return t;
+    };
+    p.icon = function(value){
+        var t = this;
+        if (typeof value !== 'undefined') {
+            if(value === false){
+                t.d.$widgetInputIcon.css('display', 'none');
+            }else if(value === true){
+                t.d.$widgetInputIcon.css('display', 'inline-block');
+            }else{
+                t.d.icon = value;
+                t.d.$widgetInputIcon.addClass('automizy-icon-'+value);
+                t.d.$widgetInputIcon.css('display', 'inline-block');
+            }
+            t.iconPosition();
+            return t;
+        }
+
+        return t.d.icon;
+    };
+    p.iconPosition = function(value){
+        var t = this;
+        if (typeof value !== 'undefined') {
+            value = value.toLowerCase();
+            if(value === 'left'){
+                t.d.iconPosition = 'left';
+                t.d.$widgetInputIcon.css({
+                    left:'0',
+                    right:'auto'
+                })
+            }else{
+                t.d.iconPosition = 'right';
+                t.d.$widgetInputIcon.css({
+                    left:'auto',
+                    right:'0'
+                })
+            }
+            t.iconPosition();
+            return t;
+        }
+
+        if(t.d.iconPosition === 'left'){
+            t.input().css({
+                paddingLeft:'30px',
+                paddingRight:'8px'
+            })
+        }else{
+            t.input().css({
+                paddingLeft:'8px',
+                paddingRight:'30px'
+            })
+        }
+        return t.d.iconPosition;
+    };
+    p.iconClick = function (func) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.d.$widgetInputIcon.click(function () {
+                func.call(t, [t]);
+            });
+            return t;
+        }
+        t.d.$widgetInputIcon.click();
+        return t;
+    };
+    p.automizySelect = function(){
+        return this.input().automizySelect();
+    };
+
 
     $A.initBasicFunctions(Input, "Input", ["change", "keyup", "enter", "focus", "blur", "click"]);
 })();
@@ -3727,7 +3981,7 @@ var $A = {};
             $widget:$('<div class="automizy-table-box"></div>'),
             $tableContainerBox:$('<div class="automizy-table-container-box"></div>'),
             $tableContainer:$('<div class="automizy-table-container"></div>'),
-            $table:  $('<table cellpadding="0" cellspacing="0" border="0" class="automizy-table collapsed"></table>'),
+            $table:  $('<table cellpadding="0" cellspacing="0" border="0" class="automizy-table automizy-table-clickable collapsed"></table>'),
             $tbody:  $('<tbody></tbody>'),
             $header:  $('<tr class="automizy-table-header"></tr>'),
             $title: $('<div class="automizy-table-title"></div>'),
@@ -3792,6 +4046,7 @@ var $A = {};
             selectable:false,
             exportable:true,
             openableInlineBox:true,
+            clickableRow:true,
             storeData:false,
             id: 'automizy-table-' + $A.getUniqueString(),
             onPerPage: function(){},
@@ -3930,7 +4185,7 @@ var $A = {};
         t.d.perPageSelect.type('select').options(t.d.perPageList).val(t.d.perPage).label(t.d.perPageLabel).width('83px').change(function(){
             t.d.perPage = this.val();
             if(t.d.storeData){
-                $A.store.set(t.id()+'PerPage', t.d.perPage);
+                $A.store.set(t.id()+'-per-page', t.d.perPage);
             }
             t.d.onPerPage.apply(this, [t, t.d.$widget]);
         }).drawTo(t.d.$perPageBox);
@@ -4078,6 +4333,8 @@ var $A = {};
                     t.inlineButtons(obj.inlineButtons);
                 if (typeof obj.openableInlineBox !== 'undefined')
                     t.openableInlineBox(obj.openableInlineBox);
+                if (typeof obj.clickableRow !== 'undefined')
+                    t.clickableRow(obj.clickableRow);
                 if (typeof obj.beforeOpenInlineBox === 'function')
                     t.beforeOpenInlineBox(obj.beforeOpenInlineBox);
                 if (typeof obj.loadingCellContent !== 'undefined')
@@ -4276,7 +4533,7 @@ var $A = {};
             t.d.perPage = perPage;
             t.d.perPageSelect.val(perPage);
             if(t.d.storeData){
-                $A.store.set(t.id()+'PerPage', t.d.perPage);
+                $A.store.set(t.id()+'-per-page', t.d.perPage);
             }
             if(t.d.hasObject)t.d.onPerPage.apply(t.d.perPageSelect, [t, t.d.$widget]);
             return t;
@@ -4357,11 +4614,27 @@ var $A = {};
         var t = this;
         if (typeof openableInlineBox !== 'undefined') {
             t.d.openableInlineBox = $A.parseBoolean(openableInlineBox);
-            if (openableInlineBox===false)
+            if (openableInlineBox === false) {
                 t.d.$inlineButtonsBox.hide();
+            }else{
+                t.d.$inlineButtonsBox.show();
+            }
             return t;
         }
         return t.d.openableInlineBox;
+    };
+    p.clickableRow = function (clickableRow) {
+        var t = this;
+        if (typeof clickableRow !== 'undefined') {
+            t.d.clickableRow = $A.parseBoolean(clickableRow);
+            if (clickableRow === false) {
+                t.d.$table.removeClass('automizy-table-clickable');
+            }else{
+                t.d.$table.addClass('automizy-table-clickable');
+            }
+            return t;
+        }
+        return t.d.clickableRow;
     };
     p.beforeOpenInlineBox = function (func) {
         var t = this;
@@ -4773,10 +5046,10 @@ var $A = {};
                 }
 
                 var value = rowArr[j];
-                if(typeof value === 'undefined'){
+                if(typeof value === 'undefined' || !value){
                     value = '';
                 }
-                if (value instanceof $A.m.Input) {
+                if (typeof value.drawTo === 'function') {
                     value.drawTo($(cell));
                 }else if(value instanceof jQuery){
                     value.appendTo($(cell));
@@ -4916,13 +5189,16 @@ var $A = {};
             t.d.inlineButtons = inlineButtons;
             for(var i = 0; i < inlineButtons.length; i++){
                 var inlineButton = inlineButtons[i];
-                $('<a>'+inlineButton.text+'</a>').data('click', inlineButton.click || function(){}).click(function(){
+                var $button = $('<a>'+inlineButton.text+'</a>').data('click', inlineButton.click || function(){}).click(function(){
                     var $t = $(this);
                     var $row = $t.closest('tr').prev();
                     var row = $A.tableRow($row);
                     t.openedRow(row);
                     $t.data('click').apply(row, [t, t.d.$widget]);
                 }).appendTo(t.d.$inlineButtons);
+                if(!inlineButton.permission){
+                    $button.wrap('<span class="automizy-permission-trap"></span>');
+                }
             }
             return t;
         }
@@ -5371,6 +5647,897 @@ var $A = {};
 })();
 
 (function(){
+    var SelectOptionBox = function (obj) {
+        var t = this;
+        t.d = {
+            $widget: $('<span class="automizy-select-option-box"></span>'),
+            $options:$('<table border="0" cellpadding="0" cellspacing="0" class="automizy-select-option-table"></table>'),
+            selectModule:false,
+            maxHeight: '150px',
+            position:'auto',
+            id: 'automizy-select-option-box-' + $A.getUniqueString()
+        };
+        t.f = {};
+        t.init();
+
+        t.d.$options.appendTo(t.d.$widget);
+
+        if (typeof obj !== 'undefined') {
+            t.initParameter(obj);
+        }
+    };
+
+    var p = SelectOptionBox.prototype;
+
+    p.selectModule = function (selectModule) {
+        var t = this;
+        if (typeof selectModule !== 'undefined') {
+            t.d.selectModule = selectModule;
+            return t;
+        }
+        return t.d.selectModule;
+    };
+    p.maxHeight = function (maxHeight) {
+        var t = this;
+        if (typeof maxHeight !== 'undefined') {
+            t.d.maxHeight = maxHeight;
+            t.widget().css('max-height', t.d.maxHeight);
+            t.rePositioning();
+            return t;
+        }
+        return t.d.maxHeight;
+    };
+    p.position = function (position) {
+        var t = this;
+        if (typeof position !== 'undefined') {
+            t.d.position = position;
+            t.rePositioning();
+            return t;
+        }
+        return t.d.position;
+    };
+    p.rePositioning = function(){
+        var t = this;
+
+        var position = t.position();
+        var maxHeight = parseInt(t.maxHeight());
+        var $input = t.selectModule().widget();
+        var inputOffset = $input.offset();
+        var inputOffsetTop = inputOffset.top;
+        var inputOffsetLeft = inputOffset.left;
+        var inputHeight = $input.height();
+        var inputWidth = $input.outerWidth();
+        var windowHeight = window.innerHeight;
+
+        if(position === 'auto'){
+            if(inputOffsetTop + inputHeight + maxHeight >= windowHeight){
+                position = 'top';
+            }else{
+                position = 'bottom';
+            }
+        }
+
+        if(position === 'top'){
+            t.widget().css({
+                bottom:(windowHeight - inputOffsetTop) + 'px',
+                left:inputOffsetLeft + 'px',
+                top:'auto',
+                width:inputWidth + 'px'
+            })
+        }else{
+            t.widget().css({
+                bottom:'auto',
+                left:inputOffsetLeft + 'px',
+                top:(inputOffsetTop + inputHeight) + 'px',
+                width:inputWidth + 'px'
+            })
+        }
+
+        return t;
+    };
+
+
+
+    p.beforeOpen = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('beforeOpen', func, name, life);
+        } else {
+            var a = t.runFunctions('beforeOpen');
+            t.returnValue(!(t.selectModule().disabled() === true || a[0] === false || a[1] === false));
+        }
+        return t;
+    };
+    p.beforeClose = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('beforeClose', func, name, life);
+        } else {
+            var a = t.runFunctions('beforeClose');
+            t.returnValue(!(t.selectModule().disabled() === true || a[0] === false || a[1] === false));
+        }
+        return t;
+    };
+    p.open = function (func, name, life) {
+        var t = this;
+        $A.closeAllSelectBox();
+        if(t.d.opened){
+            return t;
+        }
+        t.d.opened = true;
+        if (typeof func === 'function') {
+            t.addFunction('open', func, name, life);
+        } else {
+            if (t.beforeOpen().returnValue() !== false) {
+                t.rePositioning();
+                t.show();
+                t.runFunctions('open');
+                t.selectModule().widget().addClass('automizy-active');
+            }
+        }
+        return t;
+    };
+    p.close = function (func, name, life) {
+        var t = this;
+        if(!t.d.opened){
+            return t;
+        }
+        t.d.opened = false;
+        if (typeof func === 'function') {
+            t.addFunction('close', func, name, life);
+        } else {
+            if (t.beforeClose().returnValue() !== false) {
+                t.hide();
+                t.runFunctions('close');
+                t.selectModule().widget().removeClass('automizy-active');
+            }
+        }
+        return t;
+    };
+
+
+    $A.initBasicFunctions(SelectOptionBox, "SelectOptionBox", ['beforeOpen', 'beforeClose', 'open', 'close']);
+    $A.closeAllSelectBox = function(){
+        var boxes = $A.getAllSelectOptionBox();
+        for(var i in boxes){
+            boxes[i].close();
+        }
+    };
+    $A.resizeAllSelectBox = function(){
+        var boxes = $A.getAllSelectOptionBox();
+        for(var i in boxes){
+            boxes[i].rePositioning();
+        }
+    };
+
+
+    $(window).on('resize', function(){
+        $A.resizeAllSelectBox();
+    });
+    $(document).on('click', function(event) {
+        if(!$(event.target).closest('.automizy-select-option-box, .automizy-select').length) {
+            $A.closeAllSelectBox();
+        }
+    });
+    $(document).on('mousewheel DOMMouseScroll', function(event) {
+        if(!$(event.target).closest('.automizy-select-option-box').length) {
+            $A.closeAllSelectBox();
+        }
+    })
+
+
+})();
+
+(function(){
+    var SelectOption = function (obj) {
+        var t = this;
+        t.d = {
+            $widget: $('<tr class="automizy-select-option-tr automizy-has-select"></tr>'),
+            $widgetTdIcon: $('<td class="automizy-select-option-td-icon"></td>'),
+            $widgetTdContent: $('<td class="automizy-select-option-td-content"></td>'),
+            $widgetTdCheck: $('<td class="automizy-select-option-td-check"></td>'),
+            $option:$('<option></option>'),
+            selectModule:false,
+            selectOptionBoxModule:false,
+            value: '',
+            html:'',
+            textValue:false,
+            group:'',
+            disabled: false,
+            selected:false,
+            hasSelect:false,
+            hasIcon:false,
+            id: 'automizy-select-option-' + $A.getUniqueString()
+        };
+        t.f = {};
+        t.init();
+
+        t.d.$widgetTdIcon.appendTo(t.d.$widget);
+        t.d.$widgetTdContent.appendTo(t.d.$widget);
+        t.d.$widgetTdCheck.appendTo(t.d.$widget);
+
+
+        if (typeof obj !== 'undefined') {
+            if (typeof obj.selectModule !== 'undefined') {
+                t.selectModule(obj.selectModule);
+            }
+            if (typeof obj.selectOptionBoxModule !== 'undefined') {
+                t.selectOptionBoxModule(obj.selectOptionBoxModule);
+            }
+            if (typeof obj.value !== 'undefined') {
+                t.value(obj.value);
+            }
+            if (typeof obj.textValue !== 'undefined') {
+                t.textValue(obj.textValue);
+            }
+            if (typeof obj.html !== 'undefined') {
+                t.html(obj.html);
+            }
+            if (typeof obj.disabled !== 'undefined') {
+                t.disabled(obj.disabled);
+            }
+            if (typeof obj.selected !== 'undefined') {
+                t.selected(obj.selected);
+            }
+            if (typeof obj.group !== 'undefined') {
+                t.group(obj.group);
+            }
+            t.initParameter(obj);
+        }
+
+        t.widget().click(function(){
+            if(t.disabled()){
+                return t;
+            }
+            if(t.selectModule().multiple()){
+                t.toggleSelect();
+            }else{
+                t.selectModule().unselectAll().close();
+                t.toggleSelect();
+            }
+            return t;
+        })
+    };
+
+    var p = SelectOption.prototype;
+
+    p.selectModule = function (selectModule) {
+        var t = this;
+        if (typeof selectModule !== 'undefined') {
+            t.d.selectModule = selectModule;
+
+            var $select = t.d.selectModule.originalInput();
+            if(typeof $select.input === 'function'){
+                $select = originalInput.input();
+            }
+            var value = t.d.$option.attr('value');
+            var $options = $select.find('option[value="'+value+'"]');
+            if($options.length <= 0){
+                t.d.$option.appendTo($select);
+            }else{
+                t.d.$option = $options.eq(0);
+            }
+
+            return t;
+        }
+        return t.d.selectModule;
+    };
+    p.selectOptionBoxModule = function (selectOptionBoxModule) {
+        var t = this;
+        if (typeof selectOptionBoxModule !== 'undefined') {
+            t.d.selectOptionBoxModule = selectOptionBoxModule;
+            t.drawTo(t.d.selectOptionBoxModule.d.$options);
+            return t;
+        }
+        return t.d.selectOptionBoxModule;
+    };
+    p.val = p.value = function (value) {
+        var t = this;
+        if (typeof value !== 'undefined') {
+            t.d.value = value;
+            if(t.textValue() === false){
+                t.textValue(t.d.value);
+            }
+
+            var $select = t.d.selectModule.originalInput();
+            if(typeof $select.input === 'function'){
+                $select = originalInput.input();
+            }
+            var $options = $select.find('option[value="'+t.d.value+'"]');
+            if($options.length <= 0){
+                t.d.$option.attr('value', t.d.value);
+            }else{
+                t.d.$option.remove();
+                t.d.$option = $options.eq(0);
+            }
+
+            return t;
+        }
+        return t.d.value;
+    };
+    p.textValue = function (textValue) {
+        var t = this;
+        if (typeof textValue !== 'undefined') {
+            t.d.textValue = textValue;
+            t.d.$option.html(t.d.textValue);
+            return t;
+        }
+        return t.d.textValue;
+    };
+    p.html = function (html) {
+        var t = this;
+        if (typeof html !== 'undefined') {
+            t.d.html = html;
+            if(t.textValue() === false || t.textValue() == t.val()){
+                t.textValue(t.d.html);
+            }
+            t.d.$widgetTdContent.html(t.d.html);
+            return t;
+        }
+        return t.d.html;
+    };
+    p.group = function (group) {
+        var t = this;
+        if (typeof group !== 'undefined') {
+            var selectModule = t.selectModule();
+            if(group === false){
+                t.widget().appendTo(t.selectOptionBoxModule().d.$options);
+                selectModule.cleanGroups();
+            }
+            t.d.group = group;
+            var groups = selectModule.d.groups;
+            if(typeof groups[t.d.group] === 'undefined'){
+                groups[t.d.group] = {
+                    $titleTr:$('<tr class="automizy-select-group"></tr>'),
+                    $titleTd:$('<td colspan="3" class="automizy-select-group-title">'+t.d.group+'</td>'),
+                    $separatorTr:$('<tr class="automizy-select-group-separator-tr"></tr>'),
+                    $separatorTd:$('<td colspan="3" class="automizy-select-group-separator-td"></td>')
+                };
+                var $options = t.selectOptionBoxModule().d.$options;
+                groups[t.d.group].$titleTr.appendTo($options);
+                groups[t.d.group].$titleTd.appendTo(groups[t.d.group].$titleTr);
+                groups[t.d.group].$separatorTr.appendTo($options);
+                groups[t.d.group].$separatorTd.appendTo(groups[t.d.group].$separatorTr);
+            }
+
+            var theGroup = groups[t.d.group];
+            t.widget().addClass('automizy-has-group').insertBefore(theGroup.$separatorTr);
+            return t;
+        }
+        return t.d.group;
+    };
+    p.disabled = function (disabled) {
+        var t = this;
+        if (typeof disabled !== 'undefined') {
+            t.d.disabled = $A.parseBoolean(disabled);
+            if(t.d.disabled === true){
+                t.widget().addClass('automizy-disabled');
+            }else{
+                t.widget().removeClass('automizy-disabled');
+            }
+            return t;
+        }
+        return t.d.disabled;
+    };
+    p.disable = function () {
+        return this.disabled(true);
+    };
+    p.enable = function () {
+        return this.disabled(false);
+    };
+    p.selected = function (selected, triggerChange) {
+        var t = this;
+        if(typeof triggerChange !== 'undefined'){
+            var triggerChange = true;
+        }else{
+            triggerChange = $A.parseBoolean(triggerChange);
+        }
+        if (typeof selected !== 'undefined') {
+            t.d.selected = $A.parseBoolean(selected);
+            var selectModule = t.selectModule();
+            if(t.d.selected === true){
+                t.widget().addClass('automizy-selected');
+                t.d.$option.prop("selected", true);
+            }else{
+                t.widget().removeClass('automizy-selected');
+                t.d.$option.prop("selected", false);
+            }
+            selectModule.refreshValue();
+            if(triggerChange){
+                selectModule.originalInput().change();
+            }
+            return t;
+        }
+        return t.d.selected;
+    };
+    p.toggleSelect = function () {
+        return this.selected(!this.selected());
+    };
+    p.select = function () {
+        return this.selected(true);
+    };
+    p.unselect = function () {
+        return this.selected(false);
+    };
+    p.hasSelect = function(hasSelect){
+        var t = this;
+        if (typeof hasSelect !== 'undefined') {
+            t.d.hasSelect = $A.parseBoolean(hasSelect);
+            if(t.d.hasSelect === true){
+                t.widget().addClass('automizy-has-select');
+            }else{
+                t.widget().removeClass('automizy-has-select');
+            }
+            return t;
+        }
+        return t.d.hasSelect;
+    };
+
+
+    p.icon = function(o){
+        var t = this;
+        if (typeof o !== 'undefined') {
+            if(o === false){
+
+            } else if(typeof o === 'string'){
+                t.d.icon = o;
+                t.widget().addClass('automizy-icon-'+o);
+            } else {
+                var icon = {
+                    url: '',
+                    width: '14px',
+                    height: '14px',
+                    bgPositionX: 'center',
+                    bgPositionY: 'center',
+                    align: 'center',
+                    valign: 'middle'
+                };
+
+                for (var i in icon) {
+                    if (typeof o[i] !== 'undefined') {
+                        icon[i] = o[i];
+                    }
+                    t.d.icon[i] = icon[i];
+                }
+            }
+            return t;
+        }
+
+        return t.d.icon;
+
+    };
+    p.hasIcon = function(hasIcon){
+        var t = this;
+        if (typeof hasIcon !== 'undefined') {
+            t.d.hasIcon = $A.parseBoolean(hasIcon);
+            if(t.d.hasIcon === true){
+                t.widget().addClass('automizy-has-icon');
+            }else{
+                t.widget().removeClass('automizy-has-icon');
+            }
+            return t;
+        }
+        return t.d.hasIcon;
+    };
+
+
+
+    p.remove = function(){
+        var t = this;
+        if (typeof func === 'function') {
+            t.d.remove = func;
+            return this;
+        }
+        t.d.remove.apply(t, [t, t.d.$widget]);
+        t.widget().remove();
+        delete $A.getSelectOption[t.id()];
+        return true;
+    };
+
+
+    $A.initBasicFunctions(SelectOption, "SelectOption", []);
+
+
+})();
+
+(function(){
+    var Select = function (obj) {
+        var t = this;
+        t.d = {
+            $widget: $('<div class="automizy-select automizy-empty"></div>'),
+            $widgetTable: $('<table border="0" cellpadding="0" cellspacing="0" class="automizy-select-table"></table>'),
+            $widgetTr: $('<tr class="automizy-select-tr"></tr>'),
+            $widgetTdIcon: $('<td class="automizy-select-td-icon"></td>'),
+            $widgetTdContent: $('<td class="automizy-select-td-content"></td>'),
+            $widgetTdContentDiv: $('<div class="automizy-select-td-content-div"></div>'),
+            $widgetTdArrow: $('<td class="automizy-select-td-arrow"></td>'),
+            originalInput: $('<select></select>').data('automizy-select-remove', true),
+            optionBox:$A.newSelectOptionBox().selectModule(t),
+            options:[],
+            groups:{},
+            value: null,
+            content:false,
+            multiple:false,
+            disabled: false,
+            emptyText:$A.translate('Select an option'),
+            selectedText:$A.translate('# items selected'),
+            maxVisibleItems:2,
+            width: 'auto',
+            minWidth: 180,
+            height: 'auto',
+            id: 'automizy-select-' + $A.getUniqueString()
+        };
+        t.f = {};
+        t.init();
+
+
+        t.d.$widgetTable.appendTo(t.d.$widget);
+        t.d.$widgetTr.appendTo(t.d.$widgetTable);
+        t.d.$widgetTdIcon.appendTo(t.d.$widgetTr);
+        t.d.$widgetTdContent.appendTo(t.d.$widgetTr);
+        t.d.$widgetTdContentDiv.appendTo(t.d.$widgetTdContent).html(t.d.emptyText);
+        t.d.$widgetTdArrow.appendTo(t.d.$widgetTr);
+
+
+        if (typeof obj !== 'undefined') {
+            t.initParameter(obj);
+        }
+
+        t.widget().click(function(){
+            t.open();
+        })
+    };
+
+    var p = Select.prototype;
+
+    p.originalInput = function (originalInput) {
+        var t = this;
+        if (typeof originalInput !== 'undefined') {
+            if(t.d.originalInput.data('automizy-select-remove') == true){
+                t.d.originalInput.remove();
+            }
+            t.d.originalInput = originalInput;
+            var $elem;
+            if(t.width() === 'auto'){
+                t.width(t.d.originalInput.width());
+            }
+            /*if(t.height() === 'auto'){
+                t.height(t.d.originalInput.height());
+            }*/
+            if(typeof t.d.originalInput.input === 'function'){
+                $elem = t.d.originalInput.input();
+            }else{
+                $elem = t.d.originalInput;
+            }
+            t.widget().insertAfter($elem);
+            $elem.hide();
+            $elem.data('automizy-select', t);
+            t.d.originalInput.data('automizy-select', t);
+            return t;
+        }
+        return t.d.originalInput;
+    };
+    p.optionBox = function () {
+        return this.d.optionBox;
+    };
+    p.val = p.value = function (value) {
+        var t = this;
+        if (typeof value !== 'undefined') {
+            t.d.value = value;
+            t.unselectAll();
+            if(typeof t.d.value === 'object' || typeof t.d.value === 'array'){
+                for(var i = 0; i < t.d.options.length; i++){
+                    for(var j = 0; j < t.d.value.length; j++){
+                        if(t.d.options[i].val() == t.d.value[j]){
+                            t.d.options[i].select();
+                        }
+                    }
+                }
+            }else{
+                for(var i = 0; i < t.d.options.length; i++){
+                    if(t.d.options[i].val() == t.d.value){
+                        t.d.options[i].select();
+                        break;
+                    }
+                }
+            }
+            t.d.originalInput.val(t.d.value);
+            return t;
+        }
+        return t.d.value;
+    };
+    p.content = function (content) {
+        var t = this;
+        if (typeof content !== 'undefined') {
+            t.d.content = content;
+            t.d.$widgetTdContentDiv.html(t.d.content);
+            return t;
+        }
+        return t.d.content;
+    };
+    p.icon = function (icon) {
+        var t = this;
+        if (typeof icon !== 'undefined') {
+            t.d.icon = icon;
+            t.d.$widgetTdIcon.html(t.d.content);
+            return t;
+        }
+        return t.d.content;
+    };
+    p.multiple = function (multiple) {
+        var t = this;
+        if (typeof multiple !== 'undefined') {
+            t.d.multiple = $A.parseBoolean(multiple);
+            if(typeof t.d.originalInput.multiple !== 'undefined'){
+                t.d.originalInput.multiple(t.d.multiple);
+            }else{
+                t.d.originalInput.attr('multiple', t.d.multiple);
+            }
+
+            if(t.d.multiple === true){
+                t.widget().addClass('automizy-multiple');
+            }else{
+                t.widget().removeClass('automizy-multiple');
+            }
+
+            return t;
+        }
+        return t.d.multiple;
+    };
+    p.disabled = function (disabled) {
+        var t = this;
+        if (typeof disabled !== 'undefined') {
+            t.d.disabled = $A.parseBoolean(disabled);
+            if(typeof t.d.originalInput.disabled !== 'undefined'){
+                t.d.originalInput.disabled(t.d.disabled);
+            }else{
+                t.d.originalInput.attr('disabled', disabled);
+            }
+            return t;
+        }
+        return t.d.disabled;
+    };
+    p.disable = function () {
+        return this.disabled(true);
+    };
+    p.enable = function () {
+        return this.disabled(false);
+    };
+    p.unselectAll = function () {
+        var t = this;
+        for(var i = 0; i < t.d.options.length; i++){
+            t.d.options[i].unselect();
+        }
+        return t;
+    };
+    p.width = function (width) {
+        var t = this;
+        if (typeof width !== 'undefined') {
+            t.d.width = Math.max(width, t.minWidth());
+            t.widget().css('width', t.d.width);
+            t.d.$widgetTdContentDiv.css('max-width', t.widget().width() - 12 + 'px');
+            return t;
+        }
+        return t.d.width;
+    };
+    p.minWidth = function (minWidth) {
+        var t = this;
+        if (typeof minWidth !== 'undefined') {
+            t.d.minWidth = minWidth;
+            return t;
+        }
+        return t.d.minWidth;
+    };
+    /*p.height = function (height) {
+        var t = this;
+        if (typeof height !== 'undefined') {
+            t.d.height = height;
+            t.d.$widgetTable.css('height', t.d.height);
+            return t;
+        }
+        return t.d.height;
+    };*/
+    p.refreshValue = function () {
+        var t = this;
+        var options = t.d.options;
+        var textValues = [];
+        var values = [];
+
+        for(var i = 0; i < options.length; i++){
+            if(options[i].selected()){
+                textValues.push(options[i].textValue());
+                values.push(options[i].val());
+            }
+        }
+        if(textValues.length <= 0){
+            t.content(t.emptyText());
+            t.widget().addClass('automizy-empty');
+        }else {
+            if(textValues.length > t.maxVisibleItems()){
+                t.content(t.selectedText().replace("#", textValues.length));
+            }else {
+                t.content(textValues.join(', '));
+            }
+            t.widget().removeClass('automizy-empty');
+        }
+
+        if(values.length > 0) {
+            if (t.multiple()) {
+                t.d.value = values;
+            } else {
+                t.d.value = values[0];
+            }
+            t.originalInput().val(t.d.value);
+        }else{
+            t.d.value = null;
+            t.originalInput().prop("selectedIndex", -1);
+        }
+
+        return t;
+    };
+    p.cleanGroups = function () {
+        var t = this;
+        var groups = t.d.groups;
+        var usableGroups = [];
+        var options = t.d.options;
+        for(var i = 0; i < options.length; i++){
+            var group = options[i].group();
+            if(usableGroups.indexOf(group) < 0){
+                usableGroups.push(group);
+            }
+        }
+        for(var i in groups){
+            if(usableGroups.indexOf(i) < 0){
+                groups[i].$titleTd.remove();
+                groups[i].$separatorTd.remove();
+                groups[i].$titleTr.remove();
+                groups[i].$separatorTr.remove();
+                delete groups[i];
+            }
+        }
+        return t;
+    };
+    p.emptyText = function(emptyText){
+        var t = this;
+        if (typeof emptyText !== 'undefined') {
+            t.d.emptyText = emptyText;
+            return t;
+        }
+        return t.d.emptyText;
+    };
+    p.selectedText = function(selectedText){
+        var t = this;
+        if (typeof selectedText !== 'undefined') {
+            t.d.selectedText = selectedText;
+            return t;
+        }
+        return t.d.selectedText;
+    };
+    p.maxVisibleItems = function(maxVisibleItems){
+        var t = this;
+        if (typeof maxVisibleItems !== 'undefined') {
+            t.d.maxVisibleItems = parseInt(maxVisibleItems);
+            return t;
+        }
+        return t.d.maxVisibleItems;
+    };
+
+
+    p.removeOptions = function () {
+        var t = this;
+        for(var i = 0; i < t.d.options.length; i++){
+            t.d.options[i].remove();
+        }
+        t.cleanGroups();
+        return t;
+    };
+    p.removeOption = function (value) {
+        var t = this;
+        for(var i = 0; i < t.d.options.length; i++){
+            if(t.d.options[i].val() == value){
+                t.d.options[i].remove();
+            }
+        }
+        t.cleanGroups();
+        return t;
+    };
+    p.addOption = function(option){
+        return this.addOptions([option]);
+    };
+    p.options = function (options) {
+        var t = this;
+        if (typeof options !== 'undefined') {
+            t.removeOptions();
+            t.addOptions(options);
+            return t;
+        }
+        return t.d.options;
+    };
+    p.addOptions = function(options, before){
+        var t = this;
+        var val = t.val();
+        var before = before || false;
+        for(var i = 0; i < options.length; i++){
+            options[i].selectModule = t;
+            options[i].selectOptionBoxModule = t.optionBox();
+            if(options[i].selected === true){
+                hasSelected = true;
+            }
+            var option = $A.newSelectOption(options[i], false);
+            t.d.options.push(option);
+        }
+        t.refreshValue();
+        t.originalInput().change();
+        return t;
+    };
+
+
+    p.beforeOpen = function (func, name, life) {
+        return this.d.optionBox.beforeOpen.apply(this.d.optionBox, [func, name, life]);
+    };
+    p.beforeClose = function (func, name, life) {
+        return this.d.optionBox.beforeClose.apply(this.d.optionBox, [func, name, life]);
+    };
+    p.open = function (func, name, life) {
+        return this.d.optionBox.open.apply(this.d.optionBox, [func, name, life]);
+    };
+    p.close = function (func, name, life) {
+        return this.d.optionBox.close.apply(this.d.optionBox, [func, name, life]);
+    };
+
+    $A.initBasicFunctions(Select, "Select", []);
+
+
+    $.fn.automizySelect = function () {
+        var lastElement = false;
+        if(typeof this.data('automizy-select') !== 'undefined'){
+            return this.data('automizy-select');
+        }
+        this.each(function(){
+            var selectModule = $A.newSelect();
+            var $t = $(this);
+
+            if($t.prop("tagName").toLowerCase() !== 'select'){
+                var $newElem = $('<select></select>');
+                $.each(this.attributes, function() {
+                    $newElem.attr(this.name, this.value);
+                });
+                $t.replaceWith($newElem);
+                $t = $newElem;
+            }
+
+
+            selectModule.multiple($t.is("[multiple]")).originalInput($t);
+
+            var options = [];
+            $t.find('option').each(function(){
+                var $to = $(this);
+                var option = {
+                    value:$to.attr('value'),
+                    html:$to.html(),
+                    disabled:$to.is(':disabled'),
+                    selected:$to.is(':selected')
+                };
+                var optgroup = $to.closest('optgroup');
+                if(optgroup.length >= 0){
+                    option.group = optgroup.attr('label');
+                }
+
+                options.push(option);
+            });
+            selectModule.options(options);
+
+            $t.data('automizy-select', selectModule);
+
+            lastElement = selectModule;
+        });
+        return lastElement;
+    };
+
+
+})();
+
+(function(){
     if (!Date.now) {
         Date.now = function () {
             return new Date().getTime();
@@ -5508,14 +6675,47 @@ var $A = {};
 (function(){
 
     $A.ajaxDocumentCover = function (a, b) {
-        if(typeof a === 'undefined')var a = false;
-        if(typeof b !== 'array' && typeof b !== 'object')b = [];
-        
-        var text = [
-            b[0] || '',
-            b[1] || $A.translate("Still working."),
-            b[2] || $A.translate("Little more patience please, I'm still working.")
-        ]
+        if(typeof a === 'undefined'){
+            var a = false;
+        }
+        if(typeof b === 'undefined'){
+            var b = ['auto', 'auto', 'auto'];
+        }
+
+        if(typeof b[0] === 'undefined'){
+            b[0] = {
+                text:'',
+                time:0
+            }
+        }else if(b[0] === 'auto'){
+            b[0] = {
+                text:'',
+                time:3000
+            };
+        }
+        if(typeof b[1] === 'undefined'){
+            b[1] = {
+                text:'',
+                time:0
+            }
+        }else if(b[1] === 'auto'){
+            b[1] = {
+                text:$A.translate("Still working."),
+                time:5000
+            };
+        }
+        if(typeof b[2] === 'undefined'){
+            b[2] = {
+                text:'',
+                time:0
+            }
+        }else if(b[2] === 'auto'){
+            b[2] = {
+                text:$A.translate("Little more patience please, I'm still working."),
+                time:15000
+            };
+        }
+
         if ($A.parseBoolean(a) === true) {
             clearTimeout($A.d.ajaxDocumentCoverFalseTimeout);
             var $oldCover = $("#automizy-document-cover");
@@ -5524,16 +6724,18 @@ var $A = {};
             $text.appendTo($cover);
             $cover.prependTo('body:first');
             $oldCover.remove();
-            $text.html(text[0]);
+
+            $text.html(b[0].text);
             $A.d.ajaxDocumentCoverTimeout = setTimeout(function () {
-                $text.html(text[1]);
+                $text.html(b[1].text);
                 $A.d.ajaxDocumentCoverTimeout = setTimeout(function () {
-                    $text.html(text[2]);
+                    $text.html(b[2].text);
                     $A.d.ajaxDocumentCoverTimeout = setTimeout(function () {
                         $A.ajaxDocumentCover(0);
-                    }, 15000);
-                }, 5000);
-            }, 3000);
+                    }, b[2].time);
+                }, b[1].time);
+            }, b[0].time);
+
         }else{
             $A.d.ajaxDocumentCoverFalseTimeout = setTimeout(function(){
                 clearTimeout($A.d.ajaxDocumentCoverTimeout);
@@ -6260,9 +7462,221 @@ var $A = {};
 })();
 
 (function(){
+
+    $A.confirm = function (obj) {
+        var obj = obj || {};
+        var data = {
+            ok:function(){},
+            okText:$A.translate('OK'),
+            cancel:function(){},
+            cancelText:$A.translate('Cancel'),
+            content:'',
+            title:$A.translate('Please confirm your action.')
+        };
+        if(typeof obj.ok === 'function'){
+            data.ok = obj.ok;
+        }
+        if(typeof obj.cancel !== 'undefined'){
+            data.cancel = obj.cancel;
+        }
+        if(typeof obj.okText !== 'undefined'){
+            data.okText = obj.okText;
+        }
+        if(typeof obj.cancelText !== 'undefined'){
+            data.cancelText = obj.cancelText;
+        }
+        if(typeof obj.content !== 'undefined'){
+            data.content = obj.content;
+        }
+        if(typeof obj.title !== 'undefined'){
+            data.title = obj.title;
+        }
+
+        var buttons = [];
+
+        if(data.cancel !== false){
+            buttons.push({
+                text: data.cancelText,
+                click: function () {
+                    data.cancel();
+                    dialog.close();
+                }
+            });
+        }
+        if(data.ok !== false){
+            buttons.push({
+                text: data.okText,
+                skin: 'simple-orange',
+                click: function () {
+                    data.ok();
+                    dialog.close();
+                }
+            });
+        }
+
+        var dialog = $A.newDialog({
+            content:data.content,
+            width:'500px',
+            positionY:'40px',
+            title:data.title,
+            close:function(){
+                this.remove();
+            },
+            buttons:buttons
+        }).open();
+
+    };
+
+})();
+
+(function(){
+
+    $A.alert = function (obj) {
+        var obj = obj || {};
+        var data = {
+            ok:function(){},
+            okText:$A.translate('OK'),
+            content:'',
+            title:$A.translate('Something wrong...')
+        };
+        if(typeof obj === 'string'){
+            data.content = obj;
+        }else{
+            if (typeof obj.ok === 'function') {
+                data.ok = obj.ok;
+            }
+            if (typeof obj.cancel === 'function') {
+                data.cancel = obj.cancel;
+            }
+            if (typeof obj.okText !== 'undefined') {
+                data.okText = obj.okText;
+            }
+            if (typeof obj.cancelText !== 'undefined') {
+                data.cancelText = obj.cancelText;
+            }
+            if (typeof obj.content !== 'undefined') {
+                data.content = obj.content;
+            }
+            if (typeof obj.title !== 'undefined') {
+                data.title = obj.title;
+            }
+        }
+
+        var dialog = $A.newDialog({
+            content:data.content,
+            width:'500px',
+            positionY:'40px',
+            title:data.title,
+            close:function(){
+                this.remove();
+            },
+            buttons:[
+                {
+                    text: data.okText,
+                    skin:'simple-orange',
+                    click: function () {
+                        data.ok();
+                        dialog.close();
+                    }
+                }
+            ]
+        }).open();
+
+    };
+
+})();
+
+(function(){
     $A.runEvent = function(eventName, thisParameter, parameterArray){
         return $A.runFunctions($A.customEvents.functions[eventName], thisParameter || $A, parameterArray || []);
     };
+})();
+
+(function(){
+    var originalDocumentTitle = document.title;
+    var step = 0;
+    var characters = ['☰', '☱', '☳', '☷', '☶', '☴'];
+    //var characters = ['➫', '➩', '➬', '➩'];
+    var titleInterval = false;
+    var isPageVisibilityInterval = false;
+
+    $A.isPageVisibility = function (doc) {
+        if(typeof doc === 'undefined'){
+            var doc = document;
+        }
+
+        var isHidden = false;
+        if (typeof doc.hidden !== "undefined") {
+            isHidden = doc.hidden;
+        } else if (typeof doc.mozHidden !== "undefined") {
+            isHidden = doc.mozHidden;
+        } else if (typeof doc.msHidden !== "undefined") {
+            isHidden = doc.msHidden;
+        } else if (typeof doc.webkitHidden !== "undefined") {
+            isHidden = doc.webkitHidden;
+        }
+
+        if(isHidden){
+            isPageVisibilityInterval = setInterval(function() {
+                if (!isHidden) {
+                    $A.isPageVisibility();
+                    return false;
+                }
+            }, 1000);
+            /*
+            if(characters.indexOf(document.title[0]) < 0){
+                originalDocumentTitle = document.title;
+                step = 0;
+                titleInterval = setInterval(function(){
+                    document.title = characters[step] + ' ' + originalDocumentTitle;
+                    step++;
+                    if(step >= characters.length){
+                        step = 0;
+                    }
+                }, 1000);
+            }
+            document.title = characters[step] + ' ' + originalDocumentTitle;
+            */
+        }else{
+            /*
+            if(characters.indexOf(document.title[0]) >= 0){
+                clearInterval(titleInterval);
+                document.title = originalDocumentTitle;
+            }
+            */
+        }
+
+        return !isHidden;
+    };
+})();
+
+(function(){
+    $A.sameAs = function(s1, s2){
+        var a = false;
+        if(s1 == s2){
+            return true;
+        }
+        
+        s1 = String(s1);
+        s2 = String(s2);
+        if(s1 == s2){
+            return true;
+        }
+
+        s1 = s1.toLowerCase();
+        s2 = s2.toLowerCase();
+        if(s1 == s2){
+            return true;
+        }
+
+        s1 = s1.replace(/[_-]|\s/gi, '');
+        s2 = s2.replace(/[_-]|\s/gi, '');
+        if(s1 == s2){
+            return true;
+        }
+
+        return false;
+    }
 })();
 
 (function(){

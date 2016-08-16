@@ -21,6 +21,7 @@ define([
             $widgetHelp: $('<img src="' + $A.images.helpIcon + '" class="automizy-input-help" />'),
             $widgetHelpContent: $('<div class="automizy-input-help-content"><img src="' + $A.images.helpArrow + '" class="automizy-input-help-content-arrow" /></div>'),
             $widgetHelpContentInner: $('<span></span>'),
+            $widgetInputIcon: $('<span class="automizy-input-icon"></span>'),
             $input: $('<input />'),
             $textarea: $('<textarea></textarea>'),
             $select: $('<select></select>'),
@@ -35,6 +36,8 @@ define([
                 blur:0,
                 click:0
             },
+            icon:false,
+            iconPosition:'right',
             multiple: false,
             multiselect: false,
             readonly: false,
@@ -44,6 +47,7 @@ define([
             breakInput: false,
             needModify: false,
             disabled:false,
+            float: 'none',
             labelPosition: 'left',
             labelWidth: '',
             value: '',
@@ -56,9 +60,12 @@ define([
             accept: [],
             items: {},
             itemsArray: [],
+            groups:{},
+            activeGroup:false,
             validator: $A.newValidator(),
             validate: function () {},
             createFunctions: [],
+            automizySelect:false,
             id: 'automizy-input-' + $A.getUniqueString()
         };
         t.f = {};
@@ -72,7 +79,9 @@ define([
         t.d.$loadingBox.appendTo(t.d.$widgetInputBox).html($A.d.elements.$loading.clone());
         t.d.$widgetInputBox.appendTo(t.d.$widget);
         t.d.$widgetLabelAfter.appendTo(t.d.$widget).ahide();
-        t.d.$widgetInputBoxError.appendTo(t.d.$widget);
+        //t.d.$widgetInputBoxError.appendTo(t.d.$widget);
+        t.d.$widgetInputBoxError.appendTo(t.d.$widgetInputBox);
+        t.d.$widgetInputIcon.appendTo(t.d.$widgetInputBox);
         t.d.$widgetHelpContentInner.appendTo(t.d.$widgetHelpContent);
         t.d.$widgetHelpContent.appendTo('body:first');
         t.d.$widgetHelp.appendTo(t.d.$widget).on('mouseenter click', function () {
@@ -87,7 +96,6 @@ define([
             t.d.$widgetHelpContent.stop().fadeOut();
             t.d.$widgetHelp.stop().fadeTo(250, 0.5);
         }).ahide();
-        t.d.$widgetInputBoxError.appendTo(t.d.$widget);
         t.d.$widget.attr('type', 'text').attr('id', t.id()).addClass('automizy-skin-' + t.d.skin);
         t.setupJQueryEvents();
         if (typeof obj !== 'undefined') {
@@ -165,6 +173,9 @@ define([
             if (typeof obj.labelWidth !== 'undefined') {
                 t.labelWidth(obj.labelWidth);
             }
+            if (typeof obj.float !== 'undefined') {
+                t.float(obj.float);
+            }
             if (typeof obj.change === 'function') {
                 t.change(obj.change);
             }
@@ -197,6 +208,15 @@ define([
             }
             if (typeof obj.focus !== 'undefined') {
                 t.focus(obj.focus);
+            }
+            if (typeof obj.icon !== 'undefined') {
+                t.icon(obj.icon);
+            }
+            if (typeof obj.iconPosition !== 'undefined') {
+                t.iconPosition(obj.iconPosition);
+            }
+            if (typeof obj.iconClick === 'function') {
+                t.iconClick(obj.iconClick);
             }
             t.initParameter(obj);
         }
@@ -374,6 +394,15 @@ define([
         }
         return t.d.labelAfter;
     };
+    p.float = function (float) {
+        var t = this;
+        if (typeof float !== 'undefined') {
+            t.d.float = float;
+            t.d.$widget.css('float', float);
+            return t;
+        }
+        return t.d.float;
+    };
     p.needModify = function (needModify) {
         var t = this;
         if (typeof needModify !== 'undefined') {
@@ -422,6 +451,9 @@ define([
     p.val = p.value = function (value) {
         var t = this;
         if (typeof value !== 'undefined') {
+            if (typeof value === 'function') {
+                value = value.call(t, [t]);
+            }
             t.d.value = value;
             if (t.d.type === 'file') {
                 t.input().data('value', value);
@@ -512,7 +544,7 @@ define([
             var attributes = t.d.$widgetInput.getAttributes();
             delete attributes.type;
             delete attributes.checked;
-            if (t.d.type === 'select') {
+            if (t.d.type === 'select' || t.d.type === 'automizy-select') {
                 t.d.$widgetInput = $('<select></select>');
             } else if (t.d.type === 'textarea') {
                 t.d.$widgetInput = $('<textarea></textarea>');
@@ -558,7 +590,8 @@ define([
             return t;
         }
         var settings = settings || false;
-        if(t.type() === 'select'){
+        var thisType = t.type();
+        if(thisType === 'select' || thisType === 'automizy-select'){
             t.d.multiselect=false;
             t.multiple(false);
         }
@@ -589,8 +622,10 @@ define([
                 showTime: true,
                 controlType: 'slider'
             });
-        }else if(type === 'select') {
+        }else if(type === 'select' || type === 'automizy-select') {
             t.type('select');
+        }else if(type === 'multiple_choices') {
+            t.type('select').multiple(true).multiselect(true);
         }
         return t;
     };
@@ -643,7 +678,6 @@ define([
             return t;
         }
         t.d.$widgetInput.attr('multiple', 'multiple');
-        t.d.multiple = true;
 
         return t.d.multiple;
     };
@@ -682,11 +716,19 @@ define([
     p.options = p.items = function (arr) {
         var t = this;
         if (typeof arr !== 'undefined') {
-            t.d.$widgetInput.find('option').remove();
-            t.addItems(arr);
+            t.d.items = {};
+            t.d.itemsArray = [];
+            t.removeOptions();
+            t.addOptions(arr);
             return t;
         }
         return t.d.items;
+    };
+
+    p.removeOptions = function () {
+        var t = this;
+        t.d.$widgetInput.find('option, optgroup').remove();
+        return t;
     };
 
     p.addOptions = p.addItems = function (arr, before) {
@@ -732,14 +774,22 @@ define([
                         values.push(arr[i][0]);
                     }
                     if (before) {
-                        var $of = t.d.$widgetInput.find('option:first');
+                        var $container = t.d.$widgetInput;
+                        if(!$.isEmptyObject(t.d.groups) && t.d.activeGroup !== false && typeof t.d.groups[t.d.activeGroup] !== 'undefined'){
+                            $container = t.d.groups[t.d.activeGroup];
+                        }
+                        var $of = $container.find('option:first');
                         if ($of.val() == 0) {
                             $option.insertAfter($of);
                         } else {
-                            $option.prependTo(t.d.$widgetInput);
+                            $option.prependTo($container);
                         }
                     } else {
-                        $option.appendTo(t.d.$widgetInput);
+                        if($.isEmptyObject(t.d.groups) || t.d.activeGroup === false || typeof t.d.groups[t.d.activeGroup] === 'undefined'){
+                            $option.appendTo(t.d.$widgetInput);
+                        }else{
+                            $option.appendTo(t.d.groups[t.d.activeGroup]);
+                        }
                     }
                     t.d.items[value] = text;
                 }
@@ -760,6 +810,23 @@ define([
     p.addOptionBefore = p.addItemBefore = function (key, value) {
         var t = this;
         return t.addOptions([[key, (value || key)]], true);
+    };
+    p.group = function(groupName){
+        var t = this;
+
+        if(typeof groupName !== 'undefined'){
+            if(groupName === false){
+                t.d.activeGroup = false;
+            }else if(typeof t.d.groups[groupName] !== 'undefined'){
+                t.d.activeGroup = groupName;
+            }else{
+                t.d.groups[groupName] = $('<optgroup label="' + groupName + '"></optgroup>').appendTo(t.d.$widgetInput);
+                t.d.activeGroup = groupName;
+            }
+            return t;
+        }
+
+        return t.d.activeGroup;
     };
     p.accept = function (arr) {
         var t = this;
@@ -802,7 +869,9 @@ define([
     p.validator = function (validator) {
         var t = this;
         if (typeof validator !== 'undefined') {
-            if (validator instanceof $A.m.Validator) {
+            if(validator === false){
+                t.d.validator = $A.newValidator();
+            }else if (validator instanceof $A.m.Validator) {
                 t.d.validator = validator;
             } else {
                 t.d.validator.set(validator);
@@ -818,10 +887,9 @@ define([
         } else {
             var a = t.validator().execute(t.val());
             if (!a) {
-                t.d.$widgetInputBoxError.html(t.validator().errors().join('<br/>'));
-                t.d.$widget.addClass('error');
+                t.showError(t.validator().errors().join('<br/>'));
             } else {
-                t.d.$widget.removeClass('error');
+                t.hideError();
             }
             t.d.validate.apply(this, [a, this, this.d.$widget]);
             return a;
@@ -847,9 +915,21 @@ define([
         var t = this;
         return t.d.$widgetInput;
     };
-    p.errorBox = function () {
+    p.showError = p.error = function(msg){
         var t = this;
-        return t.d.$widgetInputBoxError;
+        if(typeof msg !== 'undefined') {
+            t.errorBox().html(msg);
+        }
+        t.widget().addClass('error');
+        return t;
+    };
+    p.hideError = function(){
+        var t = this;
+        t.widget().removeClass('error');
+        return t;
+    };
+    p.errorBox = function () {
+        return this.d.$widgetInputBoxError;
     };
     p.rowSpacing = function(value){
         var t = this;
@@ -869,6 +949,85 @@ define([
         t.d.$loadingBox.hide();
         return t;
     };
+    p.thin = function(value){
+        var t = this;
+        if (typeof value !== 'undefined') {
+            value = $A.parseBoolean(value);
+            if(!value){
+                t.widget().removeClass('automizy-input-thin');
+                return t;
+            }
+        }
+        t.widget().addClass('automizy-input-thin');
+        return t;
+    };
+    p.icon = function(value){
+        var t = this;
+        if (typeof value !== 'undefined') {
+            if(value === false){
+                t.d.$widgetInputIcon.css('display', 'none');
+            }else if(value === true){
+                t.d.$widgetInputIcon.css('display', 'inline-block');
+            }else{
+                t.d.icon = value;
+                t.d.$widgetInputIcon.addClass('automizy-icon-'+value);
+                t.d.$widgetInputIcon.css('display', 'inline-block');
+            }
+            t.iconPosition();
+            return t;
+        }
+
+        return t.d.icon;
+    };
+    p.iconPosition = function(value){
+        var t = this;
+        if (typeof value !== 'undefined') {
+            value = value.toLowerCase();
+            if(value === 'left'){
+                t.d.iconPosition = 'left';
+                t.d.$widgetInputIcon.css({
+                    left:'0',
+                    right:'auto'
+                })
+            }else{
+                t.d.iconPosition = 'right';
+                t.d.$widgetInputIcon.css({
+                    left:'auto',
+                    right:'0'
+                })
+            }
+            t.iconPosition();
+            return t;
+        }
+
+        if(t.d.iconPosition === 'left'){
+            t.input().css({
+                paddingLeft:'30px',
+                paddingRight:'8px'
+            })
+        }else{
+            t.input().css({
+                paddingLeft:'8px',
+                paddingRight:'30px'
+            })
+        }
+        return t.d.iconPosition;
+    };
+    p.iconClick = function (func) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.d.$widgetInputIcon.click(function () {
+                func.call(t, [t]);
+            });
+            return t;
+        }
+        t.d.$widgetInputIcon.click();
+        return t;
+    };
+    p.automizySelect = function(){
+        return this.input().automizySelect();
+    };
+
 
     $A.initBasicFunctions(Input, "Input", ["change", "keyup", "enter", "focus", "blur", "click"]);
 });

@@ -23,9 +23,13 @@
 .automizy-button.automizy-skin-nobox-orange a{
     color: rgb( 244, 106, 31 );
 }
-
 .automizy-button.automizy-skin-nobox-green a{
     color: #669138;
+}
+
+.automizy-button.automizy-skin-nobox-green.disabled a,
+.automizy-button.automizy-skin-nobox-orange.disabled a{
+    opacity:0.4;
 }
 
 .automizy-button.automizy-skin-simple-white a,
