@@ -65,6 +65,7 @@ define([
             validator: $A.newValidator(),
             validate: function () {},
             createFunctions: [],
+            automizySelect:false,
             id: 'automizy-input-' + $A.getUniqueString()
         };
         t.f = {};
@@ -543,7 +544,7 @@ define([
             var attributes = t.d.$widgetInput.getAttributes();
             delete attributes.type;
             delete attributes.checked;
-            if (t.d.type === 'select') {
+            if (t.d.type === 'select' || t.d.type === 'automizy-select') {
                 t.d.$widgetInput = $('<select></select>');
             } else if (t.d.type === 'textarea') {
                 t.d.$widgetInput = $('<textarea></textarea>');
@@ -589,7 +590,8 @@ define([
             return t;
         }
         var settings = settings || false;
-        if(t.type() === 'select'){
+        var thisType = t.type();
+        if(thisType === 'select' || thisType === 'automizy-select'){
             t.d.multiselect=false;
             t.multiple(false);
         }
@@ -620,7 +622,7 @@ define([
                 showTime: true,
                 controlType: 'slider'
             });
-        }else if(type === 'select') {
+        }else if(type === 'select' || type === 'automizy-select') {
             t.type('select');
         }else if(type === 'multiple_choices') {
             t.type('select').multiple(true).multiselect(true);
@@ -676,7 +678,6 @@ define([
             return t;
         }
         t.d.$widgetInput.attr('multiple', 'multiple');
-        t.d.multiple = true;
 
         return t.d.multiple;
     };
@@ -1022,6 +1023,9 @@ define([
         }
         t.d.$widgetInputIcon.click();
         return t;
+    };
+    p.automizySelect = function(){
+        return this.input().automizySelect();
     };
 
 

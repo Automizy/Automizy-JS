@@ -2084,6 +2084,7 @@ var $A = {};
             validator: $A.newValidator(),
             validate: function () {},
             createFunctions: [],
+            automizySelect:false,
             id: 'automizy-input-' + $A.getUniqueString()
         };
         t.f = {};
@@ -2562,7 +2563,7 @@ var $A = {};
             var attributes = t.d.$widgetInput.getAttributes();
             delete attributes.type;
             delete attributes.checked;
-            if (t.d.type === 'select') {
+            if (t.d.type === 'select' || t.d.type === 'automizy-select') {
                 t.d.$widgetInput = $('<select></select>');
             } else if (t.d.type === 'textarea') {
                 t.d.$widgetInput = $('<textarea></textarea>');
@@ -2608,7 +2609,8 @@ var $A = {};
             return t;
         }
         var settings = settings || false;
-        if(t.type() === 'select'){
+        var thisType = t.type();
+        if(thisType === 'select' || thisType === 'automizy-select'){
             t.d.multiselect=false;
             t.multiple(false);
         }
@@ -2639,7 +2641,7 @@ var $A = {};
                 showTime: true,
                 controlType: 'slider'
             });
-        }else if(type === 'select') {
+        }else if(type === 'select' || type === 'automizy-select') {
             t.type('select');
         }else if(type === 'multiple_choices') {
             t.type('select').multiple(true).multiselect(true);
@@ -2695,7 +2697,6 @@ var $A = {};
             return t;
         }
         t.d.$widgetInput.attr('multiple', 'multiple');
-        t.d.multiple = true;
 
         return t.d.multiple;
     };
@@ -3041,6 +3042,9 @@ var $A = {};
         }
         t.d.$widgetInputIcon.click();
         return t;
+    };
+    p.automizySelect = function(){
+        return this.input().automizySelect();
     };
 
 
@@ -5702,7 +5706,7 @@ var $A = {};
         var inputOffsetTop = inputOffset.top;
         var inputOffsetLeft = inputOffset.left;
         var inputHeight = $input.height();
-        var inputWidth = $input.width();
+        var inputWidth = $input.outerWidth();
         var windowHeight = window.innerHeight;
 
         if(position === 'auto'){
@@ -5768,6 +5772,7 @@ var $A = {};
                 t.rePositioning();
                 t.show();
                 t.runFunctions('open');
+                t.selectModule().widget().addClass('automizy-active');
             }
         }
         return t;
@@ -5784,6 +5789,7 @@ var $A = {};
             if (t.beforeClose().returnValue() !== false) {
                 t.hide();
                 t.runFunctions('close');
+                t.selectModule().widget().removeClass('automizy-active');
             }
         }
         return t;
@@ -5826,7 +5832,7 @@ var $A = {};
     var SelectOption = function (obj) {
         var t = this;
         t.d = {
-            $widget: $('<tr class="automizy-select-option-tr"></tr>'),
+            $widget: $('<tr class="automizy-select-option-tr automizy-has-select"></tr>'),
             $widgetTdIcon: $('<td class="automizy-select-option-td-icon"></td>'),
             $widgetTdContent: $('<td class="automizy-select-option-td-content"></td>'),
             $widgetTdCheck: $('<td class="automizy-select-option-td-check"></td>'),
@@ -5839,6 +5845,8 @@ var $A = {};
             group:'',
             disabled: false,
             selected:false,
+            hasSelect:false,
+            hasIcon:false,
             id: 'automizy-select-option-' + $A.getUniqueString()
         };
         t.f = {};
@@ -5850,6 +5858,12 @@ var $A = {};
 
 
         if (typeof obj !== 'undefined') {
+            if (typeof obj.selectModule !== 'undefined') {
+                t.selectModule(obj.selectModule);
+            }
+            if (typeof obj.selectOptionBoxModule !== 'undefined') {
+                t.selectOptionBoxModule(obj.selectOptionBoxModule);
+            }
             if (typeof obj.value !== 'undefined') {
                 t.value(obj.value);
             }
@@ -5859,14 +5873,14 @@ var $A = {};
             if (typeof obj.html !== 'undefined') {
                 t.html(obj.html);
             }
-            if (typeof obj.group !== 'undefined') {
-                t.group(obj.group);
-            }
             if (typeof obj.disabled !== 'undefined') {
                 t.disabled(obj.disabled);
             }
             if (typeof obj.selected !== 'undefined') {
                 t.selected(obj.selected);
+            }
+            if (typeof obj.group !== 'undefined') {
+                t.group(obj.group);
             }
             t.initParameter(obj);
         }
@@ -5891,11 +5905,19 @@ var $A = {};
         var t = this;
         if (typeof selectModule !== 'undefined') {
             t.d.selectModule = selectModule;
+
             var $select = t.d.selectModule.originalInput();
             if(typeof $select.input === 'function'){
                 $select = originalInput.input();
             }
-            t.d.$option.appendTo($select);
+            var value = t.d.$option.attr('value');
+            var $options = $select.find('option[value="'+value+'"]');
+            if($options.length <= 0){
+                t.d.$option.appendTo($select);
+            }else{
+                t.d.$option = $options.eq(0);
+            }
+
             return t;
         }
         return t.d.selectModule;
@@ -5916,6 +5938,19 @@ var $A = {};
             if(t.textValue() === false){
                 t.textValue(t.d.value);
             }
+
+            var $select = t.d.selectModule.originalInput();
+            if(typeof $select.input === 'function'){
+                $select = originalInput.input();
+            }
+            var $options = $select.find('option[value="'+t.d.value+'"]');
+            if($options.length <= 0){
+                t.d.$option.attr('value', t.d.value);
+            }else{
+                t.d.$option.remove();
+                t.d.$option = $options.eq(0);
+            }
+
             return t;
         }
         return t.d.value;
@@ -5924,6 +5959,7 @@ var $A = {};
         var t = this;
         if (typeof textValue !== 'undefined') {
             t.d.textValue = textValue;
+            t.d.$option.html(t.d.textValue);
             return t;
         }
         return t.d.textValue;
@@ -5932,6 +5968,9 @@ var $A = {};
         var t = this;
         if (typeof html !== 'undefined') {
             t.d.html = html;
+            if(t.textValue() === false || t.textValue() == t.val()){
+                t.textValue(t.d.html);
+            }
             t.d.$widgetTdContent.html(t.d.html);
             return t;
         }
@@ -5940,23 +5979,29 @@ var $A = {};
     p.group = function (group) {
         var t = this;
         if (typeof group !== 'undefined') {
+            var selectModule = t.selectModule();
             if(group === false){
                 t.widget().appendTo(t.selectOptionBoxModule().d.$options);
-                t.selectModule().cleanGroups();
+                selectModule.cleanGroups();
             }
             t.d.group = group;
-            var groups = t.selectModule().d.groups;
+            var groups = selectModule.d.groups;
             if(typeof groups[t.d.group] === 'undefined'){
                 groups[t.d.group] = {
-                    $widget:$('<div class="automizy-select-group"></div>'),
-                    $title:$('<div class="automizy-select-group-title"></div>'),
-                    $box:$('<div class="automizy-select-group-box"></div>')
+                    $titleTr:$('<tr class="automizy-select-group"></tr>'),
+                    $titleTd:$('<td colspan="3" class="automizy-select-group-title">'+t.d.group+'</td>'),
+                    $separatorTr:$('<tr class="automizy-select-group-separator-tr"></tr>'),
+                    $separatorTd:$('<td colspan="3" class="automizy-select-group-separator-td"></td>')
                 };
-                groups[t.d.group].$widget.appendTo(t.selectOptionBoxModule().d.$options);
-                groups[t.d.group].$title.appendTo(groups[t.d.group].$widget);
-                groups[t.d.group].$box.appendTo(groups[t.d.group].$widget);
+                var $options = t.selectOptionBoxModule().d.$options;
+                groups[t.d.group].$titleTr.appendTo($options);
+                groups[t.d.group].$titleTd.appendTo(groups[t.d.group].$titleTr);
+                groups[t.d.group].$separatorTr.appendTo($options);
+                groups[t.d.group].$separatorTd.appendTo(groups[t.d.group].$separatorTr);
             }
-            t.widget().appendTo(groups[t.d.group].$box);
+
+            var theGroup = groups[t.d.group];
+            t.widget().addClass('automizy-has-group').insertBefore(theGroup.$separatorTr);
             return t;
         }
         return t.d.group;
@@ -5980,8 +6025,13 @@ var $A = {};
     p.enable = function () {
         return this.disabled(false);
     };
-    p.selected = function (selected) {
+    p.selected = function (selected, triggerChange) {
         var t = this;
+        if(typeof triggerChange !== 'undefined'){
+            var triggerChange = true;
+        }else{
+            triggerChange = $A.parseBoolean(triggerChange);
+        }
         if (typeof selected !== 'undefined') {
             t.d.selected = $A.parseBoolean(selected);
             var selectModule = t.selectModule();
@@ -5993,7 +6043,9 @@ var $A = {};
                 t.d.$option.prop("selected", false);
             }
             selectModule.refreshValue();
-            selectModule.originalInput().change();
+            if(triggerChange){
+                selectModule.originalInput().change();
+            }
             return t;
         }
         return t.d.selected;
@@ -6007,16 +6059,65 @@ var $A = {};
     p.unselect = function () {
         return this.selected(false);
     };
+    p.hasSelect = function(hasSelect){
+        var t = this;
+        if (typeof hasSelect !== 'undefined') {
+            t.d.hasSelect = $A.parseBoolean(hasSelect);
+            if(t.d.hasSelect === true){
+                t.widget().addClass('automizy-has-select');
+            }else{
+                t.widget().removeClass('automizy-has-select');
+            }
+            return t;
+        }
+        return t.d.hasSelect;
+    };
 
 
-    p.iconVisibile = function(){
+    p.icon = function(o){
+        var t = this;
+        if (typeof o !== 'undefined') {
+            if(o === false){
+
+            } else if(typeof o === 'string'){
+                t.d.icon = o;
+                t.widget().addClass('automizy-icon-'+o);
+            } else {
+                var icon = {
+                    url: '',
+                    width: '14px',
+                    height: '14px',
+                    bgPositionX: 'center',
+                    bgPositionY: 'center',
+                    align: 'center',
+                    valign: 'middle'
+                };
+
+                for (var i in icon) {
+                    if (typeof o[i] !== 'undefined') {
+                        icon[i] = o[i];
+                    }
+                    t.d.icon[i] = icon[i];
+                }
+            }
+            return t;
+        }
+
+        return t.d.icon;
 
     };
-    p.iconHide = function(){
-        return this.iconVisibile(false);
-    };
-    p.iconShow = function(){
-        return this.iconVisibile(true);
+    p.hasIcon = function(hasIcon){
+        var t = this;
+        if (typeof hasIcon !== 'undefined') {
+            t.d.hasIcon = $A.parseBoolean(hasIcon);
+            if(t.d.hasIcon === true){
+                t.widget().addClass('automizy-has-icon');
+            }else{
+                t.widget().removeClass('automizy-has-icon');
+            }
+            return t;
+        }
+        return t.d.hasIcon;
     };
 
 
@@ -6043,19 +6144,26 @@ var $A = {};
     var Select = function (obj) {
         var t = this;
         t.d = {
-            $widget: $('<div class="automizy-select" style="background-color:#ffffff; display:inline-block"></div>'),
+            $widget: $('<div class="automizy-select automizy-empty"></div>'),
             $widgetTable: $('<table border="0" cellpadding="0" cellspacing="0" class="automizy-select-table"></table>'),
             $widgetTr: $('<tr class="automizy-select-tr"></tr>'),
-            $widgetTd: $('<td class="automizy-select-td-icon"></td>'),
+            $widgetTdIcon: $('<td class="automizy-select-td-icon"></td>'),
+            $widgetTdContent: $('<td class="automizy-select-td-content"></td>'),
+            $widgetTdContentDiv: $('<div class="automizy-select-td-content-div"></div>'),
+            $widgetTdArrow: $('<td class="automizy-select-td-arrow"></td>'),
             originalInput: $('<select></select>').data('automizy-select-remove', true),
             optionBox:$A.newSelectOptionBox().selectModule(t),
             options:[],
             groups:{},
-            value: '',
+            value: null,
             content:false,
             multiple:false,
             disabled: false,
+            emptyText:$A.translate('Select an option'),
+            selectedText:$A.translate('# items selected'),
+            maxVisibleItems:2,
             width: 'auto',
+            minWidth: 180,
             height: 'auto',
             id: 'automizy-select-' + $A.getUniqueString()
         };
@@ -6065,7 +6173,10 @@ var $A = {};
 
         t.d.$widgetTable.appendTo(t.d.$widget);
         t.d.$widgetTr.appendTo(t.d.$widgetTable);
-        t.d.$widgetTd.appendTo(t.d.$widgetTr);
+        t.d.$widgetTdIcon.appendTo(t.d.$widgetTr);
+        t.d.$widgetTdContent.appendTo(t.d.$widgetTr);
+        t.d.$widgetTdContentDiv.appendTo(t.d.$widgetTdContent).html(t.d.emptyText);
+        t.d.$widgetTdArrow.appendTo(t.d.$widgetTr);
 
 
         if (typeof obj !== 'undefined') {
@@ -6090,9 +6201,9 @@ var $A = {};
             if(t.width() === 'auto'){
                 t.width(t.d.originalInput.width());
             }
-            if(t.height() === 'auto'){
+            /*if(t.height() === 'auto'){
                 t.height(t.d.originalInput.height());
-            }
+            }*/
             if(typeof t.d.originalInput.input === 'function'){
                 $elem = t.d.originalInput.input();
             }else{
@@ -6113,8 +6224,22 @@ var $A = {};
         var t = this;
         if (typeof value !== 'undefined') {
             t.d.value = value;
-            if(t.d.content === false){
-                t.content(t.d.value);
+            t.unselectAll();
+            if(typeof t.d.value === 'object' || typeof t.d.value === 'array'){
+                for(var i = 0; i < t.d.options.length; i++){
+                    for(var j = 0; j < t.d.value.length; j++){
+                        if(t.d.options[i].val() == t.d.value[j]){
+                            t.d.options[i].select();
+                        }
+                    }
+                }
+            }else{
+                for(var i = 0; i < t.d.options.length; i++){
+                    if(t.d.options[i].val() == t.d.value){
+                        t.d.options[i].select();
+                        break;
+                    }
+                }
             }
             t.d.originalInput.val(t.d.value);
             return t;
@@ -6125,7 +6250,16 @@ var $A = {};
         var t = this;
         if (typeof content !== 'undefined') {
             t.d.content = content;
-            t.d.$widgetTd.html(t.d.content);
+            t.d.$widgetTdContentDiv.html(t.d.content);
+            return t;
+        }
+        return t.d.content;
+    };
+    p.icon = function (icon) {
+        var t = this;
+        if (typeof icon !== 'undefined') {
+            t.d.icon = icon;
+            t.d.$widgetTdIcon.html(t.d.content);
             return t;
         }
         return t.d.content;
@@ -6179,31 +6313,66 @@ var $A = {};
     p.width = function (width) {
         var t = this;
         if (typeof width !== 'undefined') {
-            t.d.width = width;
+            t.d.width = Math.max(width, t.minWidth());
             t.widget().css('width', t.d.width);
+            t.d.$widgetTdContentDiv.css('max-width', t.widget().width() - 12 + 'px');
             return t;
         }
         return t.d.width;
     };
-    p.height = function (height) {
+    p.minWidth = function (minWidth) {
+        var t = this;
+        if (typeof minWidth !== 'undefined') {
+            t.d.minWidth = minWidth;
+            return t;
+        }
+        return t.d.minWidth;
+    };
+    /*p.height = function (height) {
         var t = this;
         if (typeof height !== 'undefined') {
             t.d.height = height;
-            t.widget().css('height', t.d.height);
+            t.d.$widgetTable.css('height', t.d.height);
             return t;
         }
         return t.d.height;
-    };
+    };*/
     p.refreshValue = function () {
         var t = this;
         var options = t.d.options;
+        var textValues = [];
         var values = [];
+
         for(var i = 0; i < options.length; i++){
             if(options[i].selected()){
-                values.push(options[i].textValue());
+                textValues.push(options[i].textValue());
+                values.push(options[i].val());
             }
         }
-        t.content(values.join(', '));
+        if(textValues.length <= 0){
+            t.content(t.emptyText());
+            t.widget().addClass('automizy-empty');
+        }else {
+            if(textValues.length > t.maxVisibleItems()){
+                t.content(t.selectedText().replace("#", textValues.length));
+            }else {
+                t.content(textValues.join(', '));
+            }
+            t.widget().removeClass('automizy-empty');
+        }
+
+        if(values.length > 0) {
+            if (t.multiple()) {
+                t.d.value = values;
+            } else {
+                t.d.value = values[0];
+            }
+            t.originalInput().val(t.d.value);
+        }else{
+            t.d.value = null;
+            t.originalInput().prop("selectedIndex", -1);
+        }
+
         return t;
     };
     p.cleanGroups = function () {
@@ -6219,13 +6388,38 @@ var $A = {};
         }
         for(var i in groups){
             if(usableGroups.indexOf(i) < 0){
-                groups[i].$box.remove();
-                groups[i].$title.remove();
-                groups[i].$widget.remove();
+                groups[i].$titleTd.remove();
+                groups[i].$separatorTd.remove();
+                groups[i].$titleTr.remove();
+                groups[i].$separatorTr.remove();
                 delete groups[i];
             }
         }
         return t;
+    };
+    p.emptyText = function(emptyText){
+        var t = this;
+        if (typeof emptyText !== 'undefined') {
+            t.d.emptyText = emptyText;
+            return t;
+        }
+        return t.d.emptyText;
+    };
+    p.selectedText = function(selectedText){
+        var t = this;
+        if (typeof selectedText !== 'undefined') {
+            t.d.selectedText = selectedText;
+            return t;
+        }
+        return t.d.selectedText;
+    };
+    p.maxVisibleItems = function(maxVisibleItems){
+        var t = this;
+        if (typeof maxVisibleItems !== 'undefined') {
+            t.d.maxVisibleItems = parseInt(maxVisibleItems);
+            return t;
+        }
+        return t.d.maxVisibleItems;
     };
 
 
@@ -6233,6 +6427,16 @@ var $A = {};
         var t = this;
         for(var i = 0; i < t.d.options.length; i++){
             t.d.options[i].remove();
+        }
+        t.cleanGroups();
+        return t;
+    };
+    p.removeOption = function (value) {
+        var t = this;
+        for(var i = 0; i < t.d.options.length; i++){
+            if(t.d.options[i].val() == value){
+                t.d.options[i].remove();
+            }
         }
         t.cleanGroups();
         return t;
@@ -6254,9 +6458,16 @@ var $A = {};
         var val = t.val();
         var before = before || false;
         for(var i = 0; i < options.length; i++){
-            var option = $A.newSelectOption(options[i]).selectModule(t).selectOptionBoxModule(t.optionBox());
+            options[i].selectModule = t;
+            options[i].selectOptionBoxModule = t.optionBox();
+            if(options[i].selected === true){
+                hasSelected = true;
+            }
+            var option = $A.newSelectOption(options[i], false);
             t.d.options.push(option);
         }
+        t.refreshValue();
+        t.originalInput().change();
         return t;
     };
 
@@ -6275,6 +6486,53 @@ var $A = {};
     };
 
     $A.initBasicFunctions(Select, "Select", []);
+
+
+    $.fn.automizySelect = function () {
+        var lastElement = false;
+        if(typeof this.data('automizy-select') !== 'undefined'){
+            return this.data('automizy-select');
+        }
+        this.each(function(){
+            var selectModule = $A.newSelect();
+            var $t = $(this);
+
+            if($t.prop("tagName").toLowerCase() !== 'select'){
+                var $newElem = $('<select></select>');
+                $.each(this.attributes, function() {
+                    $newElem.attr(this.name, this.value);
+                });
+                $t.replaceWith($newElem);
+                $t = $newElem;
+            }
+
+
+            selectModule.multiple($t.is("[multiple]")).originalInput($t);
+
+            var options = [];
+            $t.find('option').each(function(){
+                var $to = $(this);
+                var option = {
+                    value:$to.attr('value'),
+                    html:$to.html(),
+                    disabled:$to.is(':disabled'),
+                    selected:$to.is(':selected')
+                };
+                var optgroup = $to.closest('optgroup');
+                if(optgroup.length >= 0){
+                    option.group = optgroup.attr('label');
+                }
+
+                options.push(option);
+            });
+            selectModule.options(options);
+
+            $t.data('automizy-select', selectModule);
+
+            lastElement = selectModule;
+        });
+        return lastElement;
+    };
 
 
 })();

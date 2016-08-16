@@ -64,7 +64,7 @@ define([
         var inputOffsetTop = inputOffset.top;
         var inputOffsetLeft = inputOffset.left;
         var inputHeight = $input.height();
-        var inputWidth = $input.width();
+        var inputWidth = $input.outerWidth();
         var windowHeight = window.innerHeight;
 
         if(position === 'auto'){
@@ -130,6 +130,7 @@ define([
                 t.rePositioning();
                 t.show();
                 t.runFunctions('open');
+                t.selectModule().widget().addClass('automizy-active');
             }
         }
         return t;
@@ -146,6 +147,7 @@ define([
             if (t.beforeClose().returnValue() !== false) {
                 t.hide();
                 t.runFunctions('close');
+                t.selectModule().widget().removeClass('automizy-active');
             }
         }
         return t;

@@ -8,7 +8,7 @@ define([
     var SelectOption = function (obj) {
         var t = this;
         t.d = {
-            $widget: $('<tr class="automizy-select-option-tr"></tr>'),
+            $widget: $('<tr class="automizy-select-option-tr automizy-has-select"></tr>'),
             $widgetTdIcon: $('<td class="automizy-select-option-td-icon"></td>'),
             $widgetTdContent: $('<td class="automizy-select-option-td-content"></td>'),
             $widgetTdCheck: $('<td class="automizy-select-option-td-check"></td>'),
@@ -21,6 +21,8 @@ define([
             group:'',
             disabled: false,
             selected:false,
+            hasSelect:false,
+            hasIcon:false,
             id: 'automizy-select-option-' + $A.getUniqueString()
         };
         t.f = {};
@@ -32,6 +34,12 @@ define([
 
 
         if (typeof obj !== 'undefined') {
+            if (typeof obj.selectModule !== 'undefined') {
+                t.selectModule(obj.selectModule);
+            }
+            if (typeof obj.selectOptionBoxModule !== 'undefined') {
+                t.selectOptionBoxModule(obj.selectOptionBoxModule);
+            }
             if (typeof obj.value !== 'undefined') {
                 t.value(obj.value);
             }
@@ -41,14 +49,14 @@ define([
             if (typeof obj.html !== 'undefined') {
                 t.html(obj.html);
             }
-            if (typeof obj.group !== 'undefined') {
-                t.group(obj.group);
-            }
             if (typeof obj.disabled !== 'undefined') {
                 t.disabled(obj.disabled);
             }
             if (typeof obj.selected !== 'undefined') {
                 t.selected(obj.selected);
+            }
+            if (typeof obj.group !== 'undefined') {
+                t.group(obj.group);
             }
             t.initParameter(obj);
         }
@@ -73,11 +81,19 @@ define([
         var t = this;
         if (typeof selectModule !== 'undefined') {
             t.d.selectModule = selectModule;
+
             var $select = t.d.selectModule.originalInput();
             if(typeof $select.input === 'function'){
                 $select = originalInput.input();
             }
-            t.d.$option.appendTo($select);
+            var value = t.d.$option.attr('value');
+            var $options = $select.find('option[value="'+value+'"]');
+            if($options.length <= 0){
+                t.d.$option.appendTo($select);
+            }else{
+                t.d.$option = $options.eq(0);
+            }
+
             return t;
         }
         return t.d.selectModule;
@@ -98,6 +114,19 @@ define([
             if(t.textValue() === false){
                 t.textValue(t.d.value);
             }
+
+            var $select = t.d.selectModule.originalInput();
+            if(typeof $select.input === 'function'){
+                $select = originalInput.input();
+            }
+            var $options = $select.find('option[value="'+t.d.value+'"]');
+            if($options.length <= 0){
+                t.d.$option.attr('value', t.d.value);
+            }else{
+                t.d.$option.remove();
+                t.d.$option = $options.eq(0);
+            }
+
             return t;
         }
         return t.d.value;
@@ -106,6 +135,7 @@ define([
         var t = this;
         if (typeof textValue !== 'undefined') {
             t.d.textValue = textValue;
+            t.d.$option.html(t.d.textValue);
             return t;
         }
         return t.d.textValue;
@@ -114,6 +144,9 @@ define([
         var t = this;
         if (typeof html !== 'undefined') {
             t.d.html = html;
+            if(t.textValue() === false || t.textValue() == t.val()){
+                t.textValue(t.d.html);
+            }
             t.d.$widgetTdContent.html(t.d.html);
             return t;
         }
@@ -122,23 +155,29 @@ define([
     p.group = function (group) {
         var t = this;
         if (typeof group !== 'undefined') {
+            var selectModule = t.selectModule();
             if(group === false){
                 t.widget().appendTo(t.selectOptionBoxModule().d.$options);
-                t.selectModule().cleanGroups();
+                selectModule.cleanGroups();
             }
             t.d.group = group;
-            var groups = t.selectModule().d.groups;
+            var groups = selectModule.d.groups;
             if(typeof groups[t.d.group] === 'undefined'){
                 groups[t.d.group] = {
-                    $widget:$('<div class="automizy-select-group"></div>'),
-                    $title:$('<div class="automizy-select-group-title"></div>'),
-                    $box:$('<div class="automizy-select-group-box"></div>')
+                    $titleTr:$('<tr class="automizy-select-group"></tr>'),
+                    $titleTd:$('<td colspan="3" class="automizy-select-group-title">'+t.d.group+'</td>'),
+                    $separatorTr:$('<tr class="automizy-select-group-separator-tr"></tr>'),
+                    $separatorTd:$('<td colspan="3" class="automizy-select-group-separator-td"></td>')
                 };
-                groups[t.d.group].$widget.appendTo(t.selectOptionBoxModule().d.$options);
-                groups[t.d.group].$title.appendTo(groups[t.d.group].$widget);
-                groups[t.d.group].$box.appendTo(groups[t.d.group].$widget);
+                var $options = t.selectOptionBoxModule().d.$options;
+                groups[t.d.group].$titleTr.appendTo($options);
+                groups[t.d.group].$titleTd.appendTo(groups[t.d.group].$titleTr);
+                groups[t.d.group].$separatorTr.appendTo($options);
+                groups[t.d.group].$separatorTd.appendTo(groups[t.d.group].$separatorTr);
             }
-            t.widget().appendTo(groups[t.d.group].$box);
+
+            var theGroup = groups[t.d.group];
+            t.widget().addClass('automizy-has-group').insertBefore(theGroup.$separatorTr);
             return t;
         }
         return t.d.group;
@@ -162,8 +201,13 @@ define([
     p.enable = function () {
         return this.disabled(false);
     };
-    p.selected = function (selected) {
+    p.selected = function (selected, triggerChange) {
         var t = this;
+        if(typeof triggerChange !== 'undefined'){
+            var triggerChange = true;
+        }else{
+            triggerChange = $A.parseBoolean(triggerChange);
+        }
         if (typeof selected !== 'undefined') {
             t.d.selected = $A.parseBoolean(selected);
             var selectModule = t.selectModule();
@@ -175,7 +219,9 @@ define([
                 t.d.$option.prop("selected", false);
             }
             selectModule.refreshValue();
-            selectModule.originalInput().change();
+            if(triggerChange){
+                selectModule.originalInput().change();
+            }
             return t;
         }
         return t.d.selected;
@@ -189,16 +235,65 @@ define([
     p.unselect = function () {
         return this.selected(false);
     };
+    p.hasSelect = function(hasSelect){
+        var t = this;
+        if (typeof hasSelect !== 'undefined') {
+            t.d.hasSelect = $A.parseBoolean(hasSelect);
+            if(t.d.hasSelect === true){
+                t.widget().addClass('automizy-has-select');
+            }else{
+                t.widget().removeClass('automizy-has-select');
+            }
+            return t;
+        }
+        return t.d.hasSelect;
+    };
 
 
-    p.iconVisibile = function(){
+    p.icon = function(o){
+        var t = this;
+        if (typeof o !== 'undefined') {
+            if(o === false){
+
+            } else if(typeof o === 'string'){
+                t.d.icon = o;
+                t.widget().addClass('automizy-icon-'+o);
+            } else {
+                var icon = {
+                    url: '',
+                    width: '14px',
+                    height: '14px',
+                    bgPositionX: 'center',
+                    bgPositionY: 'center',
+                    align: 'center',
+                    valign: 'middle'
+                };
+
+                for (var i in icon) {
+                    if (typeof o[i] !== 'undefined') {
+                        icon[i] = o[i];
+                    }
+                    t.d.icon[i] = icon[i];
+                }
+            }
+            return t;
+        }
+
+        return t.d.icon;
 
     };
-    p.iconHide = function(){
-        return this.iconVisibile(false);
-    };
-    p.iconShow = function(){
-        return this.iconVisibile(true);
+    p.hasIcon = function(hasIcon){
+        var t = this;
+        if (typeof hasIcon !== 'undefined') {
+            t.d.hasIcon = $A.parseBoolean(hasIcon);
+            if(t.d.hasIcon === true){
+                t.widget().addClass('automizy-has-icon');
+            }else{
+                t.widget().removeClass('automizy-has-icon');
+            }
+            return t;
+        }
+        return t.d.hasIcon;
     };
 
 
