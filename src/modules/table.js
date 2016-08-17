@@ -702,7 +702,7 @@ define([
             t.d.selectable = $A.parseBoolean(selectable);
             if (t.d.selectable && !oSelectable) {
                 t.table().addClass('checkboxed');
-                $A.d.tableRowCheckBoxClick = true;
+                $A.d.tableRowCheckBoxClick = false;
                 var cbcagac = t.addCol({name: 'checkbox-column', html: t.d.$checkboxCheckAll, index: 0});
                 cbcagac.$cells().eq(0).click(function () {
                     if (!$A.d.tableRowCheckBoxClick) {
@@ -1123,11 +1123,14 @@ define([
             $(row).data('recordId', recordId).click(function (event) {
                 var $t = $(this);
                 setTimeout(function () {
+                    console.log('row click')
+                    console.log($A.d.tableRowCheckBoxClick)
                     if ($A.d.tableRowCheckBoxClick === false) {
                         if ($(event.target).hasClass('automizy-table-cell-editable-content') === false && $(event.target).hasClass('automizy-table-inline-edit-input-box') === false) {
                             t.openedRow($A.tableRow($t));
                             t.d.beforeOpenInlineBox.apply($t, [t.openedRow(), t.d.openedRow.recordId()]);
                             if (t.d.openableInlineBox) {
+                                console.log('inline box click')
                                 var oldInlineIndex = t.d.$inlineButtonsRow.index();
                                 t.d.$inlineButtonsCell.attr('colspan', t.table()[0].rows[0].cells.length - t.table().find('tr:first th:not(:visible)').length);
                                 t.d.$inlineButtonsRow.insertAfter($t);
@@ -1400,9 +1403,9 @@ define([
             if (typeof obj !== 'undefined') {
                 if (obj instanceof $A.m.Button || obj instanceof $A.m.Input) {
                     obj.drawTo(t.d.$buttons || t.d.$widget);
-                    obj.thin(true);
+                    obj.thin(false);
                 } else {
-                    obj.thin = true;
+                    obj.thin = false;
                     obj.target = obj.target || t.d.$buttons || t.d.$widget;
                     var button = $A.newButton(obj);
                     t.d.buttons.push(button);

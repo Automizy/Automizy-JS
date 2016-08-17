@@ -18,26 +18,26 @@ define([
             $widgetInputBoxError: $('<span class="automizy-input-box-error"></span>'),
             $widgetLabel: $('<label></label>'),
             $widgetLabelAfter: $('<span></span>'),
-            $widgetHelp: $('<img src="'+$A.images.helpIcon+'" class="automizy-input-help" />'),
-            $widgetHelpContent: $('<div class="automizy-input-help-content"><img src="'+$A.images.helpArrow+'" class="automizy-input-help-content-arrow" /></div>'),
+            $widgetHelp: $('<img src="' + $A.images.helpIcon + '" class="automizy-input-help" />'),
+            $widgetHelpContent: $('<div class="automizy-input-help-content"><img src="' + $A.images.helpArrow + '" class="automizy-input-help-content-arrow" /></div>'),
             $widgetHelpContentInner: $('<span></span>'),
             $widgetInputIcon: $('<span class="automizy-input-icon"></span>'),
             $input: $('<input />'),
             $textarea: $('<textarea></textarea>'),
             $select: $('<select></select>'),
-            $loadingBox:$('<div class="automizy-input-loading-box"></div>'),
+            $loadingBox: $('<div class="automizy-input-loading-box"></div>'),
             specialElements: [],
             type: 'text',
             skin: 'simple-automizy',
-            triggers:{
-                enter:0,
-                change:0,
-                focus:0,
-                blur:0,
-                click:0
+            triggers: {
+                enter: 0,
+                change: 0,
+                focus: 0,
+                blur: 0,
+                click: 0
             },
-            icon:false,
-            iconPosition:'right',
+            icon: false,
+            iconPosition: 'right',
             multiple: false,
             multiselect: false,
             readonly: false,
@@ -45,11 +45,11 @@ define([
             isDatepicker: false,
             newRow: true,
             breakInput: false,
-            needModify:false,
-            disabled:false,
+            needModify: false,
+            disabled: false,
             float: 'none',
-            labelPosition:'left',
-            labelWidth:'',
+            labelPosition: 'left',
+            labelWidth: '',
             value: '',
             placeholder: '',
             name: '',
@@ -60,17 +60,23 @@ define([
             accept: [],
             items: {},
             itemsArray: [],
-            groups:{},
-            activeGroup:false,
+            groups: {},
+            activeGroup: false,
             validator: $A.newValidator(),
             validate: function () {
             },
+            validationEvents: '',
             createFunctions: [],
-            automizySelect:false,
+            automizySelect: false,
             id: 'automizy-input-' + $A.getUniqueString(),
 
-            change:function () { //change keyup paste
+            change: function () { //change keyup paste
                 if (t.change().returnValue() === false) {
+                    return false;
+                }
+            },
+            focus: function () {
+                if (t.focus().returnValue() === false) {
                     return false;
                 }
             }
@@ -120,14 +126,14 @@ define([
                     t.disable();
                 } else {
                     t.enable();
-            }
+                }
             }
             if (typeof obj.enable !== 'undefined') {
                 if (obj.enable) {
                     t.enable();
                 } else {
                     t.disable();
-            }
+                }
             }
             if (typeof obj.checked !== 'undefined') {
                 t.checked(obj.checked);
@@ -213,6 +219,9 @@ define([
             if (typeof obj.validate !== 'undefined') {
                 t.validate(obj.validate);
             }
+            if (typeof obj.validationEvents !== 'undefined'){
+                t.validationEvents(obj.validationEvents);
+            }
             if (typeof obj.focus !== 'undefined') {
                 t.focus(obj.focus);
             }
@@ -230,13 +239,12 @@ define([
     };
 
     var p = Input.prototype;
-    p.setupJQueryEvents = function(){
+    p.setupJQueryEvents = function () {
         var t = this;
-        t.d.$widgetInput.unbind('change', t.d.change).bind('change', t.d.change).focus(function () {
-            if (t.focus().returnValue() === false) {
-                return false;
-            }
-        }).blur(function () {
+        t.d.$widgetInput
+            .unbind('change', t.d.change).bind('change', t.d.change)
+            .unbind('focus', t.d.focus).bind('focus', t.d.focus)
+            .blur(function () {
             if (t.blur().returnValue() === false) {
                 return false;
             }
@@ -348,9 +356,9 @@ define([
         var t = this;
         if (typeof checked !== 'undefined') {
             checked = $A.parseBoolean(checked);
-            if (t.d.hasObject){
+            if (t.d.hasObject) {
                 t.d.$widgetInput.prop('checked', checked);
-            }else {
+            } else {
                 t.d.createFunctions.push(function () {
                     t.d.$widgetInput.prop('checked', checked);
                 });
@@ -375,7 +383,7 @@ define([
             t.d.label = label;
             if (label instanceof jQuery) {
                 label.appendTo(t.d.$widgetLabel.empty());
-            }else{
+            } else {
                 t.d.$widgetLabel.html(label);
             }
             t.d.$widgetLabel.ashow();
@@ -389,7 +397,7 @@ define([
             t.d.labelAfter = labelAfter;
             if (labelAfter instanceof jQuery) {
                 labelAfter.appendTo(t.d.$widgetLabelAfter.empty());
-            }else{
+            } else {
                 t.d.$widgetLabelAfter.html(labelAfter);
             }
             t.d.$widgetLabelAfter.ashow();
@@ -419,9 +427,9 @@ define([
         if (typeof labelPosition !== 'undefined') {
             t.d.labelPosition = labelPosition;
             //t.d.$widgetLabel.html(label).ashow();
-            if(t.d.labelPosition === 'left'){
+            if (t.d.labelPosition === 'left') {
                 t.d.$widgetLabel.insertBefore(t.d.$widgetInput);
-            }else{
+            } else {
                 t.d.$widgetLabel.insertAfter(t.d.$widgetInput);
             }
             return t;
@@ -443,10 +451,10 @@ define([
             t.d.help = help;
             t.d.$widgetHelpContentInner.html(help);
             t.d.$widgetHelp.ashow();
-            
+
             /*Sizing input if it has help icon*/
             t.d.$widgetInputBox.addClass('automizy-input-has-help');
-            
+
             return t;
         }
         return t.d.help;
@@ -465,25 +473,25 @@ define([
             } else {
                 t.input().val(value);
             }
-            if(t.d.multiselect){
+            if (t.d.multiselect) {
                 t.input().multiselect().multiselect('refresh');
             }
-            if(t.d.needModify){
+            if (t.d.needModify) {
                 t.input().data('originalValue', value);
             }
             return t;
         }
-        if(t.d.type === 'html'){
+        if (t.d.type === 'html') {
             return t.input().html();
         }
         return t.input().val();
     };
-    p.valEq = function(value){
+    p.valEq = function (value) {
         var t = this;
-        if(t.d.itemsArray.length < value){
+        if (t.d.itemsArray.length < value) {
             return t;
         }
-        if(typeof t.d.itemsArray[value] === 'undefined'){
+        if (typeof t.d.itemsArray[value] === 'undefined') {
             return t;
         }
         var value = t.d.itemsArray[value][0];
@@ -521,8 +529,8 @@ define([
             } else {
                 t.widget().width('auto');
                 t.input().add(t.d.$widgetInputBox).width(width);
-                if(t.d.multiselect){
-                    t.input().next().css({maxWidth:width});
+                if (t.d.multiselect) {
+                    t.input().next().css({maxWidth: width});
                 }
             }
             return t;
@@ -565,7 +573,7 @@ define([
             t.d.$widgetInput.attr(attributes).show();
             t.d.$widgetInput.appendTo(t.d.$widgetInputBox);
             t.d.$loadingBox.appendTo(t.d.$widgetInputBox);
-            setTimeout(function(){
+            setTimeout(function () {
                 t.setupJQueryEvents();
             }, 10);
             if (t.d.type === 'hidden' && t.d.label.length < 1) {
@@ -585,17 +593,17 @@ define([
         }
         return t.d.type;
     };
-    p.displayType = function(type, settings){
+    p.displayType = function (type, settings) {
         var t = this;
         var input = t.input();
         var type = type || false;
-        if(!type){
+        if (!type) {
             return t;
         }
         var settings = settings || false;
         var thisType = t.type();
-        if(thisType === 'select' || thisType === 'automizy-select'){
-            t.d.multiselect=false;
+        if (thisType === 'select' || thisType === 'automizy-select') {
+            t.d.multiselect = false;
             t.multiple(false);
         }
         if (t.input().hasClass('hasDatepicker')) {
@@ -603,31 +611,31 @@ define([
             t.input().removeClass("hasDatepicker");
         }
         type = type.toLowerCase();
-        if(type === 'text' || type === 'string'){
+        if (type === 'text' || type === 'string') {
             t.type('text');
-        }else if(type === 'number' || type === 'integer'){
+        } else if (type === 'number' || type === 'integer') {
             t.type('number');
-        }else if(type === 'datetime') {
+        } else if (type === 'datetime') {
             t.type('text');
             t.input().datetimepicker(settings || {
-                dateFormat: 'yy-mm-dd',
-                timeFormat: 'HH:mm:ss',
-                changeYear: true,
-                changeMonth: true,
-                showOtherMonths: true,
-                selectOtherMonths: false,
-                yearRange: '1900:c',
-                showButtonPanel: true,
-                showSecond: true,
-                showMillisec: false,
-                showMicrosec: false,
-                showTimezone: false,
-                showTime: true,
-                controlType: 'slider'
-            });
-        }else if(type === 'select' || type === 'automizy-select') {
+                    dateFormat: 'yy-mm-dd',
+                    timeFormat: 'HH:mm:ss',
+                    changeYear: true,
+                    changeMonth: true,
+                    showOtherMonths: true,
+                    selectOtherMonths: false,
+                    yearRange: '1900:c',
+                    showButtonPanel: true,
+                    showSecond: true,
+                    showMillisec: false,
+                    showMicrosec: false,
+                    showTimezone: false,
+                    showTime: true,
+                    controlType: 'slider'
+                });
+        } else if (type === 'select' || type === 'automizy-select') {
             t.type('select');
-        }else if(type === 'multiple_choices') {
+        } else if (type === 'multiple_choices') {
             t.type('select').multiple(true).multiselect(true);
         }
         return t;
@@ -762,12 +770,12 @@ define([
                     var $option = $('<option></option>');
 
                     var value = arr[i];
-                    if(typeof value !== 'string' && typeof value !== 'number'){
+                    if (typeof value !== 'string' && typeof value !== 'number') {
                         value = arr[i][0];
                     }
 
                     var text = arr[i];
-                    if(typeof text !== 'string' && typeof text !== 'number'){
+                    if (typeof text !== 'string' && typeof text !== 'number') {
                         text = arr[i][1] || arr[i][0];
                     }
 
@@ -778,19 +786,19 @@ define([
                     }
                     if (before) {
                         var $container = t.d.$widgetInput;
-                        if(!$.isEmptyObject(t.d.groups) && t.d.activeGroup !== false && typeof t.d.groups[t.d.activeGroup] !== 'undefined'){
+                        if (!$.isEmptyObject(t.d.groups) && t.d.activeGroup !== false && typeof t.d.groups[t.d.activeGroup] !== 'undefined') {
                             $container = t.d.groups[t.d.activeGroup];
                         }
                         var $of = $container.find('option:first');
                         if ($of.val() == 0) {
                             $option.insertAfter($of);
-                    } else {
+                        } else {
                             $option.prependTo($container);
                         }
                     } else {
-                        if($.isEmptyObject(t.d.groups) || t.d.activeGroup === false || typeof t.d.groups[t.d.activeGroup] === 'undefined'){
-                        $option.appendTo(t.d.$widgetInput);
-                        }else{
+                        if ($.isEmptyObject(t.d.groups) || t.d.activeGroup === false || typeof t.d.groups[t.d.activeGroup] === 'undefined') {
+                            $option.appendTo(t.d.$widgetInput);
+                        } else {
                             $option.appendTo(t.d.groups[t.d.activeGroup]);
                         }
                     }
@@ -814,15 +822,15 @@ define([
         var t = this;
         return t.addOptions([[key, (value || key)]], true);
     };
-    p.group = function(groupName){
+    p.group = function (groupName) {
         var t = this;
 
-        if(typeof groupName !== 'undefined'){
-            if(groupName === false){
+        if (typeof groupName !== 'undefined') {
+            if (groupName === false) {
                 t.d.activeGroup = false;
-            }else if(typeof t.d.groups[groupName] !== 'undefined'){
+            } else if (typeof t.d.groups[groupName] !== 'undefined') {
                 t.d.activeGroup = groupName;
-            }else{
+            } else {
                 t.d.groups[groupName] = $('<optgroup label="' + groupName + '"></optgroup>').appendTo(t.d.$widgetInput);
                 t.d.activeGroup = groupName;
             }
@@ -872,9 +880,9 @@ define([
     p.validator = function (validator) {
         var t = this;
         if (typeof validator !== 'undefined') {
-            if(validator === false){
+            if (validator === false) {
                 t.d.validator = $A.newValidator();
-            }else if (validator instanceof $A.m.Validator) {
+            } else if (validator instanceof $A.m.Validator) {
                 t.d.validator = validator;
             } else {
                 t.d.validator.set(validator);
@@ -891,8 +899,10 @@ define([
             var a = t.validator().execute(t.val());
             if (!a) {
                 t.showError(t.validator().errors().join('<br/>'));
+                t.validationEvents('keyup change paste');
             } else {
                 t.hideError();
+                t.showSuccess();
             }
             t.d.validate.apply(this, [a, this, this.d.$widget]);
             return a;
@@ -902,7 +912,7 @@ define([
 
     p.validationEvents = function (validationEvents) {
         var t = this;
-        if(typeof validationEvents !== 'undefined'){
+        if (typeof validationEvents !== 'undefined') {
 
             /*Turning off old validation events*/
             var oldValidationEvents = t.d.validationEvents;
@@ -912,7 +922,7 @@ define([
             this.d.validationEvents = validationEvents;
             t.d.$widgetInput.on(validationEvents, validateNow);
 
-            function validateNow(){
+            function validateNow() {
                 t.validate();
                 t.change();
             }
@@ -939,23 +949,38 @@ define([
         var t = this;
         return t.d.$widgetInput;
     };
-    p.showError = p.error = function(msg){
+    p.showError = p.error = function (msg) {
         var t = this;
-        if(typeof msg !== 'undefined') {
+        if (typeof msg !== 'undefined') {
             t.errorBox().html(msg);
         }
+        t.hideSuccess();
         t.widget().addClass('error');
         return t;
     };
-    p.hideError = function(){
+    p.hideError = function () {
         var t = this;
         t.widget().removeClass('error');
         return t;
     };
+
+    p.showSuccess = function(){
+        var t = this;
+        t.hideError();
+        t.widget().addClass('valid');
+        return t;
+    };
+
+    p.hideSuccess = function(){
+        var t = this;
+        t.widget().removeClass('valid');
+        return t;
+    }
+
     p.errorBox = function () {
         return this.d.$widgetInputBoxError;
     };
-    p.rowSpacing = function(value){
+    p.rowSpacing = function (value) {
         var t = this;
         if (typeof value !== 'undefined') {
             t.widget().css('padding-bottom', value);
@@ -963,21 +988,21 @@ define([
         }
         return t.widget().css('padding-bottom');
     };
-    p.loadingOn = function(){
+    p.loadingOn = function () {
         var t = this;
         t.d.$loadingBox.show();
         return t;
     };
-    p.loadingOff = function(){
+    p.loadingOff = function () {
         var t = this;
         t.d.$loadingBox.hide();
         return t;
     };
-    p.thin = function(value){
+    p.thin = function (value) {
         var t = this;
         if (typeof value !== 'undefined') {
             value = $A.parseBoolean(value);
-            if(!value){
+            if (!value) {
                 t.widget().removeClass('automizy-input-thin');
                 return t;
             }
@@ -985,16 +1010,16 @@ define([
         t.widget().addClass('automizy-input-thin');
         return t;
     };
-    p.icon = function(value){
+    p.icon = function (value) {
         var t = this;
         if (typeof value !== 'undefined') {
-            if(value === false){
+            if (value === false) {
                 t.d.$widgetInputIcon.css('display', 'none');
-            }else if(value === true){
+            } else if (value === true) {
                 t.d.$widgetInputIcon.css('display', 'inline-block');
-            }else{
+            } else {
                 t.d.icon = value;
-                t.d.$widgetInputIcon.addClass('automizy-icon-'+value);
+                t.d.$widgetInputIcon.addClass('automizy-icon-' + value);
                 t.d.$widgetInputIcon.css('display', 'inline-block');
             }
             t.iconPosition();
@@ -1003,36 +1028,36 @@ define([
 
         return t.d.icon;
     };
-    p.iconPosition = function(value){
+    p.iconPosition = function (value) {
         var t = this;
         if (typeof value !== 'undefined') {
             value = value.toLowerCase();
-            if(value === 'left'){
+            if (value === 'left') {
                 t.d.iconPosition = 'left';
                 t.d.$widgetInputIcon.css({
-                    left:'0',
-                    right:'auto'
+                    left: '0',
+                    right: 'auto'
                 })
-            }else{
+            } else {
                 t.d.iconPosition = 'right';
                 t.d.$widgetInputIcon.css({
-                    left:'auto',
-                    right:'0'
+                    left: 'auto',
+                    right: '0'
                 })
             }
             t.iconPosition();
             return t;
         }
 
-        if(t.d.iconPosition === 'left'){
+        if (t.d.iconPosition === 'left') {
             t.input().css({
-                paddingLeft:'30px',
-                paddingRight:'8px'
+                paddingLeft: '30px',
+                paddingRight: '8px'
             })
-        }else{
+        } else {
             t.input().css({
-                paddingLeft:'8px',
-                paddingRight:'30px'
+                paddingLeft: '8px',
+                paddingRight: '30px'
             })
         }
         return t.d.iconPosition;
@@ -1048,7 +1073,7 @@ define([
         t.d.$widgetInputIcon.click();
         return t;
     };
-    p.automizySelect = function(){
+    p.automizySelect = function () {
         return this.input().automizySelect();
     };
 

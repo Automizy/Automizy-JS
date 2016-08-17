@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Select Example</title>
     <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="../dist/automizy.css">
     <script src="../dist/automizy.js"></script>
     <script>
@@ -207,7 +208,7 @@
                     }
                 ]
             });
-            var dialog = $A.newDialog({
+            dialog = $A.newDialog({
                 title: 'Import contacts',
                 hash: 'ImportContacts',
                 buttons: [
@@ -246,7 +247,7 @@
                     console.log('module: ', module);
                     console.log('$widget ', $widget);
                 }
-            }).draw();
+            }).open();
             temp = dialog;
             var button = $A.newButton({
                 click: function () {
