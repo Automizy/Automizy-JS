@@ -31,7 +31,13 @@ define([
             width: 'auto',
             minWidth: 180,
             height: 'auto',
-            id: 'automizy-select-' + $A.getUniqueString()
+            id: 'automizy-select-' + $A.getUniqueString(),
+
+            change: function () {
+                if (t.change().returnValue() === false) {
+                    return false;
+                }
+            }
         };
         t.f = {};
         t.init();
@@ -51,10 +57,18 @@ define([
 
         t.widget().click(function(){
             t.open();
-        })
+        });
+
+        t.setupJQueryEvents();
     };
 
     var p = Select.prototype;
+
+
+    p.setupJQueryEvents = function(){
+        var t = this;
+        t.originalInput().unbind('change', t.d.change).bind('change', t.d.change);
+    };
 
     p.originalInput = function (originalInput) {
         var t = this;
@@ -79,6 +93,7 @@ define([
             $elem.hide();
             $elem.data('automizy-select', t);
             t.d.originalInput.data('automizy-select', t);
+            t.setupJQueryEvents();
             return t;
         }
         return t.d.originalInput;
@@ -107,7 +122,7 @@ define([
                     }
                 }
             }
-            t.d.originalInput.val(t.d.value);
+            t.d.originalInput.val(t.d.value).trigger('change');
             return t;
         }
         return t.d.value;
@@ -169,10 +184,14 @@ define([
     p.enable = function () {
         return this.disabled(false);
     };
-    p.unselectAll = function () {
+    p.unselectAll = function (triggerChange) {
         var t = this;
+        var triggerChange = triggerChange || false;
         for(var i = 0; i < t.d.options.length; i++){
             t.d.options[i].unselect();
+        }
+        if(triggerChange){
+            t.originalInput().trigger('change');
         }
         return t;
     };
@@ -351,7 +370,20 @@ define([
         return this.d.optionBox.close.apply(this.d.optionBox, [func, name, life]);
     };
 
-    $A.initBasicFunctions(Select, "Select", []);
+    p.change = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('change', func, name, life);
+        } else {
+            var a = t.runFunctions('change');
+            t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
+        }
+        return t;
+    };
+
+
+
+    $A.initBasicFunctions(Select, "Select", ['change']);
 
 
     $.fn.automizySelect = function () {

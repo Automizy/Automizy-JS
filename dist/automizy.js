@@ -2085,7 +2085,13 @@ var $A = {};
             validate: function () {},
             createFunctions: [],
             automizySelect:false,
-            id: 'automizy-input-' + $A.getUniqueString()
+            id: 'automizy-input-' + $A.getUniqueString(),
+
+            change:function () { //change keyup paste
+                if (t.change().returnValue() === false) {
+                    return false;
+                }
+            }
         };
         t.f = {};
         t.init();
@@ -2244,11 +2250,7 @@ var $A = {};
     var p = Input.prototype;
     p.setupJQueryEvents = function(){
         var t = this;
-        t.d.$widgetInput.change(function () { //change keyup paste
-            if (t.change().returnValue() === false) {
-                return false;
-            }
-        }).focus(function () {
+        t.d.$widgetInput.unbind('change', t.d.change).bind('change', t.d.change).focus(function () {
             if (t.focus().returnValue() === false) {
                 return false;
             }
@@ -5890,10 +5892,10 @@ var $A = {};
                 return t;
             }
             if(t.selectModule().multiple()){
-                t.toggleSelect();
+                t.toggleSelect(true);
             }else{
                 t.selectModule().unselectAll().close();
-                t.toggleSelect();
+                t.toggleSelect(true);
             }
             return t;
         })
@@ -6027,11 +6029,7 @@ var $A = {};
     };
     p.selected = function (selected, triggerChange) {
         var t = this;
-        if(typeof triggerChange !== 'undefined'){
-            var triggerChange = true;
-        }else{
-            triggerChange = $A.parseBoolean(triggerChange);
-        }
+        var triggerChange = triggerChange || false;
         if (typeof selected !== 'undefined') {
             t.d.selected = $A.parseBoolean(selected);
             var selectModule = t.selectModule();
@@ -6044,20 +6042,20 @@ var $A = {};
             }
             selectModule.refreshValue();
             if(triggerChange){
-                selectModule.originalInput().change();
+                selectModule.originalInput().trigger('change');
             }
             return t;
         }
         return t.d.selected;
     };
-    p.toggleSelect = function () {
-        return this.selected(!this.selected());
+    p.toggleSelect = function (triggerChange) {
+        return this.selected(!this.selected(), triggerChange || false);
     };
-    p.select = function () {
-        return this.selected(true);
+    p.select = function (triggerChange) {
+        return this.selected(true, triggerChange || false);
     };
-    p.unselect = function () {
-        return this.selected(false);
+    p.unselect = function (triggerChange) {
+        return this.selected(false, triggerChange || false);
     };
     p.hasSelect = function(hasSelect){
         var t = this;
@@ -6165,7 +6163,13 @@ var $A = {};
             width: 'auto',
             minWidth: 180,
             height: 'auto',
-            id: 'automizy-select-' + $A.getUniqueString()
+            id: 'automizy-select-' + $A.getUniqueString(),
+
+            change: function () {
+                if (t.change().returnValue() === false) {
+                    return false;
+                }
+            }
         };
         t.f = {};
         t.init();
@@ -6185,10 +6189,18 @@ var $A = {};
 
         t.widget().click(function(){
             t.open();
-        })
+        });
+
+        t.setupJQueryEvents();
     };
 
     var p = Select.prototype;
+
+
+    p.setupJQueryEvents = function(){
+        var t = this;
+        t.originalInput().unbind('change', t.d.change).bind('change', t.d.change);
+    };
 
     p.originalInput = function (originalInput) {
         var t = this;
@@ -6213,6 +6225,7 @@ var $A = {};
             $elem.hide();
             $elem.data('automizy-select', t);
             t.d.originalInput.data('automizy-select', t);
+            t.setupJQueryEvents();
             return t;
         }
         return t.d.originalInput;
@@ -6241,7 +6254,7 @@ var $A = {};
                     }
                 }
             }
-            t.d.originalInput.val(t.d.value);
+            t.d.originalInput.val(t.d.value).trigger('change');
             return t;
         }
         return t.d.value;
@@ -6303,10 +6316,14 @@ var $A = {};
     p.enable = function () {
         return this.disabled(false);
     };
-    p.unselectAll = function () {
+    p.unselectAll = function (triggerChange) {
         var t = this;
+        var triggerChange = triggerChange || false;
         for(var i = 0; i < t.d.options.length; i++){
             t.d.options[i].unselect();
+        }
+        if(triggerChange){
+            t.originalInput().trigger('change');
         }
         return t;
     };
@@ -6485,7 +6502,20 @@ var $A = {};
         return this.d.optionBox.close.apply(this.d.optionBox, [func, name, life]);
     };
 
-    $A.initBasicFunctions(Select, "Select", []);
+    p.change = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('change', func, name, life);
+        } else {
+            var a = t.runFunctions('change');
+            t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
+        }
+        return t;
+    };
+
+
+
+    $A.initBasicFunctions(Select, "Select", ['change']);
 
 
     $.fn.automizySelect = function () {

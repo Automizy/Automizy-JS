@@ -66,7 +66,13 @@ define([
             validate: function () {},
             createFunctions: [],
             automizySelect:false,
-            id: 'automizy-input-' + $A.getUniqueString()
+            id: 'automizy-input-' + $A.getUniqueString(),
+
+            change:function () { //change keyup paste
+                if (t.change().returnValue() === false) {
+                    return false;
+                }
+            }
         };
         t.f = {};
         t.init();
@@ -225,11 +231,7 @@ define([
     var p = Input.prototype;
     p.setupJQueryEvents = function(){
         var t = this;
-        t.d.$widgetInput.change(function () { //change keyup paste
-            if (t.change().returnValue() === false) {
-                return false;
-            }
-        }).focus(function () {
+        t.d.$widgetInput.unbind('change', t.d.change).bind('change', t.d.change).focus(function () {
             if (t.focus().returnValue() === false) {
                 return false;
             }

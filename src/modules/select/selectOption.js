@@ -66,10 +66,10 @@ define([
                 return t;
             }
             if(t.selectModule().multiple()){
-                t.toggleSelect();
+                t.toggleSelect(true);
             }else{
                 t.selectModule().unselectAll().close();
-                t.toggleSelect();
+                t.toggleSelect(true);
             }
             return t;
         })
@@ -203,11 +203,7 @@ define([
     };
     p.selected = function (selected, triggerChange) {
         var t = this;
-        if(typeof triggerChange !== 'undefined'){
-            var triggerChange = true;
-        }else{
-            triggerChange = $A.parseBoolean(triggerChange);
-        }
+        var triggerChange = triggerChange || false;
         if (typeof selected !== 'undefined') {
             t.d.selected = $A.parseBoolean(selected);
             var selectModule = t.selectModule();
@@ -220,20 +216,20 @@ define([
             }
             selectModule.refreshValue();
             if(triggerChange){
-                selectModule.originalInput().change();
+                selectModule.originalInput().trigger('change');
             }
             return t;
         }
         return t.d.selected;
     };
-    p.toggleSelect = function () {
-        return this.selected(!this.selected());
+    p.toggleSelect = function (triggerChange) {
+        return this.selected(!this.selected(), triggerChange || false);
     };
-    p.select = function () {
-        return this.selected(true);
+    p.select = function (triggerChange) {
+        return this.selected(true, triggerChange || false);
     };
-    p.unselect = function () {
-        return this.selected(false);
+    p.unselect = function (triggerChange) {
+        return this.selected(false, triggerChange || false);
     };
     p.hasSelect = function(hasSelect){
         var t = this;
