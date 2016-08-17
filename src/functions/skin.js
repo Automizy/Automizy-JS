@@ -34,10 +34,10 @@ define([
                             $automizyTd2:$td2
                         });
                         input.data('automizyButton', fileButton);
-                        input.change(function () {
+                        input.off('change', 'automizy-change').on('change', function () {
                             var filename = input.val().split('\\').pop();
                             fileText.val(filename);
-                        });
+                        }, 'automizy-change');
                         $fileBox.insertAfter($input);
                         $input.data('table', $table).css({
                             position: 'absolute',

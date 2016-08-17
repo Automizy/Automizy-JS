@@ -2,8 +2,13 @@ define([
     'automizy/core',
     'automizy/modules/button',
     'automizy/modules/i18n',
+    'automizy/addons/jqueryAddOns',
+    'automizy/addons/objectAddOns',
+    'automizy/functions/setWindowScroll',
     'automizy/functions/getUniqueString',
     'automizy/functions/initBasicFunctions',
+    'automizy/functions/registerLocalEvents',
+    'automizy/functions/runFunctions',
     'automizy/images/icons'
 ], function () {
     var Table = function (obj) {
@@ -13,7 +18,8 @@ define([
             $widget: $('<div class="automizy-table-box"></div>'),
             $tableContainerBox: $('<div class="automizy-table-container-box"></div>'),
             $tableContainer: $('<div class="automizy-table-container"></div>'),
-            $table: $('<table cellpadding="0" cellspacing="0" border="0" class="automizy-table collapsed"></table>'),
+            $table:  $('<table cellpadding="0" cellspacing="0" border="0" class="automizy-table automizy-table-clickable collapsed"></table>'),
+            $tbody:  $('<tbody></tbody>'),
             $header: $('<tr class="automizy-table-header"></tr>'),
             $title: $('<div class="automizy-table-title"></div>'),
             $actions: $('<div class="automizy-table-actions"></div>'),
@@ -52,7 +58,7 @@ define([
             $inlineButtons: $('<div class="automizy-table-inline-buttons"></div>'),
             $inlineButtonsCell: $('<td class="automizy-table-inline-buttons-cell"></td>'),
             $inlineButtonsRow: $('<tr class="automizy-table-inline-buttons-row"></tr>'),
-            $checkboxCheckAll: $('<input type="checkbox" onclick="AutomizyJs.d.tableRowCheckBoxClick = true;" class="automizy-table-checkall automizy-table-rowcheck" />'),
+            $checkboxCheckAll: $('<input type="checkbox" onclick="$A.d.tableRowCheckBoxClick = true;" class="automizy-table-checkall automizy-table-rowcheck" />'),
             $automizyTableBorderCss: $('<style></style>'),
             $loadingCellContent: $('<div class="automizy-table-loading-cell-content"></div>'),
             loadingCellContent: $A.translate('<b>Loading...</b>'),
@@ -71,12 +77,14 @@ define([
             settings: {
                 cols: []
             },
+            settingsCheckboxes:{},
             orderBy: false,
             orderDir: 'asc',
             hasObject: false,
             selectable: false,
             exportable: true,
             openableInlineBox: true,
+            clickableRow:true,
             storeData: false,
             id: 'automizy-table-' + $A.getUniqueString(),
             onPerPage: function () {
@@ -224,15 +232,16 @@ define([
         t.d.$stepPageBox.appendTo(t.d.$actions);
 
         t.d.$perPageBox.appendTo(t.d.$actions);
-        t.d.perPageSelect.type('select').multiple(false).multiselect(true).options(t.d.perPageList).val(t.d.perPage).label(t.d.perPageLabel).width('83px').change(function () {
+        t.d.perPageSelect.type('select').options(t.d.perPageList).val(t.d.perPage).label(t.d.perPageLabel).width('83px').change(function(){
             t.d.perPage = this.val();
             if (t.d.storeData) {
-                $A.store.set(t.id() + 'PerPage', t.d.perPage);
+                $A.store.set(t.id()+'-per-page', t.d.perPage);
             }
             t.d.onPerPage.apply(this, [t, t.d.$widget]);
         }).drawTo(t.d.$perPageBox);
         t.d.$widget.attr('id', t.id());
-        t.d.$header.appendTo(t.d.$table);
+        t.d.$tbody.appendTo(t.d.$table);
+        t.d.$header.appendTo(t.d.$tbody);
         t.d.$title.html(t.d.title).appendTo(t.d.$widget);
         t.d.$actions.appendTo(t.d.$widget);
         t.d.$buttons.appendTo(t.d.$actions);
@@ -267,7 +276,7 @@ define([
             t.d.$searchIcon.append('<img src="' + $A.images.searchIcon + '" />').insertAfter(t.d.$searchBox).click(function () {
                 t.d.$searchBoxContent.stop().slideToggle();
                 t.d.searchBoxCanClose = false;
-                t.d.$searchInput.focus();
+                t.d.$searchInput.input().focus().select();
             });
             t.d.$exportIcon.append('<img src="' + $A.images.exportIcon + '" />').appendTo(t.d.$panel).click(function () {
                 t.d.onExport.apply(t, [t, t.d.$widget]);
@@ -441,6 +450,8 @@ define([
                     t.onPerPage(obj.onPerPage);
                 if (typeof obj.onShowCol === 'function')
                     t.onShowCol(obj.onShowCol);
+                if (typeof obj.onSearch === 'function')
+                    t.onSearch(obj.onSearch);
                 if (typeof obj.onExport === 'function')
                     t.onExport(obj.onExport);
                 if (typeof obj.buttons !== 'undefined')
@@ -449,6 +460,8 @@ define([
                     t.inlineButtons(obj.inlineButtons);
                 if (typeof obj.openableInlineBox !== 'undefined')
                     t.openableInlineBox(obj.openableInlineBox);
+                if (typeof obj.clickableRow !== 'undefined')
+                    t.clickableRow(obj.clickableRow);
                 if (typeof obj.beforeOpenInlineBox === 'function')
                     t.beforeOpenInlineBox(obj.beforeOpenInlineBox);
                 if (typeof obj.loadingCellContent !== 'undefined')
@@ -468,6 +481,9 @@ define([
 
     p.table = function () {
         return this.d.$table;
+    };
+    p.tbody = function () {
+        return this.d.$tbody;
     };
 
     p.storeData = function (storeData) {
@@ -535,6 +551,15 @@ define([
             t.d.onPerPage = func;
         } else {
             return t.d.onPerPage.apply(t, [t, t.d.$widget]);
+        }
+        return this;
+    };
+    p.onSearch = function (func) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.d.onSearch = func;
+        } else {
+            return t.d.onSearch.apply(t, [t, t.d.$widget]);
         }
         return this;
     };
@@ -635,7 +660,7 @@ define([
             t.d.perPage = perPage;
             t.d.perPageSelect.val(perPage);
             if (t.d.storeData) {
-                $A.store.set(t.id() + 'PerPage', t.d.perPage);
+                $A.store.set(t.id()+'-per-page', t.d.perPage);
             }
             if (t.d.hasObject)t.d.onPerPage.apply(t.d.perPageSelect, [t, t.d.$widget]);
             return t;
@@ -677,16 +702,16 @@ define([
             t.d.selectable = $A.parseBoolean(selectable);
             if (t.d.selectable && !oSelectable) {
                 t.table().addClass('checkboxed');
-                AutomizyJs.d.tableRowCheckBoxClick = true;
+                $A.d.tableRowCheckBoxClick = true;
                 var cbcagac = t.addCol({name: 'checkbox-column', html: t.d.$checkboxCheckAll, index: 0});
                 cbcagac.$cells().eq(0).click(function () {
-                    if (!AutomizyJs.d.tableRowCheckBoxClick) {
+                    if (!$A.d.tableRowCheckBoxClick) {
                         $(this).find('input:first').each(function () {
                             this.checked = !this.checked;
                             $(this).trigger('change');
                         });
                     }
-                    AutomizyJs.d.tableRowCheckBoxClick = false;
+                    $A.d.tableRowCheckBoxClick = false;
                 });
                 var $cbcagac = cbcagac.$cells().slice(1);
                 $cbcagac.html(function () {
@@ -722,6 +747,19 @@ define([
         }
         return t.d.openableInlineBox;
     };
+    p.clickableRow = function (clickableRow) {
+        var t = this;
+        if (typeof clickableRow !== 'undefined') {
+            t.d.clickableRow = $A.parseBoolean(clickableRow);
+            if (clickableRow === false) {
+                t.d.$table.removeClass('automizy-table-clickable');
+            }else{
+                t.d.$table.addClass('automizy-table-clickable');
+            }
+            return t;
+        }
+        return t.d.clickableRow;
+    };
     p.beforeOpenInlineBox = function (func) {
         var t = this;
         if (typeof func === 'function') {
@@ -747,13 +785,20 @@ define([
     };
     p.selectedIds = function () {
         var t = this;
-        return t.getColByIndex(0).$cells().find('input[type="checkbox"][value]:checked').map(function () {
-            return this.value
-        }).get()
+        var col = t.getColByIndex(0);
+        if(typeof col.$cells === 'function'){
+            return col.$cells().find('input[type="checkbox"][value]:checked').map(function(){return this.value}).get();
+        }
+        return [];
     };
     p.selectedId = function () {
         var t = this;
-        return t.getColByIndex(0).$cells().find('input[type="checkbox"][value]:checked:first').val();
+
+        var col = t.getColByIndex(0);
+        if(typeof col.$cells === 'function'){
+            return col.$cells().find('input[type="checkbox"][value]:checked:first').val();
+        }
+        return [];
     };
     p.openedRow = function (openedRow) {
         var t = this;
@@ -773,7 +818,7 @@ define([
 
     p.getCell = function (colIndex, rowIndex) {
         var t = this;
-        var $cell = t.table().find('tr:first').siblings().andSelf().eq(rowIndex).find('td, th').eq(colIndex);
+        var $cell = t.table().find('tr:first').siblings().addBack().eq(rowIndex).find('td, th').eq(colIndex);
         return $A.tableCell($cell);
     };
 
@@ -810,7 +855,7 @@ define([
 
 
     p.getRowByIndex = function (index) {
-        var $row = this.table().find('tr:first').siblings().andSelf().eq(index);
+        var $row = this.table().find('tr:first').siblings().addBack().eq(index);
         if ($row.length === 0) {
             return false;
         }
@@ -818,7 +863,7 @@ define([
     };
     p.getRowByRecordId = function (recordId) {
         var t = this;
-        var $row = t.table().find('tr:first').siblings().andSelf().filter(function () {
+        var $row = t.table().find('tr:first').siblings().addBack().filter(function(){
             return $(this).data('recordId') == recordId;
         });
         if ($row.length === 0) {
@@ -827,7 +872,7 @@ define([
         return $A.tableRow($row);
     };
     p.getColByIndex = function (index) {
-        var $col = this.table().find('th:first').siblings().andSelf().eq(index);
+        var $col = this.table().find('th:first').siblings().addBack().eq(index);
         if ($col.length === 0) {
             return false;
         }
@@ -835,7 +880,7 @@ define([
     };
     p.getColByName = function (name) {
         var t = this;
-        var $col = t.table().find('th:first').siblings().andSelf().filter(function () {
+        var $col = t.table().find('th:first').siblings().addBack().filter(function(){
             return $(this).data('name') == name;
         });
         if ($col.length === 0) {
@@ -888,29 +933,10 @@ define([
                         obj.name = $A.getUniqueString();
                     }
                     if (obj.hideable !== false) {
-
-                        $A.input({
-                            id: t.id() + '-settings-checkbox-' + obj.name,
-                            type: 'checkbox',
-                            label: obj.text || obj.name,
+                        t.addSettingsCheckbox({
                             name: obj.name,
-                            labelPosition: 'right',
-                            checked: visibility,
-                            target: t.d.$settingsBoxContent,
-                            change: function () {
-                                var name = this.name();
-                                var col = t.getColByName(name);
-                                if (!this.checked()) {
-                                    col.hide();
-                                    t.d.onHideCol.apply(col, [t, t.widget()]);
-                                } else {
-                                    col.show();
-                                    t.d.onShowCol.apply(col, [t, t.widget()]);
-                                }
-                                if (t.d.storeData) {
-                                    $A.store.set(t.id() + 'ActiveCols', t.d.$settingsBoxContent.serializeObject(true));
-                                }
-                            }
+                            label:obj.text,
+                            checked:visibility
                         });
                     }
 
@@ -976,6 +1002,46 @@ define([
         }
         return t;
     };
+    p.addSettingsCheckbox = function(obj){
+        var t = this;
+        var name = obj.name || $A.getUniqueString();
+        var label = obj.label || name;
+        var checked = obj.checked || false;
+        t.d.settingsCheckboxes[name] = $A.input({
+            type:'checkbox',
+            label:label,
+            name:name,
+            labelPosition:'right',
+            checked:checked,
+            target:t.d.$settingsBoxContent,
+            change:function(){
+                var name = this.name();
+                var col = t.getColByName(name);
+                if(!this.checked()){
+                    col.hide();
+                    t.d.onHideCol.apply(col, [t, t.widget()]);
+                }else{
+                    col.show();
+                    t.d.onShowCol.apply(col, [t, t.widget()]);
+                }
+                if(t.d.storeData){
+                    $A.store.set(t.id()+'ActiveCols', t.d.$settingsBoxContent.serializeObject(true));
+                }
+            }
+        });
+        return t;
+    };
+    p.getSettingsCheckbox = function(name){
+        return this.d.settingsCheckboxes[name];
+    };
+    p.removeSettingsCheckbox = function(name){
+        var t = this;
+        var settingCheckbox = t.d.settingsCheckboxes[name];
+        if(typeof settingCheckbox !== 'undefined' && typeof settingCheckbox.remove === 'function') {
+            settingCheckbox.remove();
+        }
+        return t;
+    };
     p.addCol = function (obj) {
         var t = this;
         if (typeof obj === 'undefined') {
@@ -989,9 +1055,9 @@ define([
         var t = this;
         if (typeof arr === 'undefined') {
             var cols = [];
-            this.table().find('th:first').siblings().andSelf().each(function () {
+            this.table().find('th:first').siblings().addBack().each(function(){
                 cols.push($A.tableCol($(this)));
-            })
+            });
             return cols;
         }
         t.deleteCols();
@@ -1005,7 +1071,7 @@ define([
             for (var i = 0; i < table.rows.length; i++) {
                 for (var j = sortArr.length - 1; j >= 0; j--) {
                     if (i === 0) {
-                        $A.input('table-settings-checkbox-' + $(table.rows[i].cells[j]).attr('name')).remove();
+                        t.removeSettingsCheckbox($(table.rows[i].cells[j]).attr('name'));
                     }
                     table.rows[i].deleteCell(sortArr[j]);
                 }
@@ -1015,9 +1081,10 @@ define([
 
         var cols = t.cols();
         for (var i = 0; i < cols.length; i++) {
-            $A.input(t.id() + '-settings-checkbox-' + cols[i].name()).remove();
+            t.removeSettingsCheckbox(cols[i].name());
         }
-        $A.input(t.id() + '-settings-checkbox-' + $(table.rows[i].cells[j]).attr('name')).remove();
+        t.removeSettingsCheckbox($(table.rows[i].cells[j]).attr('name'));
+
         var lastCol = table.rows[0].cells.length - 1;
         for (var i = 0; i < table.rows.length; i++) {
             for (var j = lastCol; j > 0; j--) {
@@ -1037,6 +1104,8 @@ define([
             return t.addRows([arr]);
         }
 
+        $A.runFunctions($A.events.table.functions.beforeAddRows, t, [t, arr]);
+
         var table = t.table()[0];
         for (var i = 0; i < arr.length; i++) {
             var recordId = 0;
@@ -1054,7 +1123,7 @@ define([
             $(row).data('recordId', recordId).click(function (event) {
                 var $t = $(this);
                 setTimeout(function () {
-                    if (AutomizyJs.d.tableRowCheckBoxClick === false) {
+                    if ($A.d.tableRowCheckBoxClick === false) {
                         if ($(event.target).hasClass('automizy-table-cell-editable-content') === false && $(event.target).hasClass('automizy-table-inline-edit-input-box') === false) {
                             t.openedRow($A.tableRow($t));
                             t.d.beforeOpenInlineBox.apply($t, [t.openedRow(), t.d.openedRow.recordId()]);
@@ -1078,7 +1147,7 @@ define([
                             }
                         }
                     }
-                    AutomizyJs.d.tableRowCheckBoxClick = false;
+                    $A.d.tableRowCheckBoxClick = false;
                 }, 10);
             });
 
@@ -1097,7 +1166,7 @@ define([
 
             if (t.d.selectable) {
                 rowArr.unshift({
-                    html: '<input type="checkbox" class="automizy-table-rowcheck" onClick="AutomizyJs.d.tableRowCheckBoxClick = true;" value="' + recordId + '" />',
+                    html: '<input type="checkbox" class="automizy-table-rowcheck" onClick="$A.d.tableRowCheckBoxClick = true;" value="' + recordId + '" />',
                     click:function () {
                         if(!$A.d.tableRowCheckBoxClick){
                             $(this).find('input:first').each(function(){
@@ -1113,12 +1182,15 @@ define([
                 var isEditable = $(table).find('th:eq(' + (j) + ')').data('editable');
 
                 var cell = row.insertCell(j);
+                if(j === 0){
+                    cell.className = 'automizy-main-cell';
+                }
 
                 var value = rowArr[j];
-                if (typeof value === 'undefined') {
+                if(typeof value === 'undefined' || !value){
                     value = '';
                 }
-                if (value instanceof $A.m.Input) {
+                if (typeof value.drawTo === 'function') {
                     if (isEditable) {
                         value.drawTo($('<span class="automizy-table-cell-editable-content"></span>').appendTo($(cell)));
                     } else {
@@ -1141,6 +1213,7 @@ define([
                     }
                     if (typeof value.text !== 'undefined') {
                         cell.textContent = value.text;
+                        cell.title = value.text;
                     }
                     cell.onclick = value.click || function(){};
 
@@ -1151,12 +1224,21 @@ define([
                     }
                     else {
                         cell.textContent = value;
+                    cell.title = value;
                     }
                 }
                 var jMod = t.d.selectable ? j - 1 : j;
                 if (typeof t.d.settings.cols[jMod] !== 'undefined') {
                     if (typeof t.d.settings.cols[jMod].cellFunction === 'function') {
-                        t.d.settings.cols[jMod].cellFunction.apply(cell, [cell, value]);
+                        if(typeof t.d.settings.cols[jMod].cellData !== 'undefined') {
+                            cell.automizyData = t.d.settings.cols[jMod].cellData;
+                        }
+                        t.d.settings.cols[jMod].cellFunction.apply(cell, [cell, value, i, j]);
+                    }
+                    if(typeof t.d.settings.cols[jMod].mainCell !== 'undefined') {
+                        if($A.parseBoolean(t.d.settings.cols[jMod].mainCell)){
+                            cell.className = 'automizy-main-cell';
+                        }
                     }
                 }
 
@@ -1165,6 +1247,7 @@ define([
                 }
             }
         }
+        $A.runFunctions($A.events.table.functions.addRows, t, [t, table.rows]);
         return t;
     };
     p.addRow = function (arr) {
@@ -1180,7 +1263,7 @@ define([
         var t = this;
         if (typeof arr === 'undefined') {
             var rows = [];
-            this.table().find('tr:first').siblings().andSelf().each(function () {
+            this.table().find('tr:first').siblings().addBack().each(function(){
                 rows.push($A.tableRow($(this)));
             });
             return rows;
@@ -1196,7 +1279,7 @@ define([
         var table = t.table()[0];
         if (typeof arr !== 'undefined') {
             var sortArr = arr.sort();
-            for (var i = sortArr.length - 1; i >= 0; i--) {
+            for (var i = (sortArr.length - 1); i >= 0; i--) {
                 table.deleteRow(sortArr[i]);
             }
             return t;
@@ -1266,14 +1349,16 @@ define([
             t.d.inlineButtons = inlineButtons;
             for (var i = 0; i < inlineButtons.length; i++) {
                 var inlineButton = inlineButtons[i];
-                $('<a>' + inlineButton.text + '</a>').data('click', inlineButton.click || function () {
-                    }).click(function (event) {
+                var $button = $('<a>'+inlineButton.text+'</a>').data('click', inlineButton.click || function(){}).click(function(){
                     var $t = $(this);
                     var $row = $t.closest('tr').prev();
                     var row = $A.tableRow($row);
                     t.openedRow(row);
                     $t.data('click').apply(row, [t, t.d.$widget]);
                 }).appendTo(t.d.$inlineButtons);
+                if(!inlineButton.permission){
+                    $button.wrap('<span class="automizy-permission-trap"></span>');
+                }
             }
             return t;
         }
@@ -1284,21 +1369,22 @@ define([
         if (t.table().find('tr.automizy-table-loading-row').length > 0) {
             return t;
         }
-        setTimeout(function () {
+        //setTimeout(function(){
             t.deleteRows();
             t.setButtonsStatus();
             var $tr = $('<tr class="automizy-table-loading-row"></tr>');
             var $td = $('<td colspan="' + t.getRowByIndex(0).$cells().length + '"></td>').appendTo($tr);
             t.d.$loadingCellContent.appendTo($td);
             $tr.appendTo(t.table());
-        }, 10);
+            $A.runFunctions($A.events.table.functions.loading, t, [t]);
+        //}, 10);
         return t;
     };
     p.loadingCellContent = function (loadingCellContent) {
         var t = this;
         if (typeof loadingCellContent !== 'undefined') {
             if (loadingCellContent instanceof jQuery) {
-                var loadingCellContent = loadingCellContent.clone();
+                loadingCellContent = loadingCellContent.clone();
             }
             t.d.loadingCellContent = loadingCellContent;
             t.d.$loadingCellContent.html(loadingCellContent);
@@ -1306,8 +1392,30 @@ define([
         }
         return t.d.loadingCellContent;
     };
+    p.addButton = p.addButton || function (obj) {
+            var t = this;
+            if (typeof t.d.buttons === 'undefined') {
+                return t;
+            }
+            if (typeof obj !== 'undefined') {
+                if (obj instanceof $A.m.Button || obj instanceof $A.m.Input) {
+                    obj.drawTo(t.d.$buttons || t.d.$widget);
+                    obj.thin(true);
+                } else {
+                    obj.thin = true;
+                    obj.target = obj.target || t.d.$buttons || t.d.$widget;
+                    var button = $A.newButton(obj);
+                    t.d.buttons.push(button);
+                }
+                t.d.$widget.addClass('has-button');
+                return t;
+            }
+            var button = $A.newButton();
+            t.d.buttons.push(button);
+            button.drawTo(t.d.$buttons || t.d.$widget);
+            return button;
+        };
 
-    $A.initBasicFunctions(Table, "Table");
-
+    $A.initBasicFunctions(Table, "Table", ['addRows', 'beforeAddRows', 'beforeOpenInlineBox', 'loading']);
 
 });

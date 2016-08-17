@@ -1,6 +1,7 @@
 define([
     'automizy/core',
     'automizy/functions/getUniqueString',
+    'automizy/functions/registerLocalEvents',
     'automizy/functions/initBasicFunctions'
 ], function () {
     var TableCol = function (obj) {
@@ -66,7 +67,7 @@ define([
         if (typeof table !== 'undefined') {
             t.d.table = table;
             var colIndex = t.d.index;
-            var $cols = t.d.table.table().find('th, td').eq(0).siblings().andSelf();
+            var $cols = t.d.table.table().find('th, td').eq(0).siblings().addBack();
             var colLen = $cols.length;
             var id = $cols.eq(colIndex).attr('id') || 0;
             
@@ -168,6 +169,7 @@ define([
     p.cells = function (type) {
         var t = this;
         var table = t.table();
+        var tableId = table.id();
         var rowCount = table.table()[0].rows.length;
         var index = t.index();
 

@@ -1,6 +1,7 @@
 define([
     'automizy/core',
     'automizy/functions/getUniqueString',
+    'automizy/functions/registerLocalEvents',
     'automizy/functions/initBasicFunctions'
 ], function () {
     var TableCell = function (obj) {
@@ -73,10 +74,10 @@ define([
     };
 
     p.row = function () {
-        return $A.tableRow(this.table().table().find('tr:first').siblings().andSelf().eq(this.widget().parent().index()));
+        return $A.tableRow(this.table().table().find('tr:first').siblings().addBack().eq(this.widget().parent().index()));
     };
     p.col = function () {
-        return $A.tableCol(this.table().table().find('th, td').eq(0).siblings().andSelf().eq(this.widget().index()));
+        return $A.tableCol(this.table().table().find('th, td').eq(0).siblings().addBack().eq(this.widget().index()));
     };
     p.index = function () {
         return [this.col().index(), this.row().index()];

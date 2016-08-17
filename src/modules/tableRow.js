@@ -1,6 +1,7 @@
 define([
     'automizy/core',
     'automizy/functions/getUniqueString',
+    'automizy/functions/registerLocalEvents',
     'automizy/functions/initBasicFunctions'
 ], function () {
     var TableRow = function (obj) {
@@ -41,7 +42,7 @@ define([
         if (typeof table !== 'undefined') {
             t.d.table = table;
             var rowIndex = t.d.index;
-            var trs = t.d.table.table().find('tr:first').siblings().andSelf();
+            var trs = t.d.table.table().find('tr:first').siblings().addBack();
             var id = trs.eq(rowIndex).attr('id') || 0;
             
             if(typeof $A.getTableRow(id) === 'undefined'){

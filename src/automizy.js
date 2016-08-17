@@ -20,7 +20,8 @@ define([
     "automizy/modules/tableCol",
     "automizy/modules/tableCell",
     "automizy/modules/i18n",
-    
+    "automizy/modules/select/select",
+
     "automizy/defines/input",
     
     "automizy/addons/jqueryAddOns",
@@ -45,8 +46,19 @@ define([
     "automizy/functions/store",
     "automizy/functions/convertToResponsive",
     "automizy/functions/numberFormat",
-    "automizy/functions/decodeEntities"
-], function (AutomizyJs) {
+    "automizy/functions/decodeEntities",
+    "automizy/functions/runFunctions",
+    "automizy/functions/registerEvent",
+    "automizy/functions/registerLocalEvents",
+    "automizy/functions/getExtension",
+    "automizy/functions/getGetParameter",
+    "automizy/functions/iphoneStyle",
+    "automizy/functions/confirm",
+    "automizy/functions/alert",
+    "automizy/functions/runEvent",
+    "automizy/functions/isPageVisibility",
+    "automizy/functions/sameAs"
+], function ($A) {
     console.log('%c AutomizyJs module loaded! ', 'background: #000000; color: #bada55; font-size:14px');
-    return AutomizyJs;
+    return $A;
 });

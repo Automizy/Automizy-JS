@@ -63,6 +63,12 @@
     .automizy-mobile .automizy-dialog-content{
         padding: 10px 10px 0 10px;
     }
+
+    .automizy-mobile .automizy-dialog-buttons{
+        text-align: center;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
 }
 
 
@@ -124,6 +130,13 @@
         padding: 8px 12px 9px 12px;
     }
     
+    .automizy-mobile .automizy-dialog-buttons .automizy-button a{
+        max-width:120px;
+    }
+
+    .automizy-mobile .automizy-dialog-buttons .automizy-button:last-of-type{
+        margin-right: 24px;
+    }
 }
 
 /* Smartphones (portrait) ----------- */

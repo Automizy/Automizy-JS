@@ -3,6 +3,7 @@ define([
     'automizy/modules/button',
     'automizy/modules/input',
     'automizy/addons/jqueryAddOns',
+    'automizy/functions/registerLocalEvents',
     'automizy/functions/getUniqueString'
 ], function () {
     var Form = function (obj) {
@@ -17,6 +18,7 @@ define([
             tables: [],
             subtitles: [],
             htmls: [],
+            groups:[],
             hasObject: false,
             id: 'automizy-form-' + $A.getUniqueString(),
             create: function () {
@@ -231,8 +233,19 @@ define([
                     t.addButton(obj.buttons[i]);
                 }
             }
+            if (typeof obj.htmls !== 'undefined') {
+                for (var i = 0; i < obj.htmls.length; i++) {
+                    obj.htmls[i].appendTo($group);
+                }
+            }
             $groupSwitch.appendTo(t.d.$inputs);
             $group.appendTo(t.d.$inputs);
+            t.d.groups.push({
+                $group:$group,
+                $groupSwitch:$groupSwitch,
+                $box:t.d.$inputs,
+                id:$A.getUniqueString()
+            })
         }
         return t;
     };
@@ -240,11 +253,11 @@ define([
         var t = this;
         if (typeof group === 'string') {
             for (var i = 0; i < t.d.groups.length; i++) {
-                if (t.d.groups[i].id === group)
-                    t.d.groups[i].remove();
+                if (t.d.groups[i].id === group) {
+                    t.d.groups[i].$group.remove();
+                    t.d.groups[i].$groupSwitch.remove();
             }
-        } else if (typeof group === 'object') {
-            group.remove();
+            }
         }
     };
     p.groups = p.addGroups = function (groups) {

@@ -14,12 +14,23 @@ define([], function () {
             forms:{},
             validators:{},
             feedbacks: {},
-            hashes:[]
+            hashes:[],
+            elements:{
+                $tmp:$('<div></div>'),
+                $loading:$('<div class="automizy-loading" style="margin-top: 8px;"><div class="automizy-loading-in automizy-loading-in-1"></div><div class="automizy-loading-in automizy-loading-in-2"></div><div class="automizy-loading-in automizy-loading-in-3"></div></div>')
+            }
         };
         t.m = {};
         t.mt = {};
         t.default = {};
+        t.events = {};
+        t.customEvents = {
+            functions:{},
+            on:{},
+            off:{},
+            one:{}
+        };
     }();
     
-    return AutomizyJs;
+    return $A;
 });
