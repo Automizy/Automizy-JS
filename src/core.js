@@ -1,5 +1,5 @@
 define([], function () {
-    window.AutomizyJs = window.$A = new function () {
+    $A = new function () {
         var t = this;
         t.d = {
             version: '0.5.3',

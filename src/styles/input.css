@@ -406,7 +406,7 @@
 
 
 .automizy-input input[type='checkbox'], .automizy-input input[type='radio'], input.automizy-table-rowcheck{
-    background-image: url(../../images/checkbox-radio.png);
+    background-image: url(../images/checkbox-radio.png);
     background-repeat: no-repeat;
     margin: 0 8px 0 0;
     padding: 0;

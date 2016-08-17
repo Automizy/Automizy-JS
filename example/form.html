@@ -1,31 +1,16 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>QUnit Example</title>
-        <link rel="stylesheet" href="css/jquery-ui.min.css" />
-        <link rel="stylesheet" href="css/jquery.multiselect.css">
-        <link rel="stylesheet" href="css/jquery.multiselect.filter.css">
-        <link rel="stylesheet" href="../src/automizy.css">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Select Example</title>
+    <script src="js/jquery.min.js"></script>
+    <link rel="stylesheet" href="../dist/automizy.css">
+    <script src="../dist/automizy.js"></script>
+    <script>
+        $(function () {
 
-        <script src="js/jquery.min.js"></script>
-        <script src="js/jquery-ui.min.js"></script>
-        <script src="js/require.js"></script>
-        <script src="js/jquery.multiselect.min.js"></script>
-        <script src="js/jquery.multiselect.filter.js"></script>
-        <script>
             var temp;
-            $(function () {
-                requirejs.config({
-                    paths: {
-                        automizyJsDir: '../src',
-                        automizyJs: '../src/automizy'
-                    }
-                });
-                require([
-                    "automizyJs"
-                ], function ($A) {
-                    var temp;
                     window.temp = $A.newForm({
                         inputs: [
                             {
@@ -38,6 +23,11 @@
                                 label: 'Életkor',
                                 help: "Életkor of something",
                                 name: 'customFields.életkor'
+                            },
+                            {
+                                label: 'Szülinap',
+                                name: 'birthday',
+                                type: 'datetime'
                             },
                             {
                                 label: 'Import file',
@@ -70,12 +60,31 @@
                                     $elem.data({on: 'Yes', off: 'No'});
                                     //createIphoneStyle($elem);
                                 }
+                            },
+                            {
+                                label: 'Select radio1',
+                                help: "This will help.",
+                                name: 'radio',
+                                type: 'radio',
+                                create: function (input, $elem) {
+                                    $elem.data({on: 'Yes', off: 'No'});
+                                    //createIphoneStyle($elem);
+                                }
+                            },
+                            {
+                                label: 'Select radio2',
+                                help: "This will help.",
+                                name: 'radio',
+                                type: 'radio',
+                                create: function (input, $elem) {
+                                    $elem.data({on: 'Yes', off: 'No'});
+                                    //createIphoneStyle($elem);
+                                }
                             }
                         ],
                         target: $('body')
                     });
                 });
-            });
             $A.convertToResponsive();
         </script>
         <style>

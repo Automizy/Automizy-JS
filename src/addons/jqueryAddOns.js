@@ -9,7 +9,7 @@ define([], function () {
                 img.removeAttr(item);
             });
         });
-    }
+    };
     $.fn.getAttributes = function () {
         var obj = {};
         $.each(this[0].attributes, function () {
@@ -18,7 +18,7 @@ define([], function () {
             }
         });
         return obj;
-    }
+    };
     $.fn.removeClassPrefix = function (prefix) {
         this.each(function (i, el) {
             var classes = el.className.split(" ").filter(function (c) {
