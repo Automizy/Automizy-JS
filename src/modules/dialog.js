@@ -1,14 +1,11 @@
 define([
     'automizy/core',
     'automizy/modules/button',
-    'automizy/modules/i18n',
+    'automizy/functions/setWindowScroll',
     'automizy/addons/jqueryAddOns',
     'automizy/addons/objectAddOns',
-    'automizy/functions/setWindowScroll',
     'automizy/functions/getUniqueString',
-    'automizy/functions/initBasicFunctions',
-    'automizy/functions/registerLocalEvents',
-    'automizy/functions/runFunctions'
+    'automizy/functions/initBasicFunctions'
 ], function () {
     var Dialog = function (obj) {
         var t = this;
@@ -17,7 +14,6 @@ define([
             $cell: $('<td class="automizy-dialog-cell"></td>'),
             $box: $('<div class="automizy-dialog-box"></div>'),
             $head: $('<div class="automizy-dialog-head"></div>'),
-            $close: $('<div class="automizy-dialog-close">&#10006;</div>'),
             $buttons: $('<div class="automizy-dialog-buttons"></div>'),
             $content: $('<div class="automizy-dialog-content"></div>'),
             buttons: [],
@@ -27,23 +23,20 @@ define([
             width: '60%',
             maxWidth: '100%',
             minWidth: '250px',
-            minHeight: '0px',
+            minHeight:'0px',
             zIndex: 2501,
             isClose: true,
             hasObject: false,
             hash: false,
-            openable: true,
-            closable: true,
-            buttonsBox: true,
-            clickOutClose:false,
+            closable:true,
             id: 'automizy-dialog-' + $A.getUniqueString(),
-            openFunctions: [],
-            beforeOpenFunctions: [],
-            closeFunctions: [],
             create: function () {
+            },
+            open: function () {
+            },
+            close: function () {
             }
         };
-        t.f = {};
         t.init();
 
         var $tr = $('<tr></tr>');
@@ -53,80 +46,46 @@ define([
             t.d.isClose = false;
         }).appendTo(t.d.$cell);
         t.d.$widget.attr('id', t.id()).click(function () {
-            if (t.d.isClose) {
-                if(t.d.clickOutClose) {
-                    t.close();
-                }
-            } else {
+            if (t.d.isClose)
+                t.close();
+            else
                 t.d.isClose = true;
-            }
         });
-        t.d.$close.click(function () {
-            t.close();
-        });
-        t.d.$close.appendTo(t.d.$box);
         t.d.$head.appendTo(t.d.$box);
         t.d.$content.appendTo(t.d.$box);
         t.d.$buttons.appendTo(t.d.$box);
 
         if (typeof obj !== 'undefined') {
-            if (typeof obj.title !== 'undefined') {
+            if (typeof obj.title !== 'undefined')
                 t.title(obj.title);
-            }
-            if (typeof obj.displayHeader !== 'undefined') {
-                t.displayHeader(obj.displayHeader);
-            }
-            if (typeof obj.positionX !== 'undefined') {
+            if (typeof obj.positionX !== 'undefined')
                 t.positionX(obj.positionX);
-            }
-            if (typeof obj.positionY !== 'undefined') {
+            if (typeof obj.positionY !== 'undefined')
                 t.positionY(obj.positionY);
-            }
-            if (typeof obj.position !== 'undefined') {
+            if (typeof obj.position !== 'undefined')
                 t.position(obj.position);
-            }
-            if (typeof obj.width !== 'undefined') {
+            if (typeof obj.width !== 'undefined')
                 t.width(obj.width);
-            }
-            if (typeof obj.maxWidth !== 'undefined') {
+            if (typeof obj.maxWidth !== 'undefined')
                 t.maxWidth(obj.maxWidth);
-            }
-            if (typeof obj.minWidth !== 'undefined') {
+            if (typeof obj.minWidth !== 'undefined')
                 t.minWidth(obj.minWidth);
-            }
-            if (typeof obj.maxWidth !== 'undefined') {
+            if (typeof obj.maxWidth !== 'undefined')
                 t.maxWidth(obj.maxWidth);
-            }
-            if (typeof obj.minHeight !== 'undefined') {
+            if (typeof obj.minHeight !== 'undefined')
                 t.minHeight(obj.minHeight);
-            }
-            if (typeof obj.zIndex !== 'undefined') {
+            if (typeof obj.zIndex !== 'undefined')
                 t.zIndex(obj.zIndex);
-            }
-            if (typeof obj.closable !== 'undefined') {
+            if (typeof obj.closable !== 'undefined')
                 t.closable(obj.closable);
-            }
-            if (typeof obj.buttonsBox !== 'undefined') {
-                t.buttonsBox(obj.buttonsBox);
-            }
-            if (typeof obj.open === 'function') {
+            if (typeof obj.open === 'function')
                 t.open(obj.open);
-            }
-            if (typeof obj.beforeOpen === 'function') {
-                t.beforeOpen(obj.beforeOpen);
-            }
-            if (typeof obj.close === 'function') {
+            if (typeof obj.close === 'function')
                 t.close(obj.close);
-            }
-            if (typeof obj.clickOutClose !== 'undefined') {
-                t.clickOutClose(obj.clickOutClose);
-            }
-            if (typeof obj.content !== 'undefined') {
+            if (typeof obj.content !== 'undefined')
                 t.content(obj.content);
-            }
-            if (typeof obj.hash !== 'undefined') {
+            if (typeof obj.hash !== 'undefined')
                 t.hash(obj.hash);
-            }
             t.initParameter(obj);
         }
     };
@@ -142,19 +101,6 @@ define([
         }
         return t.d.title;
     };
-    p.displayHeader = function (displayHeader) {
-        var t = this;
-        if (typeof displayHeader !== 'undefined') {
-            t.d.displayHeader = $A.parseBoolean(displayHeader);
-            if (t.d.displayHeader) {
-                t.d.$head.hide();
-            } else {
-                t.d.$head.hide();
-            }
-            return t;
-        }
-        return t.d.displayHeader;
-    };
     p.hash = function (hash) {
         var t = this;
         if (typeof hash !== 'undefined') {
@@ -162,17 +108,6 @@ define([
             return t;
         }
         return t.d.hash;
-    };
-    p.buttonsBox = function (buttonsBox) {
-        var t = this;
-        if (typeof buttonsBox !== 'undefined') {
-            t.d.buttonsBox = $A.parseBoolean(buttonsBox);
-            if (!t.d.buttonsBox) {
-                t.d.$buttons.hide();
-            }
-            return t;
-        }
-        return t.d.buttonsBox;
     };
     p.content = function (content) {
         var t = this;
@@ -221,11 +156,11 @@ define([
                 $cell.css({verticalAlign: 'middle', paddingTop: 0, paddingBottom: 0});
             } else {
                 /*
-                 if ($(t.d.$box).height()+parseInt(y)>$(window).height()){
-                 $(t.d.$content).height($(t.d.$content).height()+($(window).height()-$(t.d.$box).height()-parseInt(y)));
-                 }
-                 */
-
+                if ($(t.d.$box).height()+parseInt(y)>$(window).height()){
+                    $(t.d.$content).height($(t.d.$content).height()+($(window).height()-$(t.d.$box).height()-parseInt(y)));
+                }
+                */
+               
                 $cell.css({verticalAlign: 'top', paddingTop: y, paddingBottom: y});
             }
             t.d.positionY = y;
@@ -240,8 +175,8 @@ define([
             var pos = xy.split(" ");
             t.positionX(pos[0]);
             t.positionY(pos[1]);
-            t.d.positionX = pos[0];
-            t.d.positionY = pos[1];
+            t.d.positionX=pos[0];
+            t.d.positionY=pos[1];
             t.setMaxHeight();
             return t;
         } else if (typeof xy !== 'undefined') {
@@ -298,125 +233,61 @@ define([
         }
         return t.d.zIndex;
     };
-    p.clickOutClose = function (clickOutClose) {
-        var t = this;
-        if (typeof clickOutClose !== 'undefined') {
-            t.d.clickOutClose = $A.parseBoolean(clickOutClose);
-            return t;
-        }
-        return t.d.clickOutClose;
-    };
-    p.setMaxHeight = function () {
-        var t = this;
-        var buttonBoxHeight = 0;
-        if (t.buttonsBox()) {
-            buttonBoxHeight = t.d.$buttons.outerHeight();
-        }
-        var maxHeight = $(window).height() - buttonBoxHeight - t.d.$head.outerHeight();
-        if (!isNaN(parseInt(t.d.positionY))) {
-            maxHeight -= parseInt(t.d.positionY);
-        }
-        t.d.$content.css({
-            maxHeight: maxHeight
-        });
-        return maxHeight;
-    };
     p.show = function (func) {
         var t = this;
         $A.setWindowScroll(false, this.d.id);
         if (!t.d.hasObject) {
             t.draw();
         }
-        this.d.$widget.ashow();
+        this.d.$widget.ashow();        
         t.setMaxHeight();
         return this;
     };
-
-    p.openable = function (value) {
-        var t = this;
-        if (typeof value !== 'undefined') {
-            t.d.openable = $A.parseBoolean(value);
-        } else {
-            return t.d.openable;
-        }
-        return t;
-    };
-    p.open = function (func, name, life) {
+    p.open = function (func) {
         var t = this;
         if (typeof func === 'function') {
-            t.addFunction.apply(t, ['open', func, name, life]);
+            t.d.open = func;
         } else {
-            if (t.beforeOpen().returnValue() !== false) {
-                if (t.hash() !== false) {
-                    $A.hashChange(t.hash());
-                }
-                //t.widget().insertAfter($('.automizy-dialog').last());
-                //var zIndex = parseInt($('.automizy-dialog').last().css('z-index')) + 1;
-                var dialogs = $A.getAllDialog();
-                var maxZIndex = 0;
-                for(var i in dialogs){
-                    var dialogZIndex = dialogs[i].zIndex();
-                    if(dialogZIndex  > maxZIndex){
-                        maxZIndex = dialogZIndex;
-                    }
-                }
-                t.zIndex(maxZIndex+1);
-                t.show();
-                t.runFunctions('open');
-            }
-            $A.runFunctions($A.events.dialog.functions.open, this, [this, this.d.$widget]);
+            if (t.hash() !== false)
+                $A.hashChange(t.hash());
+            t.d.open.apply(this, [this, this.d.$widget]);
+            t.show();
         }
         t.setMaxHeight();
         return t;
     };
-    p.beforeOpen = function (func, name, life) {
+    p.closable = function (closable) {
         var t = this;
-        if (typeof func === 'function') {
-            t.addFunction('beforeOpen', func, name, life);
-        } else {
-            var a = t.runFunctions('beforeOpen');
-            t.returnValue(!(t.openable() === false || a[0] === false || a[1] === false));
-        }
-        return t;
-    };
-    p.closable = function (value) {
-        var t = this;
-        if (typeof value !== 'undefined') {
-            t.d.closable = $A.parseBoolean(value);
-            if (value) {
-                t.d.$close.show();
-            }
-            else {
-                t.d.$close.hide();
-            }
+        if (typeof closable !== 'undefined') {
+            t.d.closable = closable;
         } else {
             return t.d.closable;
         }
         return t;
     };
-    p.close = function (func, name, life) {
+    p.close = function (func) {
         var t = this;
         if (typeof func === 'function') {
-            t.addFunction('close', func, name, life);
+            t.d.close = func;
         } else {
-            if (t.beforeClose().returnValue() !== false) {
+            if(t.d.closable){
                 t.hide();
-                t.runFunctions('close');
+                t.d.close.apply(this, [this, this.d.$widget]);
             }
         }
         return t;
     };
-    p.beforeClose = function (func, name, life) {
-        var t = this;
-        if (typeof func === 'function') {
-            t.addFunction('beforeClose', func, name, life);
-        } else {
-            var a = t.runFunctions('beforeClose');
-            t.returnValue(!(t.closable() === false || a[0] === false || a[1] === false));
-        }
-        return t;
-    };
+        
+    p.setMaxHeight = function(){
+        var t=this;
+        var maxHeight=$(window).height()-$(t.d.$buttons).outerHeight()-$(t.d.$head).outerHeight();
+        if (parseInt(t.d.positionY)!=='NaN')
+            maxHeight-=parseInt(t.d.positionY);
+        $(t.d.$content).css({
+            'max-height':maxHeight
+        });
+    };    
 
-    $A.initBasicFunctions(Dialog, "Dialog", ['open', 'close', 'beforeOpen', 'beforeClose']);
-
+    $A.initBasicFunctions(Dialog, "Dialog");
+    
 });

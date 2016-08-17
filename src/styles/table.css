@@ -70,16 +70,13 @@
     text-align: right;
     font-size:15px;
     padding:1px 5px 1px 5px;
-    width:28px;
+    width:25px;
     margin: 0 7px 0 0;
 }
 .automizy-table-pagenumber::-webkit-outer-spin-button,
 .automizy-table-pagenumber::-webkit-inner-spin-button{
     -webkit-appearance: none;
     margin: 0;
-}
-.automizy-table-container-box{
-    width:100%;
 }
 .automizy-table-container{
     width: calc(100% - 34px);
@@ -189,21 +186,20 @@
 
 .automizy-table th,
 .automizy-table td{
-    margin: 0;
-    border: 1px solid #E0E9D4;
-    border-width: 1px 1px 1px 0px;
-    vertical-align: middle;
-    text-align: left;
-    padding: 8px 14px 8px 14px;
-    font-size: 14px;
-    text-overflow: ellipsis;
-    overflow: hidden;
+    margin:0;
+    border:1px solid #d2d2d2;
+    border-width:1px 0 1px 0;
+    vertical-align:middle;
+    text-align:left;
+    padding:8px 4px 8px 4px;
+    font-size:14px;
+    text-overflow:ellipsis;
+    cursor:pointer;
     word-wrap: break-word;
     max-width: 250px;
     position: relative;
-    white-space: nowrap;
 }
-.automizy-table td.automizy-main-cell{
+.automizy-table td:first-child{
     font-weight:bold;
 }
 .automizy-table th{
@@ -229,11 +225,7 @@
 .automizy-table.checkboxed td:nth-child(2){
     font-weight:bold;
 }
-.automizy-table-clickable td,
-.automizy-table-clickable th{
-    cursor:pointer;
-}
-.automizy-table-clickable tr:hover td{
+.automizy-table tr:hover td{
     background-color:#f4f4f4;
 }
 .automizy-table tr.selected{
@@ -275,15 +267,18 @@
     top:4px;
 }
 
-.automizy-table-inline-buttons{
+.automizy-table-inline-buttons-cell {
     overflow: hidden;
-    padding:0 0 18px 3% !important;
+    padding:0 !important;
+    display:none;
+    /*
     -webkit-box-shadow: inset 0px 2px 4px 0px rgba(0,0,0,0.2);
     -moz-box-shadow: inset 0px 2px 4px 0px rgba(0,0,0,0.2);
     box-shadow: inset 0px 2px 4px 0px rgba(0,0,0,0.2);
     background-color:#eeeeee;
+    */
 }
-.automizy-table-inline-buttons a{
+.automizy-table-inline-buttons-cell a{
     display:inline-block;
     padding:6px 20px 6px 20px;
     margin:0;
@@ -298,6 +293,29 @@
     box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.3);
 }
 
+.automizy-table-inline-buttons{
+    display: none;
+}
+
 .automizy-table-loading-cell-content{
     text-align:center;
+}
+
+.automizy-table-cell-editable-content{
+    max-width: 80%;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    min-width: 50%;
+    padding: 2px 5px;
+    display:inline-block;
+    border: 1px rgba(170, 170, 170, 0) dashed;
+}
+
+.automizy-table-cell-editable-content:hover{
+    border: 1px rgba(170, 170, 170, 1) dashed;
+}
+
+.automizy-table-cell-editable-content:empty{
+    padding: 10px 0;
 }

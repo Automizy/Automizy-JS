@@ -58,7 +58,7 @@ define([
     p.translate = function (text) {
         var t = this;
         if (typeof t.d.translate[text] === 'undefined') {
-            if (1 === 2 && $A.d.settings.logTranslateMissings === true) {
+            if ($A.d.settings.logTranslateMissings === true) {
                 if($.inArray(text, t.d.missingTranslates) <= -1){
                     t.d.missingTranslates.push(text);
                     
@@ -91,20 +91,11 @@ define([
         }
         return text;
     };
-    p.noTranslate = function (text) {
-        for (var i = 1; i < arguments.length; i++) {
-            text = text.replace("%s", arguments[i]);
-        }
-        return text;
-    };
 
     $A.m.i18n = i18n;
     $A.d.i18n = new $A.m.i18n();
     $A.translate = function(){
         return $A.d.i18n.translate.apply($A.d.i18n, arguments);
-    };
-    $A.noTranslate = function(){
-        return $A.d.i18n.noTranslate.apply($A.d.i18n, arguments);
     };
     $A.setTranslate = function(){
         return $A.d.i18n.setTranslate.apply($A.d.i18n, arguments);

@@ -2,30 +2,24 @@ define([
     'automizy/core',
     'automizy/modules/button',
     'automizy/modules/i18n',
-    'automizy/addons/jqueryAddOns',
-    'automizy/addons/objectAddOns',
-    'automizy/functions/setWindowScroll',
     'automizy/functions/getUniqueString',
     'automizy/functions/initBasicFunctions',
-    'automizy/functions/registerLocalEvents',
-    'automizy/functions/runFunctions',
     'automizy/images/icons'
 ], function () {
     var Table = function (obj) {
         var t = this;
         var d = $A.default.table;
         t.d = {
-            $widget:$('<div class="automizy-table-box"></div>'),
-            $tableContainerBox:$('<div class="automizy-table-container-box"></div>'),
-            $tableContainer:$('<div class="automizy-table-container"></div>'),
-            $table:  $('<table cellpadding="0" cellspacing="0" border="0" class="automizy-table automizy-table-clickable collapsed"></table>'),
-            $tbody:  $('<tbody></tbody>'),
-            $header:  $('<tr class="automizy-table-header"></tr>'),
+            $widget: $('<div class="automizy-table-box"></div>'),
+            $tableContainerBox: $('<div class="automizy-table-container-box"></div>'),
+            $tableContainer: $('<div class="automizy-table-container"></div>'),
+            $table: $('<table cellpadding="0" cellspacing="0" border="0" class="automizy-table collapsed"></table>'),
+            $header: $('<tr class="automizy-table-header"></tr>'),
             $title: $('<div class="automizy-table-title"></div>'),
             $actions: $('<div class="automizy-table-actions"></div>'),
-            $buttons:  $('<div class="automizy-table-buttons"></div>'),
+            $buttons: $('<div class="automizy-table-buttons"></div>'),
             $perPageBox: $('<div class="automizy-table-perpage-box"></div>'),
-            perPageSelect:  $A.newInput(),
+            perPageSelect: $A.newInput(),
 
             $stepPageBox: $('<div class="automizy-table-steppage-box"></div>'),
             $stepFirst: $('<div class="automizy-table-stepfirst automizy-noselect"></div>'),
@@ -45,7 +39,7 @@ define([
             $pageBottom: $('<input type="number" pattern="[0-9]*" class="automizy-table-pagenumber" value="1">'),
             $pageMaxBottom: $('<span class="automizy-table-pagenumber-max">1</span>'),
 
-            $panel:$('<div class="automizy-table-panel automizy-noselect"></div>'),
+            $panel: $('<div class="automizy-table-panel automizy-noselect"></div>'),
             $settingsIcon: $('<div class="automizy-table-settings-icon automizy-noselect"></div>'),
             $settingsBox: $('<div class="automizy-table-settings-box"></div>'),
             $settingsBoxTitle: $('<div class="automizy-table-settings-box-title"></div>'),
@@ -53,17 +47,18 @@ define([
             $searchIcon: $('<div class="automizy-table-search-icon automizy-noselect"></div>'),
             $searchBox: $('<div class="automizy-table-search-box"></div>'),
             $searchBoxContent: $('<div class="automizy-table-search-box-content"></div>'),
-            $searchInput:$A.newInput(),
+            $searchInput: $A.newInput(),
             $exportIcon: $('<div class="automizy-table-export-icon automizy-noselect"></div>'),
-            $inlineButtons: $('<td class="automizy-table-inline-buttons"></td>'),
-            $inlineButtonsBox: $('<tr class="automizy-table-inline-buttons-box"></tr>'),
-            $checkboxCheckAll: $('<input type="checkbox" class="automizy-table-checkall" />'),
+            $inlineButtons: $('<div class="automizy-table-inline-buttons"></div>'),
+            $inlineButtonsCell: $('<td class="automizy-table-inline-buttons-cell"></td>'),
+            $inlineButtonsRow: $('<tr class="automizy-table-inline-buttons-row"></tr>'),
+            $checkboxCheckAll: $('<input type="checkbox" onclick="AutomizyJs.d.tableRowCheckBoxClick = true;" class="automizy-table-checkall automizy-table-rowcheck" />'),
             $automizyTableBorderCss: $('<style></style>'),
-            $loadingCellContent:$('<div class="automizy-table-loading-cell-content"></div>'),
-            loadingCellContent:$A.translate('<b>Loading...</b>'),
-            openedRow:false,
-            buttons:  [],
-            inlineButtons:[],
+            $loadingCellContent: $('<div class="automizy-table-loading-cell-content"></div>'),
+            loadingCellContent: $A.translate('<b>Loading...</b>'),
+            openedRow: false,
+            buttons: [],
+            inlineButtons: [],
             title: '',
             border: 'none',
             perPage: 10,
@@ -71,42 +66,52 @@ define([
             perPageLabel: $A.translate('Results per page'),
             page: 1,
             pageMax: 1,
-            searchValue:'',
+            searchValue: '',
             borderCollapse: true,
-            settings:{
-                cols:[]
+            settings: {
+                cols: []
             },
-            settingsCheckboxes:{},
-            orderBy:false,
-            orderDir:'asc',
-            hasObject:  false,
-            selectable:false,
-            exportable:true,
-            openableInlineBox:true,
-            clickableRow:true,
-            storeData:false,
+            orderBy: false,
+            orderDir: 'asc',
+            hasObject: false,
+            selectable: false,
+            exportable: true,
+            openableInlineBox: true,
+            storeData: false,
             id: 'automizy-table-' + $A.getUniqueString(),
-            onPerPage: function(){},
-            onPageFirst: function(){},
-            onPagePrev: function(){},
-            onPageNext: function(){},
-            onPageLast: function(){},
-            onSetPage: function(){},
-            onSearch:function(){},
-            onHideCol:function(){},
-            onShowCol:function(){},
-            onSort:function(){},
-            onExport:function(){},
-            beforeOpenInlineBox:function(){},
-            stepFunction: function(){
-                if(t.d.page <= 1){
+            onPerPage: function () {
+            },
+            onPageFirst: function () {
+            },
+            onPagePrev: function () {
+            },
+            onPageNext: function () {
+            },
+            onPageLast: function () {
+            },
+            onSetPage: function () {
+            },
+            onSearch: function () {
+            },
+            onHideCol: function () {
+            },
+            onShowCol: function () {
+            },
+            onSort: function () {
+            },
+            onExport: function () {
+            },
+            beforeOpenInlineBox: function () {
+            },
+            stepFunction: function () {
+                if (t.d.page <= 1) {
                     t.d.$stepFirst.add(t.d.$stepBack).add(t.d.$stepFirstBottom).add(t.d.$stepBackBottom).stop().fadeTo(250, 0.5);
-                }else{
+                } else {
                     t.d.$stepFirst.add(t.d.$stepBack).add(t.d.$stepFirstBottom).add(t.d.$stepBackBottom).stop().fadeTo(250, 1);
                 }
-                if(t.d.page >= t.d.pageMax){
+                if (t.d.page >= t.d.pageMax) {
                     t.d.$stepNext.add(t.d.$stepLast).add(t.d.$stepNextBottom).add(t.d.$stepLastBottom).stop().fadeTo(250, 0.5);
-                }else{
+                } else {
                     t.d.$stepNext.add(t.d.$stepLast).add(t.d.$stepNextBottom).add(t.d.$stepLastBottom).stop().fadeTo(250, 1);
                 }
                 t.d.$page.add(t.d.$pageBottom).val(t.d.page);
@@ -114,8 +119,8 @@ define([
         };
         t.init();
 
-        t.d.$stepFirst.add(t.d.$stepFirstBottom).append('<img src="'+$A.images.pageStepFirst+'" />').click(function(){
-            if(t.d.page <= 1)return false;
+        t.d.$stepFirst.add(t.d.$stepFirstBottom).append('<img src="' + $A.images.pageStepFirst + '" />').click(function () {
+            if (t.d.page <= 1)return false;
             t.page(1);
             t.d.stepFunction();
             t.d.onPageFirst.apply(t, [t, t.d.$widget]);
@@ -123,9 +128,9 @@ define([
         t.d.$stepFirst.appendTo(t.d.$stepPageBox);
         t.d.$stepFirstBottom.appendTo(t.d.$stepPageBoxBottom);
 
-        t.d.$stepBack.add(t.d.$stepBackBottom).append('<img src="'+$A.images.pageStepBack+'" />').click(function(){
-            if(t.d.page <= 1)return false;
-            t.page(Math.max(t.d.page-1, 1));
+        t.d.$stepBack.add(t.d.$stepBackBottom).append('<img src="' + $A.images.pageStepBack + '" />').click(function () {
+            if (t.d.page <= 1)return false;
+            t.page(Math.max(t.d.page - 1, 1));
             t.d.stepFunction();
             t.d.onPagePrev.apply(t, [t, t.d.$widget]);
         });
@@ -136,19 +141,19 @@ define([
         t.d.$pageBottom.appendTo(t.d.$pageBoxBottom);
 
         t.d.$page.add(t.d.$pageBottom).attr({
-            max:1,
-            min:1
+            max: 1,
+            min: 1
         }).keydown(function (e) {
             var $t = $(this);
             // Allow: backspace, delete, tab, escape and .
             if ($.inArray(e.keyCode, [46, 8, 9, 27, 110, 190]) !== -1 ||
-                    // Allow: Ctrl+A
+                // Allow: Ctrl+A
                 (e.keyCode == 65 && e.ctrlKey === true) ||
-                    // Allow: Ctrl+C
+                // Allow: Ctrl+C
                 (e.keyCode == 67 && e.ctrlKey === true) ||
-                    // Allow: Ctrl+X
+                // Allow: Ctrl+X
                 (e.keyCode == 88 && e.ctrlKey === true) ||
-                    // Allow: home, end, left, right
+                // Allow: home, end, left, right
                 (e.keyCode >= 35 && e.keyCode <= 39)) {
                 // let it happen, don't do anything
                 return;
@@ -158,12 +163,12 @@ define([
                 e.preventDefault();
             }
             // Enter
-            if(e.keyCode === 13){
+            if (e.keyCode === 13) {
                 t.d.stepFunction();
                 t.d.onSetPage.apply(t, [t, t.d.$widget]);
                 $t.data('old-val', $t.val());
             }
-        }).keyup(function() {
+        }).keyup(function () {
             var $t = $(this);
             var val = parseInt($t.val());
             var max = parseInt($t.attr('max'));
@@ -177,16 +182,16 @@ define([
                 $t.val(min);
             }
             t.d.page = parseInt($t.val());
-        }).focus(function(){
+        }).focus(function () {
             var $t = $(this);
             $t.data('old-val', $t.val());
-        }).focusout(function(){
+        }).focusout(function () {
             var $t = $(this);
-            if($t.data('old-val') != $t.val()) {
+            if ($t.data('old-val') != $t.val()) {
                 t.d.stepFunction();
                 t.d.onSetPage.apply(t, [t, t.d.$widget]);
             }
-        }).on('mousewheel', function(e){
+        }).on('mousewheel', function (e) {
             e.preventDefault();
         });
 
@@ -198,17 +203,17 @@ define([
         t.d.$pageBox.appendTo(t.d.$stepPageBox);
         t.d.$pageBoxBottom.appendTo(t.d.$stepPageBoxBottom);
 
-        t.d.$stepNext.add(t.d.$stepNextBottom).append('<img src="'+$A.images.pageStepNext+'" />').click(function(){
-            if(t.d.page >= t.d.pageMax)return false;
-            t.page(Math.min(t.d.page+1, t.d.pageMax));
+        t.d.$stepNext.add(t.d.$stepNextBottom).append('<img src="' + $A.images.pageStepNext + '" />').click(function () {
+            if (t.d.page >= t.d.pageMax)return false;
+            t.page(Math.min(t.d.page + 1, t.d.pageMax));
             t.d.stepFunction();
             t.d.onPageNext.apply(t, [t, t.d.$widget]);
         });
         t.d.$stepNext.appendTo(t.d.$stepPageBox);
         t.d.$stepNextBottom.appendTo(t.d.$stepPageBoxBottom);
 
-        t.d.$stepLast.add(t.d.$stepLastBottom).append('<img src="'+$A.images.pageStepLast+'" />').click(function(){
-            if(t.d.page >= t.d.pageMax)return false;
+        t.d.$stepLast.add(t.d.$stepLastBottom).append('<img src="' + $A.images.pageStepLast + '" />').click(function () {
+            if (t.d.page >= t.d.pageMax)return false;
             t.page(t.d.pageMax);
             t.d.stepFunction();
             t.d.onPageLast.apply(t, [t, t.d.$widget]);
@@ -219,16 +224,15 @@ define([
         t.d.$stepPageBox.appendTo(t.d.$actions);
 
         t.d.$perPageBox.appendTo(t.d.$actions);
-        t.d.perPageSelect.type('select').options(t.d.perPageList).val(t.d.perPage).label(t.d.perPageLabel).width('83px').change(function(){
+        t.d.perPageSelect.type('select').multiple(false).multiselect(true).options(t.d.perPageList).val(t.d.perPage).label(t.d.perPageLabel).width('83px').change(function () {
             t.d.perPage = this.val();
-            if(t.d.storeData){
-                $A.store.set(t.id()+'-per-page', t.d.perPage);
+            if (t.d.storeData) {
+                $A.store.set(t.id() + 'PerPage', t.d.perPage);
             }
             t.d.onPerPage.apply(this, [t, t.d.$widget]);
         }).drawTo(t.d.$perPageBox);
         t.d.$widget.attr('id', t.id());
-        t.d.$tbody.appendTo(t.d.$table);
-        t.d.$header.appendTo(t.d.$tbody);
+        t.d.$header.appendTo(t.d.$table);
         t.d.$title.html(t.d.title).appendTo(t.d.$widget);
         t.d.$actions.appendTo(t.d.$widget);
         t.d.$buttons.appendTo(t.d.$actions);
@@ -239,24 +243,23 @@ define([
         t.d.$stepPageBoxBottom.appendTo(t.d.$widget);
 
 
-
-        t.d.$settingsBox.appendTo(t.d.$panel).click(function(){
+        t.d.$settingsBox.appendTo(t.d.$panel).click(function () {
             t.d.settingsBoxCanClose = false;
         });
         t.d.$settingsBoxContent.appendTo(t.d.$settingsBox);
         t.d.$settingsBoxTitle.text($A.translate('Displayed columns')).appendTo(t.d.$settingsBoxContent);
 
-        t.d.$searchBox.appendTo(t.d.$panel).click(function(){
+        t.d.$searchBox.appendTo(t.d.$panel).click(function () {
             t.d.searchBoxCanClose = false;
         });
         t.d.$searchBoxContent.appendTo(t.d.$searchBox);
-        t.d.$searchInput.placeholder($A.translate('Search in this list...')).enter(function(){
+        t.d.$searchInput.placeholder($A.translate('Search in this list...')).enter(function () {
             t.d.searchValue = this.val();
             t.d.onSearch.apply(this, [t, t.d.$widget]);
             t.d.$searchBoxContent.stop().slideUp(250);
         }).drawTo(t.d.$searchBoxContent);
 
-        setTimeout(function() {
+        setTimeout(function () {
             t.d.$settingsIcon.append('<img src="' + $A.images.settingsIcon + '" />').insertAfter(t.d.$settingsBox).click(function () {
                 t.d.$settingsBoxContent.stop().slideToggle();
                 t.d.settingsBoxCanClose = false;
@@ -264,7 +267,7 @@ define([
             t.d.$searchIcon.append('<img src="' + $A.images.searchIcon + '" />').insertAfter(t.d.$searchBox).click(function () {
                 t.d.$searchBoxContent.stop().slideToggle();
                 t.d.searchBoxCanClose = false;
-                t.d.$searchInput.input().focus().select();
+                t.d.$searchInput.focus();
             });
             t.d.$exportIcon.append('<img src="' + $A.images.exportIcon + '" />').appendTo(t.d.$panel).click(function () {
                 t.d.onExport.apply(t, [t, t.d.$widget]);
@@ -272,12 +275,11 @@ define([
         }, 1);
 
 
-
-        $(window).click(function(){
-            if(t.d.settingsBoxCanClose){
+        $(window).click(function () {
+            if (t.d.settingsBoxCanClose) {
                 t.d.$settingsBoxContent.stop().slideUp(250);
             }
-            if(t.d.searchBoxCanClose){
+            if (t.d.searchBoxCanClose) {
                 t.d.$searchBoxContent.stop().slideUp(250);
             }
             t.d.settingsBoxCanClose = true;
@@ -285,25 +287,102 @@ define([
         });
 
         t.d.$searchBox.appendTo(t.d.$panel);
-        t.d.$inlineButtons.appendTo(t.d.$inlineButtonsBox);
+        t.d.$inlineButtonsCell.appendTo(t.d.$inlineButtonsRow);
+        t.d.$inlineButtons.appendTo(t.d.$inlineButtonsCell);
         t.d.$automizyTableBorderCss.appendTo('head:first');
-        t.d.$checkboxCheckAll.change(function(){
-            $A.d.tableRowCheckBoxClick = true;
+        t.d.$checkboxCheckAll.change(function () {
             var checked = this.checked;
-            var col = t.getColByIndex(0);
-            if(typeof col.$cells === 'function'){
-                col.$cells().find('input:enabled').prop('checked', checked);
-            }
+            var cells = t.getColByIndex(0).$cells().find('input:enabled').prop('checked', checked);
         });
         t.border(t.d.border);
         t.borderCollapse(t.d.borderCollapse);
         var oSelectable = false;
-        if(t.d.selectable) {
+        if (t.d.selectable) {
             t.d.selectable = false;
             oSelectable = true;
         }
 
         t.d.$loadingCellContent.html(t.d.loadingCellContent);
+
+
+        /*Opening inline editor*/
+        $('body').on('click', '.automizy-table-cell-editable-content', function (e) {
+            var $editableContent = $(e.target);
+            var $cell = $editableContent.parent();
+            var $row = $cell.parent();
+            var cell = t.getCell($cell.index(), $row.index());
+            var col = cell.col();
+
+            /*Hiding old content*/
+            $editableContent.hide()
+
+            /*Inserting input field*/
+            var inlineInput = $A.newInput(col.d.inlineInputObject).newRow(false);
+            var cancelButton = $A.newButton({
+                text: "X",
+                click: function () {
+                    removeInlineEditBox();
+                }
+            });
+            var saveButton = $A.newButton({
+                text: "Save",
+                click: function () {
+                    onInlineEditComplete();
+
+                    /*Writing the new value in the cell, hiding input*/
+                    $editableContent.text(inlineInput.value());
+                    removeInlineEditBox();
+                }
+            });
+
+            var $editInputBox = $('<span class="automizy-table-inline-edit-input-box"></span>');
+            inlineInput.widget().appendTo($editInputBox);
+            cancelButton.widget().appendTo($editInputBox);
+            saveButton.widget().appendTo($editInputBox);
+            $editInputBox.appendTo(cell.widget());
+
+            /*Setting old value in input*/
+            //TODO: setting value based on input type
+            inlineInput.val($editableContent.html());
+
+            /*Focusing on input*/
+            inlineInput.input().focus();
+
+            /*Stop editing if escape pressed*/
+            inlineInput.input().keyup(function (e) {
+                if (e.keyCode == 27) {
+                    cancelButton.click();
+                }
+            });
+
+            /*Enter function*/
+            inlineInput.enter(function () {
+                saveButton.click();
+            });
+
+            /*Removing inline edit*/
+            function removeInlineEditBox() {
+                inlineInput.remove()
+                cancelButton.remove();
+                saveButton.remove();
+                $editInputBox.remove();
+                $editableContent.show();
+                $('body').off('click', removeInlineEditBox);
+            }
+
+            /*Removing the editor if clicking any other element*/
+            $('body').on('click', removeInlineEditBox);
+
+            /*But not hiding if clicking inside the edit box*/
+            $('.automizy-table-inline-edit-input-box *').on('click', function (e) {
+                e.stopPropagation();
+            });
+
+        });
+
+        function onInlineEditComplete(data) {
+            console.log('complete')
+        }
 
         if (typeof obj !== 'undefined') {
             if (obj instanceof HTMLElement) {
@@ -311,8 +390,8 @@ define([
             }
             if (obj instanceof jQuery) {
                 t.d.$widget = obj;
-                if(obj.find('.automizy-table-title').length === 1)t.title(obj.find('.automizy-table-title').html());
-                if(obj.find('.automizy-table th:first input').length === 1)t.d.selectable = true;
+                if (obj.find('.automizy-table-title').length === 1)t.title(obj.find('.automizy-table-title').html());
+                if (obj.find('.automizy-table th:first input').length === 1)t.d.selectable = true;
             } else {
                 if (typeof obj.id !== 'undefined')
                     t.id(obj.id);
@@ -331,7 +410,9 @@ define([
                 if (typeof obj.exportable !== 'undefined')
                     t.exportable(obj.exportable);
                 if (typeof obj.selectable !== 'undefined')
-                    setTimeout(function(){t.selectable(obj.selectable)}, 10);
+                    setTimeout(function () {
+                        t.selectable(obj.selectable)
+                    }, 10);
                 if (typeof obj.perPageList !== 'undefined')
                     t.perPageList(obj.perPageList);
                 if (typeof obj.perPage !== 'undefined')
@@ -360,8 +441,6 @@ define([
                     t.onPerPage(obj.onPerPage);
                 if (typeof obj.onShowCol === 'function')
                     t.onShowCol(obj.onShowCol);
-                if (typeof obj.onSearch === 'function')
-                    t.onSearch(obj.onSearch);
                 if (typeof obj.onExport === 'function')
                     t.onExport(obj.onExport);
                 if (typeof obj.buttons !== 'undefined')
@@ -370,8 +449,6 @@ define([
                     t.inlineButtons(obj.inlineButtons);
                 if (typeof obj.openableInlineBox !== 'undefined')
                     t.openableInlineBox(obj.openableInlineBox);
-                if (typeof obj.clickableRow !== 'undefined')
-                    t.clickableRow(obj.clickableRow);
                 if (typeof obj.beforeOpenInlineBox === 'function')
                     t.beforeOpenInlineBox(obj.beforeOpenInlineBox);
                 if (typeof obj.loadingCellContent !== 'undefined')
@@ -381,7 +458,7 @@ define([
             }
         }
 
-        if(oSelectable) {
+        if (oSelectable) {
             t.selectable(true);
         }
         t.d.stepFunction();
@@ -392,11 +469,8 @@ define([
     p.table = function () {
         return this.d.$table;
     };
-    p.tbody = function () {
-        return this.d.$tbody;
-    };
 
-    p.storeData = function(storeData){
+    p.storeData = function (storeData) {
         var t = this;
         if (typeof storeData !== 'undefined') {
             t.d.storeData = $A.parseBoolean(storeData);
@@ -411,7 +485,7 @@ define([
             t.d.onPageFirst = func;
         } else {
             t.d.stepFunction();
-            if(t.d.hasObject)t.d.onPageFirst.apply(t, [t, t.d.$widget]);
+            if (t.d.hasObject)t.d.onPageFirst.apply(t, [t, t.d.$widget]);
         }
         return t;
     };
@@ -421,7 +495,7 @@ define([
             t.d.onPagePrev = func;
         } else {
             t.d.stepFunction();
-            if(t.d.hasObject)t.d.onPagePrev.apply(t, [t, t.d.$widget]);
+            if (t.d.hasObject)t.d.onPagePrev.apply(t, [t, t.d.$widget]);
         }
         return t;
     };
@@ -431,7 +505,7 @@ define([
             t.d.onPageNext = func;
         } else {
             t.d.stepFunction();
-            if(t.d.hasObject)t.d.onPageNext.apply(t, [t, t.d.$widget]);
+            if (t.d.hasObject)t.d.onPageNext.apply(t, [t, t.d.$widget]);
         }
         return t;
     };
@@ -441,7 +515,7 @@ define([
             t.d.onPageLast = func;
         } else {
             t.d.stepFunction();
-            if(t.d.hasObject)t.d.onPageLast.apply(t, [t, t.d.$widget]);
+            if (t.d.hasObject)t.d.onPageLast.apply(t, [t, t.d.$widget]);
         }
         return t;
     };
@@ -451,7 +525,7 @@ define([
             t.d.onSetPage = func;
         } else {
             t.d.stepFunction();
-            if(t.d.hasObject)t.d.onSetPage.apply(t, [t, t.d.$widget]);
+            if (t.d.hasObject)t.d.onSetPage.apply(t, [t, t.d.$widget]);
         }
         return t;
     };
@@ -461,15 +535,6 @@ define([
             t.d.onPerPage = func;
         } else {
             return t.d.onPerPage.apply(t, [t, t.d.$widget]);
-        }
-        return this;
-    };
-    p.onSearch = function (func) {
-        var t = this;
-        if (typeof func === 'function') {
-            t.d.onSearch = func;
-        } else {
-            return t.d.onSearch.apply(t, [t, t.d.$widget]);
         }
         return this;
     };
@@ -496,7 +561,7 @@ define([
         if (typeof func === 'function') {
             t.d.onSort = func;
         } else {
-            if(t.d.hasObject)t.d.onSort.apply(t, [t, t.d.$widget]);
+            if (t.d.hasObject)t.d.onSort.apply(t, [t, t.d.$widget]);
         }
         return t;
     };
@@ -505,16 +570,16 @@ define([
         if (typeof func === 'function') {
             t.d.onExport = func;
         } else {
-            if(t.d.hasObject)t.d.onExport.apply(t, [t, t.d.$widget]);
+            if (t.d.hasObject)t.d.onExport.apply(t, [t, t.d.$widget]);
         }
         return t;
     };
 
-    p.border = function(border){
+    p.border = function (border) {
         var t = this;
         if (typeof border !== 'undefined') {
             t.d.border = border;
-            t.d.$automizyTableBorderCss.text('#'+t.id()+' .automizy-table, #'+t.id()+' .automizy-table td, #'+t.id()+' .automizy-table th{border: '+border+'}');
+            t.d.$automizyTableBorderCss.text('#' + t.id() + ' .automizy-table, #' + t.id() + ' .automizy-table td, #' + t.id() + ' .automizy-table th{border: ' + border + '}');
             return t;
         }
         return t.d.border;
@@ -525,7 +590,7 @@ define([
         if (typeof borderCollapse !== 'undefined') {
             t.d.borderCollapse = $A.parseBoolean(borderCollapse);
             t.table().removeClass('collapsed');
-            if(t.d.borderCollapse){
+            if (t.d.borderCollapse) {
                 t.table().addClass('collapsed');
             }
             return t;
@@ -564,15 +629,15 @@ define([
         var t = this;
         if (typeof perPage !== 'undefined') {
             perPage = parseInt(perPage);
-            if($.inArray(perPage, t.d.perPageList) < 0){
+            if ($.inArray(perPage, t.d.perPageList) < 0) {
                 perPage = t.d.perPageList[0] || 0;
             }
             t.d.perPage = perPage;
             t.d.perPageSelect.val(perPage);
-            if(t.d.storeData){
-                $A.store.set(t.id()+'-per-page', t.d.perPage);
+            if (t.d.storeData) {
+                $A.store.set(t.id() + 'PerPage', t.d.perPage);
             }
-            if(t.d.hasObject)t.d.onPerPage.apply(t.d.perPageSelect, [t, t.d.$widget]);
+            if (t.d.hasObject)t.d.onPerPage.apply(t.d.perPageSelect, [t, t.d.$widget]);
             return t;
         }
         return t.d.perPage;
@@ -610,26 +675,26 @@ define([
         if (typeof selectable !== 'undefined') {
             var oSelectable = t.d.selectable;
             t.d.selectable = $A.parseBoolean(selectable);
-            if(t.d.selectable && !oSelectable){
+            if (t.d.selectable && !oSelectable) {
                 t.table().addClass('checkboxed');
-                var cbcagac = t.addCol({name:'checkbox-column', html:t.d.$checkboxCheckAll, index:0});
-                cbcagac.$cells().eq(0).click(function(){
-                    if(!$A.d.tableRowCheckBoxClick){
-                        $(this).find('input:first').each(function(){
+                AutomizyJs.d.tableRowCheckBoxClick = true;
+                var cbcagac = t.addCol({name: 'checkbox-column', html: t.d.$checkboxCheckAll, index: 0});
+                cbcagac.$cells().eq(0).click(function () {
+                    if (!AutomizyJs.d.tableRowCheckBoxClick) {
+                        $(this).find('input:first').each(function () {
                             this.checked = !this.checked;
                             $(this).trigger('change');
                         });
                     }
-                    $A.d.tableRowCheckBoxClick = false;
+                    AutomizyJs.d.tableRowCheckBoxClick = false;
                 });
                 var $cbcagac = cbcagac.$cells().slice(1);
-                $cbcagac.html(function(){
+                $cbcagac.html(function () {
                     var id = $(this).closest('tr').data('recordId') || 0;
-                    return $('<input type="checkbox" class="automizy-table-rowcheck" onClick="console.log(2)" value="'+id+'" />');
-                }).click(function(){
-
+                    return $('<input type="checkbox" class="automizy-table-rowcheck" onClick="console.log(2)" value="' + id + '" />');
+                }).click(function () {
                 });
-            }else if(!t.d.selectable && oSelectable){
+            } else if (!t.d.selectable && oSelectable) {
                 t.table().removeClass('checkboxed');
                 t.deleteCol(0);
             }
@@ -651,27 +716,11 @@ define([
         var t = this;
         if (typeof openableInlineBox !== 'undefined') {
             t.d.openableInlineBox = $A.parseBoolean(openableInlineBox);
-            if (openableInlineBox === false) {
-                t.d.$inlineButtonsBox.hide();
-            }else{
-                t.d.$inlineButtonsBox.show();
-            }
+            if (openableInlineBox === false)
+                t.d.$inlineButtonsRow.hide();
             return t;
         }
         return t.d.openableInlineBox;
-    };
-    p.clickableRow = function (clickableRow) {
-        var t = this;
-        if (typeof clickableRow !== 'undefined') {
-            t.d.clickableRow = $A.parseBoolean(clickableRow);
-            if (clickableRow === false) {
-                t.d.$table.removeClass('automizy-table-clickable');
-            }else{
-                t.d.$table.addClass('automizy-table-clickable');
-            }
-            return t;
-        }
-        return t.d.clickableRow;
     };
     p.beforeOpenInlineBox = function (func) {
         var t = this;
@@ -681,39 +730,32 @@ define([
         }
         return this;
     };
-    p.selectedRows = function(){
+    p.selectedRows = function () {
         var t = this;
         var rows = [];
         var ids = t.selectedIds();
-        for(var i = 0; i < ids.length; i++){
+        for (var i = 0; i < ids.length; i++) {
             rows.push(t.getRowByRecordId(ids[i]));
         }
         return rows;
     };
-    p.selectedRow = function(){
+    p.selectedRow = function () {
         var t = this;
-        if (typeof t.selectedId()==='undefined')
+        if (typeof t.selectedId() === 'undefined')
             return false;
         return t.getRowByRecordId(t.selectedId());
     };
-    p.selectedIds = function(){
+    p.selectedIds = function () {
         var t = this;
-        var col = t.getColByIndex(0);
-        if(typeof col.$cells === 'function'){
-            return col.$cells().find('input[type="checkbox"][value]:checked').map(function(){return this.value}).get();
-        }
-        return [];
+        return t.getColByIndex(0).$cells().find('input[type="checkbox"][value]:checked').map(function () {
+            return this.value
+        }).get()
     };
-    p.selectedId = function(){
+    p.selectedId = function () {
         var t = this;
-
-        var col = t.getColByIndex(0);
-        if(typeof col.$cells === 'function'){
-            return col.$cells().find('input[type="checkbox"][value]:checked:first').val();
-        }
-        return [];
+        return t.getColByIndex(0).$cells().find('input[type="checkbox"][value]:checked:first').val();
     };
-    p.openedRow = function(openedRow){
+    p.openedRow = function (openedRow) {
         var t = this;
         if (typeof openedRow !== 'undefined') {
             t.d.openedRow = openedRow;
@@ -721,22 +763,21 @@ define([
         }
         return t.d.openedRow;
     };
-    
-    p.openedId = function(){
+
+    p.openedId = function () {
         var t = this;
-        if (t.d.openedRow!==false)
+        if (t.d.openedRow !== false)
             return t.d.openedRow.recordId();
         return false;
     };
 
     p.getCell = function (colIndex, rowIndex) {
         var t = this;
-        var $cell = t.table().find('tr:first').siblings().addBack().eq(rowIndex).find('td, th').eq(colIndex);
+        var $cell = t.table().find('tr:first').siblings().andSelf().eq(rowIndex).find('td, th').eq(colIndex);
         return $A.tableCell($cell);
     };
-    
-    
-    
+
+
     p.getCells = function (type) {
         var t = this;
         var tableId = t.id();
@@ -747,12 +788,12 @@ define([
         } else {
             var tableDom = t.table()[0];
             var cells = [];
-            for(var i = 0; i < tableDom.rows.length; i++){
-                for(var j = 0; j < tableDom.rows[i].cells.length; j++){
+            for (var i = 0; i < tableDom.rows.length; i++) {
+                for (var j = 0; j < tableDom.rows[i].cells.length; j++) {
                     var cell = tableDom.rows[i].cells[j];
-                    if (type === 'DOM'){
+                    if (type === 'DOM') {
                         cells.push(cell);
-                    }else{
+                    } else {
                         cells.push($A.tableCell(cell));
                     }
                 }
@@ -766,101 +807,121 @@ define([
     p.getDomCells = function () {
         return this.getCells('DOM');
     };
-    
-    
-    
+
+
     p.getRowByIndex = function (index) {
-        var $row = this.table().find('tr:first').siblings().addBack().eq(index);
-        if($row.length === 0){
+        var $row = this.table().find('tr:first').siblings().andSelf().eq(index);
+        if ($row.length === 0) {
             return false;
         }
         return $A.tableRow($row);
     };
     p.getRowByRecordId = function (recordId) {
         var t = this;
-        var $row = t.table().find('tr:first').siblings().addBack().filter(function(){
+        var $row = t.table().find('tr:first').siblings().andSelf().filter(function () {
             return $(this).data('recordId') == recordId;
         });
-        if($row.length === 0){
+        if ($row.length === 0) {
             return false;
         }
         return $A.tableRow($row);
     };
     p.getColByIndex = function (index) {
-        var $col = this.table().find('th:first').siblings().addBack().eq(index);
-        if($col.length === 0){
+        var $col = this.table().find('th:first').siblings().andSelf().eq(index);
+        if ($col.length === 0) {
             return false;
         }
         return $A.tableCol($col);
     };
     p.getColByName = function (name) {
         var t = this;
-        var $col = t.table().find('th:first').siblings().addBack().filter(function(){
+        var $col = t.table().find('th:first').siblings().andSelf().filter(function () {
             return $(this).data('name') == name;
         });
-        if($col.length === 0){
+        if ($col.length === 0) {
             return false;
         }
         return $A.tableCol($col);
     };
-    
+
     p.addCols = function (arr) {
         var t = this;
         if (!$.isArray(arr))
             return t.addCols([arr]);
-        
+
         var table = t.table()[0];
         t.d.settings.cols = [];
-        for(var i = 0; i < arr.length; i++){
+        for (var i = 0; i < arr.length; i++) {
             var obj = arr[i];
             var index = -1;
-            if(typeof obj.index !== 'undefined'){
+            if (typeof obj.index !== 'undefined') {
                 index = parseInt(obj.index);
             }
             for (var j = 0; j < table.rows.length; j++) {
                 var cell = table.rows[j].insertCell(index);
 
-                var visibility = (obj.visibility === false)?false:true;
-                if(t.d.storeData && typeof $A.store.get(t.id()+"ActiveCols") !== 'undefined'){
-                    var activeCols = $A.store.get(t.id()+"ActiveCols");
-                    if(typeof activeCols[obj.name] !== 'undefined') {
+                var visibility = (obj.visibility === false) ? false : true;
+                if (t.d.storeData && typeof $A.store.get(t.id() + "ActiveCols") !== 'undefined') {
+                    var activeCols = $A.store.get(t.id() + "ActiveCols");
+                    if (typeof activeCols[obj.name] !== 'undefined') {
                         visibility = $A.parseBoolean(activeCols[obj.name]);
                     }
                 }
 
-                if(visibility === false){
+                if (visibility === false) {
                     cell.style.display = 'none';
                 }
-                if(j === 0){
+                if (j === 0) {
                     var $cell = $(cell);
-                    if(t.d.selectable && $cell.siblings().length <= 0){
-                        $(table.rows[0].insertCell(0)).replaceWith(function(){
+                    if (t.d.selectable && $cell.siblings().length <= 0) {
+                        $(table.rows[0].insertCell(0)).replaceWith(function () {
                             var $th = $("<th />");
                             t.d.$checkboxCheckAll.appendTo($th);
                             /*var th = $th[0];
-                            th.automizyData = th.automizyData || {};
-                            th.automizyData.name = 'automizyCheckboxCheckAll';*/
+                             th.automizyData = th.automizyData || {};
+                             th.automizyData.name = 'automizyCheckboxCheckAll';*/
                             return $th;
                         });
                     }
 
-                    if(typeof obj.name === 'undefined'){
+                    if (typeof obj.name === 'undefined') {
                         obj.name = $A.getUniqueString();
                     }
-                    if(obj.hideable !== false){
-                        t.addSettingsCheckbox({
-                            name:obj.name,
-                            label:obj.text,
-                            checked:visibility
+                    if (obj.hideable !== false) {
+
+                        $A.input({
+                            id: t.id() + '-settings-checkbox-' + obj.name,
+                            type: 'checkbox',
+                            label: obj.text || obj.name,
+                            name: obj.name,
+                            labelPosition: 'right',
+                            checked: visibility,
+                            target: t.d.$settingsBoxContent,
+                            change: function () {
+                                var name = this.name();
+                                var col = t.getColByName(name);
+                                if (!this.checked()) {
+                                    col.hide();
+                                    t.d.onHideCol.apply(col, [t, t.widget()]);
+                                } else {
+                                    col.show();
+                                    t.d.onShowCol.apply(col, [t, t.widget()]);
+                                }
+                                if (t.d.storeData) {
+                                    $A.store.set(t.id() + 'ActiveCols', t.d.$settingsBoxContent.serializeObject(true));
+                                }
+                            }
                         });
                     }
 
-                    $cell.replaceWith(function(){
+                    $cell.replaceWith(function () {
                         var $th = $("<th />").append($(this).contents());
-                        if(visibility === false){
+                        if (visibility === false) {
                             $th.hide();
                         }
                         $th.data('name', obj.name);
+                        $th.data('editable', obj.editable || false);
+                        $th.data('inlineInputObject', obj.inlineInputObject);
                         var th = $th[0];
                         th.automizyData = th.automizyData || {};
                         th.automizyData.name = obj.name;
@@ -869,29 +930,31 @@ define([
                             t.d.orderBy = obj.name;
                             t.d.orderDir = obj.order;
                         }
-                        if(typeof obj.text !== 'undefined'){
+                        if (typeof obj.text !== 'undefined') {
                             $th.append(obj.text);
                         }
-                        if(typeof obj.html !== 'undefined'){
-                            if(obj.html instanceof jQuery){
+                        if (typeof obj.html !== 'undefined') {
+                            if (obj.html instanceof jQuery) {
                                 obj.html.appendTo($th);
-                            }else{
+                            } else {
                                 $th.append(obj.html);
                             }
                         }
-                        if(obj.sortable !== false) {
+                        if (obj.sortable !== false) {
                             var $sort = $('<span class="automizy-table-sort-arrow automizy-noselect"></span>');
 
-                            $th.click(function(){
+                            $th.click(function () {
                                 var $thth = $(this);
                                 $thth.siblings().find('.automizy-table-sort-arrow').removeClass('asc desc');
-                                var thObj = t.d.settings.cols.filter(function ( elem ) {return elem.name === $thth.data('name');})[0];
-                                if(thObj.order === 'asc'){
+                                var thObj = t.d.settings.cols.filter(function (elem) {
+                                    return elem.name === $thth.data('name');
+                                })[0];
+                                if (thObj.order === 'asc') {
                                     thObj.order = 'desc';
-                                    $sort.switchClass( "asc", "desc", 250, "linear" );
-                                }else{
+                                    $sort.switchClass("asc", "desc", 250, "linear");
+                                } else {
                                     thObj.order = 'asc';
-                                    $sort.switchClass( "desc", "asc", 250, "linear" );
+                                    $sort.switchClass("desc", "asc", 250, "linear");
                                 }
                                 t.d.orderBy = thObj.name;
                                 t.d.orderDir = thObj.order;
@@ -913,46 +976,6 @@ define([
         }
         return t;
     };
-    p.addSettingsCheckbox = function(obj){
-        var t = this;
-        var name = obj.name || $A.getUniqueString();
-        var label = obj.label || name;
-        var checked = obj.checked || false;
-        t.d.settingsCheckboxes[name] = $A.input({
-            type:'checkbox',
-            label:label,
-            name:name,
-            labelPosition:'right',
-            checked:checked,
-            target:t.d.$settingsBoxContent,
-            change:function(){
-                var name = this.name();
-                var col = t.getColByName(name);
-                if(!this.checked()){
-                    col.hide();
-                    t.d.onHideCol.apply(col, [t, t.widget()]);
-                }else{
-                    col.show();
-                    t.d.onShowCol.apply(col, [t, t.widget()]);
-                }
-                if(t.d.storeData){
-                    $A.store.set(t.id()+'ActiveCols', t.d.$settingsBoxContent.serializeObject(true));
-                }
-            }
-        });
-        return t;
-    };
-    p.getSettingsCheckbox = function(name){
-        return this.d.settingsCheckboxes[name];
-    };
-    p.removeSettingsCheckbox = function(name){
-        var t = this;
-        var settingCheckbox = t.d.settingsCheckboxes[name];
-        if(typeof settingCheckbox !== 'undefined' && typeof settingCheckbox.remove === 'function') {
-            settingCheckbox.remove();
-        }
-        return t;
-    };
     p.addCol = function (obj) {
         var t = this;
         if (typeof obj === 'undefined') {
@@ -962,27 +985,27 @@ define([
         obj.newCol = true;
         return $A.tableCol(obj);
     };
-    p.cols = function(arr){
+    p.cols = function (arr) {
         var t = this;
         if (typeof arr === 'undefined') {
             var cols = [];
-            this.table().find('th:first').siblings().addBack().each(function(){
+            this.table().find('th:first').siblings().andSelf().each(function () {
                 cols.push($A.tableCol($(this)));
-            });
+            })
             return cols;
         }
         t.deleteCols();
         return t.addCols(arr);
     };
-    p.deleteCols = function(arr){
+    p.deleteCols = function (arr) {
         var t = this;
         var table = t.table()[0];
-        if (typeof arr !== 'undefined'){
+        if (typeof arr !== 'undefined') {
             var sortArr = arr.sort();
             for (var i = 0; i < table.rows.length; i++) {
                 for (var j = sortArr.length - 1; j >= 0; j--) {
-                    if(i === 0){
-                        t.removeSettingsCheckbox($(table.rows[i].cells[j]).attr('name'));
+                    if (i === 0) {
+                        $A.input('table-settings-checkbox-' + $(table.rows[i].cells[j]).attr('name')).remove();
                     }
                     table.rows[i].deleteCell(sortArr[j]);
                 }
@@ -991,11 +1014,10 @@ define([
         }
 
         var cols = t.cols();
-        for(var i = 0; i < cols.length; i++){
-            t.removeSettingsCheckbox(cols[i].name());
+        for (var i = 0; i < cols.length; i++) {
+            $A.input(t.id() + '-settings-checkbox-' + cols[i].name()).remove();
         }
-        t.removeSettingsCheckbox($(table.rows[i].cells[j]).attr('name'));
-
+        $A.input(t.id() + '-settings-checkbox-' + $(table.rows[i].cells[j]).attr('name')).remove();
         var lastCol = table.rows[0].cells.length - 1;
         for (var i = 0; i < table.rows.length; i++) {
             for (var j = lastCol; j > 0; j--) {
@@ -1004,127 +1026,145 @@ define([
         }
         return t;
     };
-    p.deleteCol = function(index){
+    p.deleteCol = function (index) {
         var t = this;
         return t.deleteCols([index]);
     };
-    
+
     p.addRows = function (arr) {
         var t = this;
-        if (!$.isArray(arr)){
+        if (!$.isArray(arr)) {
             return t.addRows([arr]);
         }
 
-        $A.runFunctions($A.events.table.functions.beforeAddRows, t, [t, arr]);
-        
         var table = t.table()[0];
-        for(var i = 0; i < arr.length; i++){
+        for (var i = 0; i < arr.length; i++) {
             var recordId = 0;
             var rowArr = arr[i];
             var rowIndex = table.rows.length;
-            if (!$.isArray(arr[i])){
-                if(typeof rowArr.index !== 'undefined'){
+            if (!$.isArray(arr[i])) {
+                if (typeof rowArr.index !== 'undefined') {
                     rowIndex = parseInt(rowArr.index);
-                    if(rowIndex < 1)rowIndex = 1;
+                    if (rowIndex < 1)rowIndex = 1;
                 }
                 recordId = rowArr.recordId || recordId;
                 rowArr = rowArr.values || [];
             }
             var row = table.insertRow(rowIndex);
-            $(row).data('recordId', recordId).click(function(){
+            $(row).data('recordId', recordId).click(function (event) {
                 var $t = $(this);
-                setTimeout(function(){
-                    if(!t.d.isCheckboxClick) {
-                        t.openedRow($A.tableRow($t));
-                        if(t.d.beforeOpenInlineBox.apply($t, [t.openedRow(), t.d.openedRow.recordId()]) !== false && $A.runFunctions($A.events.table.functions.beforeOpenInlineBox, $t, [$t, t.openedRow(), t.d.openedRow.recordId()]) !== false){
+                setTimeout(function () {
+                    if (AutomizyJs.d.tableRowCheckBoxClick === false) {
+                        if ($(event.target).hasClass('automizy-table-cell-editable-content') === false && $(event.target).hasClass('automizy-table-inline-edit-input-box') === false) {
+                            t.openedRow($A.tableRow($t));
+                            t.d.beforeOpenInlineBox.apply($t, [t.openedRow(), t.d.openedRow.recordId()]);
                             if (t.d.openableInlineBox) {
-                                t.d.$inlineButtons.attr('colspan', t.table()[0].rows[0].cells.length - t.table().find('tr:first th:not(:visible)').length);
-                                t.d.$inlineButtonsBox.insertAfter($t);
-                                t.d.$inlineButtonsBox.show();
+                                var oldInlineIndex = t.d.$inlineButtonsRow.index();
+                                t.d.$inlineButtonsCell.attr('colspan', t.table()[0].rows[0].cells.length - t.table().find('tr:first th:not(:visible)').length);
+                                t.d.$inlineButtonsRow.insertAfter($t);
+
+                                t.d.$inlineButtonsCell.show();
+                                if (oldInlineIndex === t.openedRow().index() + 1) {
+                                    t.d.$inlineButtons.slideToggle(function () {
+                                        if (t.d.$inlineButtons.is(':visible') === false) {
+                                            t.d.$inlineButtonsCell.hide();
+                                        }
+                                    });
+                                }
+                                else {
+                                    t.d.$inlineButtons.slideDown();
+                                }
+
                             }
                         }
                     }
-                    t.d.isCheckboxClick = false;
+                    AutomizyJs.d.tableRowCheckBoxClick = false;
                 }, 10);
             });
 
-            if (!$.isArray(rowArr)){
+            if (!$.isArray(rowArr)) {
                 var newArr = [];
-                for (var j = t.d.selectable?1:0; j < table.rows[0].cells.length; j++) {
+                for (var j = t.d.selectable ? 1 : 0; j < table.rows[0].cells.length; j++) {
                     var ad = table.rows[0].cells[j].automizyData;
-                    if(typeof ad === 'undefined'){
+                    if (typeof ad === 'undefined') {
                         ad = {};
                     }
                     var a = rowArr[ad.name];
-                    newArr.push((typeof a !== 'undefined')?a:'');
+                    newArr.push((typeof a !== 'undefined') ? a : '');
                 }
                 rowArr = newArr;
             }
 
-            if(t.d.selectable){
+            if (t.d.selectable) {
                 rowArr.unshift({
-                    html:'<input type="checkbox" class="automizy-table-rowcheck" onClick="AutomizyJs.d.tableRowCheckBoxClick = true" value="'+recordId+'" />',
+                    html: '<input type="checkbox" class="automizy-table-rowcheck" onClick="AutomizyJs.d.tableRowCheckBoxClick = true;" value="' + recordId + '" />',
                     click:function () {
-                        t.d.isCheckboxClick = true;
                         if(!$A.d.tableRowCheckBoxClick){
                             $(this).find('input:first').each(function(){
                                 this.checked = !this.checked;
                                 $(this).trigger('change');
                             });
                         }
-                        $A.d.tableRowCheckBoxClick = false;
+                        $A.d.tableRowCheckBoxClick = true;
                     }
                 });
             }
             for (var j = 0; j < table.rows[0].cells.length; j++) {
+                var isEditable = $(table).find('th:eq(' + (j) + ')').data('editable');
+
                 var cell = row.insertCell(j);
-                if(j === 0){
-                    cell.className = 'automizy-main-cell';
-                }
 
                 var value = rowArr[j];
-                if(typeof value === 'undefined' || !value){
+                if (typeof value === 'undefined') {
                     value = '';
                 }
-                if (typeof value.drawTo === 'function') {
-                    value.drawTo($(cell));
-                }else if(value instanceof jQuery){
-                    value.appendTo($(cell));
-                }else if(value !== null && typeof value === 'object'){
-                    if(typeof value.html !== 'undefined'){
-                        cell.innerHTML = value.html;
+                if (value instanceof $A.m.Input) {
+                    if (isEditable) {
+                        value.drawTo($('<span class="automizy-table-cell-editable-content"></span>').appendTo($(cell)));
+                    } else {
+                        value.drawTo($(cell));
                     }
-                    if(typeof value.text !== 'undefined'){
+                } else if (value instanceof jQuery) {
+                    if (isEditable) {
+                        value.appendTo($('<span class="automizy-table-cell-editable-content"></span>').appendTo($(cell)));
+                    } else {
+                        value.appendTo($(cell));
+                    }
+                } else if (value !== null && typeof value === 'object') {
+                    if (typeof value.html !== 'undefined') {
+                        if (isEditable) {
+                            cell.innerHTML = '<span class="automizy-table-cell-editable-content">' + value.html + '</span>'
+                        }
+                        else {
+                            cell.innerHTML = value.html;
+                        }
+                    }
+                    if (typeof value.text !== 'undefined') {
                         cell.textContent = value.text;
-                        cell.title = value.text;
                     }
                     cell.onclick = value.click || function(){};
-                }else{
-                    cell.textContent = value;
-                    cell.title = value;
-                }
 
-                var jMod = t.d.selectable ? j-1 : j;
-                if(typeof t.d.settings.cols[jMod] !== 'undefined'){
-                    if(typeof t.d.settings.cols[jMod].cellFunction === 'function') {
-                        if(typeof t.d.settings.cols[jMod].cellData !== 'undefined') {
-                            cell.automizyData = t.d.settings.cols[jMod].cellData;
-                        }
-                        t.d.settings.cols[jMod].cellFunction.apply(cell, [cell, value, i, j]);
+                } else {
+                    if (isEditable) {
+                        cell.innerHTML = '<span class="automizy-table-cell-editable-content">' + value + '</span>'
+
                     }
-                    if(typeof t.d.settings.cols[jMod].mainCell !== 'undefined') {
-                        if($A.parseBoolean(t.d.settings.cols[jMod].mainCell)){
-                            cell.className = 'automizy-main-cell';
-                        }
+                    else {
+                        cell.textContent = value;
+                    }
+                }
+                var jMod = t.d.selectable ? j - 1 : j;
+                if (typeof t.d.settings.cols[jMod] !== 'undefined') {
+                    if (typeof t.d.settings.cols[jMod].cellFunction === 'function') {
+                        t.d.settings.cols[jMod].cellFunction.apply(cell, [cell, value]);
                     }
                 }
 
-                if(table.rows[0].cells[j].style.display === 'none'){
+                if (table.rows[0].cells[j].style.display === 'none') {
                     cell.style.display = 'none'
                 }
             }
         }
-        $A.runFunctions($A.events.table.functions.addRows, t, [t, table.rows]);
         return t;
     };
     p.addRow = function (arr) {
@@ -1136,11 +1176,11 @@ define([
         }
         return t;
     };
-    p.rows = function(arr){
+    p.rows = function (arr) {
         var t = this;
         if (typeof arr === 'undefined') {
             var rows = [];
-            this.table().find('tr:first').siblings().addBack().each(function(){
+            this.table().find('tr:first').siblings().andSelf().each(function () {
                 rows.push($A.tableRow($(this)));
             });
             return rows;
@@ -1148,54 +1188,54 @@ define([
         t.deleteRows();
         return t.addRows(arr);
     };
-    p.rowCount = function(){
-        return this.rows().length-1;
+    p.rowCount = function () {
+        return this.rows().length - 1;
     };
-    p.deleteRows = function(arr){
+    p.deleteRows = function (arr) {
         var t = this;
         var table = t.table()[0];
-        if (typeof arr !== 'undefined'){
+        if (typeof arr !== 'undefined') {
             var sortArr = arr.sort();
-            for (var i = (sortArr.length - 1); i >= 0; i--) {
+            for (var i = sortArr.length - 1; i >= 0; i--) {
                 table.deleteRow(sortArr[i]);
             }
             return t;
         }
-        
+
         var lastRow = table.rows.length - 1;
         for (var i = lastRow; i > 0; i--) {
             table.deleteRow(i);
         }
         return t;
     };
-    p.deleteRow = function(index){
+    p.deleteRow = function (index) {
         var t = this;
         return t.deleteRows([index]);
     };
 
-    p.setButtonsStatus = function(){
+    p.setButtonsStatus = function () {
         var t = this;
         var buttons = t.buttons();
-        for(var i = 0; i < buttons.length; i++){
+        for (var i = 0; i < buttons.length; i++) {
             var button = buttons[i];
-            if(button.data('condition') !== 'undefined'){
+            if (button.data('condition') !== 'undefined') {
                 var condition = button.data('condition');
-                if(condition === 'select-one'){
-                    if(t.selectedIds().length === 1){
+                if (condition === 'select-one') {
+                    if (t.selectedIds().length === 1) {
                         button.enable();
-                    }else{
+                    } else {
                         button.disable();
                     }
-                }else if(condition === 'select-more-than-zero'){
-                    if(t.selectedIds().length >= 1){
+                } else if (condition === 'select-more-than-zero') {
+                    if (t.selectedIds().length >= 1) {
                         button.enable();
-                    }else{
+                    } else {
                         button.disable();
                     }
-                }else if(condition === 'select-between-two-and-four'){
-                    if(t.selectedIds().length >= 2 && t.selectedIds().length <= 4){
+                } else if (condition === 'select-between-two-and-four') {
+                    if (t.selectedIds().length >= 2 && t.selectedIds().length <= 4) {
                         button.enable();
-                    }else{
+                    } else {
                         button.disable();
                     }
                 }
@@ -1204,64 +1244,61 @@ define([
         return t;
     };
 
-    p.tableButtons = function(arr){
+    p.tableButtons = function (arr) {
         var t = this;
         if (typeof arr === 'undefined')
             return t.d.buttons;
-        for(var i = 0; i < arr.length; i++){
-            if(arr[i].condition !== 'undefined'){
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i].condition !== 'undefined') {
                 arr[i].data = arr[i].data || {};
                 arr[i].data.condition = arr[i].condition;
             }
         }
         t.buttons(arr);
-        t.table().on('change', 'input.automizy-table-rowcheck, input.automizy-table-checkall', function(){
+        t.table().on('change', 'input.automizy-table-rowcheck, input.automizy-table-checkall', function () {
             t.setButtonsStatus();
         });
         return t;
     };
-    p.inlineButtons = function(inlineButtons){
+    p.inlineButtons = function (inlineButtons) {
         var t = this;
-        if(typeof inlineButtons !== 'undefined'){
+        if (typeof inlineButtons !== 'undefined') {
             t.d.inlineButtons = inlineButtons;
-            for(var i = 0; i < inlineButtons.length; i++){
+            for (var i = 0; i < inlineButtons.length; i++) {
                 var inlineButton = inlineButtons[i];
-                var $button = $('<a>'+inlineButton.text+'</a>').data('click', inlineButton.click || function(){}).click(function(){
+                $('<a>' + inlineButton.text + '</a>').data('click', inlineButton.click || function () {
+                    }).click(function (event) {
                     var $t = $(this);
                     var $row = $t.closest('tr').prev();
                     var row = $A.tableRow($row);
                     t.openedRow(row);
                     $t.data('click').apply(row, [t, t.d.$widget]);
                 }).appendTo(t.d.$inlineButtons);
-                if(!inlineButton.permission){
-                    $button.wrap('<span class="automizy-permission-trap"></span>');
-                }
             }
             return t;
         }
         return t.d.inlineButtons;
     };
-    p.loading = function(){
+    p.loading = function () {
         var t = this;
-        if(t.table().find('tr.automizy-table-loading-row').length > 0){
+        if (t.table().find('tr.automizy-table-loading-row').length > 0) {
             return t;
         }
-        //setTimeout(function(){
+        setTimeout(function () {
             t.deleteRows();
             t.setButtonsStatus();
             var $tr = $('<tr class="automizy-table-loading-row"></tr>');
-            var $td = $('<td colspan="'+t.getRowByIndex(0).$cells().length+'"></td>').appendTo($tr);
+            var $td = $('<td colspan="' + t.getRowByIndex(0).$cells().length + '"></td>').appendTo($tr);
             t.d.$loadingCellContent.appendTo($td);
             $tr.appendTo(t.table());
-            $A.runFunctions($A.events.table.functions.loading, t, [t]);
-        //}, 10);
+        }, 10);
         return t;
     };
-    p.loadingCellContent = function(loadingCellContent){
+    p.loadingCellContent = function (loadingCellContent) {
         var t = this;
         if (typeof loadingCellContent !== 'undefined') {
             if (loadingCellContent instanceof jQuery) {
-                loadingCellContent = loadingCellContent.clone();
+                var loadingCellContent = loadingCellContent.clone();
             }
             t.d.loadingCellContent = loadingCellContent;
             t.d.$loadingCellContent.html(loadingCellContent);
@@ -1269,30 +1306,8 @@ define([
         }
         return t.d.loadingCellContent;
     };
-    p.addButton = p.addButton || function (obj) {
-            var t = this;
-            if (typeof t.d.buttons === 'undefined') {
-                return t;
-            }
-            if (typeof obj !== 'undefined') {
-                if (obj instanceof $A.m.Button || obj instanceof $A.m.Input) {
-                    obj.drawTo(t.d.$buttons || t.d.$widget);
-                    obj.thin(true);
-                } else {
-                    obj.thin = true;
-                    obj.target = obj.target || t.d.$buttons || t.d.$widget;
-                    var button = $A.newButton(obj);
-                    t.d.buttons.push(button);
-                }
-                t.d.$widget.addClass('has-button');
-                return t;
-            }
-            var button = $A.newButton();
-            t.d.buttons.push(button);
-            button.drawTo(t.d.$buttons || t.d.$widget);
-            return button;
-        };
 
-    $A.initBasicFunctions(Table, "Table", ['addRows', 'beforeAddRows', 'beforeOpenInlineBox', 'loading']);
+    $A.initBasicFunctions(Table, "Table");
+
 
 });

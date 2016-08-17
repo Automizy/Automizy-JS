@@ -1,7 +1,6 @@
 define([
     'automizy/core',
     'automizy/functions/getUniqueString',
-    'automizy/functions/registerLocalEvents',
     'automizy/functions/initBasicFunctions'
 ], function () {
     var TableCol = function (obj) {
@@ -11,6 +10,8 @@ define([
             table: false,
             hasObject: false,
             newCol: false,
+            editable: false,
+            inlineInputObject: null, //if col is editable, this input will be generated
             html:'',
             text:'',
             active:true
@@ -31,9 +32,15 @@ define([
                 //t.d.table = $A.table(t.widget().closest('.automizy-table-box'));
                 if(typeof obj.data('name') !== 'undefined')t.name(obj.data('name'));
                 if(typeof obj.attr('id') !== 'undefined')t.id(obj.attr('id'));
+                if(typeof obj.data('editable') !== 'undefined')t.editable(obj.data('editable'));
+                if(typeof obj.data('inlineInputObject') !== 'undefined')t.d.inlineInputObject = obj.data('inlineInputObject');
             } else {
                 if (typeof obj.newCol !== 'undefined')
                     t.d.newCol = obj.newCol;
+                if (typeof obj.editable !== 'undefined')
+                    t.d.editable = obj.editable;
+                if (typeof obj.inlineInputObject !== 'undefined')
+                    t.d.inlineInputObject = obj.inlineInputObject;
                 if (typeof obj.index !== 'undefined')
                     t.index(obj.index);
                 if (typeof obj.table !== 'undefined')
@@ -49,6 +56,8 @@ define([
                 t.initParameter(obj);
             }
         }
+
+
     };
     var p = TableCol.prototype;
 
@@ -57,7 +66,7 @@ define([
         if (typeof table !== 'undefined') {
             t.d.table = table;
             var colIndex = t.d.index;
-            var $cols = t.d.table.table().find('th, td').eq(0).siblings().addBack();
+            var $cols = t.d.table.table().find('th, td').eq(0).siblings().andSelf();
             var colLen = $cols.length;
             var id = $cols.eq(colIndex).attr('id') || 0;
             
@@ -148,10 +157,17 @@ define([
         }
         return t.d.active;
     };
+    p.editable = function (editable) {
+        var t = this;
+        if (typeof editable !== 'undefined') {
+            t.d.editable = editable;
+            return t;
+        }
+        return t.d.editable;
+    };
     p.cells = function (type) {
         var t = this;
         var table = t.table();
-        var tableId = table.id();
         var rowCount = table.table()[0].rows.length;
         var index = t.index();
 

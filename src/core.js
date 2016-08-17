@@ -1,5 +1,5 @@
 define([], function () {
-    $A = new function () {
+    window.AutomizyJs = window.$A = new function () {
         var t = this;
         t.d = {
             version: '0.5.3',
@@ -14,23 +14,12 @@ define([], function () {
             forms:{},
             validators:{},
             feedbacks: {},
-            hashes:[],
-            elements:{
-                $tmp:$('<div></div>'),
-                $loading:$('<div class="automizy-loading" style="margin-top: 8px;"><div class="automizy-loading-in automizy-loading-in-1"></div><div class="automizy-loading-in automizy-loading-in-2"></div><div class="automizy-loading-in automizy-loading-in-3"></div></div>')
-            }
+            hashes:[]
         };
         t.m = {};
         t.mt = {};
         t.default = {};
-        t.events = {};
-        t.customEvents = {
-            functions:{},
-            on:{},
-            off:{},
-            one:{}
-        };
     }();
     
-    return $A;
+    return AutomizyJs;
 });

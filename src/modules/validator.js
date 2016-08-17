@@ -1,6 +1,5 @@
 define([
     'automizy/core',
-    'automizy/functions/registerLocalEvents',
     'automizy/functions/getUniqueString'
 ], function () {
     var Validator = function (obj) {

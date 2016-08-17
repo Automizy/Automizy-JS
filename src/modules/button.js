@@ -2,64 +2,48 @@ define([
     'automizy/core',
     'automizy/addons/jqueryAddOns',
     'automizy/functions/initBasicFunctions',
-    'automizy/functions/registerLocalEvents',
     'automizy/images/icons'
 ], function () {
     var Button = function (obj) {
         var t = this;
         t.d = {
-            $widget: $('<span class="automizy-button"></span>'),
+            $widget:$('<span class="automizy-button"></span>'),
             $widgetButton: $('<a href="javascript:;"></a>'),
             text: 'My Button',
             skin: 'simple-white',
             float: 'none',
             width: '',
             hasObject: false,
-            newRow: false,
-            disabled: false,
-            triggers:{
-                click:0
-            },
+            newRow:false,
+            disabled:false,
+            click:function(){},
             create: function () {
             },
             id: 'automizy-button-' + $A.getUniqueString()
         };
-        t.f = {};
         t.init();
 
         t.d.$widgetButton.appendTo(t.d.$widget);
         t.d.$widgetButton.text(t.d.text);
         t.d.$widget.addClass('automizy-skin-' + t.d.skin).attr('id', t.id());
         t.d.$widgetButton.click(function () {
-            if (t.click().returnValue() === false) {
-                return false;
-            }
+            t.click();
         });
         if (typeof obj !== 'undefined') {
-            if (typeof obj.disabled !== 'undefined') {
+            if (typeof obj.disabled !== 'undefined')
                 t.disabled(obj.disabled);
-            }
-            if (typeof obj.text !== 'undefined') {
+            if (typeof obj.text !== 'undefined')
                 t.text(obj.text);
-            }
-            if (typeof obj.html !== 'undefined') {
+            if (typeof obj.html !== 'undefined')
                 t.html(obj.html);
-            }
-            if (typeof obj.float !== 'undefined') {
+            if (typeof obj.float !== 'undefined')
                 t.float(obj.float);
-            }
-            if (typeof obj.width !== 'undefined') {
+            if (typeof obj.width !== 'undefined')
                 t.width(obj.width);
-            }
-            if (typeof obj.click !== 'undefined') {
+            if (typeof obj.click !== 'undefined')
                 t.click(obj.click);
-            }
-            if (typeof obj.newRow !== 'undefined') {
+            if (typeof obj.newRow !== 'undefined')
                 t.newRow(obj.newRow);
-            }
-            if (typeof obj.thin !== 'undefined') {
-                t.thin(obj.thin);
-            }
             t.initParameter(obj);
         }
     };
@@ -89,7 +73,6 @@ define([
             t.d.width = width;
             t.d.$widget.width(width);
             t.d.$widgetButton.width('100%');
-            t.d.$widgetButton.css('width', '100%');
             return t;
         }
         return t.d.width;
@@ -124,48 +107,30 @@ define([
         if (typeof newRow !== 'undefined') {
             newRow = $A.parseBoolean(newRow);
             t.d.newRow = newRow;
-            if (newRow) {
+            if(newRow){
                 t.d.$widget.addClass('new-row');
-            } else {
+            }else{
                 t.d.$widget.removeClass('new-row');
             }
             return t;
         }
         return t.d.newRow;
     };
+    p.click = function (func) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.d.click = func;
+        } else {
+            if(!t.disabled())t.d.click.apply(this, [this, this.d.$widget]);
+        }
+        return t;
+    };
     p.button = function () {
         var t = this;
         return t.d.$widgetButton;
     };
+    
 
-    p.click = function (func, name, life) {
-        var t = this;
-        if (typeof func === 'function') {
-            t.addFunction('click', func, name, life);
-        } else {
-            if(t.disabled()){
-                return t;
-            }
-            var a = t.runFunctions('click');
-            t.returnValue(!(a[0] === false || a[1] === false));
-        }
-        return t;
-    };
-    p.thin = function(value){
-        var t = this;
-        if (typeof value !== 'undefined') {
-            value = $A.parseBoolean(value);
-            if(!value){
-                t.widget().removeClass('automizy-button-thin');
-                return t;
-            }
-        }
-        t.widget().addClass('automizy-button-thin');
-        return t;
-    };
-
-
-    $A.initBasicFunctions(Button, "Button", ['click']);
-
+    $A.initBasicFunctions(Button, "Button");
 
 });
