@@ -17,14 +17,23 @@
                     {value:324, html:'Barack <b>pálinka</b> (html code)'},
                     {value:327, html:'Szilva lekvár (different content)', textValue:'Szilva <b>pálinka</b>'},
                     {value:339, html:'Egy_tanulmany_arrol_hogy_hogyan_fozzunk_palinkat_lekvarbol (long content)'}
-                ]);
+                ]).change(function(){
+                    console.log(this.val());
+                    console.log(this.originalInput().val());
+                });
 
                 window.exampleInput2 = $('<select></select>').appendTo('body:first').automizySelect().options([
                     {value:123, html:'Körte', group:'Gyümölcsök'},
                     {value:124, html:'Barack', group:'Gyümölcsök'},
                     {value:125, html:'Krumpli', group:'Zőccség'},
-                    {value:126, html:'Répa', group:'Zőccség'}
-                ]);
+                    {value:126, html:'Répa', group:'Zőccség'},
+                    {value:126, html:'Zeller', group:'Zőccség'},
+                    {value:126, html:'Káposzta', group:'Zőccség'},
+                    {value:126, html:'Petrezselyem', group:'Zőccség'}
+                ]).change(function(){
+                    console.log(this.val());
+                    console.log(this.originalInput().val());
+                });
 
                 window.exampleInput3 = $('#example-3').automizySelect();
 
