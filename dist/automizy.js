@@ -2083,7 +2083,6 @@ var $A = {};
             itemsArray: [],
             groups: {},
             activeGroup: false,
-            validator: $A.newValidator(),
             validate: function () {
             },
             validationEvents: '',
@@ -2902,10 +2901,13 @@ var $A = {};
         var t = this;
         if (typeof validator !== 'undefined') {
             if (validator === false) {
-                t.d.validator = $A.newValidator();
+                delete t.d.validator;
             } else if (validator instanceof $A.m.Validator) {
                 t.d.validator = validator;
             } else {
+                if(typeof t.d.validator === 'undefined'){
+                    t.d.validator = $A.newValidator();
+                }
                 t.d.validator.set(validator);
             }
             return t;
@@ -2917,16 +2919,18 @@ var $A = {};
         if (typeof func === 'function') {
             t.d.validate = func;
         } else {
-            var a = t.validator().execute(t.val());
-            if (!a) {
-                t.showError(t.validator().errors().join('<br/>'));
-
-                t.validationEvents('keyup change paste');
-            } else {
-                t.hideError();
-                t.showSuccess();
+            var a = true;
+            if(typeof t.d.validator !== 'undefined' || t.d.validator === false){
+                a = t.validator().execute(t.val());
+                if (!a) {
+                    t.showError(t.validator().errors().join('<br/>'));
+                    t.validationEvents('keyup change paste');
+                } else {
+                    t.hideError();
+                    t.showSuccess();
+                }
+                t.d.validate.apply(this, [a, this, this.d.$widget]);
             }
-            t.d.validate.apply(this, [a, this, this.d.$widget]);
             return a;
         }
         return t;

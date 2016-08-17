@@ -229,9 +229,10 @@
                             var a = form.inputs();
                             var send = true;
                             for (var i in a) {
-                                if (a[i].validate() === false)
+                                if (a[i].validate() === false){
                                     send = false;
-                                console.log(a[i].validator().errors());
+                                    console.log(a[i].validator().errors());
+                                }
                             }
                             if (send === true) {
                                 alert('SAVE');
