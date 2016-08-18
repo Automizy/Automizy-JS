@@ -10,26 +10,30 @@ define([
     var Select = function (obj) {
         var t = this;
         t.d = {
-            $widget: $('<div class="automizy-select automizy-empty"></div>'),
+            $widget: $('<div class="automizy-select automizy-has-arrow automizy-empty"></div>'),
+            $loadingBox: $('<div class="automizy-select-loading-box">loading...</div>'),
             $widgetTable: $('<table border="0" cellpadding="0" cellspacing="0" class="automizy-select-table"></table>'),
             $widgetTr: $('<tr class="automizy-select-tr"></tr>'),
             $widgetTdIcon: $('<td class="automizy-select-td-icon"></td>'),
             $widgetTdContent: $('<td class="automizy-select-td-content"></td>'),
             $widgetTdContentDiv: $('<div class="automizy-select-td-content-div"></div>'),
             $widgetTdArrow: $('<td class="automizy-select-td-arrow"></td>'),
+            $widgetTdArrowIcon: $('<span class="automizy-icon automizy-icon-select-arrow"></span>'),
+            $icon: $('<span class="automizy-icon"></span>'),
             originalInput: $('<select></select>').data('automizy-select-remove', true),
             optionBox:$A.newSelectOptionBox().selectModule(t),
             options:[],
             groups:{},
+            tmpValue: null,
             value: null,
             content:false,
             multiple:false,
             disabled: false,
+            loading:false,
             emptyText:$A.translate('Select an option'),
             selectedText:$A.translate('# items selected'),
             maxVisibleItems:2,
             width: 'auto',
-            minWidth: 180,
             height: 'auto',
             id: 'automizy-select-' + $A.getUniqueString(),
 
@@ -44,11 +48,14 @@ define([
 
 
         t.d.$widgetTable.appendTo(t.d.$widget);
+        t.d.$loadingBox.appendTo(t.d.$widget);
         t.d.$widgetTr.appendTo(t.d.$widgetTable);
         t.d.$widgetTdIcon.appendTo(t.d.$widgetTr);
+        t.d.$icon.appendTo(t.d.$widgetTdIcon);
         t.d.$widgetTdContent.appendTo(t.d.$widgetTr);
         t.d.$widgetTdContentDiv.appendTo(t.d.$widgetTdContent).html(t.d.emptyText);
         t.d.$widgetTdArrow.appendTo(t.d.$widgetTr);
+        t.d.$widgetTdArrowIcon.appendTo(t.d.$widgetTdArrow);
 
 
         if (typeof obj !== 'undefined') {
@@ -56,6 +63,9 @@ define([
         }
 
         t.widget().click(function(){
+            if(t.d.loading === true){
+                return false;
+            }
             t.open();
         });
 
@@ -89,7 +99,9 @@ define([
             }else{
                 $elem = t.d.originalInput;
             }
-            t.widget().insertAfter($elem);
+            (function(t){setTimeout(function(){
+                t.widget().insertAfter($elem);
+            }, 10)})(t);
             $elem.hide();
             $elem.data('automizy-select', t);
             t.d.originalInput.data('automizy-select', t);
@@ -101,28 +113,36 @@ define([
     p.optionBox = function () {
         return this.d.optionBox;
     };
+    p.confirmValue = function(){
+        var t = this;
+
+        t.unselectAll();
+
+        if(typeof t.d.value === 'object' || typeof t.d.value === 'array'){
+            for(var i = 0; i < t.d.options.length; i++){
+                for(var j = 0; j < t.d.value.length; j++){
+                    if(t.d.options[i].val() == t.d.value[j]){
+                        t.d.options[i].select();
+                    }
+                }
+            }
+        }else{
+            for(var i = 0; i < t.d.options.length; i++){
+                if(t.d.options[i].val() == t.d.value){
+                    t.d.options[i].select();
+                    break;
+                }
+            }
+        }
+        t.d.originalInput.val(t.d.value).trigger('change');
+
+        return t;
+    };
     p.val = p.value = function (value) {
         var t = this;
         if (typeof value !== 'undefined') {
             t.d.value = value;
-            t.unselectAll();
-            if(typeof t.d.value === 'object' || typeof t.d.value === 'array'){
-                for(var i = 0; i < t.d.options.length; i++){
-                    for(var j = 0; j < t.d.value.length; j++){
-                        if(t.d.options[i].val() == t.d.value[j]){
-                            t.d.options[i].select();
-                        }
-                    }
-                }
-            }else{
-                for(var i = 0; i < t.d.options.length; i++){
-                    if(t.d.options[i].val() == t.d.value){
-                        t.d.options[i].select();
-                        break;
-                    }
-                }
-            }
-            t.d.originalInput.val(t.d.value).trigger('change');
+            t.confirmValue();
             return t;
         }
         return t.d.value;
@@ -136,15 +156,56 @@ define([
         }
         return t.d.content;
     };
-    p.icon = function (icon) {
+
+
+    p.icon = function(o){
         var t = this;
-        if (typeof icon !== 'undefined') {
-            t.d.icon = icon;
-            t.d.$widgetTdIcon.html(t.d.content);
+        if (typeof o !== 'undefined') {
+            if(o === false){
+                t.hasIcon(false);
+            } else if(typeof o === 'string'){
+                t.d.icon = o;
+                t.d.$icon.removeClass().addClass('automizy-icon automizy-icon-'+o);
+                t.hasIcon(true);
+            } else {
+                var icon = {
+                    url: '',
+                    width: '14px',
+                    height: '14px',
+                    bgPositionX: 'center',
+                    bgPositionY: 'center',
+                    align: 'center',
+                    valign: 'middle'
+                };
+
+                for (var i in icon) {
+                    if (typeof o[i] !== 'undefined') {
+                        icon[i] = o[i];
+                    }
+                    t.d.icon[i] = icon[i];
+                }
+                t.hasIcon(true);
+            }
             return t;
         }
-        return t.d.content;
+
+        return t.d.icon;
     };
+    p.hasIcon = function(hasIcon){
+        var t = this;
+        if (typeof hasIcon !== 'undefined') {
+            t.d.hasIcon = $A.parseBoolean(hasIcon);
+            if(t.d.hasIcon === true){
+                t.widget().addClass('automizy-has-icon');
+            }else{
+                t.widget().removeClass('automizy-has-icon');
+            }
+            return t;
+        }
+        return t.d.hasIcon;
+    };
+
+
     p.multiple = function (multiple) {
         var t = this;
         if (typeof multiple !== 'undefined') {
@@ -188,9 +249,9 @@ define([
         var t = this;
         var triggerChange = triggerChange || false;
         for(var i = 0; i < t.d.options.length; i++){
-            t.d.options[i].unselect();
+            t.d.options[i].unselect(false, true);
         }
-        if(triggerChange){
+        if(triggerChange === true){
             t.originalInput().trigger('change');
         }
         return t;
@@ -198,20 +259,14 @@ define([
     p.width = function (width) {
         var t = this;
         if (typeof width !== 'undefined') {
-            t.d.width = Math.max(width, t.minWidth());
+            t.d.width = width;
             t.widget().css('width', t.d.width);
-            t.d.$widgetTdContentDiv.css('max-width', t.widget().width() - 12 + 'px');
+            setTimeout(function() {
+                t.d.$widgetTdContentDiv.css('max-width', t.widget().width() - 12 + 'px');
+            }, 10);
             return t;
         }
         return t.d.width;
-    };
-    p.minWidth = function (minWidth) {
-        var t = this;
-        if (typeof minWidth !== 'undefined') {
-            t.d.minWidth = minWidth;
-            return t;
-        }
-        return t.d.minWidth;
     };
     /*p.height = function (height) {
         var t = this;
@@ -227,13 +282,26 @@ define([
         var options = t.d.options;
         var textValues = [];
         var values = [];
+        var selectedOptionCount = 0;
+        var icon = false;
 
         for(var i = 0; i < options.length; i++){
             if(options[i].selected()){
+                selectedOptionCount++;
                 textValues.push(options[i].textValue());
                 values.push(options[i].val());
+                if(options[i].hasIcon()){
+                    icon = options[i].icon();
+                }
             }
         }
+
+        if(selectedOptionCount === 1){
+            t.icon(icon);
+        }else {
+            t.icon(false);
+        }
+
         if(textValues.length <= 0){
             t.content(t.emptyText());
             t.widget().addClass('automizy-empty');
@@ -355,6 +423,31 @@ define([
         t.originalInput().change();
         return t;
     };
+    p.loadingStart = function(){
+        var t = this;
+        t.widget().addClass('automizy-loading');
+        t.d.tmpValue = t.val();
+        t.d.loading = true;
+        return t;
+    };
+    p.loadingStop = function(){
+        var t = this;
+        t.widget().removeClass('automizy-loading');
+        t.d.loading = false;
+        return t;
+    };
+    p.loadingComplete = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('loadingComplete', func, name, life);
+        } else {
+            var a = t.runFunctions('loadingComplete');
+            t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
+            t.val(t.d.tmpValue);
+            t.loadingStop();
+        }
+        return t;
+    };
 
 
     p.beforeOpen = function (func, name, life) {
@@ -383,7 +476,7 @@ define([
 
 
 
-    $A.initBasicFunctions(Select, "Select", ['change']);
+    $A.initBasicFunctions(Select, "Select", ['change', 'loadingComplete']);
 
 
     $.fn.automizySelect = function () {
