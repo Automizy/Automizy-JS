@@ -11,21 +11,21 @@
     box-sizing: border-box;
     display:inline-block;
     cursor:pointer;
+    min-width:180px;
 }
-.automizy-select.automizy-active{  /*select field if select box opened*/
+.automizy-select.automizy-active{
      color: #333333;
      background-color: #e6e6e6;
      border-color: #adadad;
 }
-.automizy-select .automizy-select-table{ /*select field content table*/
-
+.automizy-select .automizy-select-table{
     width:100%;
     font-family:Arial;
 }
-.automizy-select .automizy-select-tr{    /*select field content table row*/
+.automizy-select .automizy-select-tr{
 
 }
-.automizy-select .automizy-select-td-icon{   /*select field content table icon*/
+.automizy-select .automizy-select-td-icon{
     font-size:0;
     text-align:center;
     vertical-align:middle;
@@ -102,6 +102,8 @@
     background-color:#ffffff;
     margin:1px 0 0 0;
     box-sizing: border-box;
+    overflow: auto;
+    max-height: 250px;
 }
 .automizy-select-option-table{  /*option box content table*/
     width:100%;
@@ -137,8 +139,7 @@
 }
 .automizy-select-option-table .automizy-select-option-tr .automizy-select-option-td-content{       /*option row content cell*/
     vertical-align:middle;
-    height:26px;
-    padding:3px 0 3px 0;
+    padding:6px 0 6px 0;
     word-break: break-all;
     font-size:14px;
     width:100%;
@@ -150,7 +151,6 @@
     vertical-align:middle;
     width:0;
     max-width:0;
-    height:26px;
 }
 .automizy-select-option-table .automizy-select-option-tr.automizy-has-select .automizy-select-option-td-check{
     width:40px;
@@ -165,8 +165,7 @@
     font-size: 12px;
     color: #777777;
     vertical-align:middle;
-    height:26px;
-    padding:3px 0 3px 20px;
+    padding:6px 0 6px 20px;
     word-break: break-all;
 }
 

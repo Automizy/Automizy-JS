@@ -23,14 +23,13 @@
                     console.log(this.originalInput().val());
                 });
 
-                window.exampleInput2 = $('<select></select>').appendTo('body:first').automizySelect().options([
+                window.exampleInput2 = $('<select></select>').appendTo('body:first').automizySelect().width('50%').options([
                     {value:123, html:'Körte', group:'Gyümölcsök'},
                     {value:124, html:'Barack', group:'Gyümölcsök'},
                     {value:125, html:'Krumpli', group:'Zőccség'},
                     {value:126, html:'Répa', group:'Zőccség'},
-                    {value:126, html:'Zeller', group:'Zőccség'},
-                    {value:126, html:'Káposzta', group:'Zőccség'},
-                    {value:126, html:'Petrezselyem', group:'Zőccség', icon:'action'}
+                    {value:127, html:'Káposzta', group:'Zőccség'},
+                    {value:128, html:'Petrezselyem', group:'Zőccség', icon:'action'}
                 ]).change(function(){
                     console.log(this.val());
                     console.log(this.originalInput().val());

@@ -11,7 +11,7 @@ define([
             $widget: $('<span class="automizy-select-option-box"></span>'),
             $options:$('<table border="0" cellpadding="0" cellspacing="0" class="automizy-select-option-table"></table>'),
             selectModule:false,
-            maxHeight: '150px',
+            maxHeight: '250px',
             position:'auto',
             id: 'automizy-select-option-box-' + $A.getUniqueString()
         };

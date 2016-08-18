@@ -34,7 +34,6 @@ define([
             selectedText:$A.translate('# items selected'),
             maxVisibleItems:2,
             width: 'auto',
-            minWidth: 180,
             height: 'auto',
             id: 'automizy-select-' + $A.getUniqueString(),
 
@@ -260,20 +259,14 @@ define([
     p.width = function (width) {
         var t = this;
         if (typeof width !== 'undefined') {
-            t.d.width = Math.max(width, t.minWidth());
+            t.d.width = width;
             t.widget().css('width', t.d.width);
-            t.d.$widgetTdContentDiv.css('max-width', t.widget().width() - 12 + 'px');
+            setTimeout(function() {
+                t.d.$widgetTdContentDiv.css('max-width', t.widget().width() - 12 + 'px');
+            }, 10);
             return t;
         }
         return t.d.width;
-    };
-    p.minWidth = function (minWidth) {
-        var t = this;
-        if (typeof minWidth !== 'undefined') {
-            t.d.minWidth = minWidth;
-            return t;
-        }
-        return t.d.minWidth;
     };
     /*p.height = function (height) {
         var t = this;

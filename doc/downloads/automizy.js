@@ -5655,7 +5655,7 @@ var $A = {};
             $widget: $('<span class="automizy-select-option-box"></span>'),
             $options:$('<table border="0" cellpadding="0" cellspacing="0" class="automizy-select-option-table"></table>'),
             selectModule:false,
-            maxHeight: '150px',
+            maxHeight: '250px',
             position:'auto',
             id: 'automizy-select-option-box-' + $A.getUniqueString()
         };
@@ -6177,7 +6177,6 @@ var $A = {};
             selectedText:$A.translate('# items selected'),
             maxVisibleItems:2,
             width: 'auto',
-            minWidth: 180,
             height: 'auto',
             id: 'automizy-select-' + $A.getUniqueString(),
 
@@ -6403,20 +6402,14 @@ var $A = {};
     p.width = function (width) {
         var t = this;
         if (typeof width !== 'undefined') {
-            t.d.width = Math.max(width, t.minWidth());
+            t.d.width = width;
             t.widget().css('width', t.d.width);
-            t.d.$widgetTdContentDiv.css('max-width', t.widget().width() - 12 + 'px');
+            setTimeout(function() {
+                t.d.$widgetTdContentDiv.css('max-width', t.widget().width() - 12 + 'px');
+            }, 10);
             return t;
         }
         return t.d.width;
-    };
-    p.minWidth = function (minWidth) {
-        var t = this;
-        if (typeof minWidth !== 'undefined') {
-            t.d.minWidth = minWidth;
-            return t;
-        }
-        return t.d.minWidth;
     };
     /*p.height = function (height) {
         var t = this;
