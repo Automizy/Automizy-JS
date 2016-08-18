@@ -12,6 +12,7 @@ define([
             $widgetTdIcon: $('<td class="automizy-select-option-td-icon"></td>'),
             $widgetTdContent: $('<td class="automizy-select-option-td-content"></td>'),
             $widgetTdCheck: $('<td class="automizy-select-option-td-check"></td>'),
+            $icon: $('<span class="automizy-icon"></span>'),
             $option:$('<option></option>'),
             selectModule:false,
             selectOptionBoxModule:false,
@@ -29,6 +30,7 @@ define([
         t.init();
 
         t.d.$widgetTdIcon.appendTo(t.d.$widget);
+        t.d.$icon.appendTo(t.d.$widgetTdIcon);
         t.d.$widgetTdContent.appendTo(t.d.$widget);
         t.d.$widgetTdCheck.appendTo(t.d.$widget);
 
@@ -54,6 +56,9 @@ define([
             }
             if (typeof obj.selected !== 'undefined') {
                 t.selected(obj.selected);
+            }
+            if (typeof obj.icon !== 'undefined') {
+                t.icon(obj.icon);
             }
             if (typeof obj.group !== 'undefined') {
                 t.group(obj.group);
@@ -201,9 +206,11 @@ define([
     p.enable = function () {
         return this.disabled(false);
     };
-    p.selected = function (selected, triggerChange) {
+
+    p.selected = function (selected, triggerChange, isNotRefreshValue) {
         var t = this;
         var triggerChange = triggerChange || false;
+        var isNotRefreshValue = isNotRefreshValue || false;
         if (typeof selected !== 'undefined') {
             t.d.selected = $A.parseBoolean(selected);
             var selectModule = t.selectModule();
@@ -214,7 +221,10 @@ define([
                 t.widget().removeClass('automizy-selected');
                 t.d.$option.prop("selected", false);
             }
-            selectModule.refreshValue();
+
+            if(!isNotRefreshValue){
+                selectModule.refreshValue();
+            }
             if(triggerChange){
                 selectModule.originalInput().trigger('change');
             }
@@ -222,14 +232,14 @@ define([
         }
         return t.d.selected;
     };
-    p.toggleSelect = function (triggerChange) {
-        return this.selected(!this.selected(), triggerChange || false);
+    p.toggleSelect = function (triggerChange, isNotRefreshValue) {
+        return this.selected(!this.selected(), triggerChange || false, isNotRefreshValue || false);
     };
-    p.select = function (triggerChange) {
-        return this.selected(true, triggerChange || false);
+    p.select = function (triggerChange, isNotRefreshValue) {
+        return this.selected(true, triggerChange || false, isNotRefreshValue || false);
     };
-    p.unselect = function (triggerChange) {
-        return this.selected(false, triggerChange || false);
+    p.unselect = function (triggerChange, isNotRefreshValue) {
+        return this.selected(false, triggerChange || false, isNotRefreshValue || false);
     };
     p.hasSelect = function(hasSelect){
         var t = this;
@@ -250,10 +260,11 @@ define([
         var t = this;
         if (typeof o !== 'undefined') {
             if(o === false){
-
+                t.hasIcon(false);
             } else if(typeof o === 'string'){
                 t.d.icon = o;
-                t.widget().addClass('automizy-icon-'+o);
+                t.d.$icon.removeClass().addClass('automizy-icon automizy-icon-'+o);
+                t.hasIcon(true);
             } else {
                 var icon = {
                     url: '',
@@ -271,12 +282,12 @@ define([
                     }
                     t.d.icon[i] = icon[i];
                 }
+                t.hasIcon(true);
             }
             return t;
         }
 
         return t.d.icon;
-
     };
     p.hasIcon = function(hasIcon){
         var t = this;

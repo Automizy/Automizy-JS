@@ -1540,46 +1540,82 @@ label.iPhoneCheckLabelOff span {
     box-sizing: border-box;
     display:inline-block;
     cursor:pointer;
+    min-width:180px;
 }
-.automizy-select.automizy-active{  
+.automizy-select.automizy-active{
      color: #333333;
      background-color: #e6e6e6;
      border-color: #adadad;
 }
-.automizy-select .automizy-select-table{ 
+.automizy-select .automizy-select-table{
+    width:100%;
+    font-family:Arial;
 }
-.automizy-select .automizy-select-tr{    
+.automizy-select .automizy-select-tr{
 }
-.automizy-select .automizy-select-td-icon{   
-    visibility: hidden;
-    width:0;
+.automizy-select .automizy-select-td-icon{
+    font-size:0;
+    text-align:center;
+    vertical-align:middle;
+    padding:0;
+    margin:0;
+    width:0px;
 }
-.automizy-select.automizy-has-icon .automizy-select-td-icon{   
-    visibility: visible;
-    width:auto;
+.automizy-select.automizy-has-icon .automizy-select-td-icon{
+    padding:0 6px 0 14px;
 }
-.automizy-select .automizy-select-td-content{   
+.automizy-select .automizy-select-td-icon .automizy-icon{
+    display: none;
+}
+.automizy-select.automizy-has-icon .automizy-select-td-icon .automizy-icon{
+    display: inline-block;
+}
+.automizy-select .automizy-select-td-content{
     text-align:left;
     vertical-align:middle;
     padding: 6px;
+    font-size:14px;
+    width:100%;
+    max-width: 1px;
 }
-.automizy-select .automizy-select-td-content-div{   
+.automizy-select .automizy-select-td-content-div{
     display:block;
     width:100%;
     overflow:hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
 }
-.automizy-select .automizy-select-td-arrow{   
-    visibility: hidden;
-    width:0;
+.automizy-select .automizy-select-td-arrow{
+    font-size:0;
+    text-align:center;
+    vertical-align:middle;
+    padding:0;
+    margin:0;
+    width:0px;
 }
-.automizy-select.automizy-has-arrow .automizy-select-td-arrow{   
-    visibility: visible;
-    width:auto;
+.automizy-select.automizy-has-arrow .automizy-select-td-arrow{
+    padding:0 6px 0 6px;
 }
-.automizy-select.automizy-empty .automizy-select-td-content{   
+.automizy-select .automizy-select-td-arrow .automizy-icon{
+    display: none;
+}
+.automizy-select.automizy-has-arrow .automizy-select-td-arrow .automizy-icon{
+    display: inline-block;
+}
+.automizy-select.automizy-empty .automizy-select-td-content{
     color: #777777;
+}
+.automizy-select .automizy-select-loading-box{
+    display:none;
+    width:100%;
+    height:100%;
+    background-color:#ffffff;
+}
+.automizy-select.automizy-loading .automizy-select-loading-box{
+    display:block;
+}
+.automizy-select.automizy-loading .automizy-select-table{
+    display:none;
 }
 .automizy-select-option-box{   
     position:absolute;
@@ -1592,6 +1628,8 @@ label.iPhoneCheckLabelOff span {
     background-color:#ffffff;
     margin:1px 0 0 0;
     box-sizing: border-box;
+    overflow: auto;
+    max-height: 250px;
 }
 .automizy-select-option-table{  
     width:100%;
@@ -1610,34 +1648,38 @@ label.iPhoneCheckLabelOff span {
     color:#777777;
     cursor: not-allowed;
 }
-.automizy-select-option-table .automizy-select-option-tr .automizy-select-option-td-icon{   
+.automizy-select-option-table .automizy-select-option-tr .automizy-select-option-td-icon{
+    font-size:0;
+    text-align:center;
     vertical-align:middle;
-    visibility: hidden;
-    width:0;
+    padding:0 6px 0 14px;
+    width:0px;
 }
-.automizy-select-option-table .automizy-select-option-tr.automizy-has-icon .automizy-select-option-td-icon{
-    visibility: visible;
-    width:auto;
+.automizy-select-option-table .automizy-select-option-tr .automizy-select-option-td-icon .automizy-icon{
+    display: none;
+}
+.automizy-select-option-table .automizy-select-option-tr.automizy-has-icon .automizy-select-option-td-icon .automizy-icon{
+    display: inline-block;
 }
 .automizy-select-option-table .automizy-select-option-tr .automizy-select-option-td-content{       
     vertical-align:middle;
-    height:26px;
-    padding:3px 0 3px 20px;
+    padding:6px 0 6px 0;
     word-break: break-all;
     font-size:14px;
+    width:100%;
 }
-.automizy-select-option-table .automizy-select-option-tr.automizy-has-group .automizy-select-option-td-content{       
-    padding-left:32px;
+.automizy-select-option-table .automizy-select-option-tr.automizy-has-group .automizy-select-option-td-icon{
+    padding:0 6px 0 26px;
 }
-.automizy-select-option-table .automizy-select-option-tr .automizy-select-option-td-check{     
+.automizy-select-option-table .automizy-select-option-tr .automizy-select-option-td-check{
     vertical-align:middle;
     width:0;
-    height:26px;
-    visibility: hidden;
+    max-width:0;
 }
 .automizy-select-option-table .automizy-select-option-tr.automizy-has-select .automizy-select-option-td-check{
-    visibility: visible;
     width:40px;
+    min-width:40px;
+    max-width:40px;
 }
 .automizy-select-option-table .automizy-select-option-tr.automizy-selected .automizy-select-option-td-check{     
     background:transparent url('data:image/svg+xml;utf8,<svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"/><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>') no-repeat 4px center;
@@ -1646,8 +1688,7 @@ label.iPhoneCheckLabelOff span {
     font-size: 12px;
     color: #777777;
     vertical-align:middle;
-    height:26px;
-    padding:3px 0 3px 20px;
+    padding:6px 0 6px 20px;
     word-break: break-all;
 }
 .automizy-select-option-table .automizy-select-group-separator-tr{
@@ -1660,4 +1701,51 @@ label.iPhoneCheckLabelOff span {
     margin: 9px 0;
     overflow: hidden;
     background-color: #e5e5e5;
+}
+.automizy-icon{
+    font-size:0;
+    color:transparent;
+    line-height:0;
+    display:inline-block;
+    width:18px;
+    height:18px;
+    overflow:hidden;
+    box-sizing: border-box;
+    background:transparent url(images/automizy-sprite-18x18.png) no-repeat center center;
+}
+.automizy-icon-form{
+    background-position:0 0;
+}
+.automizy-icon-edit{
+    background-position:-18px 0;
+}
+.automizy-icon-leadscore{
+    background-position:-36px 0;
+}
+.automizy-icon-attachment{
+    background-position:-54px 0;
+}
+.automizy-icon-action{
+    background-position:-72px 0;
+}
+.automizy-icon-automizy{
+    background-position:-90px 0;
+}
+.automizy-icon-calendar{
+    background-position:-108px 0;
+}
+.automizy-icon-filter{
+    background-position:-126px 0;
+}
+.automizy-icon-email{
+    background-position:-144px 0;
+}
+.automizy-icon-segment{
+    background-position:-162px 0;
+}
+.automizy-icon-select-arrow{
+    background-position:0 -18px;
+}
+.automizy-icon-import-file{
+    background-position:-18px -18px;
 }
