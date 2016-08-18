@@ -216,6 +216,33 @@ define([
         return true;
     };
 
+    p.inlineInputObject = function(obj){
+        var t = this;
+        if(typeof obj !== 'undefined'){
+            t.d.inlineInputObject = obj;
+            return t;
+        }
+        return t.d.inlineInputObject;
+    };
+
+    p.onInlineEditComplete = function(cell){
+        var t = this;
+        if(typeof obj === 'function'){
+            t.d.inlineInputObject = obj;
+            return t;
+        }
+        t.onInlineEditComplete();
+    };
+
+    p.setInlineInputObject = function(cell, afterSet){
+        var t = this;
+        if(typeof obj === 'function'){
+            t.d.inlineInputObject = obj;
+            return t;
+        }
+        t.onInlineEditComplete();
+    };
+
     $A.initBasicFunctions(TableCol, "TableCol");
 
 });

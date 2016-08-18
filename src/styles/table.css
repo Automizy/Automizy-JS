@@ -183,12 +183,11 @@
     margin:0;
     padding:0;
 }
-.automizy-table tr:last-child td{
+.automizy-table > tbody > tr:last-child > td{
     border-bottom: none;
 }
 
-.automizy-table th,
-.automizy-table td{
+.automizy-table  > tbody > tr > *{
     margin:0;
     border: 1px solid #E0E9D4;
     border-width: 1px 1px 1px 0px;
@@ -203,10 +202,10 @@
     position: relative;
     white-space: nowrap;
 }
-.automizy-table td.automizy-main-cell{
+.automizy-table > tbody > tr > td.automizy-main-cell{
     font-weight:bold;
 }
-.automizy-table th{
+.automizy-table > tbody > tr > th{
     background-color:#e0e9d4;
     height:16px;
     font-weight:normal;
@@ -215,28 +214,25 @@
     vertical-align:middle;
     border-top:none;
 }
-.automizy-table.checkboxed tr th:first-child,
-.automizy-table.checkboxed tr td:first-child{
+.automizy-table.checkboxed > tbody > tr > *:first-child{
     cursor:pointer;
     max-width:15px;
     overflow:hidden;
     width:30px;
 }
-.automizy-table.checkboxed tr th:first-child label,
-.automizy-table.checkboxed tr td:first-child label{
+.automizy-table.checkboxed > tbody > tr > *:first-child label{
     width:100%;
 }
-.automizy-table.checkboxed td:nth-child(2){
+.automizy-table.checkboxed > tbody > tr > td:nth-child(2){
     font-weight:bold;
 }
-.automizy-table-clickable td,
-.automizy-table-clickable th{
+.automizy-table-clickable > tbody > tr > *{
     cursor:pointer;
 }
-.automizy-table-clickable tr:hover td{
+.automizy-table-clickable > tbody > tr:hover > td{
     background-color:#f4f4f4;
 }
-.automizy-table tr.selected{
+.automizy-table > tbody > tr.selected{
     background-color:#ffeedc;
 }
 

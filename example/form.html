@@ -41,7 +41,8 @@
                                 help: 'Select the segments you want to add the uploaded subscribers to.',
                                 type: 'select',
                                 name: 'segments[]',
-                                multiselect: $A.d.defines.input.setupSelectSearchCheckObj,
+                                id: 'select',
+                                automizySelect: true,
                                 options: [
                                     [0, '--- Nothing ---'],
                                     [12, 'First Segment'],

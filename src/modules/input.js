@@ -110,6 +110,7 @@ define([
         }).ahide();
         t.d.$widget.attr('type', 'text').attr('id', t.id()).addClass('automizy-skin-' + t.d.skin);
         t.setupJQueryEvents();
+
         if (typeof obj !== 'undefined') {
             if (typeof obj.label !== 'undefined') {
                 t.label(obj.label);
@@ -233,7 +234,13 @@ define([
             if (typeof obj.iconClick === 'function') {
                 t.iconClick(obj.iconClick);
             }
+            if(typeof obj.automizySelect !== 'undefined'){
+                t.d.automizySelect = obj.automizySelect;
+            }
             t.initParameter(obj);
+        }
+        if(t.d.automizySelect){
+            t.automizySelect();
         }
     };
 

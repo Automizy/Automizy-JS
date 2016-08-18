@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Select Example</title>
     <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="../dist/automizy.css">
     <script src="../dist/automizy.js"></script>
     <script>
@@ -78,19 +79,69 @@
                         inlineInputObject: {type: 'text'}
                     },
                     {
-                        name: 'segment', text: 'Segment', editable: true, inlineInputObject: {
-                        type: 'select',
-                        name: 'segments[]',
-                        multiselect: $A.d.defines.input.setupSelectSearchCheckObj,
-                        options: [
-                            [0, '--- Nothing ---'],
-                            [12, 'First Segment'],
-                            [15, 'Second Segment']
-                        ],
-                        change: function (input, $elem) {
+                        name: 'segment',
+                        text: 'Segment',
+                        editable: true,
+                        inlineInputObject: {
+                            type: 'select',
+                            name: 'segments[]',
+                            automizySelect: true,
+                            id: 'select',
+                            options: [
+                                [0, '--- Nothing ---'],
+                                [12, 'First Segment'],
+                                [15, 'Second Segment']
+                            ],
+                            change: function (input, $elem) {
 
+                            }
+                        },
+                        setInlineInputObject: function(cell, afterSet){
+
+                            /*
+                             //Lekérjük az adott cella értékét, típusát, lehetséges értékeit stb
+                             //Pl.:
+
+                            $AA.customFields.get(x).done(function(){
+
+                            })
+                            */
+
+
+                            //Beállítjuk ennek megfelelően inlineInputObject-et aminek a cellába kattintva meg kell jelennie pl:
+
+                            //Ez mind a done-ba megy
+                            {
+                                var inlineInputObject = {
+                                    type: 'select',
+                                    name: 'segments[]',
+                                    automizySelect: true,
+                                    id: 'select',
+                                    options: [
+                                        [0, '--- Nothing ---'],
+                                        [12, 'First Segment'],
+                                        [15, 'Second Segment']
+                                    ]
+                                };
+                                cell.inlineInputObject(inlineInputObject);
+
+                                //Inline input megnyitása, szerkesztése, stb.
+                                afterSet();
+                            }
+                        },
+                        onInlineEditComplete: function(cell){
+                            console.log(cell.inlineInputObject().value());
+
+                            /*
+
+                            //Az objektum feltöltése az input értéke alapjának megfelelően
+                            var obj = {
+                            };
+
+                            //Oszlop frissítése ajax-szal
+                            $A.contacts().update(id, obj);
+                            */
                         }
-                    },
                     },
                     {name: 'createDate', text: 'Létrehozva', editable: true, inlineInputObject: {type: 'date'}},
                     {

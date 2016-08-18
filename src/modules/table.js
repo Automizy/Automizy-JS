@@ -313,85 +313,24 @@ define([
 
         t.d.$loadingCellContent.html(t.d.loadingCellContent);
 
+        $A.d.inlineEditClick = false;
 
         /*Opening inline editor*/
         $('body').on('click', '.automizy-table-cell-editable-content', function (e) {
+
+            /*If true, opening inlineButtonsBox will be prevented*/
+            $A.d.inlineEditClick = true;
+
             var $editableContent = $(e.target);
             var $cell = $editableContent.parent();
             var $row = $cell.parent();
             var cell = t.getCell($cell.index(), $row.index());
-            var col = cell.col();
 
-            /*Hiding old content*/
-            $editableContent.hide()
+            cell.inlineEdit()
 
-            /*Inserting input field*/
-            var inlineInput = $A.newInput(col.d.inlineInputObject).newRow(false);
-            var cancelButton = $A.newButton({
-                text: "X",
-                click: function () {
-                    removeInlineEditBox();
-                }
-            });
-            var saveButton = $A.newButton({
-                text: "Save",
-                click: function () {
-                    onInlineEditComplete();
-
-                    /*Writing the new value in the cell, hiding input*/
-                    $editableContent.text(inlineInput.value());
-                    removeInlineEditBox();
-                }
-            });
-
-            var $editInputBox = $('<span class="automizy-table-inline-edit-input-box"></span>');
-            inlineInput.widget().appendTo($editInputBox);
-            cancelButton.widget().appendTo($editInputBox);
-            saveButton.widget().appendTo($editInputBox);
-            $editInputBox.appendTo(cell.widget());
-
-            /*Setting old value in input*/
-            //TODO: setting value based on input type
-            inlineInput.val($editableContent.html());
-
-            /*Focusing on input*/
-            inlineInput.input().focus();
-
-            /*Stop editing if escape pressed*/
-            inlineInput.input().keyup(function (e) {
-                if (e.keyCode == 27) {
-                    cancelButton.click();
-                }
-            });
-
-            /*Enter function*/
-            inlineInput.enter(function () {
-                saveButton.click();
-            });
-
-            /*Removing inline edit*/
-            function removeInlineEditBox() {
-                inlineInput.remove()
-                cancelButton.remove();
-                saveButton.remove();
-                $editInputBox.remove();
-                $editableContent.show();
-                $('body').off('click', removeInlineEditBox);
-            }
-
-            /*Removing the editor if clicking any other element*/
-            $('body').on('click', removeInlineEditBox);
-
-            /*But not hiding if clicking inside the edit box*/
-            $('.automizy-table-inline-edit-input-box *').on('click', function (e) {
-                e.stopPropagation();
-            });
 
         });
 
-        function onInlineEditComplete(data) {
-            console.log('complete')
-        }
 
         if (typeof obj !== 'undefined') {
             if (obj instanceof HTMLElement) {
@@ -1123,14 +1062,11 @@ define([
             $(row).data('recordId', recordId).click(function (event) {
                 var $t = $(this);
                 setTimeout(function () {
-                    console.log('row click')
-                    console.log($A.d.tableRowCheckBoxClick)
                     if ($A.d.tableRowCheckBoxClick === false) {
-                        if ($(event.target).hasClass('automizy-table-cell-editable-content') === false && $(event.target).hasClass('automizy-table-inline-edit-input-box') === false) {
+                        if ($(event.target).hasClass('automizy-table-cell-editable-content') === false && $A.d.inlineEditClick === false) {
                             t.openedRow($A.tableRow($t));
                             t.d.beforeOpenInlineBox.apply($t, [t.openedRow(), t.d.openedRow.recordId()]);
                             if (t.d.openableInlineBox) {
-                                console.log('inline box click')
                                 var oldInlineIndex = t.d.$inlineButtonsRow.index();
                                 t.d.$inlineButtonsCell.attr('colspan', t.table()[0].rows[0].cells.length - t.table().find('tr:first th:not(:visible)').length);
                                 t.d.$inlineButtonsRow.insertAfter($t);
@@ -1149,6 +1085,7 @@ define([
 
                             }
                         }
+                        $A.d.inlineEditClick = false;
                     }
                     $A.d.tableRowCheckBoxClick = false;
                 }, 10);
@@ -1206,6 +1143,7 @@ define([
                         value.appendTo($(cell));
                     }
                 } else if (value !== null && typeof value === 'object') {
+                    console.log('object')
                     if (typeof value.html !== 'undefined') {
                         if (isEditable) {
                             cell.innerHTML = '<span class="automizy-table-cell-editable-content">' + value.html + '</span>'

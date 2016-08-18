@@ -1,6 +1,6 @@
 @font-face{
     font-family: OpenSansCondBold;
-    src: url(../fonts/OpenSans-CondBold.eot);
+    src: url("../fonts/OpenSans-CondBold.eot");
     src: url("../fonts/OpenSans-CondBold.woff") format("woff"),
     url("../fonts/OpenSans-CondBold.ttf") format("truetype");
 }

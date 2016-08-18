@@ -2131,6 +2131,7 @@ var $A = {};
         }).ahide();
         t.d.$widget.attr('type', 'text').attr('id', t.id()).addClass('automizy-skin-' + t.d.skin);
         t.setupJQueryEvents();
+
         if (typeof obj !== 'undefined') {
             if (typeof obj.label !== 'undefined') {
                 t.label(obj.label);
@@ -2254,7 +2255,13 @@ var $A = {};
             if (typeof obj.iconClick === 'function') {
                 t.iconClick(obj.iconClick);
             }
+            if(typeof obj.automizySelect !== 'undefined'){
+                t.d.automizySelect = obj.automizySelect;
+            }
             t.initParameter(obj);
+        }
+        if(t.d.automizySelect){
+            t.automizySelect();
         }
     };
 
@@ -4334,85 +4341,24 @@ var $A = {};
 
         t.d.$loadingCellContent.html(t.d.loadingCellContent);
 
+        $A.d.inlineEditClick = false;
 
         /*Opening inline editor*/
         $('body').on('click', '.automizy-table-cell-editable-content', function (e) {
+
+            /*If true, opening inlineButtonsBox will be prevented*/
+            $A.d.inlineEditClick = true;
+
             var $editableContent = $(e.target);
             var $cell = $editableContent.parent();
             var $row = $cell.parent();
             var cell = t.getCell($cell.index(), $row.index());
-            var col = cell.col();
 
-            /*Hiding old content*/
-            $editableContent.hide()
+            cell.inlineEdit()
 
-            /*Inserting input field*/
-            var inlineInput = $A.newInput(col.d.inlineInputObject).newRow(false);
-            var cancelButton = $A.newButton({
-                text: "X",
-                click: function () {
-                    removeInlineEditBox();
-                }
-            });
-            var saveButton = $A.newButton({
-                text: "Save",
-                click: function () {
-                    onInlineEditComplete();
-
-                    /*Writing the new value in the cell, hiding input*/
-                    $editableContent.text(inlineInput.value());
-                    removeInlineEditBox();
-                }
-            });
-
-            var $editInputBox = $('<span class="automizy-table-inline-edit-input-box"></span>');
-            inlineInput.widget().appendTo($editInputBox);
-            cancelButton.widget().appendTo($editInputBox);
-            saveButton.widget().appendTo($editInputBox);
-            $editInputBox.appendTo(cell.widget());
-
-            /*Setting old value in input*/
-            //TODO: setting value based on input type
-            inlineInput.val($editableContent.html());
-
-            /*Focusing on input*/
-            inlineInput.input().focus();
-
-            /*Stop editing if escape pressed*/
-            inlineInput.input().keyup(function (e) {
-                if (e.keyCode == 27) {
-                    cancelButton.click();
-                }
-            });
-
-            /*Enter function*/
-            inlineInput.enter(function () {
-                saveButton.click();
-            });
-
-            /*Removing inline edit*/
-            function removeInlineEditBox() {
-                inlineInput.remove()
-                cancelButton.remove();
-                saveButton.remove();
-                $editInputBox.remove();
-                $editableContent.show();
-                $('body').off('click', removeInlineEditBox);
-            }
-
-            /*Removing the editor if clicking any other element*/
-            $('body').on('click', removeInlineEditBox);
-
-            /*But not hiding if clicking inside the edit box*/
-            $('.automizy-table-inline-edit-input-box *').on('click', function (e) {
-                e.stopPropagation();
-            });
 
         });
 
-        function onInlineEditComplete(data) {
-            console.log('complete')
-        }
 
         if (typeof obj !== 'undefined') {
             if (obj instanceof HTMLElement) {
@@ -5144,14 +5090,11 @@ var $A = {};
             $(row).data('recordId', recordId).click(function (event) {
                 var $t = $(this);
                 setTimeout(function () {
-                    console.log('row click')
-                    console.log($A.d.tableRowCheckBoxClick)
                     if ($A.d.tableRowCheckBoxClick === false) {
-                        if ($(event.target).hasClass('automizy-table-cell-editable-content') === false && $(event.target).hasClass('automizy-table-inline-edit-input-box') === false) {
+                        if ($(event.target).hasClass('automizy-table-cell-editable-content') === false && $A.d.inlineEditClick === false) {
                             t.openedRow($A.tableRow($t));
                             t.d.beforeOpenInlineBox.apply($t, [t.openedRow(), t.d.openedRow.recordId()]);
                             if (t.d.openableInlineBox) {
-                                console.log('inline box click')
                                 var oldInlineIndex = t.d.$inlineButtonsRow.index();
                                 t.d.$inlineButtonsCell.attr('colspan', t.table()[0].rows[0].cells.length - t.table().find('tr:first th:not(:visible)').length);
                                 t.d.$inlineButtonsRow.insertAfter($t);
@@ -5170,6 +5113,7 @@ var $A = {};
 
                             }
                         }
+                        $A.d.inlineEditClick = false;
                     }
                     $A.d.tableRowCheckBoxClick = false;
                 }, 10);
@@ -5227,6 +5171,7 @@ var $A = {};
                         value.appendTo($(cell));
                     }
                 } else if (value !== null && typeof value === 'object') {
+                    console.log('object')
                     if (typeof value.html !== 'undefined') {
                         if (isEditable) {
                             cell.innerHTML = '<span class="automizy-table-cell-editable-content">' + value.html + '</span>'
@@ -5766,6 +5711,33 @@ var $A = {};
         return true;
     };
 
+    p.inlineInputObject = function(obj){
+        var t = this;
+        if(typeof obj !== 'undefined'){
+            t.d.inlineInputObject = obj;
+            return t;
+        }
+        return t.d.inlineInputObject;
+    };
+
+    p.onInlineEditComplete = function(cell){
+        var t = this;
+        if(typeof obj === 'function'){
+            t.d.inlineInputObject = obj;
+            return t;
+        }
+        t.onInlineEditComplete();
+    };
+
+    p.setInlineInputObject = function(cell, afterSet){
+        var t = this;
+        if(typeof obj === 'function'){
+            t.d.inlineInputObject = obj;
+            return t;
+        }
+        t.onInlineEditComplete();
+    };
+
     $A.initBasicFunctions(TableCol, "TableCol");
 
 })();
@@ -5791,6 +5763,14 @@ var $A = {};
                 t.d.html = obj.html();
                 t.d.text = obj.text();
                 t.d.table = $A.table(t.widget().closest('.automizy-table-box'));
+                if(typeof obj.data('inlineInputObject') !== 'undefined'){
+                    t.inlineInputObject(data('inlineInputObject'));
+                }
+                /*
+                if(typeof obj.data('onInlineEditComplete') === 'function'){
+                    t.onInlineEditComplete(obj.data('onInlineEditComplete'));
+                }
+                */
             } else {
                 if (typeof obj.index !== 'undefined')
                     t.index(obj.index);
@@ -5798,6 +5778,14 @@ var $A = {};
                     t.table(obj.table);
                 if (typeof obj.recordId !== 'undefined')
                     t.recordId(obj.recordId);
+                if(typeof obj.inlineInputObject !== 'undefined'){
+                    t.inlineInputObject(obj.inlineInputObject);
+                }
+                /*
+                if(typeof obj.onInlineEditComplete === 'function'){
+                    t.onInlineEditComplete(obj.onInlineEditComplete);
+                }
+                */
                 t.initParameter(obj);
             }
 
@@ -5807,6 +5795,14 @@ var $A = {};
                 t.d.$editableContent = $($(obj)[0].innerHTML);
                 t.d.html = $($(obj)[0].innerHTML).html();
 
+                if(typeof t.d.inlineInputObject === 'undefined'){
+                    t.inlineInputObject(t.col().d.inlineInputObject);
+                }
+                /*
+                if(typeof t.d.onInlineEditComplete === 'undefined'){
+                    t.onInlineEditComplete(t.col().d.onInlineEditComplete);
+                }
+                */
             }
 
         }
@@ -5887,6 +5883,142 @@ var $A = {};
     p.editable = function () {
         var t = this;
         return t.d.editable;
+    };
+
+    p.inlineInputObject = function(obj){
+        var t = this;
+        if(typeof obj !== 'undefined'){
+            t.d.inlineInputObject = obj;
+            return t;
+        }
+        return t.d.inlineInputObject;
+    };
+
+    p.inlineEdit = function(){
+
+        var cell = this;
+
+        /*If true, opening inlineButtonsBox will be prevented*/
+        $A.d.inlineEditClick = true;
+
+        var $editableContent = cell.d.$editableContent;
+        var col = cell.col();
+
+        /*Hiding old content*/
+        $editableContent.hide()
+
+        /*Inserting input field*/
+        var inlineInput = $A.newInput(col.d.inlineInputObject).newRow(false);
+        var cancelButton = $A.newButton({
+            text: "X",
+            click: function () {
+                removeInlineEditBox();
+            }
+        });
+        var saveButton = $A.newButton({
+            text: "Save",
+            click: function () {
+                onInlineEditComplete();
+
+                /*Writing the new value in the cell, hiding input*/
+                $editableContent.text(inlineInput.value());
+
+                removeInlineEditBox();
+            }
+        });
+
+        var $editInputBox = $('<span class="automizy-table-inline-edit-input-box"></span>');
+
+        /*Fill this array with the selector of elements
+         which could be clicked when the inline edit input is open,
+         without closing it
+         */
+        var ignoreOutClick = [];
+        var type = inlineInput.type();
+
+        /*Any click in the edit box is ignored*/
+        ignoreOutClick.push($editInputBox);
+
+        switch(type){
+            case "date":
+                break;
+            case "datetime":
+                break;
+            case "select":
+                /*Option window click is ignored*/
+                ignoreOutClick.push('.automizy-select-option-box');
+                break;
+            default:
+                break;
+        }
+
+
+        /*Setting old value in input*/
+        //TODO: setting value based on input type
+        inlineInput.val($editableContent.html());
+
+        /*Focusing on input*/
+        inlineInput.input().focus();
+
+        /*Stop editing if escape pressed*/
+        inlineInput.input().keyup(function (e) {
+            if (e.keyCode == 27) {
+                cancelButton.click();
+            }
+        });
+
+        /*Enter function*/
+        inlineInput.enter(function () {
+            saveButton.click();
+        });
+
+        /*Removing inline edit*/
+        function removeInlineEditBox() {
+            inlineInput.remove()
+            cancelButton.remove();
+            saveButton.remove();
+            $editInputBox.remove();
+            $editableContent.show();
+            $(document).off('click', removeFunction);
+            $A.d.inlineEditClick = true;
+        }
+
+        $(document).on('click',removeFunction);
+
+        /*Detecting click outside the inline input*/
+        function removeFunction(event){
+
+            var clickedIn = false;
+
+            /*Iterating through all the ignore selectors*/
+            for(var i = 0; i<ignoreOutClick.length; i++){
+                if(!($(event.target).closest(ignoreOutClick[i]).length == false && $editInputBox.is(":visible"))) {
+                    clickedIn = true;
+                    $A.d.inlineEditClick = true;
+                }
+            }
+            if(!clickedIn){
+                removeInlineEditBox();
+                $A.d.inlineEditClick = false;
+            }
+        }
+
+
+        /*Drawing the elements 10ms later (if not, edit box won't appear)*/
+        setTimeout(function(){
+            inlineInput.widget().appendTo($editInputBox);
+            cancelButton.widget().appendTo($editInputBox);
+            saveButton.widget().appendTo($editInputBox);
+            $editInputBox.appendTo(cell.widget());
+
+        },10);
+
+
+
+        function onInlineEditComplete(data) {
+
+
+        }
     };
 
     $A.initBasicFunctions(TableCell, "TableCell");
