@@ -85,10 +85,10 @@
                         sortable: false,
                         editable: true,
                         setInlineInputObject: function (cell) {
-                                cell.inlineInputObject({
-                                    type: 'text',
-                                    value: cell.html()
-                                });
+                            cell.inlineInputObject({
+                                type: 'text',
+                                value: cell.html()
+                            });
                         },
                         onInlineEditComplete: function (cell, inlineInput) {
                             cell.html(inlineInput.value());
@@ -146,7 +146,11 @@
                              */
                         }
                     },
-                    {name: 'createDate', text: 'Létrehozva', editable: true, inlineInputObject: {type: 'date'}},
+                    {
+                        name: 'createDate',
+                        text: 'Létrehozva',
+                        editable: false
+                    },
                     {
                         name: 'lastSend',
                         text: 'Utoljára küldve',
