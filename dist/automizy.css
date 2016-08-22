@@ -19,31 +19,39 @@
     text-indent: 0;
     border-radius: 3px;
     -webkit-border-radius: 3px;
-    box-shadow: 0.5px 0.866px 4px 0px rgb( 0, 0, 0 );
-    -webkit-box-shadow: 0.5px 0.866px 4px 0px rgb( 0, 0, 0 );
+    box-shadow: 0 5px 15px rgba(0,0,0,.5);
+    -webkit-box-shadow: 0 5px 15px rgba(0,0,0,.5);
 }
 .automizy-dialog-close{
     position: absolute;
     top: 0;
     right: 0;
     margin: 4px 9px;
-    color: rgb( 88, 88, 88 );
+    color: #000000;
     cursor: pointer;
     z-index: 1000;
+    opacity: 0.2;
+    -webkit-transition: opacity 0.2s;
+    transition: opacity 0.2s;
+}
+.automizy-dialog-close:hover{
+    opacity: 0.5;
 }
 .automizy-dialog-head{
-    font-size: 20px;
+    font-size: 16px;
     font-family: 'Roboto', sans-serif;
-    color: rgb( 0, 0, 0 );
-    line-height: 1.3;
+    line-height: 1.42857143;
+    color: #3e4855;
     text-align: left;
     position: relative;
-    padding: 24px;
+    padding: 15px;
+    border-bottom: 1px solid #dfe8f1;
 }
 .automizy-dialog-buttons{
-    height:44px;
-    padding:24px;
+    height:34px;
+    padding:15px;
     text-align: right;
+    border-top: 1px solid #dfe8f1;
 }
 .automizy-dialog-buttons .automizy-button{
     margin-right: 24px;
@@ -57,7 +65,7 @@
     font-size: 14px;
     position: relative;
     box-sizing: border-box;
-    padding: 0 24px;
+    padding: 15px;
     max-height: calc(100vh - 111px);
     overflow-x:hidden;
     overflow-y:auto;
@@ -189,7 +197,7 @@
 .automizy-button.automizy-skin-simple-orange a:hover,
 .automizy-input-box input[type="file"]:hover + span .automizy-skin-simple-orange a{
     background-color: rgb( 255, 121, 31 );
-    border-color: #f24a15;
+    border-color: #ff754a;
 }
 .automizy-button.automizy-skin-simple-orange a:active,
 .automizy-input-box input[type="file"]:active + span .automizy-skin-simple-orange a{

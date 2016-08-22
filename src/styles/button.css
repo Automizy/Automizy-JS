@@ -137,7 +137,7 @@
 .automizy-button.automizy-skin-simple-orange a:hover,
 .automizy-input-box input[type="file"]:hover + span .automizy-skin-simple-orange a{
     background-color: rgb( 255, 121, 31 );
-    border-color: #f24a15;
+    border-color: #ff754a;
 }
 .automizy-button.automizy-skin-simple-orange a:active,
 .automizy-input-box input[type="file"]:active + span .automizy-skin-simple-orange a{
