@@ -94,9 +94,10 @@
     overflow: hidden;
     margin: 4px 0 0 8px;
     opacity: 0.5;
-    /*background-image:url('../../images/help-icon.png');*/ /* 17px */
     cursor: pointer;
     vertical-align: top;
+    -webkit-filter: grayscale(100%) brightness(0.3);
+    filter: grayscale(100%) brightness(0.3);
 }
 
 .automizy-input .automizy-input-box {
@@ -161,20 +162,26 @@
     position: absolute;
     top: -10px;
     left: 0;
-    width: 259px;
+    width: auto;
+    height:auto;
+    font-size: 12px;
     max-width: 259px;
-    min-height: 50px;
     padding: 12px;
-    background-color: #fffbd0;
-    border: 1px solid #ebe7bc;
+    color: #f1f1f1;
+    border-radius: 5px;
+    background-color: #4b4b4b;
+    border: 1px solid #484848;
     font-family: Arial, Helvetica, sans-serif;
     z-index: 5000;
 }
 
 .automizy-input-help-content .automizy-input-help-content-arrow {
-    margin: 0 10px 0 -26px;
+    margin: 0 10px 0 -20px;
     padding: 0;
+    width: 7px;
     float: left;
+    -webkit-filter: grayscale(100%) brightness(0.3);
+    filter: grayscale(100%) brightness(0.3);
 }
 .automizy-input-loading-box{
     display:none;

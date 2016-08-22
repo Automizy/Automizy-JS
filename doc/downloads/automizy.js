@@ -5891,8 +5891,10 @@ var $A = {};
 
         switch(type){
             case "date":
+                ignoreOutClick.push('.ui-datepicker-div');
                 break;
             case "datetime":
+                ignoreOutClick.push('.ui-datepicker-div');
                 break;
             case "select":
                 /*Option window click is ignored*/
