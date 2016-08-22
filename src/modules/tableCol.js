@@ -12,10 +12,9 @@ define([
             hasObject: false,
             newCol: false,
             editable: false,
-            inlineInputObject: null, //if col is editable, this input will be generated
-            html:'',
-            text:'',
-            active:true
+            html: '',
+            text: '',
+            active: true
         };
         t.init();
 
@@ -31,17 +30,20 @@ define([
                 t.d.html = obj.html();
                 t.d.active = obj.css('display') !== 'none';
                 //t.d.table = $A.table(t.widget().closest('.automizy-table-box'));
-                if(typeof obj.data('name') !== 'undefined')t.name(obj.data('name'));
-                if(typeof obj.attr('id') !== 'undefined')t.id(obj.attr('id'));
-                if(typeof obj.data('editable') !== 'undefined')t.editable(obj.data('editable'));
-                if(typeof obj.data('inlineInputObject') !== 'undefined')t.d.inlineInputObject = obj.data('inlineInputObject');
+                if (typeof obj.data('name') !== 'undefined')t.name(obj.data('name'));
+                if (typeof obj.attr('id') !== 'undefined')t.id(obj.attr('id'));
+                if (typeof obj.data('editable') !== 'undefined')t.editable(obj.data('editable'));
+                if (typeof obj.data('onInlineEditComplete') !== 'undefined')t.d.onInlineEditComplete = obj.data('onInlineEditComplete');
+                if (typeof obj.data('setInlineInputObject') !== 'undefined')t.d.setInlineInputObject = obj.data('setInlineInputObject');
             } else {
                 if (typeof obj.newCol !== 'undefined')
                     t.d.newCol = obj.newCol;
                 if (typeof obj.editable !== 'undefined')
                     t.d.editable = obj.editable;
-                if (typeof obj.inlineInputObject !== 'undefined')
-                    t.d.inlineInputObject = obj.inlineInputObject;
+                if (typeof obj.setInlineInputObject !== 'undefined')
+                    t.d.setInlineInputObject = obj.setInlineInputObject;
+                if (typeof obj.onInlineEditComplete !== 'undefined')
+                    t.d.onInlineEditComplete = obj.onInlineEditComplete;
                 if (typeof obj.index !== 'undefined')
                     t.index(obj.index);
                 if (typeof obj.table !== 'undefined')
@@ -70,22 +72,22 @@ define([
             var $cols = t.d.table.table().find('th, td').eq(0).siblings().addBack();
             var colLen = $cols.length;
             var id = $cols.eq(colIndex).attr('id') || 0;
-            
+
             //if(typeof $A.getTableCol(id) === 'undefined'){
-            if(t.d.newCol){
+            if (t.d.newCol) {
                 t.$cells().each(function (index) {
                     var $this = $(this);
                     var $clone = $this.clone().empty().removeAttr('id');
                     var $row = $this.closest('tr');
-                    if(index === 0){
+                    if (index === 0) {
                         t.d.$widget = $clone;
                         t.d.$widget.attr('id', t.id());
                     }
-                    if(colIndex >= colLen){
+                    if (colIndex >= colLen) {
                         $clone.insertAfter($row.find('th, td').eq(colLen - 1));
                     }
-                    else{
-                        if(colIndex < 0){
+                    else {
+                        if (colIndex < 0) {
                             colIndex = 0;
                         }
                         $clone.insertBefore($row.find('th, td').eq(colIndex));
@@ -120,7 +122,7 @@ define([
         if (typeof text !== 'undefined') {
             t.d.text = text;
             t.d.$widget.text(text);
-            t.d.html=text;
+            t.d.html = text;
             t.d.$widget.html(text);
             return t;
         }
@@ -131,7 +133,7 @@ define([
         if (typeof html !== 'undefined') {
             t.d.html = html;
             t.d.$widget.html(html);
-            t.d.text=t.d.$widget.text();
+            t.d.text = t.d.$widget.text();
             return t;
         }
         return t.d.html;
@@ -149,9 +151,9 @@ define([
         var t = this;
         if (typeof active !== 'undefined') {
             t.d.active = $A.parseBoolean(active);
-            if(t.d.active){
+            if (t.d.active) {
                 t.show();
-            }else{
+            } else {
                 t.hide();
             }
             return t;
@@ -179,7 +181,7 @@ define([
         } else if (type === 'DOM') {
             var cells = [];
             var rows = table.table()[0].rows;
-            for(var i = 0; i < rows.length; i++){
+            for (var i = 0; i < rows.length; i++) {
                 cells.push(rows[i].cells[index]);
             }
             return cells;
@@ -200,12 +202,12 @@ define([
         return this.cells('DOM');
     };
 
-    p.hide = function(){
+    p.hide = function () {
         this.$cells().hide();
         this.d.active = false;
         return this;
     };
-    p.show = function(){
+    p.show = function () {
         this.$cells().show();
         this.d.active = true;
         return this;
@@ -216,31 +218,14 @@ define([
         return true;
     };
 
-    p.inlineInputObject = function(obj){
+    p.onInlineEditComplete = function (cell, inlineInput) {
         var t = this;
-        if(typeof obj !== 'undefined'){
-            t.d.inlineInputObject = obj;
-            return t;
-        }
-        return t.d.inlineInputObject;
-    };
+        t.d.onInlineEditComplete(cell, inlineInput);
+    }
 
-    p.onInlineEditComplete = function(cell){
+    p.setInlineInputObject = function (cell) {
         var t = this;
-        if(typeof obj === 'function'){
-            t.d.inlineInputObject = obj;
-            return t;
-        }
-        t.onInlineEditComplete();
-    };
-
-    p.setInlineInputObject = function(cell, afterSet){
-        var t = this;
-        if(typeof obj === 'function'){
-            t.d.inlineInputObject = obj;
-            return t;
-        }
-        t.onInlineEditComplete();
+        t.d.setInlineInputObject(cell);
     };
 
     $A.initBasicFunctions(TableCol, "TableCol");

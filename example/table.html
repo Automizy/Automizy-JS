@@ -69,43 +69,47 @@
                         hideable: false,
                         order: 'asc',
                         editable: true,
-                        inlineInputObject: {type: 'text'}
+                        setInlineInputObject: function (cell) {
+                            cell.inlineInputObject({
+                                type: 'text',
+                                value: cell.html()
+                            });
+                        },
+                        onInlineEditComplete: function (cell, inlineInput) {
+                            cell.html(inlineInput.value());
+                        },
                     },
                     {
                         name: 'subject',
                         text: 'Kampány tárgya',
                         sortable: false,
                         editable: true,
-                        inlineInputObject: {type: 'text'}
+                        setInlineInputObject: function (cell) {
+                                cell.inlineInputObject({
+                                    type: 'text',
+                                    value: cell.html()
+                                });
+                        },
+                        onInlineEditComplete: function (cell, inlineInput) {
+                            cell.html(inlineInput.value());
+                        },
                     },
                     {
                         name: 'segment',
                         text: 'Segment',
                         editable: true,
-                        inlineInputObject: {
-                            type: 'select',
-                            name: 'segments[]',
-                            automizySelect: true,
-                            id: 'select',
-                            options: [
-                                [0, '--- Nothing ---'],
-                                [12, 'First Segment'],
-                                [15, 'Second Segment']
-                            ],
-                            change: function (input, $elem) {
 
-                            }
-                        },
-                        setInlineInputObject: function(cell, afterSet){
+                        /*ebben a függvényben kell megadni, hogy hogy állítsuk be az adott cella inlineInputObject-jét*/
+                        setInlineInputObject: function (cell) {
 
                             /*
                              //Lekérjük az adott cella értékét, típusát, lehetséges értékeit stb
                              //Pl.:
 
-                            $AA.customFields.get(x).done(function(){
+                             $AA.customFields.get(x).done(function(){
 
-                            })
-                            */
+                             })
+                             */
 
 
                             //Beállítjuk ennek megfelelően inlineInputObject-et aminek a cellába kattintva meg kell jelennie pl:
@@ -125,44 +129,40 @@
                                 };
                                 cell.inlineInputObject(inlineInputObject);
 
-                                //Inline input megnyitása, szerkesztése, stb.
-                                afterSet();
                             }
                         },
-                        onInlineEditComplete: function(cell){
-                            console.log(cell.inlineInputObject().value());
+                        /*Data az inlineInput value-ja lesz*/
+                        onInlineEditComplete: function (cell, inlineInput) {
+                            cell.html(inlineInput.automizySelect().content())
 
                             /*
 
-                            //Az objektum feltöltése az input értéke alapjának megfelelően
-                            var obj = {
-                            };
+                             //Az objektum feltöltése az input értéke alapjának megfelelően
+                             var obj = {
+                             };
 
-                            //Oszlop frissítése ajax-szal
-                            $A.contacts().update(id, obj);
-                            */
+                             //Oszlop frissítése ajax-szal
+                             $A.contacts().update(id, obj);
+                             */
                         }
                     },
                     {name: 'createDate', text: 'Létrehozva', editable: true, inlineInputObject: {type: 'date'}},
                     {
                         name: 'lastSend',
                         text: 'Utoljára küldve',
-                        editable: true,
-                        inlineInputObject: {type: 'datetime'}
+                        editable: false
                     },
                     {
                         name: 'maxWidth',
                         text: 'Maximális szélesség',
                         visibility: false,
-                        editable: false,
-                        inlineInputObject: {type: 'text'}
+                        editable: false
                     },
                     {
                         name: 'backup',
                         text: 'Piszkozat',
                         visibility: false,
-                        editable: true,
-                        inlineInputObject: {type: 'text'}
+                        editable: true
                     }
                 ],
                 buttons: [

@@ -24,14 +24,10 @@ define([
                 t.d.html = obj.html();
                 t.d.text = obj.text();
                 t.d.table = $A.table(t.widget().closest('.automizy-table-box'));
+
                 if(typeof obj.data('inlineInputObject') !== 'undefined'){
                     t.inlineInputObject(data('inlineInputObject'));
                 }
-                /*
-                if(typeof obj.data('onInlineEditComplete') === 'function'){
-                    t.onInlineEditComplete(obj.data('onInlineEditComplete'));
-                }
-                */
             } else {
                 if (typeof obj.index !== 'undefined')
                     t.index(obj.index);
@@ -42,28 +38,14 @@ define([
                 if(typeof obj.inlineInputObject !== 'undefined'){
                     t.inlineInputObject(obj.inlineInputObject);
                 }
-                /*
-                if(typeof obj.onInlineEditComplete === 'function'){
-                    t.onInlineEditComplete(obj.onInlineEditComplete);
-                }
-                */
                 t.initParameter(obj);
             }
 
             t.d.editable = t.col().editable();
             if (t.editable()) {
 
-                t.d.$editableContent = $($(obj)[0].innerHTML);
+                t.d.$editableContent = obj.find('.automizy-table-cell-editable-content');
                 t.d.html = $($(obj)[0].innerHTML).html();
-
-                if(typeof t.d.inlineInputObject === 'undefined'){
-                    t.inlineInputObject(t.col().d.inlineInputObject);
-                }
-                /*
-                if(typeof t.d.onInlineEditComplete === 'undefined'){
-                    t.onInlineEditComplete(t.col().d.onInlineEditComplete);
-                }
-                */
             }
 
         }
@@ -71,23 +53,6 @@ define([
 
 
     var p = TableCell.prototype;
-
-    p.openInlineEditor = function(){
-        var t = this;
-        //console.log(t.col());
-        /*
-        var inlineInput = $A.newInput(t.col().d.inlineInputObject)
-        t.html(inlineInput.widget());
-
-        switch (inlineInput.type()){
-            case 'text':{
-
-                break;
-            }
-        }
-        console.log('open inline editor');
-        */
-    }
 
     p.table = function () {
         var $table = this.widget().closest('table');
@@ -155,6 +120,7 @@ define([
         return t.d.inlineInputObject;
     };
 
+    /*Opens inline editor*/
     p.inlineEdit = function(){
 
         var cell = this;
@@ -165,11 +131,15 @@ define([
         var $editableContent = cell.d.$editableContent;
         var col = cell.col();
 
+        col.setInlineInputObject(cell);
+
         /*Hiding old content*/
         $editableContent.hide()
 
         /*Inserting input field*/
-        var inlineInput = $A.newInput(col.d.inlineInputObject).newRow(false);
+        var inlineInput = $A.newInput(cell.inlineInputObject()).newRow(false);
+        var type = inlineInput.type();
+
         var cancelButton = $A.newButton({
             text: "X",
             click: function () {
@@ -179,11 +149,9 @@ define([
         var saveButton = $A.newButton({
             text: "Save",
             click: function () {
-                onInlineEditComplete();
+                col.onInlineEditComplete(cell, inlineInput);
 
-                /*Writing the new value in the cell, hiding input*/
-                $editableContent.text(inlineInput.value());
-
+                /*Hiding input*/
                 removeInlineEditBox();
             }
         });
@@ -195,15 +163,16 @@ define([
          without closing it
          */
         var ignoreOutClick = [];
-        var type = inlineInput.type();
 
         /*Any click in the edit box is ignored*/
         ignoreOutClick.push($editInputBox);
 
         switch(type){
             case "date":
+                ignoreOutClick.push('.ui-datepicker-div');
                 break;
             case "datetime":
+                ignoreOutClick.push('.ui-datepicker-div');
                 break;
             case "select":
                 /*Option window click is ignored*/
@@ -212,11 +181,6 @@ define([
             default:
                 break;
         }
-
-
-        /*Setting old value in input*/
-        //TODO: setting value based on input type
-        inlineInput.val($editableContent.html());
 
         /*Focusing on input*/
         inlineInput.input().focus();
@@ -274,12 +238,6 @@ define([
 
         },10);
 
-
-
-        function onInlineEditComplete(data) {
-
-
-        }
     };
 
     $A.initBasicFunctions(TableCell, "TableCell");

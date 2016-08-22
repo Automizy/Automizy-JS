@@ -4355,8 +4355,6 @@ var $A = {};
             var cell = t.getCell($cell.index(), $row.index());
 
             cell.inlineEdit()
-
-
         });
 
 
@@ -4914,7 +4912,8 @@ var $A = {};
                         }
                         $th.data('name', obj.name);
                         $th.data('editable', obj.editable || false);
-                        $th.data('inlineInputObject', obj.inlineInputObject);
+                        $th.data('setInlineInputObject', obj.setInlineInputObject);
+                        $th.data('onInlineEditComplete', obj.onInlineEditComplete);
                         var th = $th[0];
                         th.automizyData = th.automizyData || {};
                         th.automizyData.name = obj.name;
@@ -5171,7 +5170,6 @@ var $A = {};
                         value.appendTo($(cell));
                     }
                 } else if (value !== null && typeof value === 'object') {
-                    console.log('object')
                     if (typeof value.html !== 'undefined') {
                         if (isEditable) {
                             cell.innerHTML = '<span class="automizy-table-cell-editable-content">' + value.html + '</span>'
@@ -5507,10 +5505,9 @@ var $A = {};
             hasObject: false,
             newCol: false,
             editable: false,
-            inlineInputObject: null, //if col is editable, this input will be generated
-            html:'',
-            text:'',
-            active:true
+            html: '',
+            text: '',
+            active: true
         };
         t.init();
 
@@ -5526,17 +5523,20 @@ var $A = {};
                 t.d.html = obj.html();
                 t.d.active = obj.css('display') !== 'none';
                 //t.d.table = $A.table(t.widget().closest('.automizy-table-box'));
-                if(typeof obj.data('name') !== 'undefined')t.name(obj.data('name'));
-                if(typeof obj.attr('id') !== 'undefined')t.id(obj.attr('id'));
-                if(typeof obj.data('editable') !== 'undefined')t.editable(obj.data('editable'));
-                if(typeof obj.data('inlineInputObject') !== 'undefined')t.d.inlineInputObject = obj.data('inlineInputObject');
+                if (typeof obj.data('name') !== 'undefined')t.name(obj.data('name'));
+                if (typeof obj.attr('id') !== 'undefined')t.id(obj.attr('id'));
+                if (typeof obj.data('editable') !== 'undefined')t.editable(obj.data('editable'));
+                if (typeof obj.data('onInlineEditComplete') !== 'undefined')t.d.onInlineEditComplete = obj.data('onInlineEditComplete');
+                if (typeof obj.data('setInlineInputObject') !== 'undefined')t.d.setInlineInputObject = obj.data('setInlineInputObject');
             } else {
                 if (typeof obj.newCol !== 'undefined')
                     t.d.newCol = obj.newCol;
                 if (typeof obj.editable !== 'undefined')
                     t.d.editable = obj.editable;
-                if (typeof obj.inlineInputObject !== 'undefined')
-                    t.d.inlineInputObject = obj.inlineInputObject;
+                if (typeof obj.setInlineInputObject !== 'undefined')
+                    t.d.setInlineInputObject = obj.setInlineInputObject;
+                if (typeof obj.onInlineEditComplete !== 'undefined')
+                    t.d.onInlineEditComplete = obj.onInlineEditComplete;
                 if (typeof obj.index !== 'undefined')
                     t.index(obj.index);
                 if (typeof obj.table !== 'undefined')
@@ -5565,22 +5565,22 @@ var $A = {};
             var $cols = t.d.table.table().find('th, td').eq(0).siblings().addBack();
             var colLen = $cols.length;
             var id = $cols.eq(colIndex).attr('id') || 0;
-            
+
             //if(typeof $A.getTableCol(id) === 'undefined'){
-            if(t.d.newCol){
+            if (t.d.newCol) {
                 t.$cells().each(function (index) {
                     var $this = $(this);
                     var $clone = $this.clone().empty().removeAttr('id');
                     var $row = $this.closest('tr');
-                    if(index === 0){
+                    if (index === 0) {
                         t.d.$widget = $clone;
                         t.d.$widget.attr('id', t.id());
                     }
-                    if(colIndex >= colLen){
+                    if (colIndex >= colLen) {
                         $clone.insertAfter($row.find('th, td').eq(colLen - 1));
                     }
-                    else{
-                        if(colIndex < 0){
+                    else {
+                        if (colIndex < 0) {
                             colIndex = 0;
                         }
                         $clone.insertBefore($row.find('th, td').eq(colIndex));
@@ -5615,7 +5615,7 @@ var $A = {};
         if (typeof text !== 'undefined') {
             t.d.text = text;
             t.d.$widget.text(text);
-            t.d.html=text;
+            t.d.html = text;
             t.d.$widget.html(text);
             return t;
         }
@@ -5626,7 +5626,7 @@ var $A = {};
         if (typeof html !== 'undefined') {
             t.d.html = html;
             t.d.$widget.html(html);
-            t.d.text=t.d.$widget.text();
+            t.d.text = t.d.$widget.text();
             return t;
         }
         return t.d.html;
@@ -5644,9 +5644,9 @@ var $A = {};
         var t = this;
         if (typeof active !== 'undefined') {
             t.d.active = $A.parseBoolean(active);
-            if(t.d.active){
+            if (t.d.active) {
                 t.show();
-            }else{
+            } else {
                 t.hide();
             }
             return t;
@@ -5674,7 +5674,7 @@ var $A = {};
         } else if (type === 'DOM') {
             var cells = [];
             var rows = table.table()[0].rows;
-            for(var i = 0; i < rows.length; i++){
+            for (var i = 0; i < rows.length; i++) {
                 cells.push(rows[i].cells[index]);
             }
             return cells;
@@ -5695,12 +5695,12 @@ var $A = {};
         return this.cells('DOM');
     };
 
-    p.hide = function(){
+    p.hide = function () {
         this.$cells().hide();
         this.d.active = false;
         return this;
     };
-    p.show = function(){
+    p.show = function () {
         this.$cells().show();
         this.d.active = true;
         return this;
@@ -5711,31 +5711,14 @@ var $A = {};
         return true;
     };
 
-    p.inlineInputObject = function(obj){
+    p.onInlineEditComplete = function (cell, inlineInput) {
         var t = this;
-        if(typeof obj !== 'undefined'){
-            t.d.inlineInputObject = obj;
-            return t;
-        }
-        return t.d.inlineInputObject;
-    };
+        t.d.onInlineEditComplete(cell, inlineInput);
+    }
 
-    p.onInlineEditComplete = function(cell){
+    p.setInlineInputObject = function (cell) {
         var t = this;
-        if(typeof obj === 'function'){
-            t.d.inlineInputObject = obj;
-            return t;
-        }
-        t.onInlineEditComplete();
-    };
-
-    p.setInlineInputObject = function(cell, afterSet){
-        var t = this;
-        if(typeof obj === 'function'){
-            t.d.inlineInputObject = obj;
-            return t;
-        }
-        t.onInlineEditComplete();
+        t.d.setInlineInputObject(cell);
     };
 
     $A.initBasicFunctions(TableCol, "TableCol");
@@ -5763,14 +5746,10 @@ var $A = {};
                 t.d.html = obj.html();
                 t.d.text = obj.text();
                 t.d.table = $A.table(t.widget().closest('.automizy-table-box'));
+
                 if(typeof obj.data('inlineInputObject') !== 'undefined'){
                     t.inlineInputObject(data('inlineInputObject'));
                 }
-                /*
-                if(typeof obj.data('onInlineEditComplete') === 'function'){
-                    t.onInlineEditComplete(obj.data('onInlineEditComplete'));
-                }
-                */
             } else {
                 if (typeof obj.index !== 'undefined')
                     t.index(obj.index);
@@ -5781,28 +5760,14 @@ var $A = {};
                 if(typeof obj.inlineInputObject !== 'undefined'){
                     t.inlineInputObject(obj.inlineInputObject);
                 }
-                /*
-                if(typeof obj.onInlineEditComplete === 'function'){
-                    t.onInlineEditComplete(obj.onInlineEditComplete);
-                }
-                */
                 t.initParameter(obj);
             }
 
             t.d.editable = t.col().editable();
             if (t.editable()) {
 
-                t.d.$editableContent = $($(obj)[0].innerHTML);
+                t.d.$editableContent = obj.find('.automizy-table-cell-editable-content');
                 t.d.html = $($(obj)[0].innerHTML).html();
-
-                if(typeof t.d.inlineInputObject === 'undefined'){
-                    t.inlineInputObject(t.col().d.inlineInputObject);
-                }
-                /*
-                if(typeof t.d.onInlineEditComplete === 'undefined'){
-                    t.onInlineEditComplete(t.col().d.onInlineEditComplete);
-                }
-                */
             }
 
         }
@@ -5810,23 +5775,6 @@ var $A = {};
 
 
     var p = TableCell.prototype;
-
-    p.openInlineEditor = function(){
-        var t = this;
-        //console.log(t.col());
-        /*
-        var inlineInput = $A.newInput(t.col().d.inlineInputObject)
-        t.html(inlineInput.widget());
-
-        switch (inlineInput.type()){
-            case 'text':{
-
-                break;
-            }
-        }
-        console.log('open inline editor');
-        */
-    }
 
     p.table = function () {
         var $table = this.widget().closest('table');
@@ -5894,6 +5842,7 @@ var $A = {};
         return t.d.inlineInputObject;
     };
 
+    /*Opens inline editor*/
     p.inlineEdit = function(){
 
         var cell = this;
@@ -5904,11 +5853,15 @@ var $A = {};
         var $editableContent = cell.d.$editableContent;
         var col = cell.col();
 
+        col.setInlineInputObject(cell);
+
         /*Hiding old content*/
         $editableContent.hide()
 
         /*Inserting input field*/
-        var inlineInput = $A.newInput(col.d.inlineInputObject).newRow(false);
+        var inlineInput = $A.newInput(cell.inlineInputObject()).newRow(false);
+        var type = inlineInput.type();
+
         var cancelButton = $A.newButton({
             text: "X",
             click: function () {
@@ -5918,11 +5871,9 @@ var $A = {};
         var saveButton = $A.newButton({
             text: "Save",
             click: function () {
-                onInlineEditComplete();
+                col.onInlineEditComplete(cell, inlineInput);
 
-                /*Writing the new value in the cell, hiding input*/
-                $editableContent.text(inlineInput.value());
-
+                /*Hiding input*/
                 removeInlineEditBox();
             }
         });
@@ -5934,7 +5885,6 @@ var $A = {};
          without closing it
          */
         var ignoreOutClick = [];
-        var type = inlineInput.type();
 
         /*Any click in the edit box is ignored*/
         ignoreOutClick.push($editInputBox);
@@ -5951,11 +5901,6 @@ var $A = {};
             default:
                 break;
         }
-
-
-        /*Setting old value in input*/
-        //TODO: setting value based on input type
-        inlineInput.val($editableContent.html());
 
         /*Focusing on input*/
         inlineInput.input().focus();
@@ -6013,12 +5958,6 @@ var $A = {};
 
         },10);
 
-
-
-        function onInlineEditComplete(data) {
-
-
-        }
     };
 
     $A.initBasicFunctions(TableCell, "TableCell");

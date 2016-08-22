@@ -327,8 +327,6 @@ define([
             var cell = t.getCell($cell.index(), $row.index());
 
             cell.inlineEdit()
-
-
         });
 
 
@@ -886,7 +884,8 @@ define([
                         }
                         $th.data('name', obj.name);
                         $th.data('editable', obj.editable || false);
-                        $th.data('inlineInputObject', obj.inlineInputObject);
+                        $th.data('setInlineInputObject', obj.setInlineInputObject);
+                        $th.data('onInlineEditComplete', obj.onInlineEditComplete);
                         var th = $th[0];
                         th.automizyData = th.automizyData || {};
                         th.automizyData.name = obj.name;
@@ -1143,7 +1142,6 @@ define([
                         value.appendTo($(cell));
                     }
                 } else if (value !== null && typeof value === 'object') {
-                    console.log('object')
                     if (typeof value.html !== 'undefined') {
                         if (isEditable) {
                             cell.innerHTML = '<span class="automizy-table-cell-editable-content">' + value.html + '</span>'
