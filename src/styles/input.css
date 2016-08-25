@@ -70,6 +70,10 @@
     border-color: red;
 }
 
+.automizy-input label.automizy-hide{
+    display:none!important;
+}
+
 .automizy-input.automizy-skin-simple-automizy label {
     width: 240px;
     vertical-align: top;
@@ -86,6 +90,11 @@
     box-sizing: border-box;
 }
 
+/*
+.automizy-input.automizy-skin-simple-automizy .automizy-input-help{
+    display:none;
+}
+*/
 .automizy-input.automizy-skin-simple-automizy .automizy-input-help {
     line-height: 10000px;
     width: 17px;
@@ -99,6 +108,10 @@
     -webkit-filter: grayscale(100%) brightness(0.3);
     filter: grayscale(100%) brightness(0.3);
 }
+.automizy-input.automizy-skin-simple-automizy .automizy-input-help.automizy-hide {
+    display: none !important;
+}
+
 
 .automizy-input .automizy-input-box {
     display: inline-block;
@@ -121,7 +134,6 @@
 
 .automizy-input.new-row label {
     margin: 0 0 3px 0;
-    font-family: Arial, Helvetica, sans-serif;
 }
 
 /*Validation*/
@@ -171,7 +183,6 @@
     border-radius: 5px;
     background-color: #4b4b4b;
     border: 1px solid #484848;
-    font-family: Arial, Helvetica, sans-serif;
     z-index: 5000;
 }
 

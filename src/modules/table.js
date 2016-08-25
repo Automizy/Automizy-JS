@@ -18,44 +18,37 @@ define([
             $widget: $('<div class="automizy-table-box"></div>'),
             $tableContainerBox: $('<div class="automizy-table-container-box"></div>'),
             $tableContainer: $('<div class="automizy-table-container"></div>'),
-            $table:  $('<table cellpadding="0" cellspacing="0" border="0" class="automizy-table automizy-table-clickable collapsed"></table>'),
-            $tbody:  $('<tbody></tbody>'),
+            $table: $('<table cellpadding="0" cellspacing="0" border="0" class="automizy-table automizy-table-clickable collapsed"></table>'),
+            $tbody: $('<tbody></tbody>'),
             $header: $('<tr class="automizy-table-header"></tr>'),
             $title: $('<div class="automizy-table-title"></div>'),
+            $headBox: $('<div class="automizy-table-head-box"></div>'),
+            $bodyBox: $('<div class="automizy-table-body-box"></div>'),
             $actions: $('<div class="automizy-table-actions"></div>'),
             $buttons: $('<div class="automizy-table-buttons"></div>'),
+            $otherActions: $('<div class="automizy-table-other-actions"></div>'),
             $perPageBox: $('<div class="automizy-table-perpage-box"></div>'),
             perPageSelect: $A.newInput(),
-
+            $entriesBox: $('<div class="automizy-table-entries-box"></div>'),
             $stepPageBox: $('<div class="automizy-table-steppage-box"></div>'),
-            $stepFirst: $('<div class="automizy-table-stepfirst automizy-noselect"></div>'),
-            $stepBack: $('<div class="automizy-table-stepback automizy-noselect"></div>'),
-            $stepNext: $('<div class="automizy-table-stepnext automizy-noselect"></div>'),
-            $stepLast: $('<div class="automizy-table-steplast automizy-noselect"></div>'),
-            $pageBox: $('<div class="automizy-table-pagenumber-box"></div>'),
-            $page: $('<input type="number" pattern="[0-9]*" class="automizy-table-pagenumber" value="1">'),
+            $stepPageBoxWrapper: $('<div class="automizy-table-steppage-box-wrapper"></div>'),
+            $stepFirst: $('<div class="automizy-table-stepfirst automizy-noselect automizy-table-step-element"></div>'),
+            $stepBack: $('<div class="automizy-table-stepback automizy-noselect automizy-table-step-element"></div>'),
+            $stepNext: $('<div class="automizy-table-stepnext automizy-noselect automizy-table-step-element"></div>'),
+            $stepLast: $('<div class="automizy-table-steplast automizy-noselect automizy-table-step-element"></div>'),
+            $pageBox: $('<div class="automizy-table-pagenumber-box  automizy-table-step-element automizy-table-step-active"></div>'),
+            $page: $('<input type="number" placeholder="..." required="false" min="1" class="automizy-table-pagenumber">'),
             $pageMax: $('<span class="automizy-table-pagenumber-max">1</span>'),
-
-            $stepPageBoxBottom: $('<div class="automizy-table-steppage-box"></div>'),
-            $stepFirstBottom: $('<div class="automizy-table-stepfirst automizy-noselect"></div>'),
-            $stepBackBottom: $('<div class="automizy-table-stepback automizy-noselect"></div>'),
-            $stepNextBottom: $('<div class="automizy-table-stepnext automizy-noselect"></div>'),
-            $stepLastBottom: $('<div class="automizy-table-steplast automizy-noselect"></div>'),
-            $pageBoxBottom: $('<div class="automizy-table-pagenumber-box"></div>'),
-            $pageBottom: $('<input type="number" pattern="[0-9]*" class="automizy-table-pagenumber" value="1">'),
-            $pageMaxBottom: $('<span class="automizy-table-pagenumber-max">1</span>'),
-
             $panel: $('<div class="automizy-table-panel automizy-noselect"></div>'),
-            $settingsIcon: $('<div class="automizy-table-settings-icon automizy-noselect"></div>'),
+            $settingsIcon: $('<div class="automizy-table-settings-icon automizy-noselect automizy-table-panel-icon"></div>'),
             $settingsBox: $('<div class="automizy-table-settings-box"></div>'),
             $settingsBoxTitle: $('<div class="automizy-table-settings-box-title"></div>'),
             $settingsBoxContent: $('<form class="automizy-table-settings-box-content"></form>'),
-            $searchIcon: $('<div class="automizy-table-search-icon automizy-noselect"></div>'),
-            $searchBox: $('<div class="automizy-table-search-box"></div>'),
             $searchBoxContent: $('<div class="automizy-table-search-box-content"></div>'),
             $searchInput: $A.newInput(),
-            $exportIcon: $('<div class="automizy-table-export-icon automizy-noselect"></div>'),
+            $exportIcon: $('<div class="automizy-table-export-icon automizy-noselect automizy-table-panel-icon"></div>'),
             $inlineButtons: $('<div class="automizy-table-inline-buttons"></div>'),
+            $inlineButtonsPlaceholderCell: $('<td class="automizy-table-inline-buttons-placeholder-cell automizy-table-inline-buttons-cell"></td>'),
             $inlineButtonsCell: $('<td class="automizy-table-inline-buttons-cell"></td>'),
             $inlineButtonsRow: $('<tr class="automizy-table-inline-buttons-row"></tr>'),
             $checkboxCheckAll: $('<input type="checkbox" onclick="$A.d.tableRowCheckBoxClick = true;" class="automizy-table-checkall automizy-table-rowcheck" />'),
@@ -69,7 +62,7 @@ define([
             border: 'none',
             perPage: 10,
             perPageList: [5, 10, 50, 100, 1000],
-            perPageLabel: $A.translate('Results per page'),
+            perPageLabel: $A.translate('results per page'),
             page: 1,
             pageMax: 1,
             searchValue: '',
@@ -77,14 +70,15 @@ define([
             settings: {
                 cols: []
             },
-            settingsCheckboxes:{},
+            totalEntries: 0,
+            settingsCheckboxes: {},
             orderBy: false,
             orderDir: 'asc',
             hasObject: false,
             selectable: false,
             exportable: true,
             openableInlineBox: true,
-            clickableRow:true,
+            clickableRow: true,
             storeData: false,
             id: 'automizy-table-' + $A.getUniqueString(),
             onPerPage: function () {
@@ -113,45 +107,40 @@ define([
             },
             stepFunction: function () {
                 if (t.d.page <= 1) {
-                    t.d.$stepFirst.add(t.d.$stepBack).add(t.d.$stepFirstBottom).add(t.d.$stepBackBottom).stop().fadeTo(250, 0.5);
+                    t.d.$stepFirst.add(t.d.$stepBack).addClass("automizy-table-step-disabled");
                 } else {
-                    t.d.$stepFirst.add(t.d.$stepBack).add(t.d.$stepFirstBottom).add(t.d.$stepBackBottom).stop().fadeTo(250, 1);
+                    t.d.$stepFirst.add(t.d.$stepBack).removeClass("automizy-table-step-disabled");
                 }
                 if (t.d.page >= t.d.pageMax) {
-                    t.d.$stepNext.add(t.d.$stepLast).add(t.d.$stepNextBottom).add(t.d.$stepLastBottom).stop().fadeTo(250, 0.5);
+                    t.d.$stepNext.add(t.d.$stepLast).addClass("automizy-table-step-disabled");
                 } else {
-                    t.d.$stepNext.add(t.d.$stepLast).add(t.d.$stepNextBottom).add(t.d.$stepLastBottom).stop().fadeTo(250, 1);
+                    t.d.$stepNext.add(t.d.$stepLast).removeClass("automizy-table-step-disabled");
                 }
-                t.d.$page.add(t.d.$pageBottom).val(t.d.page);
+                t.d.$page.val(t.d.page);
+                t.writeEntries();
             }
         };
         t.init();
 
-        t.d.$stepFirst.add(t.d.$stepFirstBottom).append('<img src="' + $A.images.pageStepFirst + '" />').click(function () {
+        t.d.$stepFirst.append('<span class="automizy-table-step-arrow">&#10094;&#10094;</span> First').click(function () {
             if (t.d.page <= 1)return false;
             t.page(1);
             t.d.stepFunction();
             t.d.onPageFirst.apply(t, [t, t.d.$widget]);
         });
-        t.d.$stepFirst.appendTo(t.d.$stepPageBox);
-        t.d.$stepFirstBottom.appendTo(t.d.$stepPageBoxBottom);
+        t.d.$stepFirst.appendTo(t.d.$stepPageBoxWrapper);
 
-        t.d.$stepBack.add(t.d.$stepBackBottom).append('<img src="' + $A.images.pageStepBack + '" />').click(function () {
+        t.d.$stepBack.append('<span class="automizy-table-step-arrow">&#10094;</span> Previous').click(function () {
             if (t.d.page <= 1)return false;
             t.page(Math.max(t.d.page - 1, 1));
             t.d.stepFunction();
             t.d.onPagePrev.apply(t, [t, t.d.$widget]);
         });
-        t.d.$stepBack.appendTo(t.d.$stepPageBox);
-        t.d.$stepBackBottom.appendTo(t.d.$stepPageBoxBottom);
+        t.d.$stepBack.appendTo(t.d.$stepPageBoxWrapper);
 
         t.d.$page.appendTo(t.d.$pageBox);
-        t.d.$pageBottom.appendTo(t.d.$pageBoxBottom);
 
-        t.d.$page.add(t.d.$pageBottom).attr({
-            max: 1,
-            min: 1
-        }).keydown(function (e) {
+        t.d.$page.keydown(function (e) {
             var $t = $(this);
             // Allow: backspace, delete, tab, escape and .
             if ($.inArray(e.keyCode, [46, 8, 9, 27, 110, 190]) !== -1 ||
@@ -172,17 +161,20 @@ define([
             }
             // Enter
             if (e.keyCode === 13) {
-                t.d.stepFunction();
-                t.d.onSetPage.apply(t, [t, t.d.$widget]);
-                $t.data('old-val', $t.val());
+                $(this).blur();
             }
         }).keyup(function () {
+
+        }).focus(function () {
+            var $t = $(this);
+            $t.data('old-val', $t.val());
+        }).focusout(function () {
             var $t = $(this);
             var val = parseInt($t.val());
             var max = parseInt($t.attr('max'));
             var min = parseInt($t.attr('min'));
             if (isNaN(val)) {
-                $t.val(min);
+                $t.val($t.data('old-val'));
             }
             if (val > max) {
                 $t.val(max);
@@ -190,11 +182,6 @@ define([
                 $t.val(min);
             }
             t.d.page = parseInt($t.val());
-        }).focus(function () {
-            var $t = $(this);
-            $t.data('old-val', $t.val());
-        }).focusout(function () {
-            var $t = $(this);
             if ($t.data('old-val') != $t.val()) {
                 t.d.stepFunction();
                 t.d.onSetPage.apply(t, [t, t.d.$widget]);
@@ -203,53 +190,56 @@ define([
             e.preventDefault();
         });
 
-        t.d.$pageBox.add(t.d.$pageBoxBottom).append('/');
+        t.d.$pageBox.appendTo(t.d.$stepPageBoxWrapper);
 
-        t.d.$pageMax.appendTo(t.d.$pageBox);
-        t.d.$pageMaxBottom.appendTo(t.d.$pageBoxBottom);
-
-        t.d.$pageBox.appendTo(t.d.$stepPageBox);
-        t.d.$pageBoxBottom.appendTo(t.d.$stepPageBoxBottom);
-
-        t.d.$stepNext.add(t.d.$stepNextBottom).append('<img src="' + $A.images.pageStepNext + '" />').click(function () {
+        t.d.$stepNext.append('Next <span class="automizy-table-step-arrow">&#10095;</span>').click(function () {
             if (t.d.page >= t.d.pageMax)return false;
             t.page(Math.min(t.d.page + 1, t.d.pageMax));
             t.d.stepFunction();
             t.d.onPageNext.apply(t, [t, t.d.$widget]);
         });
-        t.d.$stepNext.appendTo(t.d.$stepPageBox);
-        t.d.$stepNextBottom.appendTo(t.d.$stepPageBoxBottom);
+        t.d.$stepNext.appendTo(t.d.$stepPageBoxWrapper);
 
-        t.d.$stepLast.add(t.d.$stepLastBottom).append('<img src="' + $A.images.pageStepLast + '" />').click(function () {
+        t.d.$stepLast.append('Last <span class="automizy-table-step-arrow">&#10095;&#10095;</span>').click(function () {
             if (t.d.page >= t.d.pageMax)return false;
             t.page(t.d.pageMax);
             t.d.stepFunction();
             t.d.onPageLast.apply(t, [t, t.d.$widget]);
         });
-        t.d.$stepLast.appendTo(t.d.$stepPageBox);
-        t.d.$stepLastBottom.appendTo(t.d.$stepPageBoxBottom);
+        t.d.$stepLast.appendTo(t.d.$stepPageBoxWrapper);
 
-        t.d.$stepPageBox.appendTo(t.d.$actions);
 
-        t.d.$perPageBox.appendTo(t.d.$actions);
-        t.d.perPageSelect.type('select').options(t.d.perPageList).val(t.d.perPage).label(t.d.perPageLabel).width('83px').change(function(){
+        t.d.$searchBoxContent.appendTo(t.d.$otherActions);
+        t.d.$searchInput.placeholder($A.translate('Search in this list...')).enter(function () {
+            t.d.searchValue = this.val();
+            t.d.onSearch.apply(this, [t, t.d.$widget]);
+        }).drawTo(t.d.$searchBoxContent);
+
+
+        t.d.$perPageBox.appendTo(t.d.$otherActions);
+        t.d.perPageSelect.type('select').options(t.d.perPageList).val(t.d.perPage).labelAfter(t.d.perPageLabel).width('83px').change(function () {
             t.d.perPage = this.val();
             if (t.d.storeData) {
-                $A.store.set(t.id()+'-per-page', t.d.perPage);
+                $A.store.set(t.id() + '-per-page', t.d.perPage);
             }
             t.d.onPerPage.apply(this, [t, t.d.$widget]);
         }).drawTo(t.d.$perPageBox);
         t.d.$widget.attr('id', t.id());
         t.d.$tbody.appendTo(t.d.$table);
         t.d.$header.appendTo(t.d.$tbody);
-        t.d.$title.html(t.d.title).appendTo(t.d.$widget);
-        t.d.$actions.appendTo(t.d.$widget);
+        t.d.$title.html(t.d.title).appendTo(t.d.$headBox);
+        t.d.$panel.appendTo(t.d.$headBox);
+        t.d.$headBox.appendTo(t.d.$widget);
+        t.d.$bodyBox.appendTo(t.d.$widget);
+        t.d.$actions.appendTo(t.d.$bodyBox);
         t.d.$buttons.appendTo(t.d.$actions);
-        t.d.$tableContainerBox.appendTo(t.d.$widget);
+        t.d.$otherActions.appendTo(t.d.$actions);
+        t.d.$tableContainerBox.appendTo(t.d.$bodyBox);
         t.d.$tableContainer.appendTo(t.d.$tableContainerBox);
         t.d.$table.appendTo(t.d.$tableContainer);
-        t.d.$panel.appendTo(t.d.$tableContainerBox);
-        t.d.$stepPageBoxBottom.appendTo(t.d.$widget);
+        t.d.$entriesBox.appendTo(t.d.$bodyBox);
+        t.d.$stepPageBoxWrapper.appendTo(t.d.$stepPageBox);
+        t.d.$stepPageBox.appendTo(t.d.$bodyBox);
 
 
         t.d.$settingsBox.appendTo(t.d.$panel).click(function () {
@@ -258,25 +248,10 @@ define([
         t.d.$settingsBoxContent.appendTo(t.d.$settingsBox);
         t.d.$settingsBoxTitle.text($A.translate('Displayed columns')).appendTo(t.d.$settingsBoxContent);
 
-        t.d.$searchBox.appendTo(t.d.$panel).click(function () {
-            t.d.searchBoxCanClose = false;
-        });
-        t.d.$searchBoxContent.appendTo(t.d.$searchBox);
-        t.d.$searchInput.placeholder($A.translate('Search in this list...')).enter(function () {
-            t.d.searchValue = this.val();
-            t.d.onSearch.apply(this, [t, t.d.$widget]);
-            t.d.$searchBoxContent.stop().slideUp(250);
-        }).drawTo(t.d.$searchBoxContent);
-
         setTimeout(function () {
             t.d.$settingsIcon.append('<img src="' + $A.images.settingsIcon + '" />').insertAfter(t.d.$settingsBox).click(function () {
                 t.d.$settingsBoxContent.stop().slideToggle();
                 t.d.settingsBoxCanClose = false;
-            });
-            t.d.$searchIcon.append('<img src="' + $A.images.searchIcon + '" />').insertAfter(t.d.$searchBox).click(function () {
-                t.d.$searchBoxContent.stop().slideToggle();
-                t.d.searchBoxCanClose = false;
-                t.d.$searchInput.input().focus().select();
             });
             t.d.$exportIcon.append('<img src="' + $A.images.exportIcon + '" />').appendTo(t.d.$panel).click(function () {
                 t.d.onExport.apply(t, [t, t.d.$widget]);
@@ -288,14 +263,11 @@ define([
             if (t.d.settingsBoxCanClose) {
                 t.d.$settingsBoxContent.stop().slideUp(250);
             }
-            if (t.d.searchBoxCanClose) {
-                t.d.$searchBoxContent.stop().slideUp(250);
-            }
             t.d.settingsBoxCanClose = true;
             t.d.searchBoxCanClose = true;
         });
 
-        t.d.$searchBox.appendTo(t.d.$panel);
+        t.d.$inlineButtonsPlaceholderCell.appendTo(t.d.$inlineButtonsRow);
         t.d.$inlineButtonsCell.appendTo(t.d.$inlineButtonsRow);
         t.d.$inlineButtons.appendTo(t.d.$inlineButtonsCell);
         t.d.$automizyTableBorderCss.appendTo('head:first');
@@ -403,6 +375,8 @@ define([
                     t.beforeOpenInlineBox(obj.beforeOpenInlineBox);
                 if (typeof obj.loadingCellContent !== 'undefined')
                     t.loadingCellContent(obj.loadingCellContent);
+                if (typeof obj.totalEntries !== 'undefined')
+                    t.totalEntries(obj.totalEntries);
                 t.initParameter(obj);
 
             }
@@ -431,6 +405,36 @@ define([
         }
         return t.d.storeData;
     };
+
+    p.totalEntries = function (num) {
+        var t = this;
+        if (typeof num !== 'undefined') {
+            t.d.totalEntries = parseInt(num);
+            return t;
+        }
+        return t.d.totalEntries;
+    };
+
+    p.writeEntries = function(){
+        var t = this;
+        var total = t.totalEntries();
+        var actualPage = t.page();
+        var perPage = t.perPage();
+
+        var showFirst = (actualPage-1)*perPage+1;
+        var $showFrom = $('<span>'+$A.translate("Showing ")+showFirst+' </span>');
+
+        var showLast = showFirst+perPage-1;
+        if(showLast > total)
+            showLast = total;
+        var $showTo = $('<span>'+$A.translate('to ')+showLast+' </span>');
+
+        var $showTotal = $('<span>'+$A.translate("of ")+total+' entries</span>');
+
+        t.d.$entriesBox.html('');
+        t.d.$entriesBox.append($showFrom).append($showTo).append($showTotal);
+
+    }
 
     p.onPageFirst = function (func) {
         var t = this;
@@ -597,7 +601,7 @@ define([
             t.d.perPage = perPage;
             t.d.perPageSelect.val(perPage);
             if (t.d.storeData) {
-                $A.store.set(t.id()+'-per-page', t.d.perPage);
+                $A.store.set(t.id() + '-per-page', t.d.perPage);
             }
             if (t.d.hasObject)t.d.onPerPage.apply(t.d.perPageSelect, [t, t.d.$widget]);
             return t;
@@ -617,7 +621,7 @@ define([
         var t = this;
         if (typeof page !== 'undefined') {
             t.d.page = parseInt(page);
-            t.d.$page.add(t.d.$pageBottom).val(t.d.page);
+            t.d.$page.val(t.d.page);
             return t;
         }
         return t.d.page;
@@ -626,8 +630,8 @@ define([
         var t = this;
         if (typeof pageMax !== 'undefined') {
             t.d.pageMax = parseInt(pageMax);
-            t.d.$pageMax.add(t.d.$pageMaxBottom).text($A.numberFormat(t.d.pageMax));
-            t.d.$page.add(t.d.$pageBottom).attr('max', t.d.pageMax);
+            t.d.$pageMax.text($A.numberFormat(t.d.pageMax));
+            t.d.$page.attr('max', t.d.pageMax);
             return t;
         }
         return t.d.pageMax;
@@ -690,7 +694,7 @@ define([
             t.d.clickableRow = $A.parseBoolean(clickableRow);
             if (clickableRow === false) {
                 t.d.$table.removeClass('automizy-table-clickable');
-            }else{
+            } else {
                 t.d.$table.addClass('automizy-table-clickable');
             }
             return t;
@@ -723,8 +727,10 @@ define([
     p.selectedIds = function () {
         var t = this;
         var col = t.getColByIndex(0);
-        if(typeof col.$cells === 'function'){
-            return col.$cells().find('input[type="checkbox"][value]:checked').map(function(){return this.value}).get();
+        if (typeof col.$cells === 'function') {
+            return col.$cells().find('input[type="checkbox"][value]:checked').map(function () {
+                return this.value
+            }).get();
         }
         return [];
     };
@@ -732,7 +738,7 @@ define([
         var t = this;
 
         var col = t.getColByIndex(0);
-        if(typeof col.$cells === 'function'){
+        if (typeof col.$cells === 'function') {
             return col.$cells().find('input[type="checkbox"][value]:checked:first').val();
         }
         return [];
@@ -800,7 +806,7 @@ define([
     };
     p.getRowByRecordId = function (recordId) {
         var t = this;
-        var $row = t.table().find('tr:first').siblings().addBack().filter(function(){
+        var $row = t.table().find('tr:first').siblings().addBack().filter(function () {
             return $(this).data('recordId') == recordId;
         });
         if ($row.length === 0) {
@@ -817,7 +823,7 @@ define([
     };
     p.getColByName = function (name) {
         var t = this;
-        var $col = t.table().find('th:first').siblings().addBack().filter(function(){
+        var $col = t.table().find('th:first').siblings().addBack().filter(function () {
             return $(this).data('name') == name;
         });
         if ($col.length === 0) {
@@ -872,8 +878,8 @@ define([
                     if (obj.hideable !== false) {
                         t.addSettingsCheckbox({
                             name: obj.name,
-                            label:obj.text,
-                            checked:visibility
+                            label: obj.text,
+                            checked: visibility
                         });
                     }
 
@@ -940,42 +946,42 @@ define([
         }
         return t;
     };
-    p.addSettingsCheckbox = function(obj){
+    p.addSettingsCheckbox = function (obj) {
         var t = this;
         var name = obj.name || $A.getUniqueString();
         var label = obj.label || name;
         var checked = obj.checked || false;
         t.d.settingsCheckboxes[name] = $A.input({
-            type:'checkbox',
-            label:label,
-            name:name,
-            labelPosition:'right',
-            checked:checked,
-            target:t.d.$settingsBoxContent,
-            change:function(){
+            type: 'checkbox',
+            label: label,
+            name: name,
+            labelPosition: 'right',
+            checked: checked,
+            target: t.d.$settingsBoxContent,
+            change: function () {
                 var name = this.name();
                 var col = t.getColByName(name);
-                if(!this.checked()){
+                if (!this.checked()) {
                     col.hide();
                     t.d.onHideCol.apply(col, [t, t.widget()]);
-                }else{
+                } else {
                     col.show();
                     t.d.onShowCol.apply(col, [t, t.widget()]);
                 }
-                if(t.d.storeData){
-                    $A.store.set(t.id()+'ActiveCols', t.d.$settingsBoxContent.serializeObject(true));
+                if (t.d.storeData) {
+                    $A.store.set(t.id() + 'ActiveCols', t.d.$settingsBoxContent.serializeObject(true));
                 }
             }
         });
         return t;
     };
-    p.getSettingsCheckbox = function(name){
+    p.getSettingsCheckbox = function (name) {
         return this.d.settingsCheckboxes[name];
     };
-    p.removeSettingsCheckbox = function(name){
+    p.removeSettingsCheckbox = function (name) {
         var t = this;
         var settingCheckbox = t.d.settingsCheckboxes[name];
-        if(typeof settingCheckbox !== 'undefined' && typeof settingCheckbox.remove === 'function') {
+        if (typeof settingCheckbox !== 'undefined' && typeof settingCheckbox.remove === 'function') {
             settingCheckbox.remove();
         }
         return t;
@@ -993,7 +999,7 @@ define([
         var t = this;
         if (typeof arr === 'undefined') {
             var cols = [];
-            this.table().find('th:first').siblings().addBack().each(function(){
+            this.table().find('th:first').siblings().addBack().each(function () {
                 cols.push($A.tableCol($(this)));
             });
             return cols;
@@ -1071,10 +1077,12 @@ define([
                                 t.d.$inlineButtonsRow.insertAfter($t);
 
                                 t.d.$inlineButtonsCell.show();
+                                t.d.$inlineButtonsPlaceholderCell.show();
                                 if (oldInlineIndex === t.openedRow().index() + 1) {
                                     t.d.$inlineButtons.slideToggle(function () {
                                         if (t.d.$inlineButtons.is(':visible') === false) {
                                             t.d.$inlineButtonsCell.hide();
+                                            t.d.$inlineButtonsPlaceholderCell.hide();
                                         }
                                     });
                                 }
@@ -1106,9 +1114,9 @@ define([
             if (t.d.selectable) {
                 rowArr.unshift({
                     html: '<input type="checkbox" class="automizy-table-rowcheck" onClick="$A.d.tableRowCheckBoxClick = true;" value="' + recordId + '" />',
-                    click:function () {
-                        if(!$A.d.tableRowCheckBoxClick){
-                            $(this).find('input:first').each(function(){
+                    click: function () {
+                        if (!$A.d.tableRowCheckBoxClick) {
+                            $(this).find('input:first').each(function () {
                                 this.checked = !this.checked;
                                 $(this).trigger('change');
                             });
@@ -1121,12 +1129,12 @@ define([
                 var isEditable = $(table).find('th:eq(' + (j) + ')').data('editable');
 
                 var cell = row.insertCell(j);
-                if(j === 0){
+                if (j === 0) {
                     cell.className = 'automizy-main-cell';
                 }
 
                 var value = rowArr[j];
-                if(typeof value === 'undefined' || !value){
+                if (typeof value === 'undefined' || !value) {
                     value = '';
                 }
                 if (typeof value.drawTo === 'function') {
@@ -1154,7 +1162,8 @@ define([
                         cell.textContent = value.text;
                         cell.title = value.text;
                     }
-                    cell.onclick = value.click || function(){};
+                    cell.onclick = value.click || function () {
+                        };
 
                 } else {
                     if (isEditable) {
@@ -1163,19 +1172,19 @@ define([
                     }
                     else {
                         cell.textContent = value;
-                    cell.title = value;
+                        cell.title = value;
                     }
                 }
                 var jMod = t.d.selectable ? j - 1 : j;
                 if (typeof t.d.settings.cols[jMod] !== 'undefined') {
                     if (typeof t.d.settings.cols[jMod].cellFunction === 'function') {
-                        if(typeof t.d.settings.cols[jMod].cellData !== 'undefined') {
+                        if (typeof t.d.settings.cols[jMod].cellData !== 'undefined') {
                             cell.automizyData = t.d.settings.cols[jMod].cellData;
                         }
                         t.d.settings.cols[jMod].cellFunction.apply(cell, [cell, value, i, j]);
                     }
-                    if(typeof t.d.settings.cols[jMod].mainCell !== 'undefined') {
-                        if($A.parseBoolean(t.d.settings.cols[jMod].mainCell)){
+                    if (typeof t.d.settings.cols[jMod].mainCell !== 'undefined') {
+                        if ($A.parseBoolean(t.d.settings.cols[jMod].mainCell)) {
                             cell.className = 'automizy-main-cell';
                         }
                     }
@@ -1202,7 +1211,7 @@ define([
         var t = this;
         if (typeof arr === 'undefined') {
             var rows = [];
-            this.table().find('tr:first').siblings().addBack().each(function(){
+            this.table().find('tr:first').siblings().addBack().each(function () {
                 rows.push($A.tableRow($(this)));
             });
             return rows;
@@ -1288,14 +1297,15 @@ define([
             t.d.inlineButtons = inlineButtons;
             for (var i = 0; i < inlineButtons.length; i++) {
                 var inlineButton = inlineButtons[i];
-                var $button = $('<a>'+inlineButton.text+'</a>').data('click', inlineButton.click || function(){}).click(function(){
+                var $button = $('<a>' + inlineButton.text + '</a>').data('click', inlineButton.click || function () {
+                    }).click(function () {
                     var $t = $(this);
                     var $row = $t.closest('tr').prev();
                     var row = $A.tableRow($row);
                     t.openedRow(row);
                     $t.data('click').apply(row, [t, t.d.$widget]);
                 }).appendTo(t.d.$inlineButtons);
-                if(!inlineButton.permission){
+                if (!inlineButton.permission) {
                     $button.wrap('<span class="automizy-permission-trap"></span>');
                 }
             }
@@ -1309,13 +1319,13 @@ define([
             return t;
         }
         //setTimeout(function(){
-            t.deleteRows();
-            t.setButtonsStatus();
-            var $tr = $('<tr class="automizy-table-loading-row"></tr>');
-            var $td = $('<td colspan="' + t.getRowByIndex(0).$cells().length + '"></td>').appendTo($tr);
-            t.d.$loadingCellContent.appendTo($td);
-            $tr.appendTo(t.table());
-            $A.runFunctions($A.events.table.functions.loading, t, [t]);
+        t.deleteRows();
+        t.setButtonsStatus();
+        var $tr = $('<tr class="automizy-table-loading-row"></tr>');
+        var $td = $('<td colspan="' + t.getRowByIndex(0).$cells().length + '"></td>').appendTo($tr);
+        t.d.$loadingCellContent.appendTo($td);
+        $tr.appendTo(t.table());
+        $A.runFunctions($A.events.table.functions.loading, t, [t]);
         //}, 10);
         return t;
     };

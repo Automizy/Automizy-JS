@@ -17,7 +17,7 @@ define([
             $widgetInputBox: $('<span class="automizy-input-box"></span>'),
             $widgetInputBoxError: $('<span class="automizy-input-box-error"></span>'),
             $widgetLabel: $('<label></label>'),
-            $widgetLabelAfter: $('<span></span>'),
+            $widgetLabelAfter: $('<span class="automizy-input-label-after"></span>'),
             $widgetHelp: $('<img src="' + $A.images.helpIcon + '" class="automizy-input-help" />'),
             $widgetHelpContent: $('<div class="automizy-input-help-content"><img src="' + $A.images.helpArrow + '" class="automizy-input-help-content-arrow" /></div>'),
             $widgetHelpContentInner: $('<span></span>'),

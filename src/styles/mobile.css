@@ -32,6 +32,13 @@
         width:80% !important;
     }
 
+    .automizy-mobile .automizy-table-step-element:not(.automizy-table-pagenumber-box){
+        font-size: 0;
+    }
+    .automizy-mobile .automizy-table-step-element .automizy-table-step-arrow{
+        font-size: 13px;
+    }
+
 }
 @media screen and (max-width : 600px){
     .automizy-mobile .automizy-dialog-box{
@@ -39,6 +46,17 @@
     }
     .automizy-mobile .automizy-dialog-content{
         padding: 20px 20px 0 20px;
+    }
+
+    .automizy-mobile .automizy-table-steppage-box{
+        margin-bottom: 70px;
+    }
+
+    .automizy-mobile .automizy-table-step-element:not(.automizy-table-pagenumber-box){
+        font-size: 0;
+    }
+    .automizy-mobile .automizy-table-step-element .automizy-table-step-arrow{
+        font-size: 13px;
     }
 }
 

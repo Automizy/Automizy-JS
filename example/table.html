@@ -6,7 +6,24 @@
     <title>Select Example</title>
     <script src="js/jquery.min.js"></script>
     <script src="js/jquery-ui.min.js"></script>
-    <link rel="stylesheet" href="../dist/automizy.css">
+    <!--<link rel="stylesheet" href="../dist/automizy.css">-->
+    <link rel="stylesheet" href="../src/styles/table.css">
+    <link rel="stylesheet" href="../src/styles/button.css">
+    <link rel="stylesheet" href="../src/styles/input.css">
+    <link rel="stylesheet" href="../src/styles/select.css">
+    <link rel="stylesheet" href="../src/styles/mobile.css">
+    <link rel="stylesheet" href="../src/styles/core.css">
+    <style>
+
+        body{
+            background-color: #F4F5F7;
+        }
+
+        #container{
+            width: 90%;
+            margin: 30px auto;
+        }
+    </style>
     <script src="../dist/automizy.js"></script>
     <script>
         $(function () {
@@ -62,6 +79,7 @@
                 perPage: $A.store.get('newslettersPerPage') || 10,
                 page: 3, //aktuális oldalszám beállítása: table.page(3)
                 pageMax: 8,  //maximális oldalszám beállítása: table.pageMax(8)
+                totalEntries: 76,
                 cols: [  //oszlopok beállítása: table.cols([...])
                     {
                         name: 'name',
@@ -128,7 +146,6 @@
                                     ]
                                 };
                                 cell.inlineInputObject(inlineInputObject);
-
                             }
                         },
                         /*Data az inlineInput value-ja lesz*/
@@ -218,9 +235,21 @@
                                 subject: table.openedRow().getCellByColName('subject').text()
                             });
                         }
+                    },
+                    {
+                        text: 'delete',
+                        permission: true,
+                        click: function () {
+                            console.log({
+                                isEdit: true,
+                                id: table.openedRow().recordId(),
+                                name: table.openedRow().getCellByColName('name').text(),
+                                subject: table.openedRow().getCellByColName('subject').text()
+                            });
+                        }
                     }
                 ]
-            }).draw();
+            }).drawTo('#container');
 
             /*
              table.table().on('click', 'td', function() {
@@ -261,6 +290,10 @@
         });
     </script>
 </head>
-<body></body>
+<body>
+<div id="container">
+
+</div>
+</body>
 </html>
 

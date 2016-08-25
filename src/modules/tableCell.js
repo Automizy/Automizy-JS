@@ -25,7 +25,7 @@ define([
                 t.d.text = obj.text();
                 t.d.table = $A.table(t.widget().closest('.automizy-table-box'));
 
-                if(typeof obj.data('inlineInputObject') !== 'undefined'){
+                if (typeof obj.data('inlineInputObject') !== 'undefined') {
                     t.inlineInputObject(data('inlineInputObject'));
                 }
             } else {
@@ -35,7 +35,7 @@ define([
                     t.table(obj.table);
                 if (typeof obj.recordId !== 'undefined')
                     t.recordId(obj.recordId);
-                if(typeof obj.inlineInputObject !== 'undefined'){
+                if (typeof obj.inlineInputObject !== 'undefined') {
                     t.inlineInputObject(obj.inlineInputObject);
                 }
                 t.initParameter(obj);
@@ -111,9 +111,9 @@ define([
         return t.d.editable;
     };
 
-    p.inlineInputObject = function(obj){
+    p.inlineInputObject = function (obj) {
         var t = this;
-        if(typeof obj !== 'undefined'){
+        if (typeof obj !== 'undefined') {
             t.d.inlineInputObject = obj;
             return t;
         }
@@ -121,7 +121,7 @@ define([
     };
 
     /*Opens inline editor*/
-    p.inlineEdit = function(){
+    p.inlineEdit = function () {
 
         var cell = this;
 
@@ -141,13 +141,14 @@ define([
         var type = inlineInput.type();
 
         var cancelButton = $A.newButton({
-            text: "X",
+            html: '&#10006;',
             click: function () {
                 removeInlineEditBox();
             }
         });
         var saveButton = $A.newButton({
-            text: "Save",
+            html: '&#10004;',
+            skin: 'simple-orange',
             click: function () {
                 col.onInlineEditComplete(cell, inlineInput);
 
@@ -167,7 +168,7 @@ define([
         /*Any click in the edit box is ignored*/
         ignoreOutClick.push($editInputBox);
 
-        switch(type){
+        switch (type) {
             case "date":
                 ignoreOutClick.push('.ui-datepicker-div');
                 break;
@@ -199,7 +200,7 @@ define([
 
         /*Removing inline edit*/
         function removeInlineEditBox() {
-            inlineInput.remove()
+            inlineInput.remove();
             cancelButton.remove();
             saveButton.remove();
             $editInputBox.remove();
@@ -208,21 +209,21 @@ define([
             $A.d.inlineEditClick = true;
         }
 
-        $(document).on('click',removeFunction);
+        $(document).on('click', removeFunction);
 
         /*Detecting click outside the inline input*/
-        function removeFunction(event){
+        function removeFunction(event) {
 
             var clickedIn = false;
 
             /*Iterating through all the ignore selectors*/
-            for(var i = 0; i<ignoreOutClick.length; i++){
-                if(!($(event.target).closest(ignoreOutClick[i]).length == false && $editInputBox.is(":visible"))) {
+            for (var i = 0; i < ignoreOutClick.length; i++) {
+                if (!($(event.target).closest(ignoreOutClick[i]).length == false && $editInputBox.is(":visible"))) {
                     clickedIn = true;
                     $A.d.inlineEditClick = true;
                 }
             }
-            if(!clickedIn){
+            if (!clickedIn) {
                 removeInlineEditBox();
                 $A.d.inlineEditClick = false;
             }
@@ -230,13 +231,13 @@ define([
 
 
         /*Drawing the elements 10ms later (if not, edit box won't appear)*/
-        setTimeout(function(){
+        setTimeout(function () {
             inlineInput.widget().appendTo($editInputBox);
-            cancelButton.widget().appendTo($editInputBox);
             saveButton.widget().appendTo($editInputBox);
+            cancelButton.widget().appendTo($editInputBox);
             $editInputBox.appendTo(cell.widget());
 
-        },10);
+        }, 10);
 
     };
 
