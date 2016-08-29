@@ -633,7 +633,7 @@ define([
     };
     p.datepicker = function () {
         var t = this;
-        if (!require.defined('jqueryUI')) {
+        if (typeof $.ui === 'undefined') {
             console.warn('Missing plugin!');
             return t;
         }
@@ -645,7 +645,7 @@ define([
     };
     p.datetimepicker = function () {
         var t = this;
-        if (!require.defined('jqueryUI', 'timepicker')) {
+        if (typeof $.ui === 'undefined' || typeof $().timepicker === 'undefined') {
             console.warn('Missing plugin!');
             return t;
         }
@@ -657,7 +657,7 @@ define([
     };
     p.timepicker = function () {
         var t = this;
-        if (!require.defined('jqueryUI', 'timepicker')) {
+        if (typeof $.ui === 'undefined' || typeof $().timepicker === 'undefined') {
             console.warn('Missing plugin!');
             return t;
         }

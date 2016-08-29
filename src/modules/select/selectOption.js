@@ -63,6 +63,9 @@ define([
             if (typeof obj.group !== 'undefined') {
                 t.group(obj.group);
             }
+            if (typeof obj.data !== 'undefined') {
+                t.data(obj.data);
+            }
             t.initParameter(obj);
         }
 
@@ -301,6 +304,28 @@ define([
             return t;
         }
         return t.d.hasIcon;
+    };
+
+    p.data = function (data, value) {
+        var t = this;
+        if (typeof t.d.data === 'undefined') {
+            t.d.data = {};
+        }
+        if (typeof data === 'undefined') {
+            return t.d.data;
+        }
+        if (typeof data === 'array' || typeof data === 'object') {
+            for (var i in data) {
+                t.d.data[i] = data[i];
+            }
+            return t;
+        }
+        if (typeof value === 'undefined') {
+            return t.d.data[data];
+        }
+
+        t.d.data[data] = value;
+        return t;
     };
 
 
