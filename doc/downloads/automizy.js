@@ -6218,6 +6218,9 @@ var $A = {};
             if (typeof obj.group !== 'undefined') {
                 t.group(obj.group);
             }
+            if (typeof obj.data !== 'undefined') {
+                t.data(obj.data);
+            }
             t.initParameter(obj);
         }
 
@@ -6458,6 +6461,28 @@ var $A = {};
         return t.d.hasIcon;
     };
 
+    p.data = function (data, value) {
+        var t = this;
+        if (typeof t.d.data === 'undefined') {
+            t.d.data = {};
+        }
+        if (typeof data === 'undefined') {
+            return t.d.data;
+        }
+        if (typeof data === 'array' || typeof data === 'object') {
+            for (var i in data) {
+                t.d.data[i] = data[i];
+            }
+            return t;
+        }
+        if (typeof value === 'undefined') {
+            return t.d.data[data];
+        }
+
+        t.d.data[data] = value;
+        return t;
+    };
+
 
 
     p.remove = function(){
@@ -6614,10 +6639,39 @@ var $A = {};
         var t = this;
         if (typeof value !== 'undefined') {
             t.d.value = value;
-            t.confirmValue();
+            if(t.d.loading){
+                t.d.tmpValue = t.d.value;
+            }else {
+                t.confirmValue();
+            }
             return t;
         }
         return t.d.value;
+    };
+    p.selectedOptions = function () {
+        var t = this;
+
+        var options = [];
+        for(var i = 0; i < t.d.options.length; i++){
+            if(t.d.options[i].selected()){
+                options.push(t.d.options[i]);
+            }
+        }
+
+        return options;
+    };
+    p.selectedOption = function () {
+        var t = this;
+
+        var option = false;
+        for(var i = 0; i < t.d.options.length; i++){
+            if(t.d.options[i].selected()){
+                option = t.d.options[i];
+                break;
+            }
+        }
+
+        return option;
     };
     p.content = function (content) {
         var t = this;
@@ -6734,7 +6788,7 @@ var $A = {};
             t.d.width = width;
             t.widget().css('width', t.d.width);
             setTimeout(function() {
-                t.d.$widgetTdContentDiv.css('max-width', t.widget().width() - 12 + 'px');
+                //t.d.$widgetTdContentDiv.css('max-width', t.widget().width() - 12 + 'px');
             }, 10);
             return t;
         }
@@ -6853,6 +6907,7 @@ var $A = {};
         for(var i = 0; i < t.d.options.length; i++){
             t.d.options[i].remove();
         }
+        t.d.options = [];
         t.cleanGroups();
         return t;
     };
@@ -6898,7 +6953,7 @@ var $A = {};
     p.loadingStart = function(){
         var t = this;
         t.widget().addClass('automizy-loading');
-        t.d.tmpValue = t.val();
+        t.d.tmpValue = t.val() || false;
         t.d.loading = true;
         return t;
     };
@@ -6915,8 +6970,11 @@ var $A = {};
         } else {
             var a = t.runFunctions('loadingComplete');
             t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
-            t.val(t.d.tmpValue);
             t.loadingStop();
+            if(t.d.tmpValue !== false){
+                t.val(t.d.tmpValue);
+                t.d.tmpValue = false;
+            }
         }
         return t;
     };
@@ -6943,6 +7001,42 @@ var $A = {};
             var a = t.runFunctions('change');
             t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
         }
+        return t;
+    };
+
+    p.remove = function (func) {
+        if (typeof func === 'function') {
+            this.d.remove = func;
+            return this;
+        }
+        delete $A.d["selects"][this.id()];
+        this.d.remove.apply(this, [this, this.d.$widget]);
+        this.d.optionBox.remove();
+        for(var i = 0; i < this.d.options.length; i++){
+            this.d.options[i].remove();
+        }
+        this.originalInput().remove();
+        this.d.$widget.remove();
+        return true;
+    };
+
+    p.drawTo = p.draw = p.appendTo = function ($target) {
+        var t = this;
+        var $target = $target || $('body');
+
+        t.originalInput().appendTo($target);
+        t.d.$widget.appendTo($target);
+
+        return t;
+    };
+    p.show = function () {
+        var t = this;
+        this.d.$widget.ashow();
+        return t;
+    };
+    p.hide = function () {
+        var t = this;
+        this.d.$widget.ahide();
         return t;
     };
 
