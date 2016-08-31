@@ -383,6 +383,7 @@ define([
         t.d.$widgetInput.prop('checked', false).trigger('change');
         return t;
     };
+
     p.label = function (label) {
         var t = this;
         if (typeof label !== 'undefined') {
@@ -1022,19 +1023,27 @@ define([
         t.widget().addClass('automizy-input-thin');
         return t;
     };
-    p.icon = function (value) {
+    p.icon = function (value, isAutomizyIcon) {
         var t = this;
         if (typeof value !== 'undefined') {
             if (value === false) {
                 t.d.$widgetInputIcon.css('display', 'none');
+                t.d.$widgetInputBox.removeClass('automizy-icon-left');
+                t.d.$widgetInputBox.removeClass('automizy-icon-right');
             } else if (value === true) {
                 t.d.$widgetInputIcon.css('display', 'inline-block');
+                t.iconPosition(t.d.iconPosition || "right");
             } else {
                 t.d.icon = value;
-                t.d.$widgetInputIcon.addClass('automizy-icon-' + value);
+                if(isAutomizyIcon != false){
+                    t.d.$widgetInputIcon.addClass('automizy-icon-' + value);
+                }
+                else{
+                    t.d.$widgetInputIcon.addClass('value');
+                }
                 t.d.$widgetInputIcon.css('display', 'inline-block');
+                t.iconPosition(t.d.iconPosition || "right");
             }
-            t.iconPosition();
             return t;
         }
 
@@ -1046,37 +1055,21 @@ define([
             value = value.toLowerCase();
             if (value === 'left') {
                 t.d.iconPosition = 'left';
-                t.d.$widgetInputIcon.css({
-                    left: '0',
-                    right: 'auto'
-                })
+                t.d.$widgetInputBox.addClass('automizy-icon-left');
+                t.d.$widgetInputBox.removeClass('automizy-icon-right');
             } else {
                 t.d.iconPosition = 'right';
-                t.d.$widgetInputIcon.css({
-                    left: 'auto',
-                    right: '0'
-                })
+                t.d.$widgetInputBox.removeClass('automizy-icon-left');
+                t.d.$widgetInputBox.addClass('automizy-icon-right');
             }
-            t.iconPosition();
             return t;
-        }
-
-        if (t.d.iconPosition === 'left') {
-            t.input().css({
-                paddingLeft: '30px',
-                paddingRight: '8px'
-            })
-        } else {
-            t.input().css({
-                paddingLeft: '8px',
-                paddingRight: '30px'
-            })
         }
         return t.d.iconPosition;
     };
     p.iconClick = function (func) {
         var t = this;
         if (typeof func === 'function') {
+            t.d.$widgetInputBox.addClass('automizy-icon-clickable');
             t.d.$widgetInputIcon.click(function () {
                 func.call(t, [t]);
             });

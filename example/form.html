@@ -5,7 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Select Example</title>
     <script src="js/jquery.min.js"></script>
-    <link rel="stylesheet" href="../dist/automizy.css">
+    <link rel="stylesheet" href="../src/styles/table.css">
+    <link rel="stylesheet" href="../src/styles/button.css">
+    <link rel="stylesheet" href="../src/styles/input.css">
+    <link rel="stylesheet" href="../src/styles/select.css">
+    <link rel="stylesheet" href="../src/styles/mobile.css">
+    <link rel="stylesheet" href="../src/styles/core.css">
     <script src="../dist/automizy.js"></script>
     <script>
         $(function () {
@@ -22,7 +27,9 @@
                             {
                                 label: 'Életkor',
                                 help: "Életkor of something",
-                                name: 'customFields.életkor'
+                                icon: "add-box",
+                                name: 'customFields.életkor',
+                                id: 'age'
                             },
                             {
                                 label: 'Szülinap',

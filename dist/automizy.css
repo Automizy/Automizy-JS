@@ -233,9 +233,9 @@
 .automizy-input.automizy-skin-simple-automizy select,
 .automizy-input.automizy-skin-simple-automizy textarea {
     box-sizing: border-box;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
     outline: none;
     max-width: 100%;
     font-size: 13px;
@@ -489,21 +489,58 @@
 .simple-automizy-slider.ui-slider-vertical .ui-slider-range-max {
     top: 0
 }
+.automizy-input .automizy-input-box.automizy-icon-right input{
+    width: calc(100% - 32px);
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+}
+.automizy-input .automizy-input-box.automizy-icon-left input{
+    margin-left: 33px;
+    width: calc(100% - 32px);
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+}
 .automizy-input-icon{
-    width:30px;
-    height:30px;
+    width:34px;
+    height:34px;
     display:none;
     position:absolute;
     top:0;
-    right:0;
-    opacity:0.5;
+    left: auto;
+    right: auto;
+    box-sizing: border-box;
     background:transparent url(styles/) no-repeat center center;
-    cursor:pointer;
+    background-color: rgba(239, 244, 246, 0.36);
+    border: 1px solid #dfe8f1;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
 }
-.automizy-input-icon:hover{
+.automizy-input .automizy-input-box.automizy-icon-clickable .automizy-input-icon{
+    cursor: pointer;
+}
+.automizy-input .automizy-input-box.automizy-icon-right .automizy-input-icon{
+    right:10px;
+    border-left: none;
+}
+.automizy-input .automizy-input-box.automizy-icon-left .automizy-input-icon{
+    border-right: none;
+}
+.automizy-input-icon::before{
+    width:33px;
+    height:32px;
+    content: "";
+    display: block;
+    opacity: 0.7;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.automizy-input-box.automizy-icon-clickable .automizy-input-icon::before{
+    opacity: 0.5;
+}
+.automizy-input-icon:hover::before{
     opacity:0.7;
 }
-.automizy-input-icon.automizy-icon-add-box{
+.automizy-input-icon.automizy-icon-add-box::before{
     background-image: url('data:image/svg+xml;utf8, <svg fill="#000000" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/><path d="M0 0h24v24H0z" fill="none"/> </svg>');
 }
 .automizy-input input[type='checkbox'], .automizy-input input[type='radio'], input.automizy-table-rowcheck{
