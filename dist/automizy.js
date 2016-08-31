@@ -2259,7 +2259,7 @@ var $A = {};
             if (typeof obj.validate !== 'undefined') {
                 t.validate(obj.validate);
             }
-            if (typeof obj.validationEvents !== 'undefined'){
+            if (typeof obj.validationEvents !== 'undefined') {
                 t.validationEvents(obj.validationEvents);
             }
             if (typeof obj.focus !== 'undefined') {
@@ -2274,12 +2274,12 @@ var $A = {};
             if (typeof obj.iconClick === 'function') {
                 t.iconClick(obj.iconClick);
             }
-            if(typeof obj.automizySelect !== 'undefined'){
+            if (typeof obj.automizySelect !== 'undefined') {
                 t.d.automizySelect = obj.automizySelect;
             }
             t.initParameter(obj);
         }
-        if(t.d.automizySelect){
+        if (t.d.automizySelect) {
             t.automizySelect();
         }
     };
@@ -2291,11 +2291,11 @@ var $A = {};
             .unbind('change', t.d.change).bind('change', t.d.change)
             .unbind('focus', t.d.focus).bind('focus', t.d.focus)
             .blur(function () {
-            if (t.blur().returnValue() === false) {
-                return false;
-            }
-            t.validate();
-        }).keypress(function (e) {
+                if (t.blur().returnValue() === false) {
+                    return false;
+                }
+                t.validate();
+            }).keypress(function (e) {
             if (e.which == 13) {
                 if (t.enter().returnValue() === false) {
                     return false;
@@ -2423,6 +2423,7 @@ var $A = {};
         t.d.$widgetInput.prop('checked', false).trigger('change');
         return t;
     };
+
     p.label = function (label) {
         var t = this;
         if (typeof label !== 'undefined') {
@@ -2932,7 +2933,7 @@ var $A = {};
             } else if (validator instanceof $A.m.Validator) {
                 t.d.validator = validator;
             } else {
-                if(typeof t.d.validator === 'undefined'){
+                if (typeof t.d.validator === 'undefined') {
                     t.d.validator = $A.newValidator();
                 }
                 t.d.validator.set(validator);
@@ -2947,7 +2948,7 @@ var $A = {};
             t.d.validate = func;
         } else {
             var a = true;
-            if(typeof t.d.validator !== 'undefined' || t.d.validator === false){
+            if (typeof t.d.validator !== 'undefined' || t.d.validator === false) {
                 a = t.validator().execute(t.val());
                 if (!a) {
                     t.showError(t.validator().errors().join('<br/>'));
@@ -2979,6 +2980,7 @@ var $A = {};
                 t.validate();
                 t.change();
             }
+
             return this;
         }
         return this.d.validationEvents;
@@ -3017,14 +3019,14 @@ var $A = {};
         return t;
     };
 
-    p.showSuccess = function(){
+    p.showSuccess = function () {
         var t = this;
         t.hideError();
         t.widget().addClass('valid');
         return t;
     };
 
-    p.hideSuccess = function(){
+    p.hideSuccess = function () {
         var t = this;
         t.widget().removeClass('valid');
         return t;
@@ -3068,14 +3070,17 @@ var $A = {};
         if (typeof value !== 'undefined') {
             if (value === false) {
                 t.d.$widgetInputIcon.css('display', 'none');
+                t.d.$widgetInputBox.removeClass('automizy-icon-left');
+                t.d.$widgetInputBox.removeClass('automizy-icon-right');
             } else if (value === true) {
                 t.d.$widgetInputIcon.css('display', 'inline-block');
+                t.iconPosition(t.d.iconPosition || "right");
             } else {
                 t.d.icon = value;
-                t.d.$widgetInputIcon.addClass('automizy-icon-' + value);
+                t.d.$widgetInputIcon.addClass(value);
                 t.d.$widgetInputIcon.css('display', 'inline-block');
+                t.iconPosition(t.d.iconPosition || "right");
             }
-            t.iconPosition();
             return t;
         }
 
@@ -3087,37 +3092,21 @@ var $A = {};
             value = value.toLowerCase();
             if (value === 'left') {
                 t.d.iconPosition = 'left';
-                t.d.$widgetInputIcon.css({
-                    left: '0',
-                    right: 'auto'
-                })
+                t.d.$widgetInputBox.addClass('automizy-icon-left');
+                t.d.$widgetInputBox.removeClass('automizy-icon-right');
             } else {
                 t.d.iconPosition = 'right';
-                t.d.$widgetInputIcon.css({
-                    left: 'auto',
-                    right: '0'
-                })
+                t.d.$widgetInputBox.removeClass('automizy-icon-left');
+                t.d.$widgetInputBox.addClass('automizy-icon-right');
             }
-            t.iconPosition();
             return t;
-        }
-
-        if (t.d.iconPosition === 'left') {
-            t.input().css({
-                paddingLeft: '30px',
-                paddingRight: '8px'
-            })
-        } else {
-            t.input().css({
-                paddingLeft: '8px',
-                paddingRight: '30px'
-            })
         }
         return t.d.iconPosition;
     };
     p.iconClick = function (func) {
         var t = this;
         if (typeof func === 'function') {
+            t.d.$widgetInputBox.addClass('automizy-icon-clickable');
             t.d.$widgetInputIcon.click(function () {
                 func.call(t, [t]);
             });
