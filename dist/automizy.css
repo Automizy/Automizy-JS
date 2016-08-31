@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Roboto");
+
 .automizy-dialog{
     position:fixed;
     left:0;
@@ -39,7 +39,6 @@
 }
 .automizy-dialog-head{
     font-size: 16px;
-    font-family: 'Roboto', sans-serif;
     line-height: 1.42857143;
     color: #3e4855;
     text-align: left;
@@ -48,7 +47,6 @@
     border-bottom: 1px solid #dfe8f1;
 }
 .automizy-dialog-buttons{
-    height:34px;
     padding:15px;
     text-align: right;
     border-top: 1px solid #dfe8f1;
@@ -61,7 +59,6 @@
 }
 .automizy-dialog-content{
     text-align:left;
-    font-family: 'Roboto', sans-serif;
     font-size: 14px;
     position: relative;
     box-sizing: border-box;
@@ -83,7 +80,6 @@
     display: block;
 }
 .automizy-button.automizy-skin-nobox-green a, .automizy-button.automizy-skin-nobox-orange a{
-    font-family: 'Roboto', sans-serif;
     line-height: 1.286;
     text-align: left;
     text-decoration: none;
@@ -114,7 +110,6 @@
     border-radius: 3px;
     text-indent:0px;
     display:inline-block;
-    font-family: 'Roboto', sans-serif;
     text-align: center;
     font-style:normal;
     text-decoration:none;
@@ -219,7 +214,6 @@
     color: #fff !important;
     background: #4CAF50 !important;
 }
-@import url("https://fonts.googleapis.com/css?family=Roboto");
 .automizy-input {
     display: inline-block;
     position: relative;
@@ -837,9 +831,7 @@ input.automizy-table-rowcheck:focus:disabled:checked { background-position: -15p
 .automizy-skin-progress-bar .automizy-progress-bar-close-tab:hover{
     background-color: #669138;
 }
-@import url("https://fonts.googleapis.com/css?family=Roboto");
 .automizy-table-box{
-    font-family: Roboto;
     width:100%;
     max-width:100%;
     min-width:100%;
@@ -858,6 +850,7 @@ input.automizy-table-rowcheck:focus:disabled:checked { background-position: -15p
     background: #FFF;
     color: #3e4855;
     position: relative;
+    height: 45px;
     top: -1px;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
@@ -885,7 +878,7 @@ input.automizy-table-rowcheck:focus:disabled:checked { background-position: -15p
     float: left;
     display:inline-block;
 }
-.automizy-table-actions .automizy-table-buttons .automizy-button:not(:last-child){
+.automizy-table-actions .automizy-table-buttons .automizy-button{
     margin: 0 4px 4px 0;
 }
 .automizy-table-actions .automizy-table-perpage-box{
@@ -1032,7 +1025,6 @@ input.automizy-table-rowcheck:focus:disabled:checked { background-position: -15p
     color:#918D99;
 }
 .automizy-table > tbody > tr > td.automizy-main-cell{
-    font-weight:bold;
 }
 .automizy-table > tbody > tr > th{
     padding:10px 36px;
@@ -1059,7 +1051,6 @@ input.automizy-table-rowcheck:focus:disabled:checked { background-position: -15p
     width:100%;
 }
 .automizy-table.checkboxed > tbody > tr > td:nth-child(2){
-   font-weight:bold;
 }
 .automizy-table-clickable > tbody > tr > *{
     cursor:pointer;
@@ -1128,7 +1119,6 @@ input.automizy-table-rowcheck:focus:disabled:checked { background-position: -15p
     box-sizing: border-box;
     border-radius: 0;
     text-indent: 0px;
-    font-family: 'Roboto', sans-serif;
     font-style: normal;
     position: relative;
     vertical-align: middle;
@@ -1268,7 +1258,7 @@ input.automizy-table-rowcheck:focus:disabled:checked { background-position: -15p
 .automizy-table-entries-box{
     display: block;
     color:#4b5056;
-    padding-top: 16px;
+    padding: 16px 0;
     font-size: 13px;
     float: left;
 }
@@ -1294,12 +1284,6 @@ input.automizy-table-rowcheck:focus:disabled:checked { background-position: -15p
     -webkit-transform: translate(-50%,-50%);
     -ms-transform: translate(-50%,-50%);
     transform: translate(-50%,-50%);
-}
-@font-face{
-    font-family: OpenSansCondBold;
-    src: url(fonts/OpenSans-CondBold.eot);
-    src: url(fonts/OpenSans-CondBold.woff) format("woff"),
-    url(fonts/OpenSans-CondBold.ttf) format("truetype");
 }
 .automizy-noselect {
     -webkit-touch-callout: none;
@@ -1436,6 +1420,12 @@ input.automizy-table-rowcheck:focus:disabled:checked { background-position: -15p
     .automizy-mobile .automizy-dialog-box{
         width:80% !important;
     }
+    .automizy-mobile .automizy-table-step-element:not(.automizy-table-pagenumber-box){
+        font-size: 0;
+    }
+    .automizy-mobile .automizy-table-step-element .automizy-table-step-arrow{
+        font-size: 13px;
+    }
 }
 @media screen and (max-width : 600px){
     .automizy-mobile .automizy-dialog-box{
@@ -1444,10 +1434,13 @@ input.automizy-table-rowcheck:focus:disabled:checked { background-position: -15p
     .automizy-mobile .automizy-dialog-content{
         padding: 20px 20px 0 20px;
     }
-    .automizy-mobile .automizy-table .automizy-table-step-element:not(.automizy-table-pagenumber-box){
+    .automizy-mobile .automizy-table-steppage-box{
+        margin-bottom: 70px;
+    }
+    .automizy-mobile .automizy-table-step-element:not(.automizy-table-pagenumber-box){
         font-size: 0;
     }
-    .automizy-mobile .automizy-table .automizy-table-step-element .automizy-table-step-arrow{
+    .automizy-mobile .automizy-table-step-element .automizy-table-step-arrow{
         font-size: 13px;
     }
 }
@@ -1686,7 +1679,6 @@ label.iPhoneCheckLabelOff span {
     background-color: rgb( 217, 217, 217 );
 }
 .automizy-select{   
-    font-family:Arial;
     color: #333333;
     font-size:14px;
     height:30px;
@@ -1709,7 +1701,6 @@ label.iPhoneCheckLabelOff span {
 }
 .automizy-select .automizy-select-table{
     width:100%;
-    font-family:Arial;
 }
 .automizy-select .automizy-select-tr{
 }
@@ -1795,7 +1786,6 @@ label.iPhoneCheckLabelOff span {
 }
 .automizy-select-option-table{  
     width:100%;
-    font-family:Arial;
 }
 .automizy-select-option-table .automizy-select-option-tr{   
 }

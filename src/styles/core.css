@@ -1,16 +1,4 @@
-@font-face{
-    font-family: OpenSansCondBold;
-    src: url("../fonts/OpenSans-CondBold.eot");
-    src: url("../fonts/OpenSans-CondBold.woff") format("woff"),
-    url("../fonts/OpenSans-CondBold.ttf") format("truetype");
-}
-/*
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
-*/
+
 .automizy-noselect {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
