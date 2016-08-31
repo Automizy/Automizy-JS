@@ -1,5 +1,4 @@
 .automizy-select{   /*select field*/
-    font-family:Arial;
     color: #333333;
     font-size:14px;
     height:30px;
@@ -23,7 +22,6 @@
 }
 .automizy-select .automizy-select-table{
     width:100%;
-    font-family:Arial;
 }
 .automizy-select .automizy-select-tr{
 
@@ -135,7 +133,6 @@
 }
 .automizy-select-option-table{  /*option box content table*/
     width:100%;
-    font-family:Arial;
 }
 .automizy-select-option-table .automizy-select-option-tr{   /*option row*/
 
