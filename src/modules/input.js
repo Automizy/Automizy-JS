@@ -17,7 +17,7 @@ define([
             $widgetInputBox: $('<span class="automizy-input-box"></span>'),
             $widgetInputBoxError: $('<span class="automizy-input-box-error"></span>'),
             $widgetLabel: $('<label></label>'),
-            $widgetLabelAfter: $('<span class="automizy-input-label-after"></span>'),
+            $widgetLabelAfter: $('<label class="automizy-input-label-after"></label>'),
             $widgetHelp: $('<img src="' + $A.images.helpIcon + '" class="automizy-input-help" />'),
             $widgetHelpContent: $('<div class="automizy-input-help-content"><img src="' + $A.images.helpArrow + '" class="automizy-input-help-content-arrow" /></div>'),
             $widgetHelpContentInner: $('<span></span>'),
@@ -53,7 +53,7 @@ define([
             value: '',
             placeholder: '',
             name: '',
-            width: '300px',
+            width: '100%',
             height: 'auto',
             label: '',
             labelAfter: '',
@@ -90,10 +90,10 @@ define([
         t.d.$widgetInput.appendTo(t.d.$widgetInputBox).attr('id', t.d.id + '-input');
         t.d.$loadingBox.appendTo(t.d.$widgetInputBox).html($A.d.elements.$loading.clone());
         t.d.$widgetInputBox.appendTo(t.d.$widget);
-        t.d.$widgetLabelAfter.appendTo(t.d.$widget).ahide();
         //t.d.$widgetInputBoxError.appendTo(t.d.$widget);
         t.d.$widgetInputBoxError.appendTo(t.d.$widgetInputBox);
         t.d.$widgetInputIcon.appendTo(t.d.$widgetInputBox);
+        t.d.$widgetLabelAfter.appendTo(t.d.$widgetInputBox).ahide();
         t.d.$widgetHelpContentInner.appendTo(t.d.$widgetHelpContent);
         t.d.$widgetHelpContent.appendTo('body:first');
         t.d.$widgetHelp.appendTo(t.d.$widget).on('mouseenter click', function () {
@@ -575,12 +575,15 @@ define([
             } else {
                 t.d.$widgetInput = $('<input/>').attr('type', t.d.type);
             }
+            t.widget().attr('type',t.d.type);
             t.d.$loadingBox.appendTo($A.d.elements.$tmp);
             t.d.$widgetInputBox.ashow().empty();
             t.d.$widgetInput.attr(attributes).show();
             t.d.$widgetInput.appendTo(t.d.$widgetInputBox);
             t.d.$widgetInputBoxError.appendTo(t.d.$widgetInputBox);
             t.d.$loadingBox.appendTo(t.d.$widgetInputBox);
+            t.d.$widgetInputIcon.appendTo(t.d.$widgetInputBox);
+            t.d.$widgetLabelAfter.appendTo(t.d.$widgetInputBox)
             setTimeout(function () {
                 t.setupJQueryEvents();
             }, 10);

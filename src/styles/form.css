@@ -19,9 +19,13 @@
 }
 .automizy-form .automizy-form-buttons .automizy-button{
     margin-left:4px;
+    margin-right: 4px;
 }
 .automizy-form .automizy-form-buttons .automizy-button:first-child{
     margin-left:0;
+}
+.automizy-form .automizy-form-buttons .automizy-button:last-child{
+    margin-right:0;
 }
 .automizy-form .automizy-form-tables{
     padding: 12px 12px 36px 12px;
