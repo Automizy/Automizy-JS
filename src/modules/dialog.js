@@ -16,7 +16,7 @@ define([
             $widget: $('<table cellpadding="0" cellspacing="0" border="0" class="automizy-dialog"></table>'),
             $cell: $('<td class="automizy-dialog-cell"></td>'),
             $box: $('<div class="automizy-dialog-box"></div>'),
-            $head: $('<div class="automizy-dialog-head"></div>'),
+            $head: $('<h4 class="automizy-dialog-head"></h4>'),
             $close: $('<div class="automizy-dialog-close">&#10006;</div>'),
             $buttons: $('<div class="automizy-dialog-buttons"></div>'),
             $content: $('<div class="automizy-dialog-content"></div>'),
