@@ -273,9 +273,6 @@
     background: #fafafa;
     filter: alpha(opacity:65);
 }
-.automizy-input.automizy-skin-simple-automizy.error input {
-    border-color: red;
-}
 .automizy-input label.automizy-hide{
     display:none!important;
 }
@@ -330,7 +327,8 @@
     margin: 0 0 3px 0;
 }
 .automizy-input.automizy-skin-simple-automizy.error input,
-.automizy-input.automizy-skin-simple-automizy.error textarea{
+.automizy-input.automizy-skin-simple-automizy.error textarea,
+.automizy-input.automizy-skin-simple-automizy.error .automizy-input-icon{
     border-color:#da4b50 !important;
 }
 .automizy-input .automizy-input-box-error{
@@ -351,7 +349,8 @@
     display:block;
 }
 .automizy-input.automizy-skin-simple-automizy.valid input,
-.automizy-input.automizy-skin-simple-automizy.valid textarea{
+.automizy-input.automizy-skin-simple-automizy.valid textarea,
+.automizy-input.automizy-skin-simple-automizy.valid .automizy-input-icon{
     border-color:#4CAF50 !important;
 }
 .automizy-input-help-content {
@@ -393,6 +392,18 @@
 }
 .automizy-skin-simple-automizy .simple-automizy-file-box td {
     vertical-align: top;
+}
+.automizy-skin-simple-automizy .simple-automizy-file-box .automizy-input-box{
+    padding: 0;
+}
+.automizy-skin-simple-automizy .simple-automizy-file-box .automizy-input-box input{
+    border-right: none;
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+}
+.automizy-skin-simple-automizy .simple-automizy-file-box .automizy-button a{
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
 }
 .simple-automizy-slider {
     width: 100%;
@@ -505,6 +516,8 @@
     height:34px;
     display:none;
     position:absolute;
+    padding: 6px 0;
+    text-align: center;
     top:0;
     left: auto;
     right: auto;
@@ -521,18 +534,27 @@
 .automizy-input .automizy-input-box.automizy-icon-right .automizy-input-icon{
     right:10px;
     border-left: none;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
 }
 .automizy-input .automizy-input-box.automizy-icon-left .automizy-input-icon{
     border-right: none;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
 }
 .automizy-input-icon::before{
-    width:33px;
-    height:32px;
     content: "";
     display: block;
     opacity: 0.7;
     background-position: center;
     background-repeat: no-repeat;
+    text-align: center;
+}
+.automizy-input-icon[class*="automizy-icon"]::before{
+    width:33px;
+    height:32px;
+    position: absolute;
+    top: 0;
 }
 .automizy-input-box.automizy-icon-clickable .automizy-input-icon::before{
     opacity: 0.5;

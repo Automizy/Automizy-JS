@@ -219,7 +219,7 @@ define([
             if (typeof obj.validate !== 'undefined') {
                 t.validate(obj.validate);
             }
-            if (typeof obj.validationEvents !== 'undefined'){
+            if (typeof obj.validationEvents !== 'undefined') {
                 t.validationEvents(obj.validationEvents);
             }
             if (typeof obj.focus !== 'undefined') {
@@ -234,12 +234,12 @@ define([
             if (typeof obj.iconClick === 'function') {
                 t.iconClick(obj.iconClick);
             }
-            if(typeof obj.automizySelect !== 'undefined'){
+            if (typeof obj.automizySelect !== 'undefined') {
                 t.d.automizySelect = obj.automizySelect;
             }
             t.initParameter(obj);
         }
-        if(t.d.automizySelect){
+        if (t.d.automizySelect) {
             t.automizySelect();
         }
     };
@@ -251,11 +251,11 @@ define([
             .unbind('change', t.d.change).bind('change', t.d.change)
             .unbind('focus', t.d.focus).bind('focus', t.d.focus)
             .blur(function () {
-            if (t.blur().returnValue() === false) {
-                return false;
-            }
-            t.validate();
-        }).keypress(function (e) {
+                if (t.blur().returnValue() === false) {
+                    return false;
+                }
+                t.validate();
+            }).keypress(function (e) {
             if (e.which == 13) {
                 if (t.enter().returnValue() === false) {
                     return false;
@@ -892,7 +892,7 @@ define([
             } else if (validator instanceof $A.m.Validator) {
                 t.d.validator = validator;
             } else {
-                if(typeof t.d.validator === 'undefined'){
+                if (typeof t.d.validator === 'undefined') {
                     t.d.validator = $A.newValidator();
                 }
                 t.d.validator.set(validator);
@@ -907,7 +907,7 @@ define([
             t.d.validate = func;
         } else {
             var a = true;
-            if(typeof t.d.validator !== 'undefined' || t.d.validator === false){
+            if (typeof t.d.validator !== 'undefined' || t.d.validator === false) {
                 a = t.validator().execute(t.val());
                 if (!a) {
                     t.showError(t.validator().errors().join('<br/>'));
@@ -939,6 +939,7 @@ define([
                 t.validate();
                 t.change();
             }
+
             return this;
         }
         return this.d.validationEvents;
@@ -977,14 +978,14 @@ define([
         return t;
     };
 
-    p.showSuccess = function(){
+    p.showSuccess = function () {
         var t = this;
         t.hideError();
         t.widget().addClass('valid');
         return t;
     };
 
-    p.hideSuccess = function(){
+    p.hideSuccess = function () {
         var t = this;
         t.widget().removeClass('valid');
         return t;
@@ -1023,7 +1024,7 @@ define([
         t.widget().addClass('automizy-input-thin');
         return t;
     };
-    p.icon = function (value, isAutomizyIcon) {
+    p.icon = function (value) {
         var t = this;
         if (typeof value !== 'undefined') {
             if (value === false) {
@@ -1035,12 +1036,7 @@ define([
                 t.iconPosition(t.d.iconPosition || "right");
             } else {
                 t.d.icon = value;
-                if(isAutomizyIcon != false){
-                    t.d.$widgetInputIcon.addClass('automizy-icon-' + value);
-                }
-                else{
-                    t.d.$widgetInputIcon.addClass('value');
-                }
+                t.d.$widgetInputIcon.addClass(value);
                 t.d.$widgetInputIcon.css('display', 'inline-block');
                 t.iconPosition(t.d.iconPosition || "right");
             }
