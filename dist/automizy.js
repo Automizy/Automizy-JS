@@ -2951,11 +2951,13 @@ var $A = {};
             t.d.validate = func;
         } else {
             var a = true;
-            if (typeof t.d.validator !== 'undefined' || t.d.validator === false) {
+            if (typeof t.d.validator !== 'undefined' || t.d.validator !== false) {
                 a = t.validator().execute(t.val());
                 if (!a) {
                     t.showError(t.validator().errors().join('<br/>'));
-                    t.validationEvents('keyup change paste');
+                    if(typeof t.validationEvents() === 'undefined' || t.validationEvents() === ''){
+                        t.validationEvents('keyup change paste');
+                    }
                 } else {
                     t.hideError();
                     t.showSuccess();
@@ -2976,7 +2978,7 @@ var $A = {};
             t.d.$widgetInput.off(oldValidationEvents, validateNow);
 
             /*Setting new validation events*/
-            this.d.validationEvents = validationEvents;
+            t.d.validationEvents = validationEvents;
             t.d.$widgetInput.on(validationEvents, validateNow);
 
             function validateNow() {
