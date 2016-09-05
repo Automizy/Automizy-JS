@@ -217,7 +217,7 @@ define([
 
 
         t.d.$perPageBox.appendTo(t.d.$otherActions);
-        t.d.perPageSelect.type('select').options(t.d.perPageList).val(t.d.perPage).labelAfter(t.d.perPageLabel).width('83px').change(function () {
+        t.d.perPageSelect.type('select').options(t.d.perPageList).val(t.d.perPage).labelAfter(t.d.perPageLabel).change(function () {
             t.d.perPage = this.val();
             if (t.d.storeData) {
                 $A.store.set(t.id() + '-per-page', t.d.perPage);
