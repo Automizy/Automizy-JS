@@ -142,6 +142,9 @@
 .automizy-input label+.automizy-input-box.automizy-input-has-help{
     max-width: calc(75% - 30px);
 }
+.automizy-input label:empty+.automizy-input-box.automizy-input-has-help{
+    max-width: calc(100% - 30px);
+}
 
 .automizy-input .automizy-input-box.new-row {
     clear: both;
@@ -441,13 +444,13 @@
 /*Input icons*/
 
 .automizy-input .automizy-input-box.automizy-icon-right input{
-    width: calc(100% - 32px);
+    width: calc(100% - 34px);
     border-bottom-right-radius: 0;
     border-top-right-radius: 0;
 }
 .automizy-input .automizy-input-box.automizy-icon-left input{
     margin-left: 33px;
-    width: calc(100% - 32px);
+    width: calc(100% - 34px);
     border-bottom-left-radius: 0;
     border-top-left-radius: 0;
 }
@@ -477,11 +480,14 @@
 
 .automizy-input .automizy-input-box.automizy-icon-right .automizy-input-icon{
     right:0px;
+    left:auto;
     border-left: none;
     border-bottom-left-radius: 0;
     border-top-left-radius: 0;
 }
 .automizy-input .automizy-input-box.automizy-icon-left .automizy-input-icon{
+    right:auto;
+    left:0;
     border-right: none;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;

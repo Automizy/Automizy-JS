@@ -911,7 +911,7 @@ define([
             t.d.validate = func;
         } else {
             var a = true;
-            if (typeof t.d.validator !== 'undefined' || t.d.validator !== false) {
+            if (typeof t.d.validator !== 'undefined' && t.d.validator !== false) {
                 a = t.validator().execute(t.val());
                 if (!a) {
                     t.showError(t.validator().errors().join('<br/>'));

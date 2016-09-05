@@ -2951,7 +2951,7 @@ var $A = {};
             t.d.validate = func;
         } else {
             var a = true;
-            if (typeof t.d.validator !== 'undefined' || t.d.validator !== false) {
+            if (typeof t.d.validator !== 'undefined' && t.d.validator !== false) {
                 a = t.validator().execute(t.val());
                 if (!a) {
                     t.showError(t.validator().errors().join('<br/>'));
@@ -4259,7 +4259,7 @@ var $A = {};
 
 
         t.d.$perPageBox.appendTo(t.d.$otherActions);
-        t.d.perPageSelect.type('select').options(t.d.perPageList).val(t.d.perPage).labelAfter(t.d.perPageLabel).width('83px').change(function () {
+        t.d.perPageSelect.type('select').options(t.d.perPageList).val(t.d.perPage).labelAfter(t.d.perPageLabel).change(function () {
             t.d.perPage = this.val();
             if (t.d.storeData) {
                 $A.store.set(t.id() + '-per-page', t.d.perPage);

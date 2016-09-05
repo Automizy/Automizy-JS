@@ -69,7 +69,8 @@
     padding: 0 16px 0 0;
 }
 .automizy-table-actions .automizy-table-perpage-box select{
-    width:83px;
+    width: 83px;
+    margin-right: 5px;
 }
 .automizy-table-actions .automizy-table-perpage-box label,
 .automizy-table-actions .automizy-table-perpage-box .automizy-input-label-after{
@@ -155,6 +156,7 @@
 .automizy-table-settings-box-content .automizy-input label{
     width: auto !important;
     font-weight: normal !important;
+    min-width: 0 !important;
     color: #4b5056 !important;
 }
 
@@ -257,9 +259,9 @@
 
 .automizy-table.checkboxed > tbody > tr > *:first-child{
     cursor:pointer;
-    max-width:15px;
     overflow:hidden;
     padding: 2px 15px 0 12px;
+    width: 30px;
     text-align: center;
     vertical-align: middle;
 }
