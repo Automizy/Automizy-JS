@@ -287,20 +287,6 @@ define([
 
         $A.d.inlineEditClick = false;
 
-        /*Opening inline editor*/
-        $('body').on('click', '.automizy-table-cell-editable-content', function (e) {
-
-            /*If true, opening inlineButtonsBox will be prevented*/
-            $A.d.inlineEditClick = true;
-
-            var $editableContent = $(e.target);
-            var $cell = $editableContent.parent();
-            var $row = $cell.parent();
-            var cell = t.getCell($cell.index(), $row.index());
-
-            cell.inlineEdit()
-        });
-
 
         if (typeof obj !== 'undefined') {
             if (obj instanceof HTMLElement) {
@@ -415,21 +401,21 @@ define([
         return t.d.totalEntries;
     };
 
-    p.writeEntries = function(){
+    p.writeEntries = function () {
         var t = this;
         var total = t.totalEntries();
         var actualPage = t.page();
         var perPage = t.perPage();
 
-        var showFirst = (actualPage-1)*perPage+1;
-        var $showFrom = $('<span>'+$A.translate("Showing ")+showFirst+' </span>');
+        var showFirst = (actualPage - 1) * perPage + 1;
+        var $showFrom = $('<span>' + $A.translate("Showing ") + showFirst + ' </span>');
 
-        var showLast = showFirst+perPage-1;
-        if(showLast > total)
+        var showLast = showFirst + perPage - 1;
+        if (showLast > total)
             showLast = total;
-        var $showTo = $('<span>'+$A.translate('to ')+showLast+' </span>');
+        var $showTo = $('<span>' + $A.translate('to ') + showLast + ' </span>');
 
-        var $showTotal = $('<span>'+$A.translate("of ")+total+' entries</span>');
+        var $showTotal = $('<span>' + $A.translate("of ") + total + ' entries</span>');
 
         t.d.$entriesBox.html('');
         t.d.$entriesBox.append($showFrom).append($showTo).append($showTotal);
@@ -1365,6 +1351,22 @@ define([
             return button;
         };
 
+    /*Opening inline editor*/
+    $('body').on('click', '.automizy-table-cell-editable-content', function (e) {
+
+        /*If true, opening inlineButtonsBox will be prevented*/
+        $A.d.inlineEditClick = true;
+
+        var $editableContent = $(e.target);
+
+        var $cell = $editableContent.closest('td');
+        var $row = $cell.closest('tr');
+        var table = $A.getTable($cell.closest('.automizy-table-box').attr('id'));
+        var cell = table.getCell($cell.index(), $row.index());
+
+
+        cell.inlineEdit()
+    });
     $A.initBasicFunctions(Table, "Table", ['addRows', 'beforeAddRows', 'beforeOpenInlineBox', 'loading']);
 
 });
