@@ -69,11 +69,6 @@ define([
             automizySelect: false,
             id: 'automizy-input-' + $A.getUniqueString(),
 
-            change: function () { //change keyup paste
-                if (t.change().returnValue() === false) {
-                    return false;
-                }
-            },
             focus: function () {
                 if (t.focus().returnValue() === false) {
                     return false;
