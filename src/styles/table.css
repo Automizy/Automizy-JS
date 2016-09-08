@@ -440,12 +440,12 @@
 
 .automizy-table-steppage-box{
     padding: 10px 0;
-    margin-bottom: 30px;
+    text-align: right;
 }
 
 .automizy-table-steppage-box .automizy-table-steppage-box-wrapper{
-    display: block;
-    float: right;
+    display: inline-block;
+    float: none;
 }
 
 .automizy-table-steppage-box .automizy-table-steppage-box-wrapper .automizy-table-step-element{
