@@ -69,6 +69,11 @@ define([
             automizySelect: false,
             id: 'automizy-input-' + $A.getUniqueString(),
 
+            change: function () { //change keyup paste
+                if (t.change().returnValue() === false) {
+                    return false;
+                }
+            },
             focus: function () {
                 if (t.focus().returnValue() === false) {
                     return false;
@@ -249,7 +254,6 @@ define([
                 if (t.blur().returnValue() === false) {
                     return false;
                 }
-                t.validate();
             }).keypress(function (e) {
             if (e.which == 13) {
                 if (t.enter().returnValue() === false) {

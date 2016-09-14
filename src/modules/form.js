@@ -18,12 +18,17 @@ define([
             tables: [],
             subtitles: [],
             htmls: [],
-            groups:[],
+            groups: [],
+            alignment: 'left',
+            width: '75%',
+            maxWidth: '100%',
+            minWidth: '0',
             hasObject: false,
             id: 'automizy-form-' + $A.getUniqueString(),
             create: function () {
             },
-            submit:function(){},
+            submit: function () {
+            },
             method: 'POST',
             enctype: false,
             url: document.location.href
@@ -54,10 +59,32 @@ define([
                 t.enctype(obj.enctype);
             if (typeof obj.submit === 'function')
                 t.submit(obj.submit);
+            if (typeof obj.alignment !== 'undefined') {
+                t.alignment(obj.alignment);
+            }
+            if (typeof obj.width !== 'undefined') {
+                t.width(obj.width);
+            }
+            if (typeof obj.maxWidth !== 'undefined') {
+                t.maxWidth(obj.maxWidth);
+            }
+            if (typeof obj.minWidth !== 'undefined') {
+                t.minWidth(obj.minWidth);
+            }
+            if (typeof obj.maxWidth !== 'undefined') {
+                t.maxWidth(obj.maxWidth);
+            }
             if (typeof obj.url !== 'undefined' || typeof obj.action !== 'undefined')
                 t.url(obj.url || obj.action);
             t.initParameter(obj);
         }
+
+        t.width(t.d.width);
+        t.minWidth(t.d.minWidth);
+        t.maxWidth(t.d.maxWidth);
+        t.alignment(t.d.alignment);
+
+
     };
 
     var p = Form.prototype;
@@ -66,7 +93,7 @@ define([
         var id = "automizy-form-subtitle-" + $A.getUniqueString();
         if (typeof text === 'string') {
             var $widget = $('<div id="' + id + '" class="automizy-form-subtitle"></div>');
-            t.d.subtitles.push({id: id, text: text, $widget:$widget});
+            t.d.subtitles.push({id: id, text: text, $widget: $widget});
             $widget.html(text).appendTo(t.d.$inputs);
         } else {
             console.warn('Bad parameter type.', text);
@@ -124,7 +151,7 @@ define([
         }
         return t.d.buttons;
     };
-    
+
     p.input = p.addInput = function (obj) {
         var t = this;
         if (typeof obj !== 'undefined') {
@@ -166,7 +193,7 @@ define([
         }
         return t.d.inputs;
     };
-    
+
     p.table = p.addTable = function (obj) {
         var t = this;
         if (typeof obj !== 'undefined') {
@@ -211,9 +238,9 @@ define([
         var t = this;
         if (typeof obj === 'object' || typeof obj === 'array') {
             var $group = $('<div class="automizy-form-group"></div>');
-            var $groupSwitch = $('<div class="automizy-form-group-switch"></div>').text(obj.text || $A.translate('Group')).click(function () {
+            var $groupSwitch = $('<a class="automizy-form-group-switch"></a>').text(obj.text || $A.translate('Group')).click(function () {
                 $groupSwitch.toggleClass('active');
-                $group.toggleClass('active');
+                $group.slideToggle();
             });
             if (obj.width !== 'undefined')
                 $groupSwitch.width(obj.width);
@@ -241,10 +268,10 @@ define([
             $groupSwitch.appendTo(t.d.$inputs);
             $group.appendTo(t.d.$inputs);
             t.d.groups.push({
-                $group:$group,
-                $groupSwitch:$groupSwitch,
-                $box:t.d.$inputs,
-                id:$A.getUniqueString()
+                $group: $group,
+                $groupSwitch: $groupSwitch,
+                $box: t.d.$inputs,
+                id: $A.getUniqueString()
             })
         }
         return t;
@@ -256,7 +283,7 @@ define([
                 if (t.d.groups[i].id === group) {
                     t.d.groups[i].$group.remove();
                     t.d.groups[i].$groupSwitch.remove();
-            }
+                }
             }
         }
     };
@@ -300,7 +327,7 @@ define([
     };
     p.submit = function (func) {
         var t = this;
-        if(typeof func === 'function'){
+        if (typeof func === 'function') {
             t.d.submit = func;
             return t;
         }
@@ -312,11 +339,11 @@ define([
         t.d.$inputs.append('<br/>');
         return t;
     };
-    p.validate = function (){
+    p.validate = function () {
         var t = this;
         var validate = true;
-        for(var i = 0; i < t.d.inputs.length; i++){
-            if(!t.d.inputs[i].validate()){
+        for (var i = 0; i < t.d.inputs.length; i++) {
+            if (!t.d.inputs[i].validate()) {
                 validate = false;
             }
         }
@@ -363,6 +390,54 @@ define([
         }
     };
 
+    p.alignment = function (alignment) {
+        var t = this;
+        if (typeof alignment !== 'undefined') {
+            t.d.alignment = alignment;
+            t.d.$widget.css('text-align',alignment);
+            if(alignment === 'center'){
+                t.d.$widget.css('margin-left','auto');
+                t.d.$widget.css('margin-right','auto');
+            }
+            else if(alignment === 'right'){
+                t.d.$widget.css('margin-right',0);
+            }
+            else if(alignment === 'left'){
+                t.d.$widget.css('margin-left',0);
+            }
+            return t;
+        }
+        return t.d.alignment;
+    };
+
+    p.width = function (width) {
+        var t = this;
+        if (typeof width !== 'undefined') {
+            t.d.width = width;
+            t.d.$widget.width(width);
+            return t;
+        }
+        return t.d.width;
+    };
+    p.maxWidth = function (maxWidth) {
+        var t = this;
+        if (typeof maxWidth !== 'undefined') {
+            t.d.maxWidth = maxWidth;
+            t.d.$widget.css('maxWidth', maxWidth);
+            return t;
+        }
+        return t.d.maxWidth;
+    };
+    p.minWidth = function (minWidth) {
+        var t = this;
+        if (typeof minWidth !== 'undefined') {
+            t.d.minWidth = minWidth;
+            t.d.$widget.css('minWidth', minWidth);
+            return t;
+        }
+        return t.d.minWidth;
+    };
+
     p.json = function () {
         return JSON.stringify(this.object());
     };
@@ -372,17 +447,17 @@ define([
 
         var result = {};
         var ignoreArray = [];
-        if(typeof dotted !== 'undefined'){
+        if (typeof dotted !== 'undefined') {
             dotted = $A.parseBoolean(dotted);
-        }else{
+        } else {
             var dotted = false;
         }
-        t.widget().find('input, select, textarea').filter(function(){
+        t.widget().find('input, select, textarea').filter(function () {
             var returnValue = true;
             var $input = $(this);
-            if(!$input.attr('name')){
+            if (!$input.attr('name')) {
                 returnValue = false;
-            }else if($input.closest('.automizy-table-box').length > 0){
+            } else if ($input.closest('.automizy-table-box').length > 0) {
                 returnValue = false;
             }
             return returnValue
@@ -392,11 +467,11 @@ define([
                 ignoreArray.push($t.attr('name'));
             }
 
-            if($t.is(':disabled')){
+            if ($t.is(':disabled')) {
                 return true;
             }
             var name = $t.attr('name');
-            if($.inArray(name, ignoreArray) >= 0){
+            if ($.inArray(name, ignoreArray) >= 0) {
                 return true;
             }
             var value = $t.val();
@@ -419,27 +494,27 @@ define([
         });
 
         /*$.each(t.widget().serializeArray(), function () {
-            var name = this.name;
-            if($.inArray(name, ignoreArray) >= 0){
-                return true;
-            }
-            var value = this.value;
+         var name = this.name;
+         if($.inArray(name, ignoreArray) >= 0){
+         return true;
+         }
+         var value = this.value;
 
-            if (dotted && name.indexOf('.') > -1) {
-                var arr = name.split('.');
-                if (typeof result[arr[0]] === 'undefined') {
-                    result[arr[0]] = {};
-                }
-                result[arr[0]][arr[1]] = value;
-            } else if (name.slice(-2) === '[]') {
-                name = name.slice(0, -2);
-                if (typeof result[name] === 'undefined')
-                    result[name] = [];
-                result[name].push(value);
-            } else {
-                result[name] = value;
-            }
-        });*/
+         if (dotted && name.indexOf('.') > -1) {
+         var arr = name.split('.');
+         if (typeof result[arr[0]] === 'undefined') {
+         result[arr[0]] = {};
+         }
+         result[arr[0]][arr[1]] = value;
+         } else if (name.slice(-2) === '[]') {
+         name = name.slice(0, -2);
+         if (typeof result[name] === 'undefined')
+         result[name] = [];
+         result[name].push(value);
+         } else {
+         result[name] = value;
+         }
+         });*/
 
         return result;
     };

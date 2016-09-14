@@ -24,7 +24,7 @@ define([
             positionX: 'center',
             positionY: 'middle',
             title: 'My Dialog',
-            width: '60%',
+            width: '900',
             maxWidth: '100%',
             minWidth: '250px',
             minHeight:'0px',
@@ -129,6 +129,8 @@ define([
             }
             t.initParameter(obj);
         }
+
+        t.width(t.d.width);
     };
 
     var p = Dialog.prototype;
