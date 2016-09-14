@@ -2,7 +2,7 @@
 .automizy-input {
     display: inline-block;
     position: relative;
-    padding: 0 0 12px 0;
+    padding: 15px 0;
     max-width: 100%;
 }
 
@@ -70,7 +70,7 @@
 }
 
 .automizy-input.automizy-skin-simple-automizy label {
-    width: 25%;
+    width: 33%;
     vertical-align: top;
     padding-top: 7px;
     font-weight: 700;
@@ -87,7 +87,7 @@
 
 .automizy-input.automizy-skin-simple-automizy[type="checkbox"] label{
     padding-top: 5px;
-    min-width: 25%;
+    min-width: 33%;
     width:auto;
 }
 
@@ -129,10 +129,11 @@
     max-width: 100%;
     width: 100%;
     box-sizing: border-box;
+    text-align: left;
 }
 
 .automizy-input label+.automizy-input-box{
-    width: 75%;
+    width: 66%;
 }
 
 .automizy-input .automizy-input-box.automizy-input-has-help {
@@ -140,7 +141,7 @@
 }
 
 .automizy-input label+.automizy-input-box.automizy-input-has-help{
-    max-width: calc(75% - 30px);
+    max-width: calc(66% - 30px);
 }
 .automizy-input label:empty+.automizy-input-box.automizy-input-has-help{
     max-width: calc(100% - 30px);
