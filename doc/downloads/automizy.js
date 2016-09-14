@@ -2107,6 +2107,7 @@ var $A = {};
             validate: function () {
             },
             validationEvents: '',
+            enableShowSuccess: false,
             createFunctions: [],
             automizySelect: false,
             id: 'automizy-input-' + $A.getUniqueString(),
@@ -2263,6 +2264,9 @@ var $A = {};
             }
             if (typeof obj.validationEvents !== 'undefined') {
                 t.validationEvents(obj.validationEvents);
+            }
+            if (typeof obj.enableShowSuccess !== 'undefined') {
+                t.enableShowSuccess(obj.enableShowSuccess);
             }
             if (typeof obj.focus !== 'undefined') {
                 t.focus(obj.focus);
@@ -2958,10 +2962,14 @@ var $A = {};
                     t.showError(t.validator().errors().join('<br/>'));
                     if(typeof t.validationEvents() === 'undefined' || t.validationEvents() === ''){
                         t.validationEvents('keyup change paste');
+                        t.enableShowSuccess(true);
                     }
                 } else {
                     t.hideError();
-                    t.showSuccess();
+                    if(t.enableShowSuccess()){
+                        t.showSuccess();
+                    }
+                    t.enableShowSuccess(false);
                 }
                 t.d.validate.apply(this, [a, this, this.d.$widget]);
             }
@@ -3036,6 +3044,16 @@ var $A = {};
         var t = this;
         t.widget().removeClass('valid');
         return t;
+    }
+
+    p.enableShowSuccess = function (enable){
+        var t = this;
+        if(typeof enable !== 'undefined'){
+            var enable = $A.parseBoolean(enable);
+            t.d.enableShowSuccess = enable;
+        }
+        return t.d.enableShowSuccess;
+
     }
 
     p.errorBox = function () {
