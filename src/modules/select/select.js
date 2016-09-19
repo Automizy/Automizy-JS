@@ -11,7 +11,8 @@ define([
         var t = this;
         t.d = {
             $widget: $('<div class="automizy-select automizy-has-arrow automizy-empty"></div>'),
-            $loadingBox: $('<div class="automizy-select-loading-box">loading...</div>'),
+            $loadingBox: $('<div class="automizy-select-loading-box">'+$A.translate('loading...')+'</div>'),
+            $emptyBox: $('<div class="automizy-select-empty-box"></div>'),
             $widgetTable: $('<table border="0" cellpadding="0" cellspacing="0" class="automizy-select-table"></table>'),
             $widgetTr: $('<tr class="automizy-select-tr"></tr>'),
             $widgetTdIcon: $('<td class="automizy-select-td-icon"></td>'),
@@ -30,6 +31,8 @@ define([
             multiple:false,
             disabled: false,
             loading:false,
+            empty:false,
+            showMessageIfEmpty:false,
             emptyText:$A.translate('Select an option'),
             selectedText:$A.translate('# items selected'),
             maxVisibleItems:2,
@@ -49,6 +52,7 @@ define([
 
         t.d.$widgetTable.appendTo(t.d.$widget);
         t.d.$loadingBox.appendTo(t.d.$widget);
+        t.d.$emptyBox.appendTo(t.d.$widget);
         t.d.$widgetTr.appendTo(t.d.$widgetTable);
         t.d.$widgetTdIcon.appendTo(t.d.$widgetTr);
         t.d.$icon.appendTo(t.d.$widgetTdIcon);
@@ -63,7 +67,7 @@ define([
         }
 
         t.widget().click(function(){
-            if(t.d.loading === true){
+            if(t.d.loading === true || t.d.empty){
                 return false;
             }
             t.open();
@@ -117,12 +121,14 @@ define([
         var t = this;
 
         t.unselectAll();
+        var hasValue = false;
 
         if(typeof t.d.value === 'object' || typeof t.d.value === 'array'){
             for(var i = 0; i < t.d.options.length; i++){
                 for(var j = 0; j < t.d.value.length; j++){
                     if(t.d.options[i].val() == t.d.value[j]){
                         t.d.options[i].select();
+                        hasValue = true;
                     }
                 }
             }
@@ -130,10 +136,19 @@ define([
             for(var i = 0; i < t.d.options.length; i++){
                 if(t.d.options[i].val() == t.d.value){
                     t.d.options[i].select();
+                    hasValue = true;
                     break;
                 }
             }
         }
+
+        if(!hasValue){
+            t.content(t.emptyText());
+            t.widget().addClass('automizy-empty');
+        }else{
+            t.widget().removeClass('automizy-empty');
+        }
+
         t.d.originalInput.val(t.d.value).trigger('change');
 
         return t;
@@ -432,6 +447,15 @@ define([
         if (typeof options !== 'undefined') {
             t.removeOptions();
             t.addOptions(options);
+            if(t.d.showMessageIfEmpty) {
+                if (options.length <= 0) {
+                    t.widget().addClass('automizy-empty-select');
+                    t.d.empty = true;
+                } else {
+                    t.widget().removeClass('automizy-empty-select');
+                    t.d.empty = false;
+                }
+            }
             return t;
         }
         return t.d.options;
@@ -479,6 +503,17 @@ define([
                 t.d.tmpValue = false;
             }
         }
+        return t;
+    };
+
+    p.emptyMessage = function(msg){
+        var t = this;
+        t.d.showMessageIfEmpty = true;
+
+        if (typeof msg !== 'undefined') {
+            t.d.$emptyBox.html(msg);
+        }
+
         return t;
     };
 

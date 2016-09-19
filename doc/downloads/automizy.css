@@ -1087,6 +1087,7 @@ input[type='radio']{
     width:63px;
 }
 .automizy-permission-trap,
+.automizy-force-hide,
 .automizy-hide{
     display:none !important;
     visibility: hidden !important;
@@ -1465,7 +1466,8 @@ label.iPhoneCheckLabelOff span {
     cursor:pointer;
     min-width:180px;
     vertical-align: middle;
-    overflow: hidden;
+    position: relative;
+    
 }
 .automizy-select.automizy-active{
      color: #333333;
@@ -1539,6 +1541,22 @@ label.iPhoneCheckLabelOff span {
     box-sizing: border-box;
 }
 .automizy-select.automizy-loading .automizy-select-loading-box{
+    display:block;
+}
+.automizy-select .automizy-select-empty-box{
+    display:none;
+    color: #ff0000;
+    padding: 6px 0 0 6px;
+}
+.automizy-select.automizy-empty-select{
+    border:none;
+    background-color:transparent;
+    cursor:auto;
+}
+.automizy-select.automizy-empty-select .automizy-select-table{
+    display:none;
+}
+.automizy-select.automizy-empty-select .automizy-select-empty-box{
     display:block;
 }
 .automizy-select.automizy-loading .automizy-select-table{

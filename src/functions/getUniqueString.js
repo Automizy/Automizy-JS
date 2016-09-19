@@ -8,7 +8,8 @@ define([
     var index = 0;
     $A.getUniqueString = function(){
         var str = pad(index, 8) + '-' + (Math.random() + 1).toString(36).substring(2);
-        if($.inArray(str, $A.d.uniques) >= 0){
+        //if($.inArray(str, $A.d.uniques) >= 0){
+        if( $A.d.uniques.indexOf(str) > -1 ){
             return $A.getUniqueString();
         }
         $A.d.uniques.push(str);

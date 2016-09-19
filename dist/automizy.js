@@ -261,6 +261,12 @@ var $A = {};
                 if (typeof t.d.remove === 'undefined') {
                     t.d.remove = function () {};
                 }
+                if (typeof t.d.showFunction === 'undefined') {
+                    t.d.showFunction = function () {};
+                }
+                if (typeof t.d.hideFunction === 'undefined') {
+                    t.d.hideFunction = function () {};
+                }
                 if (typeof t.d.returnValue === 'undefined') {
                     t.d.returnValue = true;
                 }
@@ -366,62 +372,74 @@ var $A = {};
             };
         p.draw = p.drawTo || p.appendTo;
 
-        p.show = p.show || function () {
+        p.show = p.show || function (func) {
                 var t = this;
+                if (typeof func === 'function') {
+                    t.d.showFunction = func;
+                    return t;
+                }
                 if (!t.d.hasObject) {
                     t.draw();
                 }
-                this.d.$widget.ashow();
+                t.d.$widget.ashow();
+                t.d.showFunction.apply(t, [t, t.d.$widget]);
                 return t;
             };
-        p.hide = p.hide || function () {
+        p.hide = p.hide || function (func) {
                 var t = this;
-                $A.setWindowScroll(true, this.id());
-                if (typeof this.d.close === 'function') {
-                    this.d.close(this, t.d.$widget);
+                if (typeof func === 'function') {
+                    t.d.hideFunction = func;
+                    return t;
                 }
-                if (typeof this.hash === 'function' && this.hash() !== false) {
-                    $A.hashChange(this.hash(), false);
+                $A.setWindowScroll(true, t.id());
+                if (typeof t.d.close === 'function') {
+                    t.d.close(t, t.d.$widget);
                 }
-                this.d.$widget.ahide();
+                if (typeof t.hash === 'function' && t.hash() !== false) {
+                    $A.hashChange(t.hash(), false);
+                }
+                t.d.$widget.ahide();
+                t.d.hideFunction.apply(t, [t, t.d.$widget]);
                 return t;
             };
         p.remove = p.remove || function (func) {
+                var t = this;
                 if (typeof func === 'function') {
-                    this.d.remove = func;
-                    return this;
+                    t.d.remove = func;
+                    return t;
                 }
-                if (!this.d.hasObject) {
-                    this.d.$widget.appendTo($('body:first'));
+                if (!t.d.hasObject) {
+                    t.d.$widget.appendTo($('body:first'));
                 }
-                if (typeof this.d.removeAnimation === 'function') {
-                    this.d.removeAnimation.apply(this, [this, this.d.$widget]);
+                if (typeof t.d.removeAnimation === 'function') {
+                    t.d.removeAnimation.apply(t, [t, t.d.$widget]);
                 } else {
-                    var parent = this.d.$widget[0].parentElement;
+                    var parent = t.d.$widget[0].parentElement;
                     if (typeof parent !== 'undefined' && parent !== null && typeof parent.removeChild === 'function') {
-                        parent.removeChild(this.d.$widget[0]);
+                        parent.removeChild(t.d.$widget[0]);
                     }
                 }
-                $A.setWindowScroll(true, this.id());
-                delete $A.d[moduleNameLower + "s"][this.id()];
-                this.d.remove.apply(this, [this, this.d.$widget]);
+                $A.setWindowScroll(true, t.id());
+                delete $A.d[moduleNameLower + "s"][t.id()];
+                t.d.remove.apply(t, [t, t.d.$widget]);
                 return true;
             };
         p.id = p.id || function (id) {
+                var t = this;
                 if (typeof id === 'number' || typeof id === 'string') {
-                    if ($A.setWindowScroll(true, this.d.id)) {
+                    if ($A.setWindowScroll(true, t.d.id)) {
                         $A.setWindowScroll(false, id);
                     }
-                    $A.d[moduleNameLower + "s"].renameProperty(this.d.id, id);
-                    this.d.$widget.attr('id', id);
-                    this.d.id = id;
-                    return this;
+                    $A.d[moduleNameLower + "s"].renameProperty(t.d.id, id);
+                    t.d.$widget.attr('id', id);
+                    t.d.id = id;
+                    return t;
                 }
-                if (typeof this.d.id === 'undefined') {
-                    this.d.id = this.widget().attr('id') || 'automizy-' + moduleNameLower + '-' + $A.getUniqueString();
-                    this.id(this.d.id);
+                if (typeof t.d.id === 'undefined') {
+                    t.d.id = t.widget().attr('id') || 'automizy-' + moduleNameLower + '-' + $A.getUniqueString();
+                    t.id(t.d.id);
                 }
-                return this.d.id;
+                return t.d.id;
             };
         p.data = p.data || function (data, value) {
                 var t = this;
@@ -564,7 +582,6 @@ var $A = {};
                 }
             } else {
                 for (var i = 0; i < events.length; i++) {
-                    console.log(t.f);
                     if(typeof t.f !== 'undefined' && typeof t.f[events[i]] !== 'undefined' && typeof t.f[events[i]][name] !== 'undefined') {
                         delete t.f[events[i]][name];
                     }
@@ -589,7 +606,8 @@ var $A = {};
 
 
         $A.events[moduleNameLower] = {};
-        if ($.inArray('complete', moduleEvents) < 0) {
+        //if ($.inArray('complete', moduleEvents) < 0) {
+        if(moduleEvents.indexOf('complete') < 0){
             moduleEvents.push('complete');
         }
         $A.registerLocalEvents($A.events[moduleNameLower], moduleEvents);
@@ -1021,7 +1039,8 @@ var $A = {};
     var index = 0;
     $A.getUniqueString = function(){
         var str = pad(index, 8) + '-' + (Math.random() + 1).toString(36).substring(2);
-        if($.inArray(str, $A.d.uniques) >= 0){
+        //if($.inArray(str, $A.d.uniques) >= 0){
+        if( $A.d.uniques.indexOf(str) > -1 ){
             return $A.getUniqueString();
         }
         $A.d.uniques.push(str);
@@ -2582,6 +2601,7 @@ var $A = {};
             t.d.$widgetInputBox.ashow().empty();
             t.d.$widgetInput.attr(attributes).show();
             t.d.$widgetInput.appendTo(t.d.$widgetInputBox);
+            t.d.$widgetInputBoxError.appendTo(t.d.$widgetInputBox);
             t.d.$loadingBox.appendTo(t.d.$widgetInputBox);
             setTimeout(function(){
                 t.setupJQueryEvents();
@@ -3176,7 +3196,7 @@ var $A = {};
     p.input = p.addInput = function (obj) {
         var t = this;
         if (typeof obj !== 'undefined') {
-            if (obj instanceof $A.m.Input) {
+            if (obj instanceof $A.m.Input || obj instanceof $A.m.Select) {
                 obj.drawTo(t.d.$inputs);
                 t.d.inputs.push(obj);
             } else {
@@ -6179,7 +6199,8 @@ var $A = {};
         var t = this;
         t.d = {
             $widget: $('<div class="automizy-select automizy-has-arrow automizy-empty"></div>'),
-            $loadingBox: $('<div class="automizy-select-loading-box">loading...</div>'),
+            $loadingBox: $('<div class="automizy-select-loading-box">'+$A.translate('loading...')+'</div>'),
+            $emptyBox: $('<div class="automizy-select-empty-box"></div>'),
             $widgetTable: $('<table border="0" cellpadding="0" cellspacing="0" class="automizy-select-table"></table>'),
             $widgetTr: $('<tr class="automizy-select-tr"></tr>'),
             $widgetTdIcon: $('<td class="automizy-select-td-icon"></td>'),
@@ -6198,6 +6219,8 @@ var $A = {};
             multiple:false,
             disabled: false,
             loading:false,
+            empty:false,
+            showMessageIfEmpty:false,
             emptyText:$A.translate('Select an option'),
             selectedText:$A.translate('# items selected'),
             maxVisibleItems:2,
@@ -6217,6 +6240,7 @@ var $A = {};
 
         t.d.$widgetTable.appendTo(t.d.$widget);
         t.d.$loadingBox.appendTo(t.d.$widget);
+        t.d.$emptyBox.appendTo(t.d.$widget);
         t.d.$widgetTr.appendTo(t.d.$widgetTable);
         t.d.$widgetTdIcon.appendTo(t.d.$widgetTr);
         t.d.$icon.appendTo(t.d.$widgetTdIcon);
@@ -6231,7 +6255,7 @@ var $A = {};
         }
 
         t.widget().click(function(){
-            if(t.d.loading === true){
+            if(t.d.loading === true || t.d.empty){
                 return false;
             }
             t.open();
@@ -6285,12 +6309,14 @@ var $A = {};
         var t = this;
 
         t.unselectAll();
+        var hasValue = false;
 
         if(typeof t.d.value === 'object' || typeof t.d.value === 'array'){
             for(var i = 0; i < t.d.options.length; i++){
                 for(var j = 0; j < t.d.value.length; j++){
                     if(t.d.options[i].val() == t.d.value[j]){
                         t.d.options[i].select();
+                        hasValue = true;
                     }
                 }
             }
@@ -6298,10 +6324,19 @@ var $A = {};
             for(var i = 0; i < t.d.options.length; i++){
                 if(t.d.options[i].val() == t.d.value){
                     t.d.options[i].select();
+                    hasValue = true;
                     break;
                 }
             }
         }
+
+        if(!hasValue){
+            t.content(t.emptyText());
+            t.widget().addClass('automizy-empty');
+        }else{
+            t.widget().removeClass('automizy-empty');
+        }
+
         t.d.originalInput.val(t.d.value).trigger('change');
 
         return t;
@@ -6600,6 +6635,15 @@ var $A = {};
         if (typeof options !== 'undefined') {
             t.removeOptions();
             t.addOptions(options);
+            if(t.d.showMessageIfEmpty) {
+                if (options.length <= 0) {
+                    t.widget().addClass('automizy-empty-select');
+                    t.d.empty = true;
+                } else {
+                    t.widget().removeClass('automizy-empty-select');
+                    t.d.empty = false;
+                }
+            }
             return t;
         }
         return t.d.options;
@@ -6647,6 +6691,17 @@ var $A = {};
                 t.d.tmpValue = false;
             }
         }
+        return t;
+    };
+
+    p.emptyMessage = function(msg){
+        var t = this;
+        t.d.showMessageIfEmpty = true;
+
+        if (typeof msg !== 'undefined') {
+            t.d.$emptyBox.html(msg);
+        }
+
         return t;
     };
 
