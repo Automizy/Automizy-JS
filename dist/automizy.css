@@ -669,11 +669,6 @@ input.automizy-table-rowcheck:focus:disabled:checked { background-position: -15p
     display: block;
 }
 .automizy-form .automizy-form-subtitle {
-    color: #555555;
-    font-size: 15px;
-    background-color: #e1ead5;
-    padding: 10px 18px 10px 18px;
-    margin-bottom: 18px;
 }
 .automizy-content .automizy-form .automizy-form-subtitle {
     margin: 0 -18px 18px -18px;
@@ -683,7 +678,7 @@ input.automizy-table-rowcheck:focus:disabled:checked { background-position: -15p
 }
 .automizy-form .automizy-form-buttons {
     text-align: center;
-    height: 30px;
+    min-height: 30px;
 }
 .automizy-form .automizy-form-buttons .automizy-button {
     margin-left: 4px;
@@ -921,7 +916,7 @@ input.automizy-table-rowcheck:focus:disabled:checked { background-position: -15p
     margin-bottom: 20px;
     border-radius: 4px;
     background-color: #fff;
-    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    border: 1px solid #f7f7f7;
 }
 .automizy-table-head-box{
     display: block;
@@ -931,7 +926,7 @@ input.automizy-table-rowcheck:focus:disabled:checked { background-position: -15p
     color: #3e4855;
     position: relative;
     height: 45px;
-    top: -1px;
+    box-sizing: border-box;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
 }
