@@ -3162,7 +3162,7 @@ var $A = {};
             htmls: [],
             groups: [],
             alignment: 'left',
-            width: '75%',
+            width: '100%',
             maxWidth: '100%',
             minWidth: '0',
             hasObject: false,
@@ -3234,7 +3234,7 @@ var $A = {};
         var t = this;
         var id = "automizy-form-subtitle-" + $A.getUniqueString();
         if (typeof text === 'string') {
-            var $widget = $('<div id="' + id + '" class="automizy-form-subtitle"></div>');
+            var $widget = $('<h3 id="' + id + '" class="automizy-form-subtitle"></h3>');
             t.d.subtitles.push({id: id, text: text, $widget: $widget});
             $widget.html(text).appendTo(t.d.$inputs);
         } else {
@@ -5488,21 +5488,25 @@ var $A = {};
         };
 
     /*Opening inline editor*/
-    $('body').on('click', '.automizy-table-cell-editable-content', function (e) {
+    $(function () {
+        $('body').on('click', '.automizy-table-cell-editable-content', function (e) {
 
-        /*If true, opening inlineButtonsBox will be prevented*/
-        $A.d.inlineEditClick = true;
+            /*If true, opening inlineButtonsBox will be prevented*/
+            $A.d.inlineEditClick = true;
 
-        var $editableContent = $(e.target);
+            var $editableContent = $(e.target);
 
-        var $cell = $editableContent.closest('td');
-        var $row = $cell.closest('tr');
-        var table = $A.getTable($cell.closest('.automizy-table-box').attr('id'));
-        var cell = table.getCell($cell.index(), $row.index());
+            var $cell = $editableContent.closest('td');
+            var $row = $cell.closest('tr');
+            var table = $A.getTable($cell.closest('.automizy-table-box').attr('id'));
+            var cell = table.getCell($cell.index(), $row.index());
 
 
-        cell.inlineEdit()
+            cell.inlineEdit()
+        });
+
     });
+
     $A.initBasicFunctions(Table, "Table", ['addRows', 'beforeAddRows', 'beforeOpenInlineBox', 'loading']);
 
 })();

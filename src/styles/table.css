@@ -10,7 +10,7 @@
     margin-bottom: 20px;
     border-radius: 4px;
     background-color: #fff;
-    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    border: 1px solid #f7f7f7;
 }
 
 .automizy-table-head-box{
@@ -21,7 +21,7 @@
     color: #3e4855;
     position: relative;
     height: 45px;
-    top: -1px;
+    box-sizing: border-box;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
 }

@@ -20,7 +20,7 @@ define([
             htmls: [],
             groups: [],
             alignment: 'left',
-            width: '75%',
+            width: '100%',
             maxWidth: '100%',
             minWidth: '0',
             hasObject: false,
@@ -92,7 +92,7 @@ define([
         var t = this;
         var id = "automizy-form-subtitle-" + $A.getUniqueString();
         if (typeof text === 'string') {
-            var $widget = $('<div id="' + id + '" class="automizy-form-subtitle"></div>');
+            var $widget = $('<h3 id="' + id + '" class="automizy-form-subtitle"></h3>');
             t.d.subtitles.push({id: id, text: text, $widget: $widget});
             $widget.html(text).appendTo(t.d.$inputs);
         } else {
