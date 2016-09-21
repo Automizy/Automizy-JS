@@ -229,7 +229,9 @@
 
 .automizy-select-option-table .automizy-select-group-title{
     font-size: 12px;
-    color: #777777;
+    font-size: 14px;
+    text-transform: uppercase;
+    color: #333;
     vertical-align:middle;
     padding:6px 0 6px 20px;
     word-break: break-all;
