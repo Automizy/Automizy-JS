@@ -578,6 +578,7 @@ define([
             t.d.$widgetInputBox.ashow().empty();
             t.d.$widgetInput.attr(attributes).show();
             t.d.$widgetInput.appendTo(t.d.$widgetInputBox);
+            t.d.$widgetInputBoxError.appendTo(t.d.$widgetInputBox);
             t.d.$loadingBox.appendTo(t.d.$widgetInputBox);
             setTimeout(function () {
                 t.setupJQueryEvents();
