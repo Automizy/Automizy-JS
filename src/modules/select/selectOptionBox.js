@@ -30,8 +30,8 @@ define([
         t.f = {};
         t.init();
 
-        t.d.$searchBox.appendTo(t.d.$widget);
-        t.d.searchInput.drawTo(t.d.$searchBox).hide();
+        t.d.$searchBox.appendTo(t.d.$widget).hide();
+        t.d.searchInput.drawTo(t.d.$searchBox);
         t.d.$optionBox.appendTo(t.d.$widget);
         t.d.$options.appendTo(t.d.$optionBox);
 
@@ -146,6 +146,9 @@ define([
                 t.show();
                 t.runFunctions('open');
                 t.selectModule().widget().addClass('automizy-active');
+                if(t.selectModule().searchable()){
+                    t.d.searchInput.input().focus();
+                }
             }
         }
         return t;
