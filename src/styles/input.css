@@ -98,19 +98,13 @@
 }
 
 
-
-/*
-.automizy-input.automizy-skin-simple-automizy .automizy-input-help{
-    display:none;
-}
-*/
 .automizy-input.automizy-skin-simple-automizy .automizy-input-help {
     line-height: 10000px;
     width: 17px;
     height: 17px;
     display: inline-block;
     overflow: hidden;
-    margin: 4px 0 0 8px;
+    margin: 8px 0 0 8px;
     opacity: 0.5;
     cursor: pointer;
     vertical-align: top;
@@ -534,6 +528,16 @@
 
 /*Checkbox & radio*/
 
+.automizy-input[type='checkbox'],
+.automizy-input[type='radio']{
+    padding: 0;
+}
+
+.automizy-input[type='checkbox'] .automizy-input-box,
+.automizy-input[type='radio'] .automizy-input-box{
+    width: auto;
+}
+
 .automizy-input input[type='checkbox'], .automizy-input input[type='radio'], input.automizy-table-rowcheck{
     background-image: url(../images/checkbox-radio.png);
     background-repeat: no-repeat;
@@ -548,6 +552,13 @@
     width: 15px;
     height: 15px;
 }
+
+.automizy-input input[type='checkbox']{
+    margin-left: 2px;
+    margin-right: 9px;
+}
+
+
 .automizy-input input[type="checkbox"].automizy-table-rowcheck{
     width: 15px;
     height: 15px;
