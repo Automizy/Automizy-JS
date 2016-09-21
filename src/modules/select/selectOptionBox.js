@@ -8,7 +8,19 @@ define([
     var SelectOptionBox = function (obj) {
         var t = this;
         t.d = {
-            $widget: $('<span class="automizy-select-option-box"></span>'),
+            $widget: $('<span class="automizy-select-option-box-widget"></span>'),
+            $searchBox: $('<div class="automizy-select-search-box"></div>'),
+            searchInput: $A.newInput({
+                type:'text',
+                width:'100%',
+                placeholder:$A.translate('Search for ...'),
+                keyup:function(){
+                    if(t.selectModule() !== false){
+                        t.selectModule().search(this.val());
+                    }
+                }
+            }),
+            $optionBox: $('<div class="automizy-select-option-box"></div>'),
             $options:$('<table border="0" cellpadding="0" cellspacing="0" class="automizy-select-option-table"></table>'),
             selectModule:false,
             maxHeight: '250px',
@@ -18,7 +30,10 @@ define([
         t.f = {};
         t.init();
 
-        t.d.$options.appendTo(t.d.$widget);
+        t.d.$searchBox.appendTo(t.d.$widget);
+        t.d.searchInput.drawTo(t.d.$searchBox).hide();
+        t.d.$optionBox.appendTo(t.d.$widget);
+        t.d.$options.appendTo(t.d.$optionBox);
 
         if (typeof obj !== 'undefined') {
             t.initParameter(obj);
@@ -173,12 +188,12 @@ define([
         $A.resizeAllSelectBox();
     });
     $(document).on('click', function(event) {
-        if(!$(event.target).closest('.automizy-select-option-box, .automizy-select').length) {
+        if(!$(event.target).closest('.automizy-select-option-box-widget, .automizy-select').length) {
             $A.closeAllSelectBox();
         }
     });
     $(document).on('mousewheel DOMMouseScroll', function(event) {
-        if(!$(event.target).closest('.automizy-select-option-box').length) {
+        if(!$(event.target).closest('.automizy-select-option-box-widget').length) {
             $A.closeAllSelectBox();
         }
     })

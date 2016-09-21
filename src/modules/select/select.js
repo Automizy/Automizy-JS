@@ -577,6 +577,23 @@ define([
         this.d.$widget.ahide();
         return t;
     };
+    p.search = function (text) {
+        var t = this;
+        var text = text || '';
+        var options = t.options();
+        for(var i = 0; i < options.length; i++){
+            var str = '';
+            str += options[i].val();
+            str += ' ' + options[i].textValue();
+            str += ' ' + $('<p>'+options[i].html()+'</p>').text();
+            if(str.toLowerCase().search(text.toLowerCase()) > -1){
+                options[i].show();
+            }else{
+                options[i].hide();
+            }
+        }
+        return t;
+    };
 
 
 

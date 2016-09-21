@@ -5672,7 +5672,19 @@ var $A = {};
     var SelectOptionBox = function (obj) {
         var t = this;
         t.d = {
-            $widget: $('<span class="automizy-select-option-box"></span>'),
+            $widget: $('<span class="automizy-select-option-box-widget"></span>'),
+            $searchBox: $('<div class="automizy-select-search-box"></div>'),
+            searchInput: $A.newInput({
+                type:'text',
+                width:'100%',
+                placeholder:$A.translate('Search for ...'),
+                keyup:function(){
+                    if(t.selectModule() !== false){
+                        t.selectModule().search(this.val());
+                    }
+                }
+            }),
+            $optionBox: $('<div class="automizy-select-option-box"></div>'),
             $options:$('<table border="0" cellpadding="0" cellspacing="0" class="automizy-select-option-table"></table>'),
             selectModule:false,
             maxHeight: '250px',
@@ -5682,7 +5694,10 @@ var $A = {};
         t.f = {};
         t.init();
 
-        t.d.$options.appendTo(t.d.$widget);
+        t.d.$searchBox.appendTo(t.d.$widget);
+        t.d.searchInput.drawTo(t.d.$searchBox).hide();
+        t.d.$optionBox.appendTo(t.d.$widget);
+        t.d.$options.appendTo(t.d.$optionBox);
 
         if (typeof obj !== 'undefined') {
             t.initParameter(obj);
@@ -5837,12 +5852,12 @@ var $A = {};
         $A.resizeAllSelectBox();
     });
     $(document).on('click', function(event) {
-        if(!$(event.target).closest('.automizy-select-option-box, .automizy-select').length) {
+        if(!$(event.target).closest('.automizy-select-option-box-widget, .automizy-select').length) {
             $A.closeAllSelectBox();
         }
     });
     $(document).on('mousewheel DOMMouseScroll', function(event) {
-        if(!$(event.target).closest('.automizy-select-option-box').length) {
+        if(!$(event.target).closest('.automizy-select-option-box-widget').length) {
             $A.closeAllSelectBox();
         }
     })
@@ -6763,6 +6778,23 @@ var $A = {};
     p.hide = function () {
         var t = this;
         this.d.$widget.ahide();
+        return t;
+    };
+    p.search = function (text) {
+        var t = this;
+        var text = text || '';
+        var options = t.options();
+        for(var i = 0; i < options.length; i++){
+            var str = '';
+            str += options[i].val();
+            str += ' ' + options[i].textValue();
+            str += ' ' + $('<p>'+options[i].html()+'</p>').text();
+            if(str.toLowerCase().search(text.toLowerCase()) > -1){
+                options[i].show();
+            }else{
+                options[i].hide();
+            }
+        }
         return t;
     };
 

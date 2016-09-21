@@ -117,7 +117,7 @@
 }
 
 
-.automizy-select-option-box{   /*option box*/
+.automizy-select-option-box-widget{   /*option box widget*/
     position:absolute;
     z-index:16777270;
     border:1px solid rgba(0,0,0,0.15);
@@ -128,6 +128,8 @@
     background-color:#ffffff;
     margin:1px 0 0 0;
     box-sizing: border-box;
+}
+.automizy-select-option-box{   /*option box*/
     overflow: auto;
     max-height: 250px;
 }

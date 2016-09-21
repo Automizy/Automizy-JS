@@ -1562,7 +1562,7 @@ label.iPhoneCheckLabelOff span {
 .automizy-select.automizy-loading .automizy-select-table{
     display:none;
 }
-.automizy-select-option-box{   
+.automizy-select-option-box-widget{   
     position:absolute;
     z-index:16777270;
     border:1px solid rgba(0,0,0,0.15);
@@ -1573,6 +1573,8 @@ label.iPhoneCheckLabelOff span {
     background-color:#ffffff;
     margin:1px 0 0 0;
     box-sizing: border-box;
+}
+.automizy-select-option-box{   
     overflow: auto;
     max-height: 250px;
 }
