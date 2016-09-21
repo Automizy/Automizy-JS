@@ -5694,8 +5694,8 @@ var $A = {};
         t.f = {};
         t.init();
 
-        t.d.$searchBox.appendTo(t.d.$widget);
-        t.d.searchInput.drawTo(t.d.$searchBox).hide();
+        t.d.$searchBox.appendTo(t.d.$widget).hide();
+        t.d.searchInput.drawTo(t.d.$searchBox);
         t.d.$optionBox.appendTo(t.d.$widget);
         t.d.$options.appendTo(t.d.$optionBox);
 
@@ -5810,6 +5810,9 @@ var $A = {};
                 t.show();
                 t.runFunctions('open');
                 t.selectModule().widget().addClass('automizy-active');
+                if(t.selectModule().searchable()){
+                    t.d.searchInput.input().focus();
+                }
             }
         }
         return t;
@@ -6235,6 +6238,7 @@ var $A = {};
             disabled: false,
             loading:false,
             empty:false,
+            searchable:false,
             showMessageIfEmpty:false,
             emptyText:$A.translate('Select an option'),
             selectedText:$A.translate('# items selected'),
@@ -6780,19 +6784,38 @@ var $A = {};
         this.d.$widget.ahide();
         return t;
     };
+    p.searchable = function (value) {
+        var t = this;
+        if(typeof value !== 'undefined'){
+            t.d.searchable = $A.parseBoolean(value);
+            if(t.d.searchable){
+                t.d.optionBox.d.$searchBox.show();
+            }else{
+                t.d.optionBox.d.$searchBox.hide();
+            }
+            return t;
+        }
+        return t.d.searchable;
+    };
     p.search = function (text) {
         var t = this;
         var text = text || '';
         var options = t.options();
-        for(var i = 0; i < options.length; i++){
-            var str = '';
-            str += options[i].val();
-            str += ' ' + options[i].textValue();
-            str += ' ' + $('<p>'+options[i].html()+'</p>').text();
-            if(str.toLowerCase().search(text.toLowerCase()) > -1){
+        if(text.length <= 0){
+            for(var i = 0; i < options.length; i++) {
                 options[i].show();
-            }else{
-                options[i].hide();
+            }
+        }else{
+            for (var i = 0; i < options.length; i++) {
+                var str = '';
+                str += options[i].val();
+                str += ' ' + options[i].textValue();
+                str += ' ' + $('<p>' + options[i].html() + '</p>').text();
+                if (str.toLowerCase().search(text.toLowerCase()) > -1) {
+                    options[i].show();
+                } else {
+                    options[i].hide();
+                }
             }
         }
         return t;

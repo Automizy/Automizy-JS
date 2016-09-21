@@ -9,7 +9,7 @@
         <script src="../dist/automizy.js"></script>
         <script>
             $(function(){
-                window.exampleInput1 = $A.newInput().drawTo('body:first').automizySelect().multiple(true).maxVisibleItems(3).options([
+                window.exampleInput1 = $A.newInput().drawTo('body:first').automizySelect().multiple(true).maxVisibleItems(3).searchable(true).options([
                     {value:123, html:'Meggybefőtt (normal)'},
                     {value:321, html:'Cseresznyelé (inactive)', disabled:true},
                     {value:322, html:'Alma fa (selected)', selected:true},
