@@ -94,7 +94,7 @@ define([
         //t.d.$widgetInputBoxError.appendTo(t.d.$widget);
         t.d.$widgetInputBoxError.appendTo(t.d.$widgetInputBox);
         t.d.$widgetInputIcon.appendTo(t.d.$widgetInputBox);
-        t.d.$widgetLabelAfter.appendTo(t.d.$widgetInputBox).ahide();
+        t.d.$widgetLabelAfter.appendTo(t.d.$widgetInputBox).attr('for', t.d.id + '-input').ahide();
         t.d.$widgetHelpContentInner.appendTo(t.d.$widgetHelpContent);
         t.d.$widgetHelpContent.appendTo('body:first');
         t.d.$widgetHelp.appendTo(t.d.$widget).on('mouseenter click', function () {
