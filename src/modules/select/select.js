@@ -32,6 +32,7 @@ define([
             disabled: false,
             loading:false,
             empty:false,
+            searchable:false,
             showMessageIfEmpty:false,
             emptyText:$A.translate('Select an option'),
             selectedText:$A.translate('# items selected'),
@@ -577,19 +578,38 @@ define([
         this.d.$widget.ahide();
         return t;
     };
+    p.searchable = function (value) {
+        var t = this;
+        if(typeof value !== 'undefined'){
+            t.d.searchable = $A.parseBoolean(value);
+            if(t.d.searchable){
+                t.d.optionBox.d.$searchBox.show();
+            }else{
+                t.d.optionBox.d.$searchBox.hide();
+            }
+            return t;
+        }
+        return t.d.searchable;
+    };
     p.search = function (text) {
         var t = this;
         var text = text || '';
         var options = t.options();
-        for(var i = 0; i < options.length; i++){
-            var str = '';
-            str += options[i].val();
-            str += ' ' + options[i].textValue();
-            str += ' ' + $('<p>'+options[i].html()+'</p>').text();
-            if(str.toLowerCase().search(text.toLowerCase()) > -1){
+        if(text.length <= 0){
+            for(var i = 0; i < options.length; i++) {
                 options[i].show();
-            }else{
-                options[i].hide();
+            }
+        }else{
+            for (var i = 0; i < options.length; i++) {
+                var str = '';
+                str += options[i].val();
+                str += ' ' + options[i].textValue();
+                str += ' ' + $('<p>' + options[i].html() + '</p>').text();
+                if (str.toLowerCase().search(text.toLowerCase()) > -1) {
+                    options[i].show();
+                } else {
+                    options[i].hide();
+                }
             }
         }
         return t;

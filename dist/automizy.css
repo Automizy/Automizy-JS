@@ -1861,6 +1861,12 @@ label.iPhoneCheckLabelOff span {
 .automizy-select.automizy-empty .automizy-select-td-content{
     color: #777777;
 }
+.automizy-select-search-box{
+    padding: 8px 8px 4px 8px;
+}
+.automizy-select-search-box .automizy-input{
+    padding: 0;
+}
 .automizy-select .automizy-select-loading-box{
     display:none;
     width:100%;
