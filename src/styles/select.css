@@ -151,6 +151,7 @@
 
 .automizy-select-option-table{  /*option box content table*/
     width:100%;
+    max-width:99%;
 }
 .automizy-select-option-table .automizy-select-option-tr{   /*option row*/
     color:#555;
