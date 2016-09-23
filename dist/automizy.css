@@ -1718,6 +1718,10 @@ label.iPhoneCheckLabelOff span {
      background-color: #e6e6e6;
      border-color: #adadad;
 }
+.automizy-select.automizy-disabled{
+     color: #333333;
+     opacity:0.65;
+}
 .automizy-select .automizy-select-table{
     width:100%;
     font-family:Arial;
