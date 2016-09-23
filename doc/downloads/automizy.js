@@ -5798,6 +5798,7 @@ var $A = {};
     p.open = function (func, name, life) {
         var t = this;
         $A.closeAllSelectBox();
+        $A.activeSelectBox = t;
         if(t.d.opened){
             return t;
         }
@@ -5819,13 +5820,14 @@ var $A = {};
     };
     p.close = function (func, name, life) {
         var t = this;
-        if(!t.d.opened){
-            return t;
-        }
-        t.d.opened = false;
         if (typeof func === 'function') {
             t.addFunction('close', func, name, life);
         } else {
+            $A.activeSelectBox = false;
+            if(!t.d.opened){
+                return t;
+            }
+            t.d.opened = false;
             if (t.beforeClose().returnValue() !== false) {
                 t.hide();
                 t.runFunctions('close');
@@ -5836,8 +5838,10 @@ var $A = {};
     };
 
 
+    $A.activeSelectBox = false;
     $A.initBasicFunctions(SelectOptionBox, "SelectOptionBox", ['beforeOpen', 'beforeClose', 'open', 'close']);
     $A.closeAllSelectBox = function(){
+        $A.activeSelectBox = false;
         var boxes = $A.getAllSelectOptionBox();
         for(var i in boxes){
             boxes[i].close();
@@ -5863,7 +5867,7 @@ var $A = {};
         if(!$(event.target).closest('.automizy-select-option-box-widget').length) {
             $A.closeAllSelectBox();
         }
-    })
+    });
 
 
 })();
@@ -6277,7 +6281,11 @@ var $A = {};
             if(t.d.loading === true || t.d.empty){
                 return false;
             }
-            t.open();
+            if(t.widget().hasClass('automizy-active')){
+                $A.closeAllSelectBox();
+            }else {
+                t.open();
+            }
         });
 
         t.setupJQueryEvents();
@@ -6330,15 +6338,17 @@ var $A = {};
         t.unselectAll();
         var hasValue = false;
 
+        console.log(t.d.value);
         if(typeof t.d.value === 'object' || typeof t.d.value === 'array'){
             for(var i = 0; i < t.d.options.length; i++){
                 for(var j = 0; j < t.d.value.length; j++){
                     if(t.d.options[i].val() == t.d.value[j]){
-                        t.d.options[i].select();
+                        t.d.options[i].select(false, true);
                         hasValue = true;
                     }
                 }
             }
+            t.refreshValue();
         }else{
             for(var i = 0; i < t.d.options.length; i++){
                 if(t.d.options[i].val() == t.d.value){
@@ -6355,7 +6365,7 @@ var $A = {};
         }else{
             t.widget().removeClass('automizy-empty');
         }
-
+        console.log(t.d.value);
         t.d.originalInput.val(t.d.value).trigger('change');
 
         return t;
@@ -6480,7 +6490,14 @@ var $A = {};
     p.disabled = function (disabled) {
         var t = this;
         if (typeof disabled !== 'undefined') {
-            t.d.disabled = $A.parseBoolean(disabled);
+            disabled = $A.parseBoolean(disabled);
+            if(disabled){
+                $A.closeAllSelectBox();
+                t.widget().addClass('automizy-disabled');
+            }else{
+                t.widget().removeClass('automizy-disabled');
+            }
+            t.d.disabled = disabled;
             if(typeof t.d.originalInput.disabled !== 'undefined'){
                 t.d.originalInput.disabled(t.d.disabled);
             }else{
@@ -6671,7 +6688,15 @@ var $A = {};
         var t = this;
         var val = t.val();
         var before = before || false;
+        var options = options || [];
         for(var i = 0; i < options.length; i++){
+            if(options[i] instanceof Array){
+                options[i] = {
+                    value:options[i][0] || 0,
+                    html:options[i][1] || options[i][0],
+                    selected:$A.parseBoolean(options[i][2] || false)
+                };
+            }
             options[i].selectModule = t;
             options[i].selectOptionBoxModule = t.optionBox();
             if(options[i].selected === true){
