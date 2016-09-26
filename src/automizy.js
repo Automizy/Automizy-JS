@@ -10,6 +10,7 @@ define([
     "automizy/images/icons",
 
     "automizy/modules/dialog",
+    "automizy/modules/alert",
     "automizy/modules/button",
     "automizy/modules/input",
     "automizy/modules/form",

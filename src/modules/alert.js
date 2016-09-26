@@ -5,39 +5,36 @@ define([
     'automizy/functions/registerLocalEvents',
     'automizy/images/icons'
 ], function () {
-    var Button = function (obj) {
+    var Alert = function (obj) {
         var t = this;
         t.d = {
-            $widget: $('<span class="automizy-button"></span>'),
-            $widgetButton: $('<a href="javascript:;"></a>'),
-            text: 'My Button',
-            skin: 'simple-white',
-            float: 'none',
-            width: '',
-            hasObject: false,
-            newRow: false,
-            disabled: false,
-            triggers: {
-                click: 0
-            },
+            $widget: $('<div class="automizy-alert alert alert-close">'),
+            $alertBoxClose: $('<a href="#" title="Close" class="automizy-alert-close glyph-icon alert-close-btn icon-remove">X</a>'),
+            $alertBoxIcon: $('<div class="automizy-alert-icon bg-green alert-icon">'),
+            $alertBoxContent: $('<div class="automizy-alert-content alert-content">'),
+            $alertBoxTitle: $('<h4 class="automizy-alert-title alert-title">'),
+            $alertBoxHtml: $('<p>&nbsp;</p>'),
+
+            title: '',
+            content: '',
+            type: '',
+            closable: true,
             create: function () {
             },
-            id: 'automizy-button-' + $A.getUniqueString()
+            id: 'automizy-alert-' + $A.getUniqueString()
         };
         t.f = {};
         t.init();
 
-        t.d.$widgetButton.appendTo(t.d.$widget);
-        t.d.$widgetButton.text(t.d.text);
-        t.d.$widget.addClass('automizy-skin-' + t.d.skin).attr('id', t.id());
-        t.d.$widgetButton.click(function () {
-            if (t.click().returnValue() === false) {
-                return false;
-            }
-        });
+        t.d.$alertBoxClose.appendTo(t.d.$widget);
+        t.d.$alertBoxIcon.appendTo(t.d.$widget);
+        t.d.$alertBoxContent.appendTo(t.d.$widget);
+        t.d.$alertBoxTitle.appendTo(t.d.$alertBoxContent);
+        t.d.$alertBoxHtml.appendTo(t.d.$alertBoxContent);
+
         if (typeof obj !== 'undefined') {
-            if (typeof obj.disabled !== 'undefined') {
-                t.disabled(obj.disabled);
+            if (typeof obj.title !== 'undefined') {
+                t.title(obj.title);
             }
             if (typeof obj.text !== 'undefined') {
                 t.text(obj.text);
@@ -45,127 +42,139 @@ define([
             if (typeof obj.html !== 'undefined') {
                 t.html(obj.html);
             }
-            if (typeof obj.float !== 'undefined') {
-                t.float(obj.float);
+            if (typeof obj.type !== 'undefined') {
+                t.type(obj.type);
             }
-            if (typeof obj.width !== 'undefined') {
-                t.width(obj.width);
+            if (typeof obj.open === 'function') {
+                t.open(obj.open);
             }
-            if (typeof obj.click !== 'undefined') {
-                t.click(obj.click);
+            if (typeof obj.close === 'function') {
+                t.close(obj.close);
             }
-            if (typeof obj.newRow !== 'undefined') {
-                t.newRow(obj.newRow);
-            }
-            if (typeof obj.thin !== 'undefined') {
-                t.thin(obj.thin);
+            if (typeof obj.closable !== 'undefined'){
+                t.closable(obj.closable);
             }
             t.initParameter(obj);
         }
+
+        t.d.$alertBoxClose.click(function () {
+            t.close();
+            t.remove();
+        })
     };
 
-    var p = Button.prototype;
-    p.text = p.val = p.value = function (text) {
+    var p = Alert.prototype;
+
+    p.title = function (title) {
         var t = this;
-        if (typeof text !== 'undefined') {
-            t.d.text = text;
-            t.d.$widgetButton.text(text);
+        if (typeof title !== 'undefined') {
+            t.d.title = title;
+            t.d.$alertBoxTitle.html(title);
             return t;
         }
-        return t.d.text;
+        return t.d.title;
     };
+
     p.html = function (html) {
         var t = this;
         if (typeof html !== 'undefined') {
             t.d.html = html;
-            t.d.$widgetButton.html(html);
+            t.d.text = $(html).text();
+            t.d.$alertBoxHtml.html(html);
             return t;
         }
         return t.d.html;
     };
-    p.width = function (width) {
+
+    p.text = function (text) {
         var t = this;
-        if (typeof width !== 'undefined') {
-            t.d.width = width;
-            t.d.$widget.width(width);
-            t.d.$widgetButton.width('100%');
-            t.d.$widgetButton.css('width', '100%');
+        if (typeof text !== 'undefined') {
+            t.d.text = text;
+            t.d.html = text;
+            t.d.$alertBoxHtml.html('').text(text);
             return t;
         }
-        return t.d.width;
-    };
-    p.disabled = function (disabled) {
-        var t = this;
-        if (typeof disabled !== 'undefined') {
-            t.d.disabled = $A.parseBoolean(disabled);
-            t.d.$widgetButton.prop('disabled', t.d.disabled);
-            t.d.$widget.toggleClass('disabled', t.d.disabled);
-            return t;
-        }
-        return t.d.disabled;
-    };
-    p.disable = function () {
-        return this.disabled(true);
-    };
-    p.enable = function () {
-        return this.disabled(false);
-    };
-    p.float = function (float) {
-        var t = this;
-        if (typeof float !== 'undefined') {
-            t.d.float = float;
-            t.d.$widget.css('float', float);
-            return t;
-        }
-        return t.d.float;
-    };
-    p.newRow = function (newRow) {
-        var t = this;
-        if (typeof newRow !== 'undefined') {
-            newRow = $A.parseBoolean(newRow);
-            t.d.newRow = newRow;
-            if (newRow) {
-                t.d.$widget.addClass('new-row');
-            } else {
-                t.d.$widget.removeClass('new-row');
-            }
-            return t;
-        }
-        return t.d.newRow;
-    };
-    p.button = function () {
-        var t = this;
-        return t.d.$widgetButton;
+        return t.d.text;
     };
 
-    p.click = function (func, name, life) {
+    p.open = function (func, name, life) {
         var t = this;
         if (typeof func === 'function') {
-            t.addFunction('click', func, name, life);
+            t.addFunction.apply(t, ['open', func, name, life]);
         } else {
-            if(t.disabled()){
-                return t;
-            }
-            var a = t.runFunctions('click');
-            t.returnValue(!(a[0] === false || a[1] === false));
+                t.show();
+                t.runFunctions('open');
+
+            $A.runFunctions($A.events.alert.functions.open, this, [this, this.d.$widget]);
         }
         return t;
     };
-    p.thin = function(value){
+
+    p.close = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('close', func, name, life);
+        } else {
+            t.hide();
+            t.runFunctions('close');
+        }
+        return t;
+    };
+
+    p.closable = function (value) {
         var t = this;
         if (typeof value !== 'undefined') {
-            value = $A.parseBoolean(value);
-            if(!value){
-                t.widget().removeClass('automizy-button-thin');
-                return t;
+            t.d.closable = $A.parseBoolean(value);
+            if (value) {
+                t.d.$alertBoxClose.show();
             }
+            else {
+                t.d.$alertBoxClose.hide();
+            }
+        } else {
+            return t.d.closable;
         }
-        t.widget().addClass('automizy-button-thin');
         return t;
     };
 
+    p.type = function (type) {
+        var t = this;
+        if (typeof type !== 'undefined') {
+            t.d.type = type;
 
-    $A.initBasicFunctions(Button, "Button", ['click']);
+            switch (type) {
+                case "success":
+                    t.d.$widget.attr('class', 'alert alert-close alert-success');
+                    t.d.$alertBoxIcon.attr('class', 'alert-icon bg-green');
+                    t.d.$alertBoxIcon.html('<i class="glyph-icon icon-check"></i>');
+                    t.d.$alertBoxTitle.text($A.translate('Success!'));
+                    break;
+                case "info":
+                    t.d.$widget.attr('class', 'alert alert-close alert-notice');
+                    t.d.$alertBoxIcon.attr('class', 'alert-icon bg-blue');
+                    t.d.$alertBoxIcon.html('<i class="glyph-icon icon-info"></i>');
+                    t.d.$alertBoxTitle.text($A.translate('Info'));
+                    break;
+                case "warning":
+                    t.d.$widget.attr('class', 'alert alert-close alert-warning');
+                    t.d.$alertBoxIcon.attr('class', 'alert-icon bg-orange');
+                    t.d.$alertBoxIcon.html('<i class="glyph-icon icon-warning"></i>');
+                    t.d.$alertBoxTitle.text($A.translate('Warning!'));
+                    break;
+                case "error":
+                    t.d.$widget.attr('class', 'alert alert-close alert-danger');
+                    t.d.$alertBoxIcon.attr('class', 'alert-icon bg-red');
+                    t.d.$alertBoxIcon.html('<i class="glyph-icon icon-times"></i>');
+                    t.d.$alertBoxTitle.text($A.translate('Error!'));
+                    break;
+            }
+
+            return t;
+        }
+        return t.d.type;
+    };
+
+    $A.initBasicFunctions(Alert, "Alert", ['close']);
 
 
 });

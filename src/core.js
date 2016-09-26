@@ -11,6 +11,7 @@ define([], function () {
             dialogs: {},
             buttons: {},
             inputs: {},
+            alerts: {},
             forms:{},
             validators:{},
             feedbacks: {},
