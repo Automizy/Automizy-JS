@@ -220,7 +220,7 @@ define([
             if (typeof obj.validate !== 'undefined') {
                 t.validate(obj.validate);
             }
-            if (typeof obj.validationEvents !== 'undefined') {
+            if (typeof obj.validationEvents !== 'undefined'){
                 t.validationEvents(obj.validationEvents);
             }
             if (typeof obj.enableShowSuccess !== 'undefined') {
@@ -238,12 +238,12 @@ define([
             if (typeof obj.iconClick === 'function') {
                 t.iconClick(obj.iconClick);
             }
-            if (typeof obj.automizySelect !== 'undefined') {
+            if(typeof obj.automizySelect !== 'undefined'){
                 t.d.automizySelect = obj.automizySelect;
             }
             t.initParameter(obj);
         }
-        if (t.d.automizySelect) {
+        if(t.d.automizySelect){
             t.automizySelect();
         }
     };
@@ -255,10 +255,10 @@ define([
             .unbind('change', t.d.change).bind('change', t.d.change)
             .unbind('focus', t.d.focus).bind('focus', t.d.focus)
             .blur(function () {
-                if (t.blur().returnValue() === false) {
-                    return false;
-                }
-            }).keypress(function (e) {
+            if (t.blur().returnValue() === false) {
+                return false;
+            }
+        }).keypress(function (e) {
             if (e.which == 13) {
                 if (t.enter().returnValue() === false) {
                     return false;
@@ -899,7 +899,7 @@ define([
             } else if (validator instanceof $A.m.Validator) {
                 t.d.validator = validator;
             } else {
-                if (typeof t.d.validator === 'undefined') {
+                if(typeof t.d.validator === 'undefined'){
                     t.d.validator = $A.newValidator();
                 }
                 t.d.validator.set(validator);
@@ -919,14 +919,14 @@ define([
                 if (!a) {
                     t.showError(t.validator().errors().join('<br/>'));
                     if(typeof t.validationEvents() === 'undefined' || t.validationEvents() === ''){
-                        t.validationEvents('keyup change paste');
+                    t.validationEvents('keyup change paste');
                         t.enableShowSuccess(true);
                     }
                 } else {
                     t.hideError();
                     if(t.enableShowSuccess()){
-                        t.showSuccess();
-                    }
+                    t.showSuccess();
+                }
                     t.enableShowSuccess(false);
                 }
                 t.d.validate.apply(this, [a, this, this.d.$widget]);
@@ -991,14 +991,14 @@ define([
         return t;
     };
 
-    p.showSuccess = function () {
+    p.showSuccess = function(){
         var t = this;
         t.hideError();
         t.widget().addClass('valid');
         return t;
     };
 
-    p.hideSuccess = function () {
+    p.hideSuccess = function(){
         var t = this;
         t.widget().removeClass('valid');
         return t;

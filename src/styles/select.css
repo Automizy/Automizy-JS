@@ -44,6 +44,8 @@
     margin:0;
     width:0px;
 }
+
+
 .automizy-select.automizy-has-icon .automizy-select-td-icon{
     padding:0 6px 0 14px;
 }
@@ -147,6 +149,7 @@
 .automizy-select-option-box{   /*option box*/
     overflow: auto;
     max-height: 250px;
+    padding: 5px 10px;
 }
 
 .automizy-select-option-table{  /*option box content table*/
