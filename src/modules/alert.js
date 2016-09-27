@@ -59,7 +59,6 @@ define([
 
         t.d.$alertBoxClose.click(function () {
             t.close();
-            t.remove();
         })
     };
 
@@ -102,9 +101,10 @@ define([
         if (typeof func === 'function') {
             t.addFunction.apply(t, ['open', func, name, life]);
         } else {
-                t.show();
-                t.runFunctions('open');
-
+                t.d.$widget.fadeIn(function(){
+                    t.show();
+                    t.runFunctions('open');
+                });
             $A.runFunctions($A.events.alert.functions.open, this, [this, this.d.$widget]);
         }
         return t;
@@ -115,8 +115,10 @@ define([
         if (typeof func === 'function') {
             t.addFunction('close', func, name, life);
         } else {
-            t.hide();
-            t.runFunctions('close');
+            t.d.$widget.fadeOut(function(){
+                t.hide();
+                t.runFunctions('close');
+            });
         }
         return t;
     };

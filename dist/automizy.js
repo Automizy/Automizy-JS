@@ -1544,7 +1544,6 @@ var $A = {};
 
         t.d.$alertBoxClose.click(function () {
             t.close();
-            t.remove();
         })
     };
 
@@ -1587,9 +1586,10 @@ var $A = {};
         if (typeof func === 'function') {
             t.addFunction.apply(t, ['open', func, name, life]);
         } else {
-                t.show();
-                t.runFunctions('open');
-
+                t.d.$widget.fadeIn(function(){
+                    t.show();
+                    t.runFunctions('open');
+                });
             $A.runFunctions($A.events.alert.functions.open, this, [this, this.d.$widget]);
         }
         return t;
@@ -1600,8 +1600,10 @@ var $A = {};
         if (typeof func === 'function') {
             t.addFunction('close', func, name, life);
         } else {
-            t.hide();
-            t.runFunctions('close');
+            t.d.$widget.fadeOut(function(){
+                t.hide();
+                t.runFunctions('close');
+            });
         }
         return t;
     };
@@ -2438,7 +2440,7 @@ var $A = {};
             if (typeof obj.validate !== 'undefined') {
                 t.validate(obj.validate);
             }
-            if (typeof obj.validationEvents !== 'undefined') {
+            if (typeof obj.validationEvents !== 'undefined'){
                 t.validationEvents(obj.validationEvents);
             }
             if (typeof obj.enableShowSuccess !== 'undefined') {
@@ -2456,12 +2458,12 @@ var $A = {};
             if (typeof obj.iconClick === 'function') {
                 t.iconClick(obj.iconClick);
             }
-            if (typeof obj.automizySelect !== 'undefined') {
+            if(typeof obj.automizySelect !== 'undefined'){
                 t.d.automizySelect = obj.automizySelect;
             }
             t.initParameter(obj);
         }
-        if (t.d.automizySelect) {
+        if(t.d.automizySelect){
             t.automizySelect();
         }
     };
@@ -2473,10 +2475,10 @@ var $A = {};
             .unbind('change', t.d.change).bind('change', t.d.change)
             .unbind('focus', t.d.focus).bind('focus', t.d.focus)
             .blur(function () {
-                if (t.blur().returnValue() === false) {
-                    return false;
-                }
-            }).keypress(function (e) {
+            if (t.blur().returnValue() === false) {
+                return false;
+            }
+        }).keypress(function (e) {
             if (e.which == 13) {
                 if (t.enter().returnValue() === false) {
                     return false;
@@ -3117,7 +3119,7 @@ var $A = {};
             } else if (validator instanceof $A.m.Validator) {
                 t.d.validator = validator;
             } else {
-                if (typeof t.d.validator === 'undefined') {
+                if(typeof t.d.validator === 'undefined'){
                     t.d.validator = $A.newValidator();
                 }
                 t.d.validator.set(validator);
@@ -3137,14 +3139,14 @@ var $A = {};
                 if (!a) {
                     t.showError(t.validator().errors().join('<br/>'));
                     if(typeof t.validationEvents() === 'undefined' || t.validationEvents() === ''){
-                        t.validationEvents('keyup change paste');
+                    t.validationEvents('keyup change paste');
                         t.enableShowSuccess(true);
                     }
                 } else {
                     t.hideError();
                     if(t.enableShowSuccess()){
-                        t.showSuccess();
-                    }
+                    t.showSuccess();
+                }
                     t.enableShowSuccess(false);
                 }
                 t.d.validate.apply(this, [a, this, this.d.$widget]);
@@ -3209,14 +3211,14 @@ var $A = {};
         return t;
     };
 
-    p.showSuccess = function () {
+    p.showSuccess = function(){
         var t = this;
         t.hideError();
         t.widget().addClass('valid');
         return t;
     };
 
-    p.hideSuccess = function () {
+    p.hideSuccess = function(){
         var t = this;
         t.widget().removeClass('valid');
         return t;
