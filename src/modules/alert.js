@@ -20,6 +20,7 @@ define([
             type: '',
             target: '',
             closable: true,
+            forceHidden: false,
             onCloseIconClick: function () {
             },
             create: function () {
@@ -63,13 +64,23 @@ define([
             if (typeof obj.target !== 'undefined') {
                 t.d.target = obj.target;
             }
+            if (typeof obj.forceHidden !== 'undefined') {
+                t.forceHidden(obj.forceHidden);
+            }
             t.initParameter(obj);
         }
 
         t.d.$alertBoxClose.click(function () {
             t.onCloseIconClick();
             t.close();
-        })
+        });
+
+        var automizyForceHiddenAlerts = $A.store.get('automizyForceHiddenAlerts');
+        if(typeof automizyForceHiddenAlerts !== 'undefined' && typeof automizyForceHiddenAlerts[t.id()] !== 'undefined'){
+            t.forceHidden(automizyForceHiddenAlerts[t.id()]);
+        }
+
+
     };
 
     var p = Alert.prototype;
@@ -111,11 +122,13 @@ define([
         if (typeof func === 'function') {
             t.addFunction.apply(t, ['open', func, name, life]);
         } else {
-            t.d.$widget.fadeIn(function () {
-                t.show();
-                t.runFunctions('open');
-            });
-            $A.runFunctions($A.events.alert.functions.open, this, [this, this.d.$widget]);
+            if(t.forceHidden() === false){
+                t.d.$widget.fadeIn(function () {
+                    t.show();
+                    t.runFunctions('open');
+                });
+                $A.runFunctions($A.events.alert.functions.open, this, [this, this.d.$widget]);
+            }
         }
         return t;
     };
@@ -140,6 +153,29 @@ define([
                 t.hide();
                 t.runFunctions('close');
             });
+        }
+        return t;
+    };
+
+    /*If set to true, the box won't appear anymore after closing with the close button*/
+    p.forceHidden = function (forceHidden) {
+        var t = this;
+        if (typeof forceHidden !== 'undefined') {
+            forceHidden = $A.parseBoolean(forceHidden);
+            t.d.forceHidden = forceHidden;
+
+            var automizyForceHiddenAlerts = $A.store.get('automizyForceHiddenAlerts') || $A.store.set('automizyForceHiddenAlerts', {});
+            if (forceHidden) {
+                automizyForceHiddenAlerts[t.id()] = true;
+                $A.store.set('automizyForceHiddenAlerts', automizyForceHiddenAlerts);
+            }
+            else {
+                automizyForceHiddenAlerts[t.id()] = false;
+                $A.store.set('automizyForceHiddenAlerts', automizyForceHiddenAlerts);
+            }
+        }
+        else {
+            return t.d.forceHidden
         }
         return t;
     };
