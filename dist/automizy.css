@@ -2083,6 +2083,7 @@ label.iPhoneCheckLabelOff span {
     border-style: solid;
     box-sizing: border-box;
     display: block;
+    margin-bottom: 30px;
 }
 .automizy-alert-close {
     font-size: 12px;
