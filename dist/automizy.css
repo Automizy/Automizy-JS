@@ -291,6 +291,10 @@
     margin:0 0 3px 0;
     font-family:Arial, Helvetica, sans-serif;
 }
+.automizy-input label.new-row{
+    width:100%;
+    display:block;
+}
 .automizy-input .automizy-input-box-error{
     display:none;
     

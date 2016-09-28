@@ -2945,8 +2945,10 @@ var $A = {};
             t.d.breakInput = breakInput;
             if (breakInput) {
                 t.d.$widgetInputBox.addClass('new-row');
+                t.d.$widgetLabel.addClass('new-row');
             } else {
                 t.d.$widgetInputBox.removeClass('new-row');
+                t.d.$widgetLabel.removeClass('new-row');
             }
             return t;
         }
@@ -5947,6 +5949,7 @@ var $A = {};
                 t.selectModule().unselectAll().close();
                 t.toggleSelect(true);
             }
+            t.selectModule().manualChange();
             return t;
         })
     };
@@ -6253,6 +6256,11 @@ var $A = {};
 
             change: function () {
                 if (t.change().returnValue() === false) {
+                    return false;
+                }
+            },
+            manualChange: function () {
+                if (t.manualChange().returnValue() === false) {
                     return false;
                 }
             }
@@ -6773,6 +6781,16 @@ var $A = {};
         }
         return t;
     };
+    p.manualChange = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('manualChange', func, name, life);
+        } else {
+            var a = t.runFunctions('manualChange');
+            t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
+        }
+        return t;
+    };
 
     p.remove = function (func) {
         if (typeof func === 'function') {
@@ -6848,7 +6866,7 @@ var $A = {};
 
 
 
-    $A.initBasicFunctions(Select, "Select", ['change', 'loadingComplete']);
+    $A.initBasicFunctions(Select, "Select", ['change', 'loadingComplete', 'manualChange']);
 
 
     $.fn.automizySelect = function () {
