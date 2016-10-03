@@ -5429,7 +5429,7 @@ var $A = {};
                 var $t = $(this);
                 setTimeout(function () {
                     if ($A.d.tableRowCheckBoxClick === false) {
-                        if ($(event.target).hasClass('automizy-table-cell-editable-content') === false && $A.d.inlineEditClick === false) {
+                        if ($(event.target).is('td')) {
                             t.openedRow($A.tableRow($t));
                             t.d.beforeOpenInlineBox.apply($t, [t.openedRow(), t.d.openedRow.recordId()]);
                             if (t.d.openableInlineBox) {
