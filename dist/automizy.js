@@ -2397,9 +2397,6 @@ var $A = {};
             if (typeof obj.label !== 'undefined') {
                 t.label(obj.label);
             }
-            if (typeof obj.labelAfter !== 'undefined') {
-                t.labelAfter(obj.labelAfter);
-            }
             if (typeof obj.type !== 'undefined') {
                 t.type(obj.type);
             }
@@ -2521,6 +2518,9 @@ var $A = {};
             }
             if(typeof obj.automizySelect !== 'undefined'){
                 t.d.automizySelect = obj.automizySelect;
+            }
+            if (typeof obj.labelAfter !== 'undefined') {
+                t.labelAfter(obj.labelAfter);
             }
             t.initParameter(obj);
         }
@@ -2692,6 +2692,15 @@ var $A = {};
                 t.d.$widgetLabelAfter.html(labelAfter);
             }
             t.d.$widgetLabelAfter.ashow();
+            setTimeout(function () {
+                if(t.icon() !== false && t.iconPosition() === 'right'){
+                    t.input().css('max-width','calc(100% - 34px - '+t.d.$widgetLabelAfter.outerWidth()+'px)');
+                }
+                else{
+                    t.input().css('max-width','calc(100% - '+t.d.$widgetLabelAfter.outerWidth()+'px)');
+                }
+
+            },1)
             return t;
         }
         return t.d.labelAfter;

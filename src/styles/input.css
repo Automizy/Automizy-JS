@@ -27,7 +27,6 @@
     outline: none;
     max-width: 100%;
     font-size: 14px;
-    display: block;
     float: none;
     background: #fff;
     width: 100%;
@@ -39,6 +38,8 @@
     -moz-box-shadow: inset 1px 1px 3px #f6f6f6;
     box-shadow: inset 1px 1px 3px #f6f6f6;
     line-height: normal;
+    display: inline-block;
+    vertical-align: top;
 }
 
 .automizy-input.automizy-skin-simple-automizy textarea {
@@ -451,7 +452,7 @@
     border-top-right-radius: 0;
 }
 .automizy-input .automizy-input-box.automizy-icon-left input{
-    margin-left: 33px;
+    margin-left: 0;
     width: calc(100% - 34px);
     border-bottom-left-radius: 0;
     border-top-left-radius: 0;
@@ -461,7 +462,7 @@
     width:34px;
     height:34px;
     display:none;
-    position:absolute;
+    position:relative;
     padding: 6px 0;
     top:0;
     left: auto;
@@ -492,6 +493,7 @@
     border-left: none;
     border-bottom-left-radius: 0;
     border-top-left-radius: 0;
+    float: none;
 }
 .automizy-input .automizy-input-box.automizy-icon-left .automizy-input-icon{
     right:auto;
@@ -499,6 +501,7 @@
     border-right: none;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+    float: left;
 }
 
 
