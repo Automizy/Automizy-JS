@@ -951,8 +951,10 @@ define([
             t.d.breakInput = breakInput;
             if (breakInput) {
                 t.d.$widgetInputBox.addClass('new-row');
+                t.d.$widgetLabel.addClass('new-row');
             } else {
                 t.d.$widgetInputBox.removeClass('new-row');
+                t.d.$widgetLabel.removeClass('new-row');
             }
             return t;
         }

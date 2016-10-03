@@ -79,6 +79,7 @@ define([
                 t.selectModule().unselectAll().close();
                 t.toggleSelect(true);
             }
+            t.selectModule().manualChange();
             return t;
         })
     };

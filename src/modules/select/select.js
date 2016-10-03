@@ -45,6 +45,11 @@ define([
                 if (t.change().returnValue() === false) {
                     return false;
                 }
+            },
+            manualChange: function () {
+                if (t.manualChange().returnValue() === false) {
+                    return false;
+                }
             }
         };
         t.f = {};
@@ -563,6 +568,16 @@ define([
         }
         return t;
     };
+    p.manualChange = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('manualChange', func, name, life);
+        } else {
+            var a = t.runFunctions('manualChange');
+            t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
+        }
+        return t;
+    };
 
     p.remove = function (func) {
         if (typeof func === 'function') {
@@ -638,7 +653,7 @@ define([
 
 
 
-    $A.initBasicFunctions(Select, "Select", ['change', 'loadingComplete']);
+    $A.initBasicFunctions(Select, "Select", ['change', 'loadingComplete', 'manualChange']);
 
 
     $.fn.automizySelect = function () {

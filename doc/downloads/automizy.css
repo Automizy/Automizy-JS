@@ -339,6 +339,10 @@
 .automizy-input.automizy-skin-simple-automizy.error textarea{
     border-color:#da4b50 !important;
 }
+.automizy-input label.new-row{
+    width:100%;
+    display:block;
+}
 .automizy-input .automizy-input-box-error{
     display:none;
     margin: 5px 0;
