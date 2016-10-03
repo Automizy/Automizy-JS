@@ -45,6 +45,11 @@ define([
                 if (t.change().returnValue() === false) {
                     return false;
                 }
+            },
+            manualChange: function () {
+                if (t.manualChange().returnValue() === false) {
+                    return false;
+                }
             }
         };
         t.f = {};
@@ -71,7 +76,11 @@ define([
             if(t.d.loading === true || t.d.empty){
                 return false;
             }
-            t.open();
+            if(t.widget().hasClass('automizy-active')){
+                $A.closeAllSelectBox();
+            }else {
+                t.open();
+            }
         });
 
         t.setupJQueryEvents();
@@ -124,15 +133,17 @@ define([
         t.unselectAll();
         var hasValue = false;
 
+        console.log(t.d.value);
         if(typeof t.d.value === 'object' || typeof t.d.value === 'array'){
             for(var i = 0; i < t.d.options.length; i++){
                 for(var j = 0; j < t.d.value.length; j++){
                     if(t.d.options[i].val() == t.d.value[j]){
-                        t.d.options[i].select();
+                        t.d.options[i].select(false, true);
                         hasValue = true;
                     }
                 }
             }
+            t.refreshValue();
         }else{
             for(var i = 0; i < t.d.options.length; i++){
                 if(t.d.options[i].val() == t.d.value){
@@ -149,7 +160,7 @@ define([
         }else{
             t.widget().removeClass('automizy-empty');
         }
-
+        console.log(t.d.value);
         t.d.originalInput.val(t.d.value).trigger('change');
 
         return t;
@@ -274,7 +285,14 @@ define([
     p.disabled = function (disabled) {
         var t = this;
         if (typeof disabled !== 'undefined') {
-            t.d.disabled = $A.parseBoolean(disabled);
+            disabled = $A.parseBoolean(disabled);
+            if(disabled){
+                $A.closeAllSelectBox();
+                t.widget().addClass('automizy-disabled');
+            }else{
+                t.widget().removeClass('automizy-disabled');
+            }
+            t.d.disabled = disabled;
             if(typeof t.d.originalInput.disabled !== 'undefined'){
                 t.d.originalInput.disabled(t.d.disabled);
             }else{
@@ -465,7 +483,15 @@ define([
         var t = this;
         var val = t.val();
         var before = before || false;
+        var options = options || [];
         for(var i = 0; i < options.length; i++){
+            if(options[i] instanceof Array){
+                options[i] = {
+                    value:options[i][0] || 0,
+                    html:options[i][1] || options[i][0],
+                    selected:$A.parseBoolean(options[i][2] || false)
+                };
+            }
             options[i].selectModule = t;
             options[i].selectOptionBoxModule = t.optionBox();
             if(options[i].selected === true){
@@ -538,6 +564,16 @@ define([
             t.addFunction('change', func, name, life);
         } else {
             var a = t.runFunctions('change');
+            t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
+        }
+        return t;
+    };
+    p.manualChange = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('manualChange', func, name, life);
+        } else {
+            var a = t.runFunctions('manualChange');
             t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
         }
         return t;
@@ -617,7 +653,7 @@ define([
 
 
 
-    $A.initBasicFunctions(Select, "Select", ['change', 'loadingComplete']);
+    $A.initBasicFunctions(Select, "Select", ['change', 'loadingComplete', 'manualChange']);
 
 
     $.fn.automizySelect = function () {

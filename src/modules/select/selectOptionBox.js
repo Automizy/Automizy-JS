@@ -134,6 +134,7 @@ define([
     p.open = function (func, name, life) {
         var t = this;
         $A.closeAllSelectBox();
+        $A.activeSelectBox = t;
         if(t.d.opened){
             return t;
         }
@@ -155,13 +156,14 @@ define([
     };
     p.close = function (func, name, life) {
         var t = this;
-        if(!t.d.opened){
-            return t;
-        }
-        t.d.opened = false;
         if (typeof func === 'function') {
             t.addFunction('close', func, name, life);
         } else {
+            $A.activeSelectBox = false;
+            if(!t.d.opened){
+                return t;
+            }
+            t.d.opened = false;
             if (t.beforeClose().returnValue() !== false) {
                 t.hide();
                 t.runFunctions('close');
@@ -172,8 +174,10 @@ define([
     };
 
 
+    $A.activeSelectBox = false;
     $A.initBasicFunctions(SelectOptionBox, "SelectOptionBox", ['beforeOpen', 'beforeClose', 'open', 'close']);
     $A.closeAllSelectBox = function(){
+        $A.activeSelectBox = false;
         var boxes = $A.getAllSelectOptionBox();
         for(var i in boxes){
             boxes[i].close();
@@ -199,7 +203,7 @@ define([
         if(!$(event.target).closest('.automizy-select-option-box-widget').length) {
             $A.closeAllSelectBox();
         }
-    })
+    });
 
 
 });

@@ -153,6 +153,10 @@
 .automizy-input.new-row label {
     margin: 0 0 3px 0;
 }
+.automizy-input label.new-row{
+    width:100%;
+    display:block;
+}
 
 /*Validation*/
 

@@ -355,6 +355,10 @@
 .automizy-input.automizy-skin-simple-automizy.error .automizy-input-icon{
     border-color:#da4b50 !important;
 }
+.automizy-input label.new-row{
+    width:100%;
+    display:block;
+}
 .automizy-input .automizy-input-box-error{
     display:none;
     margin: 5px 0;
@@ -1818,6 +1822,10 @@ label.iPhoneCheckLabelOff span {
 .automizy-select.automizy-disabled{
     color: #333333;
     opacity:0.65;
+}
+.automizy-select.automizy-disabled{
+     color: #333333;
+     opacity:0.65;
 }
 .automizy-select .automizy-select-table{
     width:100%;
