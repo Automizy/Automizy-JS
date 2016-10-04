@@ -51,6 +51,7 @@
     position: relative;
     padding: 15px;
     border-bottom: 1px solid #dfe8f1;
+    margin: 0;
 }
 .automizy-dialog-buttons{
     padding:15px;

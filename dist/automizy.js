@@ -2700,7 +2700,7 @@ var $A = {};
                     t.input().css('max-width','calc(100% - '+t.d.$widgetLabelAfter.outerWidth()+'px)');
                 }
 
-            },1)
+            },10)
             return t;
         }
         return t.d.labelAfter;
