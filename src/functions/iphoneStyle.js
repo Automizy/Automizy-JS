@@ -55,6 +55,7 @@ define([
             $(this).parent().parent().removeClass('automizy-input-has-help');
         });
         input.parent().css({display: 'inline-block', verticalAlign: 'middle'});
+        input.closest('.automizy-input').addClass('automizy-iphone-styled');
         $(".iPhoneCheckHandleCenter").html(function () {
             var $container = $(this).closest(".iPhoneCheckContainer");
             if ($container.find("input").is(":checked")) {

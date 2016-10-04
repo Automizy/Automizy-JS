@@ -47,6 +47,7 @@
     position: relative;
     padding: 15px;
     border-bottom: 1px solid #dfe8f1;
+    margin: 0;
 }
 .automizy-dialog-buttons{
     padding:15px;
@@ -221,6 +222,12 @@
     position: relative;
     padding: 15px 0;
     max-width: 100%;
+}
+.automizy-input.automizy-iphone-styled{
+    padding: 15px 0;
+}
+.automizy-input.automizy-iphone-styled .automizy-input-help{
+    margin-top:4px;
 }
 .automizy-input .automizy-input {
     padding: 0;

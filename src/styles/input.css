@@ -6,6 +6,15 @@
     max-width: 100%;
 }
 
+
+.automizy-input.automizy-iphone-styled{
+    padding: 15px 0;
+}
+
+.automizy-input.automizy-iphone-styled .automizy-input-help{
+    margin-top:4px;
+}
+
 .automizy-input .automizy-input {
     padding: 0;
 }
