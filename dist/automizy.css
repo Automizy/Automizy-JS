@@ -361,6 +361,8 @@
 .automizy-input label.new-row{
     width:100%;
     display:block;
+    padding-left: 0;
+    text-align: left;
 }
 .automizy-input.automizy-skin-simple-automizy.error input,
 .automizy-input.automizy-skin-simple-automizy.error textarea,

@@ -2372,10 +2372,9 @@ var $A = {};
         t.d.$widgetInput.appendTo(t.d.$widgetInputBox).attr('id', t.d.id + '-input');
         t.d.$loadingBox.appendTo(t.d.$widgetInputBox).html($A.d.elements.$loading.clone());
         t.d.$widgetInputBox.appendTo(t.d.$widget);
-        //t.d.$widgetInputBoxError.appendTo(t.d.$widget);
-        t.d.$widgetInputBoxError.appendTo(t.d.$widgetInputBox);
         t.d.$widgetInputIcon.appendTo(t.d.$widgetInputBox);
         t.d.$widgetLabelAfter.appendTo(t.d.$widgetInputBox).attr('for', t.d.id + '-input').ahide();
+        t.d.$widgetInputBoxError.appendTo(t.d.$widgetInputBox);
         t.d.$widgetHelpContentInner.appendTo(t.d.$widgetHelpContent);
         t.d.$widgetHelpContent.appendTo('body:first');
         t.d.$widgetHelp.appendTo(t.d.$widget).on('mouseenter click', function () {
