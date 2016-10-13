@@ -371,6 +371,7 @@ define([
         if (oSelectable) {
             t.selectable(true);
         }
+        t.setButtonsStatus();
         t.d.stepFunction();
     };
 
@@ -1237,22 +1238,35 @@ define([
             var button = buttons[i];
             if (button.data('condition') !== 'undefined') {
                 var condition = button.data('condition');
+                var autoHide = button.data('autoHide') || false;
                 if (condition === 'select-one') {
                     if (t.selectedIds().length === 1) {
+                        button.show();
                         button.enable();
                     } else {
+                        if (autoHide) {
+                            button.hide();
+                        }
                         button.disable();
                     }
                 } else if (condition === 'select-more-than-zero') {
                     if (t.selectedIds().length >= 1) {
+                        button.show();
                         button.enable();
                     } else {
+                        if (autoHide) {
+                            button.hide();
+                        }
                         button.disable();
                     }
                 } else if (condition === 'select-between-two-and-four') {
                     if (t.selectedIds().length >= 2 && t.selectedIds().length <= 4) {
+                        button.show();
                         button.enable();
                     } else {
+                        if (autoHide) {
+                            button.hide();
+                        }
                         button.disable();
                     }
                 }
@@ -1270,6 +1284,10 @@ define([
                 arr[i].data = arr[i].data || {};
                 arr[i].data.condition = arr[i].condition;
             }
+            if (arr[i].autoHide !== 'undefined') {
+                arr[i].data = arr[i].data || {};
+                arr[i].data.autoHide = arr[i].autoHide;
+            }
         }
         t.buttons(arr);
         t.table().on('change', 'input.automizy-table-rowcheck, input.automizy-table-checkall', function () {
@@ -1283,7 +1301,9 @@ define([
             t.d.inlineButtons = inlineButtons;
             for (var i = 0; i < inlineButtons.length; i++) {
                 var inlineButton = inlineButtons[i];
-                var $button = $('<a>' + inlineButton.text + '</a>').data('click', inlineButton.click || function () {
+                var title = inlineButton.title || '';
+                var content = inlineButton.text || inlineButton.html;
+                var $button = $('<a title="' + title + '">' + content + '</a>').data('click', inlineButton.click || function () {
                     }).click(function () {
                     var $t = $(this);
                     var $row = $t.closest('tr').prev();
