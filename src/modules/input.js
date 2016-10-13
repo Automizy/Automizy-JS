@@ -45,6 +45,7 @@ define([
             isDatepicker: false,
             newRow: true,
             breakInput: false,
+            breakLabel:false,
             needModify: false,
             disabled:false,
             float: 'none',
@@ -172,6 +173,9 @@ define([
             }
             if (typeof obj.breakInput !== 'undefined') {
                 t.breakInput(obj.breakInput);
+            }
+            if (typeof obj.breakLabel !== 'undefined') {
+                t.breakLabel(obj.breakLabel);
             }
             if (typeof obj.labelPosition !== 'undefined') {
                 t.labelPosition(obj.labelPosition);
@@ -372,7 +376,9 @@ define([
         var t = this;
         if (typeof label !== 'undefined') {
             t.d.label = label;
-            if (label instanceof jQuery) {
+            if (label instanceof $A.m.Button || label instanceof $A.m.Input) {
+                label.drawTo(t.d.$widgetLabelAfter.empty());
+            }else if (label instanceof jQuery) {
                 label.appendTo(t.d.$widgetLabel.empty());
             }else{
                 t.d.$widgetLabel.html(label);
@@ -386,7 +392,9 @@ define([
         var t = this;
         if (typeof labelAfter !== 'undefined') {
             t.d.labelAfter = labelAfter;
-            if (labelAfter instanceof jQuery) {
+            if (labelAfter instanceof $A.m.Button || labelAfter instanceof $A.m.Input) {
+                labelAfter.drawTo(t.d.$widgetLabelAfter.empty());
+            }else if (labelAfter instanceof jQuery) {
                 labelAfter.appendTo(t.d.$widgetLabelAfter.empty());
             }else{
                 t.d.$widgetLabelAfter.html(labelAfter);
@@ -900,6 +908,20 @@ define([
         return t;
     };
 
+    p.breakLabel = function (breakLabel) {
+        var t = this;
+        if (typeof breakLabel !== 'undefined') {
+            breakLabel = $A.parseBoolean(breakLabel);
+            t.d.breakLabel = breakLabel;
+            if (breakLabel) {
+                t.d.$widgetLabel.addClass('new-row');
+            } else {
+                t.d.$widgetLabel.removeClass('new-row');
+            }
+            return t;
+        }
+        return t.d.breakLabel;
+    };
     p.breakInput = function (breakInput) {
         var t = this;
         if (typeof breakInput !== 'undefined') {
