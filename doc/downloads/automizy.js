@@ -677,6 +677,7 @@ var $A = {};
             $widget: $('<span class="automizy-button"></span>'),
             $widgetButton: $('<a href="javascript:;"></a>'),
             text: 'My Button',
+            title: '',
             skin: 'simple-white',
             float: 'none',
             width: '',
@@ -711,6 +712,9 @@ var $A = {};
             if (typeof obj.html !== 'undefined') {
                 t.html(obj.html);
             }
+            if (typeof obj.title !== 'undefined') {
+                t.title(obj.title);
+            }
             if (typeof obj.float !== 'undefined') {
                 t.float(obj.float);
             }
@@ -739,6 +743,15 @@ var $A = {};
             return t;
         }
         return t.d.text;
+    };
+    p.title = function (title) {
+        var t = this;
+        if (typeof title !== 'undefined') {
+            t.d.title = title;
+            t.d.$widget.attr('title',title);
+            return t;
+        }
+        return t.d.title;
     };
     p.html = function (html) {
         var t = this;
