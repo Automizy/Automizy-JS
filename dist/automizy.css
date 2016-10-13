@@ -1031,12 +1031,16 @@ input.automizy-table-rowcheck:focus:disabled:checked { background-position: -15p
     box-sizing: border-box;
     cursor: pointer;
 }
-.automizy-table-panel .automizy-table-panel-icon img{
-    height: 14px;
+.automizy-table-panel .automizy-table-panel-icon > *{
     opacity: 0.5;
     -webkit-transition: opacity 0.2s;
+    transition: opacity 0.2s;
+    -moz-transition: opacity 0.2s;
 }
-.automizy-table-panel .automizy-table-panel-icon:hover  img{
+.automizy-table-panel .automizy-table-panel-icon > img{
+    height: 14px;
+}
+.automizy-table-panel .automizy-table-panel-icon:hover  > *{
     opacity: 1;
 }
 .automizy-table-settings-box{

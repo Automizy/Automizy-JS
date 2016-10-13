@@ -106,17 +106,25 @@
     border-right: none;
     padding:15px 10px;
     height: 45px;
+    width: 35px;
+    text-align: center;
     box-sizing: border-box;
     cursor: pointer;
 }
 
-.automizy-table-panel .automizy-table-panel-icon img{
-    height: 14px;
+.automizy-table-panel .automizy-table-panel-icon > *{
     opacity: 0.5;
     -webkit-transition: opacity 0.2s;
+    transition: opacity 0.2s;
+    -moz-transition: opacity 0.2s;
+    vertical-align: top;
+    font-size: 14px;
+}
+.automizy-table-panel .automizy-table-panel-icon > img{
+    height: 14px;
 }
 
-.automizy-table-panel .automizy-table-panel-icon:hover  img{
+.automizy-table-panel .automizy-table-panel-icon:hover  > *{
     opacity: 1;
 }
 
