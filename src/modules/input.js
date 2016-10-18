@@ -653,7 +653,9 @@ define([
                     showMicrosec: false,
                     showTimezone: false,
                     showTime: true,
-                    controlType: 'slider'
+                    controlType: 'slider',
+                    currentText: $A.translate('Now'),
+                    closeText: $A.translate('Save')
                 });
         } else if (type === 'select' || type === 'automizy-select') {
             t.type('select');
