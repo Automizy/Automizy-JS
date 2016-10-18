@@ -405,22 +405,27 @@ define([
     p.writeEntries = function () {
         var t = this;
         var total = t.totalEntries();
-        var actualPage = t.page();
-        var perPage = t.perPage();
-
-        var showFirst = (actualPage - 1) * perPage + 1;
-        var $showFrom = $('<span>' + $A.translate("Showing ") + showFirst + ' </span>');
-
-        var showLast = showFirst + perPage - 1;
-        if (showLast > total)
-            showLast = total;
-        var $showTo = $('<span>' + $A.translate('to ') + showLast + ' </span>');
-
-        var $showTotal = $('<span>' + $A.translate("of ") + total + ' entries</span>');
-
         t.d.$entriesBox.html('');
-        t.d.$entriesBox.append($showFrom).append($showTo).append($showTotal);
 
+        if(total > 0){
+            var actualPage = t.page();
+            var perPage = t.perPage();
+
+            var showFirst = (actualPage - 1) * perPage + 1;
+            var $showFrom = $('<span>' + $A.translate("Showing ") + showFirst + ' </span>');
+
+            var showLast = showFirst + perPage - 1;
+            if (showLast > total)
+                showLast = total;
+            var $showTo = $('<span>' + $A.translate('to ') + showLast + ' </span>');
+
+            var $showTotal = $('<span>' + $A.translate("of ") + total + ' entries</span>');
+
+            t.d.$entriesBox.append($showFrom).append($showTo).append($showTotal);
+        }
+        else{
+            t.d.$entriesBox.append('<span>'+$A.translate('There are no entries to show.')+'</span>');
+        }
     }
 
     p.onPageFirst = function (func) {

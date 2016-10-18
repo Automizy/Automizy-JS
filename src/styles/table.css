@@ -520,6 +520,15 @@
     vertical-align: middle;
     cursor: pointer;
 }
+.automizy-table-steppage-box .automizy-table-steppage-box-wrapper .automizy-table-step-element .automizy-table-step-arrow{
+    font-size: 13px !important;
+}
+
+@media (max-width: 500px) {
+    .automizy-table-steppage-box .automizy-table-steppage-box-wrapper .automizy-table-step-element{
+        font-size: 0;
+    }
+}
 
 .automizy-table-steppage-box .automizy-table-steppage-box-wrapper .automizy-table-step-element:first-child {
     border-left: 1px solid #e4e7ef;
