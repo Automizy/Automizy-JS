@@ -1403,6 +1403,7 @@ input.automizy-table-rowcheck:focus:disabled:checked { background-position: -15p
 .automizy-table-steppage-box .automizy-table-steppage-box-wrapper .automizy-table-pagenumber-box.automizy-table-step-element {
     cursor: text;
     padding: 0;
+    font-size: 13px !important;
 }
 .automizy-table-steppage-box .automizy-table-steppage-box-wrapper .automizy-table-pagenumber-box {
     border-right: 1px solid #f46a1f !important;

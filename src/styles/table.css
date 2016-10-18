@@ -553,6 +553,7 @@
 .automizy-table-steppage-box .automizy-table-steppage-box-wrapper .automizy-table-pagenumber-box.automizy-table-step-element {
     cursor: text;
     padding: 0;
+    font-size: 13px !important;
 }
 
 .automizy-table-steppage-box .automizy-table-steppage-box-wrapper .automizy-table-pagenumber-box {
