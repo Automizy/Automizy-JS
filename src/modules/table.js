@@ -18,7 +18,7 @@ define([
             $widget: $('<div class="automizy-table-box"></div>'),
             $tableContainerBox: $('<div class="automizy-table-container-box"></div>'),
             $tableContainer: $('<div class="automizy-table-container"></div>'),
-            $table: $('<table cellpadding="0" cellspacing="0" border="0" class="automizy-table automizy-table-clickable collapsed"></table>'),
+            $table: $('<table cellpadding="0" cellspacing="0" border="0" class="automizy-table collapsed"></table>'),
             $tbody: $('<tbody></tbody>'),
             $header: $('<tr class="automizy-table-header"></tr>'),
             $title: $('<div class="automizy-table-title"></div>'),
@@ -77,8 +77,8 @@ define([
             hasObject: false,
             selectable: false,
             exportable: true,
-            openableInlineBox: true,
-            clickableRow: true,
+            openableInlineBox: false,
+            clickableRow: false,
             storeData: false,
             id: 'automizy-table-' + $A.getUniqueString(),
             onPerPage: function () {
@@ -669,8 +669,14 @@ define([
         var t = this;
         if (typeof openableInlineBox !== 'undefined') {
             t.d.openableInlineBox = $A.parseBoolean(openableInlineBox);
-            if (openableInlineBox === false)
+            if (openableInlineBox === false){
+                t.table().removeClass('automizy-table-with-openable-inline-box');
                 t.d.$inlineButtonsRow.hide();
+            }
+            else{
+                t.table().addClass('automizy-table-with-openable-inline-box');
+            }
+            t.clickableRow(t.d.openableInlineBox);
             return t;
         }
         return t.d.openableInlineBox;
@@ -1062,19 +1068,23 @@ define([
                                 var oldInlineIndex = t.d.$inlineButtonsRow.index();
                                 t.d.$inlineButtonsCell.attr('colspan', t.table()[0].rows[0].cells.length - t.table().find('tr:first th:not(:visible)').length);
                                 t.d.$inlineButtonsRow.insertAfter($t);
-
                                 t.d.$inlineButtonsCell.show();
                                 t.d.$inlineButtonsPlaceholderCell.show();
                                 if (oldInlineIndex === t.openedRow().index() + 1) {
                                     t.d.$inlineButtons.slideToggle(function () {
                                         if (t.d.$inlineButtons.is(':visible') === false) {
                                             t.d.$inlineButtonsCell.hide();
+                                            $t.removeClass('automizy-inline-buttons-opened');
                                             t.d.$inlineButtonsPlaceholderCell.hide();
                                         }
                                     });
                                 }
                                 else {
                                     t.d.$inlineButtons.slideDown();
+                                    $t.siblings().each(function(){
+                                        $(this).removeClass('automizy-inline-buttons-opened');
+                                    });
+                                    $t.addClass('automizy-inline-buttons-opened');
                                 }
 
                             }
@@ -1116,7 +1126,7 @@ define([
                 var isEditable = $(table).find('th:eq(' + (j) + ')').data('editable');
 
                 var cell = row.insertCell(j);
-                if (j === 0) {
+                if (j === 0 && t.d.selectable === false) {
                     cell.className = 'automizy-main-cell';
                 }
 
@@ -1299,6 +1309,7 @@ define([
         var t = this;
         if (typeof inlineButtons !== 'undefined') {
             t.d.inlineButtons = inlineButtons;
+            t.openableInlineBox(true)
             for (var i = 0; i < inlineButtons.length; i++) {
                 var inlineButton = inlineButtons[i];
                 var title = inlineButton.title || '';
