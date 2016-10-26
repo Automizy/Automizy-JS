@@ -2339,6 +2339,7 @@ var $A = {};
             isDatepicker: false,
             newRow: true,
             breakInput: false,
+            breakLabel:false,
             needModify: false,
             disabled: false,
             float: 'none',
@@ -2470,6 +2471,9 @@ var $A = {};
             }
             if (typeof obj.breakInput !== 'undefined') {
                 t.breakInput(obj.breakInput);
+            }
+            if (typeof obj.breakLabel !== 'undefined') {
+                t.breakLabel(obj.breakLabel);
             }
             if (typeof obj.labelPosition !== 'undefined') {
                 t.labelPosition(obj.labelPosition);
@@ -2684,7 +2688,9 @@ var $A = {};
         var t = this;
         if (typeof label !== 'undefined') {
             t.d.label = label;
-            if (label instanceof jQuery) {
+            if (label instanceof $A.m.Button || label instanceof $A.m.Input) {
+                label.drawTo(t.d.$widgetLabelAfter.empty());
+            }else if (label instanceof jQuery) {
                 label.appendTo(t.d.$widgetLabel.empty());
             } else {
                 t.d.$widgetLabel.html(label);
@@ -2698,7 +2704,9 @@ var $A = {};
         var t = this;
         if (typeof labelAfter !== 'undefined') {
             t.d.labelAfter = labelAfter;
-            if (labelAfter instanceof jQuery) {
+            if (labelAfter instanceof $A.m.Button || labelAfter instanceof $A.m.Input) {
+                labelAfter.drawTo(t.d.$widgetLabelAfter.empty());
+            }else if (labelAfter instanceof jQuery) {
                 labelAfter.appendTo(t.d.$widgetLabelAfter.empty());
             } else {
                 t.d.$widgetLabelAfter.html(labelAfter);
@@ -3262,6 +3270,20 @@ var $A = {};
         return this.d.validationEvents;
     };
 
+    p.breakLabel = function (breakLabel) {
+        var t = this;
+        if (typeof breakLabel !== 'undefined') {
+            breakLabel = $A.parseBoolean(breakLabel);
+            t.d.breakLabel = breakLabel;
+            if (breakLabel) {
+                t.d.$widgetLabel.addClass('new-row');
+            } else {
+                t.d.$widgetLabel.removeClass('new-row');
+            }
+            return t;
+        }
+        return t.d.breakLabel;
+    };
     p.breakInput = function (breakInput) {
         var t = this;
         if (typeof breakInput !== 'undefined') {
@@ -8634,34 +8656,39 @@ var $A = {};
 
 (function(){
 
-    $A.alert = function (obj) {
-        var obj = obj || {};
+    $A.alert = function (param1, param2) {
+        var param1 = param1 || {};
+        var param2 = param2 || false;
         var data = {
             ok:function(){},
             okText:$A.translate('OK'),
             content:'',
             title:$A.translate('Something wrong...')
         };
-        if(typeof obj === 'string'){
-            data.content = obj;
+        if(typeof param1 === 'string'){
+            data.content = param1;
+            if(typeof param2 === 'string'){
+                data.title = param1;
+                data.content = param2;
+            }
         }else{
-            if (typeof obj.ok === 'function') {
-                data.ok = obj.ok;
+            if (typeof param1.ok === 'function') {
+                data.ok = param1.ok;
             }
-            if (typeof obj.cancel === 'function') {
-                data.cancel = obj.cancel;
+            if (typeof param1.cancel === 'function') {
+                data.cancel = param1.cancel;
             }
-            if (typeof obj.okText !== 'undefined') {
-                data.okText = obj.okText;
+            if (typeof param1.okText !== 'undefined') {
+                data.okText = param1.okText;
             }
-            if (typeof obj.cancelText !== 'undefined') {
-                data.cancelText = obj.cancelText;
+            if (typeof param1.cancelText !== 'undefined') {
+                data.cancelText = param1.cancelText;
             }
-            if (typeof obj.content !== 'undefined') {
-                data.content = obj.content;
+            if (typeof param1.content !== 'undefined') {
+                data.content = param1.content;
             }
-            if (typeof obj.title !== 'undefined') {
-                data.title = obj.title;
+            if (typeof param1.title !== 'undefined') {
+                data.title = param1.title;
             }
         }
 
