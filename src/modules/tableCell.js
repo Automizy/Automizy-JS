@@ -170,10 +170,10 @@ define([
 
         switch (type) {
             case "date":
-                ignoreOutClick.push('.ui-datepicker-div');
+                ignoreOutClick.push('#ui-datepicker-div');
                 break;
             case "datetime":
-                ignoreOutClick.push('.ui-datepicker-div');
+                ignoreOutClick.push('#ui-datepicker-div');
                 break;
             case "select":
                 /*Option window click is ignored*/
@@ -215,9 +215,9 @@ define([
         function removeFunction(event) {
 
             var clickedIn = false;
-
             /*Iterating through all the ignore selectors*/
             for (var i = 0; i < ignoreOutClick.length; i++) {
+                console.log(ignoreOutClick[i])
                 if (!($(event.target).closest(ignoreOutClick[i]).length == false && $editInputBox.is(":visible"))) {
                     clickedIn = true;
                     $A.d.inlineEditClick = true;
