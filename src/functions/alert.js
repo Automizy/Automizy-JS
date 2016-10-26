@@ -2,34 +2,39 @@ define([
     'automizy/core'
 ], function () {
 
-    $A.alert = function (obj) {
-        var obj = obj || {};
+    $A.alert = function (param1, param2) {
+        var param1 = param1 || {};
+        var param2 = param2 || false;
         var data = {
             ok:function(){},
             okText:$A.translate('OK'),
             content:'',
             title:$A.translate('Something wrong...')
         };
-        if(typeof obj === 'string'){
-            data.content = obj;
+        if(typeof param1 === 'string'){
+            data.content = param1;
+            if(typeof param2 === 'string'){
+                data.title = param1;
+                data.content = param2;
+            }
         }else{
-            if (typeof obj.ok === 'function') {
-                data.ok = obj.ok;
+            if (typeof param1.ok === 'function') {
+                data.ok = param1.ok;
             }
-            if (typeof obj.cancel === 'function') {
-                data.cancel = obj.cancel;
+            if (typeof param1.cancel === 'function') {
+                data.cancel = param1.cancel;
             }
-            if (typeof obj.okText !== 'undefined') {
-                data.okText = obj.okText;
+            if (typeof param1.okText !== 'undefined') {
+                data.okText = param1.okText;
             }
-            if (typeof obj.cancelText !== 'undefined') {
-                data.cancelText = obj.cancelText;
+            if (typeof param1.cancelText !== 'undefined') {
+                data.cancelText = param1.cancelText;
             }
-            if (typeof obj.content !== 'undefined') {
-                data.content = obj.content;
+            if (typeof param1.content !== 'undefined') {
+                data.content = param1.content;
             }
-            if (typeof obj.title !== 'undefined') {
-                data.title = obj.title;
+            if (typeof param1.title !== 'undefined') {
+                data.title = param1.title;
             }
         }
 
