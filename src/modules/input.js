@@ -1081,6 +1081,13 @@ define([
         t.widget().addClass('automizy-input-thin');
         return t;
     };
+    p.noPadding = function () {
+        var t = this;
+        t.widget().css({
+            padding:0
+        });
+        return t;
+    };
     p.icon = function (value) {
         var t = this;
         if (typeof value !== 'undefined') {

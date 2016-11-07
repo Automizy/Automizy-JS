@@ -27,15 +27,15 @@ define([
             width: '900',
             maxWidth: '100%',
             minWidth: '250px',
-            minHeight:'0px',
+            minHeight: '0px',
             zIndex: 2501,
             isClose: true,
             hasObject: false,
             hash: false,
             openable: true,
-            closable:true,
+            closable: true,
             buttonsBox: true,
-            clickOutClose:false,
+            clickOutClose: false,
             id: 'automizy-dialog-' + $A.getUniqueString(),
             openFunctions: [],
             beforeOpenFunctions: [],
@@ -54,8 +54,8 @@ define([
         }).appendTo(t.d.$cell);
         t.d.$widget.attr('id', t.id()).click(function () {
             if (t.d.isClose) {
-                if(t.d.clickOutClose) {
-                t.close();
+                if (t.d.clickOutClose) {
+                    t.close();
                 }
             } else {
                 t.d.isClose = true;
@@ -223,11 +223,11 @@ define([
                 $cell.css({verticalAlign: 'middle', paddingTop: 0, paddingBottom: 0});
             } else {
                 /*
-                if ($(t.d.$box).height()+parseInt(y)>$(window).height()){
-                    $(t.d.$content).height($(t.d.$content).height()+($(window).height()-$(t.d.$box).height()-parseInt(y)));
-                }
-                */
-               
+                 if ($(t.d.$box).height()+parseInt(y)>$(window).height()){
+                 $(t.d.$content).height($(t.d.$content).height()+($(window).height()-$(t.d.$box).height()-parseInt(y)));
+                 }
+                 */
+
                 $cell.css({verticalAlign: 'top', paddingTop: y, paddingBottom: y});
             }
             t.d.positionY = y;
@@ -242,8 +242,8 @@ define([
             var pos = xy.split(" ");
             t.positionX(pos[0]);
             t.positionY(pos[1]);
-            t.d.positionX=pos[0];
-            t.d.positionY=pos[1];
+            t.d.positionX = pos[0];
+            t.d.positionY = pos[1];
             t.setMaxHeight();
             return t;
         } else if (typeof xy !== 'undefined') {
@@ -329,7 +329,8 @@ define([
         if (!t.d.hasObject) {
             t.draw();
         }
-        this.d.$widget.ashow();        
+        this.d.$widget.ashow();
+        t.calculateZIndex();
         t.setMaxHeight();
         return this;
     };
@@ -343,6 +344,23 @@ define([
         }
         return t;
     };
+    p.calculateZIndex = function(){
+        var t = this;
+        var dialogs = $A.getAllDialog();
+        var maxZIndex = 0;
+        for (var i in dialogs) {
+            var dialogZIndex = dialogs[i].zIndex();
+            if (dialogZIndex > maxZIndex) {
+                maxZIndex = dialogZIndex;
+            }
+        }
+        var newZIndex = maxZIndex + 1;
+        if (newZIndex < AutomizyGlobalZIndex) {
+            newZIndex = AutomizyGlobalZIndex + 1;
+        }
+        t.zIndex(newZIndex);
+        return t;
+    };
     p.open = function (func, name, life) {
         var t = this;
         if (typeof func === 'function') {
@@ -350,20 +368,10 @@ define([
         } else {
             if (t.beforeOpen().returnValue() !== false) {
                 if (t.hash() !== false) {
-                $A.hashChange(t.hash());
+                    $A.hashChange(t.hash());
                 }
-                //t.widget().insertAfter($('.automizy-dialog').last());
-                //var zIndex = parseInt($('.automizy-dialog').last().css('z-index')) + 1;
-                var dialogs = $A.getAllDialog();
-                var maxZIndex = 0;
-                for(var i in dialogs){
-                    var dialogZIndex = dialogs[i].zIndex();
-                    if(dialogZIndex  > maxZIndex){
-                        maxZIndex = dialogZIndex;
-                    }
-                }
-                t.zIndex(maxZIndex+1);
-            t.show();
+                t.calculateZIndex();
+                t.show();
                 t.runFunctions('open');
             }
             $A.runFunctions($A.events.dialog.functions.open, this, [this, this.d.$widget]);
@@ -409,7 +417,7 @@ define([
         return t;
     };
     p.beforeClose = function (func, name, life) {
-        var t=this;
+        var t = this;
         if (typeof func === 'function') {
             t.addFunction('beforeClose', func, name, life);
         } else {
@@ -417,8 +425,8 @@ define([
             t.returnValue(!(t.closable() === false || a[0] === false || a[1] === false));
         }
         return t;
-    };    
+    };
 
     $A.initBasicFunctions(Dialog, "Dialog", ['open', 'close', 'beforeOpen', 'beforeClose']);
-    
+
 });

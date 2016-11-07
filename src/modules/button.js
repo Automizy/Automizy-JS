@@ -10,6 +10,9 @@ define([
         t.d = {
             $widget: $('<span class="automizy-button"></span>'),
             $widgetButton: $('<a href="javascript:;"></a>'),
+            $text: $('<span class="automizy-button-text"></span>'),
+            $icon:$('<span class="automizy-button-icon"></span>'),
+            iconPosition:'left',
             text: 'My Button',
             title: '',
             skin: 'simple-white',
@@ -29,7 +32,9 @@ define([
         t.init();
 
         t.d.$widgetButton.appendTo(t.d.$widget);
-        t.d.$widgetButton.text(t.d.text);
+        t.d.$icon.appendTo(t.d.$widgetButton);
+        t.d.$text.appendTo(t.d.$widgetButton);
+        t.d.$text.text(t.d.text);
         t.d.$widget.addClass('automizy-skin-' + t.d.skin).attr('id', t.id());
         t.d.$widgetButton.click(function () {
             if (t.click().returnValue() === false) {
@@ -64,6 +69,15 @@ define([
             if (typeof obj.thin !== 'undefined') {
                 t.thin(obj.thin);
             }
+            if (typeof obj.icon !== 'undefined') {
+                t.icon(obj.icon);
+            }
+            if (typeof obj.iconPosition !== 'undefined') {
+                t.iconPosition(obj.iconPosition);
+            }
+            if (typeof obj.align !== 'undefined') {
+                t.align(obj.align);
+            }
             t.initParameter(obj);
         }
     };
@@ -73,10 +87,29 @@ define([
         var t = this;
         if (typeof text !== 'undefined') {
             t.d.text = text;
-            t.d.$widgetButton.text(text);
+            t.d.$text.text(text);
             return t;
         }
         return t.d.text;
+    };
+    p.html = function (html) {
+        var t = this;
+        if (typeof html !== 'undefined') {
+            t.d.html = html;
+            t.d.$text.html(html);
+            return t;
+        }
+        return t.d.html;
+    };
+    p.align = function (align) {
+        var t = this;
+        if (typeof align !== 'undefined') {
+            t.d.$widgetButton.css({
+                textAlign:align
+            });
+            return t;
+        }
+        return t.d.$widgetButton.css('text-align');
     };
     p.title = function (title) {
         var t = this;
@@ -86,15 +119,6 @@ define([
             return t;
         }
         return t.d.title;
-    };
-    p.html = function (html) {
-        var t = this;
-        if (typeof html !== 'undefined') {
-            t.d.html = html;
-            t.d.$widgetButton.html(html);
-            return t;
-        }
-        return t.d.html;
     };
     p.width = function (width) {
         var t = this;
@@ -175,6 +199,38 @@ define([
         }
         t.widget().addClass('automizy-button-thin');
         return t;
+    };
+    p.icon = function(icon, iconType){
+            var t = this;
+            if (typeof icon !== 'undefined') {
+                t.d.icon = icon;
+                if(t.d.icon === false){
+                    t.widget().removeClass('automizy-has-icon');
+                }else if(t.d.icon === true){
+                    t.widget().addClass('automizy-has-icon');
+                }else{
+                    t.widget().addClass('automizy-has-icon');
+                    var iconType = iconType || 'fa';
+                    if (iconType === 'fa') {
+                        t.d.$icon.removeClass(function (index, css) {
+                            return (css.match(/(^|\s)fa-\S+/g) || []).join(' ');
+                        }).addClass('fa').addClass(icon);
+                    }
+                }
+                return t;
+            }
+            return t.d.icon || false;
+        };
+    p.iconPosition = function(position){
+        var t = this;
+        if(typeof position !== 'undefined'){
+            if(position === 'right'){
+                t.d.$icon.insertAfter(t.d.$text);
+            }else{
+                t.d.$icon.insertBefore(t.d.$text);
+            }
+        }
+        return t.d.iconPosition;
     };
 
 

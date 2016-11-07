@@ -45,7 +45,8 @@ define([
             if (t.editable()) {
 
                 t.d.$editableContent = obj.find('.automizy-table-cell-editable-content');
-                t.d.html = $($(obj)[0].innerHTML).html();
+                //t.d.html = $($(obj)[0].innerHTML).html();   //???
+                t.d.html = $(obj).text();
             }
 
         }

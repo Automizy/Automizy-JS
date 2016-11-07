@@ -122,7 +122,7 @@ define([
         };
         t.init();
 
-        t.d.$stepFirst.append('<span class="automizy-table-step-arrow">&#10094;&#10094;</span> First').click(function () {
+        t.d.$stepFirst.append('<span class="automizy-table-step-arrow">&#10094;&#10094;</span> '+$A.translate('First')).click(function () {
             if (t.d.page <= 1)return false;
             t.page(1);
             t.d.stepFunction();
@@ -130,7 +130,7 @@ define([
         });
         t.d.$stepFirst.appendTo(t.d.$stepPageBoxWrapper);
 
-        t.d.$stepBack.append('<span class="automizy-table-step-arrow">&#10094;</span> Previous').click(function () {
+        t.d.$stepBack.append('<span class="automizy-table-step-arrow">&#10094;</span> '+$A.translate('Previous')).click(function () {
             if (t.d.page <= 1)return false;
             t.page(Math.max(t.d.page - 1, 1));
             t.d.stepFunction();
@@ -192,7 +192,7 @@ define([
 
         t.d.$pageBox.appendTo(t.d.$stepPageBoxWrapper);
 
-        t.d.$stepNext.append('Next <span class="automizy-table-step-arrow">&#10095;</span>').click(function () {
+        t.d.$stepNext.append($A.translate('Next') + ' <span class="automizy-table-step-arrow">&#10095;</span>').click(function () {
             if (t.d.page >= t.d.pageMax)return false;
             t.page(Math.min(t.d.page + 1, t.d.pageMax));
             t.d.stepFunction();
@@ -200,7 +200,7 @@ define([
         });
         t.d.$stepNext.appendTo(t.d.$stepPageBoxWrapper);
 
-        t.d.$stepLast.append('Last <span class="automizy-table-step-arrow">&#10095;&#10095;</span>').click(function () {
+        t.d.$stepLast.append($A.translate('Last') + ' <span class="automizy-table-step-arrow">&#10095;&#10095;</span>').click(function () {
             if (t.d.page >= t.d.pageMax)return false;
             t.page(t.d.pageMax);
             t.d.stepFunction();
@@ -412,21 +412,26 @@ define([
             var perPage = t.perPage();
 
             var showFirst = (actualPage - 1) * perPage + 1;
-            var $showFrom = $('<span>' + $A.translate("Showing ") + showFirst + ' </span>');
+            //var $showFrom = $('<span>' + $A.translate("Showing ") + showFirst + ' </span>');
 
             var showLast = showFirst + perPage - 1;
-            if (showLast > total)
+            if (showLast > total) {
                 showLast = total;
-            var $showTo = $('<span>' + $A.translate('to ') + showLast + ' </span>');
+            }
+            //var $showTo = $('<span>' + $A.translate('to ') + showLast + ' </span>');
 
-            var $showTotal = $('<span>' + $A.translate("of ") + total + ' entries</span>');
+            //var $showTotal = $('<span>' + $A.translate("of ") + total + ' entries</span>');
 
-            t.d.$entriesBox.append($showFrom).append($showTo).append($showTotal);
+
+
+            //t.d.$entriesBox.append($showFrom).append($showTo).append($showTotal);
+
+            t.d.$entriesBox.append('<span>' + $A.translate('Showing %s to %s of %s entries', showFirst, showLast, total) + '</span>');
         }
         else{
             t.d.$entriesBox.append('<span>'+$A.translate('There are no entries to show.')+'</span>');
         }
-    }
+    };
 
     p.onPageFirst = function (func) {
         var t = this;
