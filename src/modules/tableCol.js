@@ -19,6 +19,7 @@ define([
         t.init();
 
         if (typeof obj !== 'undefined') {
+
             if (obj instanceof HTMLElement) {
                 obj = $(obj);
             }
@@ -35,6 +36,7 @@ define([
                 if (typeof obj.data('editable') !== 'undefined')t.editable(obj.data('editable'));
                 if (typeof obj.data('onInlineEditComplete') !== 'undefined')t.d.onInlineEditComplete = obj.data('onInlineEditComplete');
                 if (typeof obj.data('setInlineInputObject') !== 'undefined')t.d.setInlineInputObject = obj.data('setInlineInputObject');
+                if (typeof obj.data('data') !== 'undefined')t.data(obj.data('data'));
             } else {
                 if (typeof obj.newCol !== 'undefined')
                     t.d.newCol = obj.newCol;
@@ -56,6 +58,8 @@ define([
                     t.text(obj.text);
                 if (typeof obj.active !== 'undefined')
                     t.active(obj.active);
+                if (typeof obj.data !== 'undefined')
+                    t.data(obj.data);
                 t.initParameter(obj);
             }
         }

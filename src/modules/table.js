@@ -890,6 +890,7 @@ define([
                         $th.data('editable', obj.editable || false);
                         $th.data('setInlineInputObject', obj.setInlineInputObject);
                         $th.data('onInlineEditComplete', obj.onInlineEditComplete);
+                        $th.data('data', obj.data);
                         var th = $th[0];
                         th.automizyData = th.automizyData || {};
                         th.automizyData.name = obj.name;

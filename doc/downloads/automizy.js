@@ -5312,6 +5312,7 @@ var $A = {};
                         $th.data('editable', obj.editable || false);
                         $th.data('setInlineInputObject', obj.setInlineInputObject);
                         $th.data('onInlineEditComplete', obj.onInlineEditComplete);
+                        $th.data('data', obj.data);
                         var th = $th[0];
                         th.automizyData = th.automizyData || {};
                         th.automizyData.name = obj.name;
@@ -5958,10 +5959,15 @@ var $A = {};
         t.init();
 
         if (typeof obj !== 'undefined') {
+
             if (obj instanceof HTMLElement) {
                 obj = $(obj);
             }
             if (obj instanceof jQuery) {
+                /*
+                console.log('jquery obj:')
+                console.log(obj.data())
+                */
                 t.d.hasObject = true;
                 t.d.$widget = obj;
                 t.d.index = obj.index();
@@ -5974,6 +5980,9 @@ var $A = {};
                 if (typeof obj.data('editable') !== 'undefined')t.editable(obj.data('editable'));
                 if (typeof obj.data('onInlineEditComplete') !== 'undefined')t.d.onInlineEditComplete = obj.data('onInlineEditComplete');
                 if (typeof obj.data('setInlineInputObject') !== 'undefined')t.d.setInlineInputObject = obj.data('setInlineInputObject');
+                if (typeof obj.data('data') !== 'undefined')t.data(obj.data('data'));
+                console.log('obj.data');
+                console.log(obj.data());
             } else {
                 if (typeof obj.newCol !== 'undefined')
                     t.d.newCol = obj.newCol;
@@ -5995,6 +6004,8 @@ var $A = {};
                     t.text(obj.text);
                 if (typeof obj.active !== 'undefined')
                     t.active(obj.active);
+                if (typeof obj.data !== 'undefined')
+                    t.data(obj.data);
                 t.initParameter(obj);
             }
         }
@@ -6385,7 +6396,6 @@ var $A = {};
             var clickedIn = false;
             /*Iterating through all the ignore selectors*/
             for (var i = 0; i < ignoreOutClick.length; i++) {
-                console.log(ignoreOutClick[i])
                 if (!($(event.target).closest(ignoreOutClick[i]).length == false && $editInputBox.is(":visible"))) {
                     clickedIn = true;
                     $A.d.inlineEditClick = true;

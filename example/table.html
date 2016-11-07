@@ -15,11 +15,11 @@
     <link rel="stylesheet" href="../src/styles/core.css">
     <style>
 
-        body{
+        body {
             background-color: #F4F5F7;
         }
 
-        #container{
+        #container {
             width: 90%;
             margin: 30px auto;
         }
@@ -167,7 +167,16 @@
                     {
                         name: 'createDate',
                         text: 'Létrehozva',
-                        editable: false
+                        data: {
+                          asd:'asd'
+                        },
+                        editable: true, setInlineInputObject: function (cell) {
+                            var inlineInputObject = {
+                                type: 'datetime',
+                                id: 'inlineInput'
+                            };
+                            cell.inlineInputObject(inlineInputObject);
+                        }
                     },
                     {
                         name: 'lastSend',
