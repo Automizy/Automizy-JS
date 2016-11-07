@@ -6041,10 +6041,6 @@ var $A = {};
                 obj = $(obj);
             }
             if (obj instanceof jQuery) {
-                /*
-                console.log('jquery obj:')
-                console.log(obj.data())
-                */
                 t.d.hasObject = true;
                 t.d.$widget = obj;
                 t.d.index = obj.index();
@@ -6058,8 +6054,6 @@ var $A = {};
                 if (typeof obj.data('onInlineEditComplete') !== 'undefined')t.d.onInlineEditComplete = obj.data('onInlineEditComplete');
                 if (typeof obj.data('setInlineInputObject') !== 'undefined')t.d.setInlineInputObject = obj.data('setInlineInputObject');
                 if (typeof obj.data('data') !== 'undefined')t.data(obj.data('data'));
-                console.log('obj.data');
-                console.log(obj.data());
             } else {
                 if (typeof obj.newCol !== 'undefined')
                     t.d.newCol = obj.newCol;
@@ -6394,8 +6388,20 @@ var $A = {};
         $editableContent.hide()
 
         /*Inserting input field*/
-        var inlineInput = $A.newInput(cell.inlineInputObject()).newRow(false);
-        var type = inlineInput.type();
+        var inlineInputObject = cell.inlineInputObject();
+
+        /*
+        *Setting input type
+        *if it's datetime, we'll need a little trick to make the datetimepicker show
+        *if datetime, type is set to text, and will be changed after the input is drawn
+        * */
+        var originalType = inlineInputObject.type || 'text';
+
+        inlineInputObject.type = originalType;
+        if(originalType === 'datetime'){
+            inlineInputObject.type = 'text';
+        }
+        var inlineInput = $A.newInput(inlineInputObject).newRow(false);
 
         var cancelButton = $A.newButton({
             html: '&#10006;',
@@ -6425,7 +6431,7 @@ var $A = {};
         /*Any click in the edit box is ignored*/
         ignoreOutClick.push($editInputBox);
 
-        switch (type) {
+        switch (originalType) {
             case "date":
                 ignoreOutClick.push('#ui-datepicker-div');
                 break;
@@ -6493,6 +6499,10 @@ var $A = {};
             cancelButton.widget().appendTo($editInputBox);
             $editInputBox.appendTo(cell.widget());
 
+            /*Necessary to make datetimepicker work*/
+            if(originalType === 'datetime'){
+                inlineInput.displayType(originalType);
+            }
         }, 10);
 
     };
