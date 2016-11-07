@@ -14,12 +14,14 @@
 }
 
 /*Nobox buttons*/
-.automizy-button.automizy-skin-nobox-green a, .automizy-button.automizy-skin-nobox-orange a{
+.automizy-button.automizy-skin-nobox-green a,
+.automizy-button.automizy-skin-nobox-orange a{
     line-height: 1.286;
     text-align: left;
     text-decoration: none;
 }
-.automizy-button.disabled.automizy-skin-nobox-green a, .automizy-button.automizy-skin-nobox-orange a{
+.automizy-button.disabled.automizy-skin-nobox-green a,
+.automizy-button.automizy-skin-nobox-orange a{
     color: #c0c0c0;
 }
 .automizy-button.automizy-skin-nobox-orange a{
@@ -35,6 +37,7 @@
 
 
 /*Boxed buttons*/
+.automizy-button.automizy-skin-simple-likemenu a,
 .automizy-button.automizy-skin-simple-white a,
 .automizy-button.automizy-skin-image-white a,
 .automizy-button.automizy-skin-simple-orange a,
@@ -72,6 +75,7 @@
 .automizy-button.automizy-skin-image-white a{
     min-width: 50px;
 }
+.automizy-button.automizy-skin-simple-likemenu.automizy-button-thin a,
 .automizy-button.automizy-skin-simple-white.automizy-button-thin a,
 .automizy-button.automizy-skin-image-white.automizy-button-thin a,
 .automizy-button.automizy-skin-simple-orange.automizy-button-thin a,
@@ -88,8 +92,9 @@
     opacity: 0.65 !important;;
 }
 
-.automizy-button.automizy-skin-simple-green a:active,
+.automizy-button.automizy-skin-simple-likemenu a:active,
 .automizy-button.automizy-skin-simple-white a:active,
+.automizy-button.automizy-skin-simple-green a:active,
 .automizy-button.automizy-skin-simple-orange a:active{
     outline: 0;
     background-image: none;
@@ -123,6 +128,32 @@
     background-color: #FEFEFF;
     border-color: rgba(158,173,195,.16);
 }
+
+
+
+.automizy-button.automizy-skin-simple-likemenu a{
+    color: #555a60;
+    background-color: #FEFEFF;
+    border-color: rgba(158,173,195,.16);
+
+}
+.automizy-button.automizy-skin-simple-likemenu a .automizy-button-icon{
+    color: #f46a1f;
+}
+.automizy-button.automizy-skin-simple-likemenu a:hover,
+.automizy-input-box input[type="file"]:hover + span .automizy-skin-simple-likemenu a{
+    color: #f46a1f;
+    border-color: #DCD8E7;
+    background-color: #f3f3f9;
+}
+.automizy-button.automizy-skin-simple-likemenu.disabled a{
+    color: #555a60;
+    background-color: #FEFEFF;
+    border-color: rgba(158,173,195,.16);
+}
+
+
+
 .automizy-button.automizy-skin-image-white.disabled a img{
     color: #555a60;
     background-color: #FEFEFF;
@@ -157,4 +188,12 @@
 .automizy-button.disabled.automizy-skin-simple-green a{
     color: #fff !important;
     background: #4CAF50 !important;
+}
+
+.automizy-button .automizy-button-icon{
+    display:none;
+    padding:0 12px 0 12px;
+}
+.automizy-button.automizy-has-icon .automizy-button-icon{
+    display:inline-block;
 }
