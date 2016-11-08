@@ -6417,7 +6417,8 @@ var $A = {};
 
                 /*Hiding input*/
                 removeInlineEditBox();
-            }
+            },
+            disabled: inlineInput.disabled()
         });
 
         var $editInputBox = $('<span class="automizy-table-inline-edit-input-box"></span>');
@@ -7729,9 +7730,7 @@ var $A = {};
                 $t = $newElem;
             }
 
-
-            console.log($t)
-            if($t.attr('disabled') === 'disabled'){
+            if($t.is(':disabled')){
                 selectModule.disable();
             }
 

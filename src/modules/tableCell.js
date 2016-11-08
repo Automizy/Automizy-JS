@@ -167,7 +167,8 @@ define([
 
                 /*Hiding input*/
                 removeInlineEditBox();
-            }
+            },
+            disabled: inlineInput.disabled()
         });
 
         var $editInputBox = $('<span class="automizy-table-inline-edit-input-box"></span>');
