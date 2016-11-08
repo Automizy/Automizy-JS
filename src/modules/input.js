@@ -205,7 +205,7 @@ define([
             if (typeof obj.blur === 'function') {
                 t.blur(obj.blur);
             }
-            if (typeof obj.disabled === 'function') {
+            if (typeof obj.disabled === 'boolean') {
                 t.disabled(obj.disabled);
             }
             if (typeof obj.needModify !== 'undefined') {

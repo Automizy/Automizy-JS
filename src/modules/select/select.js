@@ -661,6 +661,7 @@ define([
         if(typeof this.data('automizy-select') !== 'undefined'){
             return this.data('automizy-select');
         }
+
         this.each(function(){
             var selectModule = $A.newSelect();
             var $t = $(this);
@@ -674,6 +675,9 @@ define([
                 $t = $newElem;
             }
 
+            if($t.is(':disabled')){
+                selectModule.disable();
+            }
 
             selectModule.multiple($t.is("[multiple]")).originalInput($t);
 

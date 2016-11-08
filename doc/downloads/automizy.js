@@ -2564,7 +2564,7 @@ var $A = {};
             if (typeof obj.blur === 'function') {
                 t.blur(obj.blur);
             }
-            if (typeof obj.disabled === 'function') {
+            if (typeof obj.disabled === 'boolean') {
                 t.disabled(obj.disabled);
             }
             if (typeof obj.needModify !== 'undefined') {
@@ -7715,6 +7715,7 @@ var $A = {};
         if(typeof this.data('automizy-select') !== 'undefined'){
             return this.data('automizy-select');
         }
+
         this.each(function(){
             var selectModule = $A.newSelect();
             var $t = $(this);
@@ -7728,6 +7729,11 @@ var $A = {};
                 $t = $newElem;
             }
 
+
+            console.log($t)
+            if($t.attr('disabled') === 'disabled'){
+                selectModule.disable();
+            }
 
             selectModule.multiple($t.is("[multiple]")).originalInput($t);
 
