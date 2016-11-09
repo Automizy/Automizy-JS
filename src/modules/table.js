@@ -409,22 +409,14 @@ define([
 
         if(total > 0){
             var actualPage = t.page();
-            var perPage = t.perPage();
+            var perPage = parseInt(t.perPage());
 
             var showFirst = (actualPage - 1) * perPage + 1;
-            //var $showFrom = $('<span>' + $A.translate("Showing ") + showFirst + ' </span>');
 
             var showLast = showFirst + perPage - 1;
             if (showLast > total) {
                 showLast = total;
             }
-            //var $showTo = $('<span>' + $A.translate('to ') + showLast + ' </span>');
-
-            //var $showTotal = $('<span>' + $A.translate("of ") + total + ' entries</span>');
-
-
-
-            //t.d.$entriesBox.append($showFrom).append($showTo).append($showTotal);
 
             t.d.$entriesBox.append('<span>' + $A.translate('Showing %s to %s of %s entries', showFirst, showLast, total) + '</span>');
         }
