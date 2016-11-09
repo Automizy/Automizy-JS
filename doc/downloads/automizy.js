@@ -3395,7 +3395,7 @@ var $A = {};
         var t = this;
         t.widget().removeClass('valid');
         return t;
-    }
+    };
 
     p.enableShowSuccess = function (enable){
         var t = this;
@@ -4903,22 +4903,14 @@ var $A = {};
 
         if(total > 0){
             var actualPage = t.page();
-            var perPage = t.perPage();
+            var perPage = parseInt(t.perPage());
 
             var showFirst = (actualPage - 1) * perPage + 1;
-            //var $showFrom = $('<span>' + $A.translate("Showing ") + showFirst + ' </span>');
 
             var showLast = showFirst + perPage - 1;
             if (showLast > total) {
                 showLast = total;
             }
-            //var $showTo = $('<span>' + $A.translate('to ') + showLast + ' </span>');
-
-            //var $showTotal = $('<span>' + $A.translate("of ") + total + ' entries</span>');
-
-
-
-            //t.d.$entriesBox.append($showFrom).append($showTo).append($showTotal);
 
             t.d.$entriesBox.append('<span>' + $A.translate('Showing %s to %s of %s entries', showFirst, showLast, total) + '</span>');
         }
@@ -5345,7 +5337,7 @@ var $A = {};
             for (var j = 0; j < table.rows.length; j++) {
                 var cell = table.rows[j].insertCell(index);
 
-                var visibility = (obj.visibility === false) ? false : true;
+                var visibility = (obj.visibility !== false);
                 if (t.d.storeData && typeof $A.store.get(t.id() + "ActiveCols") !== 'undefined') {
                     var activeCols = $A.store.get(t.id() + "ActiveCols");
                     if (typeof activeCols[obj.name] !== 'undefined') {
@@ -6330,7 +6322,7 @@ var $A = {};
         if (typeof text !== 'undefined') {
             t.d.text = text;
             if (t.editable()) {
-                t.d.$editableContent = t.d.$editableContent.html(text)
+                t.d.$editableContent = t.d.$editableContent.html(text);
                 t.d.$widget.html(t.d.$editableContent);
             }
             else {
@@ -6345,7 +6337,7 @@ var $A = {};
         if (typeof html !== 'undefined') {
             t.d.html = html;
             if (t.editable()) {
-                t.d.$editableContent = t.d.$editableContent.html(html)
+                t.d.$editableContent = t.d.$editableContent.html(html);
                 t.d.$widget.html(t.d.$editableContent);
             }
             else {
@@ -6385,7 +6377,7 @@ var $A = {};
         col.setInlineInputObject(cell);
 
         /*Hiding old content*/
-        $editableContent.hide()
+        $editableContent.hide();
 
         /*Inserting input field*/
         var inlineInputObject = cell.inlineInputObject();
@@ -6808,7 +6800,7 @@ var $A = {};
                 $select = originalInput.input();
             }
             var value = t.d.$option.attr('value');
-            var $options = $select.find('option[value="'+value+'"]');
+            var $options = $select.find('option[value="' + $A.escapeJQuerySelector(value, '"') + '"]');
             if($options.length <= 0){
                 t.d.$option.appendTo($select);
             }else{
@@ -6840,7 +6832,7 @@ var $A = {};
             if(typeof $select.input === 'function'){
                 $select = originalInput.input();
             }
-            var $options = $select.find('option[value="'+t.d.value+'"]');
+            var $options = $select.find('option[value="' + $A.escapeJQuerySelector(t.d.value, '"') + '"]');
             if($options.length <= 0){
                 t.d.$option.attr('value', t.d.value);
             }else{
@@ -7775,6 +7767,22 @@ var $A = {};
             return Math.floor(Date.now() / 1000);
         };
     }
+})();
+
+(function(){
+
+    $A.escapeJQuerySelector = function (selector, enclouser) {
+        var text = String(selector).replace( /(:|\.|\[|\]|,|=)/g, "\\$1" );
+        if(typeof enclouser !== 'undefined'){
+            if(enclouser === '"'){
+                text = text.replace( /"/g, '\\"' );
+            }else if(enclouser === "'"){
+                text = text.replace( /'/g, "\\'" );
+            }
+        }
+        return text;
+    };
+
 })();
 
 (function(){

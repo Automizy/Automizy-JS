@@ -96,7 +96,7 @@ define([
                 $select = originalInput.input();
             }
             var value = t.d.$option.attr('value');
-            var $options = $select.find('option[value="'+value+'"]');
+            var $options = $select.find('option[value="' + $A.escapeJQuerySelector(value, '"') + '"]');
             if($options.length <= 0){
                 t.d.$option.appendTo($select);
             }else{
@@ -128,7 +128,7 @@ define([
             if(typeof $select.input === 'function'){
                 $select = originalInput.input();
             }
-            var $options = $select.find('option[value="'+t.d.value+'"]');
+            var $options = $select.find('option[value="' + $A.escapeJQuerySelector(t.d.value, '"') + '"]');
             if($options.length <= 0){
                 t.d.$option.attr('value', t.d.value);
             }else{

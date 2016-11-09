@@ -29,6 +29,7 @@ define([
     "automizy/addons/dateAddOns",
     "automizy/addons/objectAddOns",
     
+    "automizy/functions/escapeJQuerySelector",
     "automizy/functions/initBasicFunctions",
     "automizy/functions/setWindowScroll",
     "automizy/functions/hashChange",

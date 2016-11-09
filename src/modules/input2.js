@@ -6,25 +6,32 @@ define([
     'automizy/functions/parseBoolean',
     'automizy/functions/initBasicFunctions',
     'automizy/functions/registerLocalEvents',
-    'automizy/modules/validator',
-    'automizy/images/icons'
+    'automizy/modules/validator'
 ], function () {
-    var Input = function (obj) {
+    var Input2 = function (obj) {
         var t = this;
         t.d = {
-            $widget: $('<span class="automizy-input new-row"></span>'),
-            $widgetInput: $('<input type="text" />'),
-            $widgetInputBox: $('<span class="automizy-input-box"></span>'),
-            $widgetInputBoxError: $('<span class="automizy-input-box-error"></span>'),
-            $widgetLabel: $('<label></label>'),
-            $widgetLabelAfter: $('<label class="automizy-input-label-after"></label>'),
-            $widgetHelp: $('<img src="' + $A.images.helpIcon + '" class="automizy-input-help" />'),
-            $widgetHelpContent: $('<div class="automizy-input-help-content"><img src="' + $A.images.helpArrow + '" class="automizy-input-help-content-arrow" /></div>'),
-            $widgetHelpContentInner: $('<span></span>'),
-            $widgetInputIcon: $('<span class="automizy-input-icon"></span>'),
-            $input: $('<input />'),
-            $textarea: $('<textarea></textarea>'),
-            $select: $('<select></select>'),
+            $widget: $('<div class="automizy-input2"></div>'),
+            $topLabelBox: $('<div class="automizy-input2-top-label-box"></div>'),
+            $inputTable: $('<div class="automizy-input2-table"></div>'),
+            $inputRow: $('<div class="automizy-input2-tr"></div>'),
+            $labelBeforeCell: $('<div class="automizy-input2-td automizy-input2-label-before-cell"></div>'),
+            $inputIconLeftCell: $('<div class="automizy-input2-td automizy-input2-icon-left-cell"></div>'),
+            $inputCell: $('<div class="automizy-input2-td automizy-input2-input-cell"></div>'),
+            $inputIconRightCell: $('<div class="automizy-input2-td automizy-input2-icon-right-cell"></div>'),
+            $labelAfterCell: $('<div class="automizy-input2-td automizy-input2-label-after-cell"></div>'),
+            $helpIconCell: $('<div class="automizy-input2-td automizy-input2-help-icon-cell"></div>'),
+            $bottomLabelBox:$('<div class="automizy-input2-bottom-label-box"></div>'),
+
+            $topLabel: $('<label></label>'),
+            $beforeLabel: $('<label></label>'),
+            $inputLeftIcon:$('<span class="automizy-input-icon"></span>'),
+            $input:$('<input type="text" />'),
+            $inputRightIcon:$('<span class="automizy-input-icon"></span>'),
+            $afterLabel: $('<label></label>'),
+            $helpIcon: $('<span class="automizy-input2-help fa fa-question-circle"></span>'),
+            $errorBox: $('<div class="automizy-input2-tr automizy-input2-error-box"></div>'),
+
             $loadingBox: $('<div class="automizy-input-loading-box"></div>'),
             specialElements: [],
             type: 'text',
@@ -36,10 +43,7 @@ define([
                 blur: 0,
                 click: 0
             },
-            icon: false,
-            iconPosition: 'right',
             multiple: false,
-            multiselect: false,
             readonly: false,
             hasObject: false,
             isDatepicker: false,
@@ -251,7 +255,7 @@ define([
         }
     };
 
-    var p = Input.prototype;
+    var p = Input2.prototype;
     p.setupJQueryEvents = function () {
         var t = this;
         t.d.$widgetInput
@@ -1143,5 +1147,5 @@ define([
     };
 
 
-    $A.initBasicFunctions(Input, "Input", ["change", "keyup", "enter", "focus", "blur", "click"]);
+    $A.initBasicFunctions(Input2, "Input2", ["change", "keyup", "enter", "focus", "blur", "click"]);
 });

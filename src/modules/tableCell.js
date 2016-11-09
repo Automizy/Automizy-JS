@@ -80,7 +80,7 @@ define([
         if (typeof text !== 'undefined') {
             t.d.text = text;
             if (t.editable()) {
-                t.d.$editableContent = t.d.$editableContent.html(text)
+                t.d.$editableContent = t.d.$editableContent.html(text);
                 t.d.$widget.html(t.d.$editableContent);
             }
             else {
@@ -95,7 +95,7 @@ define([
         if (typeof html !== 'undefined') {
             t.d.html = html;
             if (t.editable()) {
-                t.d.$editableContent = t.d.$editableContent.html(html)
+                t.d.$editableContent = t.d.$editableContent.html(html);
                 t.d.$widget.html(t.d.$editableContent);
             }
             else {
@@ -135,7 +135,7 @@ define([
         col.setInlineInputObject(cell);
 
         /*Hiding old content*/
-        $editableContent.hide()
+        $editableContent.hide();
 
         /*Inserting input field*/
         var inlineInputObject = cell.inlineInputObject();

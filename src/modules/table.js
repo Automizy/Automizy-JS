@@ -843,7 +843,7 @@ define([
             for (var j = 0; j < table.rows.length; j++) {
                 var cell = table.rows[j].insertCell(index);
 
-                var visibility = (obj.visibility === false) ? false : true;
+                var visibility = (obj.visibility !== false);
                 if (t.d.storeData && typeof $A.store.get(t.id() + "ActiveCols") !== 'undefined') {
                     var activeCols = $A.store.get(t.id() + "ActiveCols");
                     if (typeof activeCols[obj.name] !== 'undefined') {
