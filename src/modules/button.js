@@ -80,6 +80,14 @@ define([
             }
             t.initParameter(obj);
         }
+
+
+        if(typeof $().tooltipster === 'function'){
+            t.d.$widget.tooltipster({
+                delay: 1
+            });
+        }
+
     };
 
     var p = Button.prototype;

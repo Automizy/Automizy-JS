@@ -28,6 +28,9 @@
     line-height:0 !important;
     border:none !important;
 }
+.automizy-clickable{
+    cursor:pointer;
+}
 
 .automizy-loading-in{
     background-color:transparent;
@@ -112,4 +115,9 @@
 
 .automizy-table-load{
     display:inline-block;
+}
+
+.automizy-newrow{
+    clear: both;
+    display: block;
 }

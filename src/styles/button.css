@@ -197,3 +197,27 @@
 .automizy-button.automizy-has-icon .automizy-button-icon{
     display:inline-block;
 }
+
+
+
+
+
+.automizy-button.automizy-skin-menuicon{
+
+}
+.automizy-button.automizy-skin-menuicon .automizy-button-icon{
+    font-size:18px;
+    color: #a9a9a9;
+    padding: 20px;
+}
+.automizy-button.automizy-skin-menuicon:hover .automizy-button-icon,
+.automizy-button.automizy-skin-menuicon.automizy-active .automizy-button-icon{
+    color:#f46a1f;
+}
+.automizy-button.automizy-skin-menuicon a{
+    line-height:normal;
+    height:auto;
+}
+.automizy-button.automizy-skin-menuicon .automizy-button-text{
+    display:none;
+}
