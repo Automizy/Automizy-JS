@@ -679,7 +679,7 @@ define([
                 selectModule.disable();
             }
 
-            selectModule.multiple($t.is("[multiple]")).originalInput($t);
+            selectModule.multiple($t.is("[multiple]")).placeholder($t.attr('placeholder') || $A.translate('Select an option')).originalInput($t);
 
             var options = [];
             $t.find('option').each(function(){
