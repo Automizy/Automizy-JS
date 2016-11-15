@@ -358,6 +358,7 @@ define([
         if (newZIndex < AutomizyGlobalZIndex) {
             newZIndex = AutomizyGlobalZIndex + 1;
         }
+        AutomizyGlobalZIndex = newZIndex;
         t.zIndex(newZIndex);
         return t;
     };

@@ -413,7 +413,7 @@ define([
         }
         return t;
     };
-    p.emptyText = function(emptyText){
+    p.emptyText = p.placeholder = function(emptyText){
         var t = this;
         if (typeof emptyText !== 'undefined') {
             t.d.emptyText = emptyText;
