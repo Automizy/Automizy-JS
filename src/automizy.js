@@ -24,6 +24,7 @@ define([
     "automizy/modules/i18n",
     "automizy/modules/select/select",
     "automizy/modules/message",
+    "automizy/modules/panel",
 
     "automizy/defines/input",
     
