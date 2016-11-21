@@ -235,4 +235,31 @@
 
 /*Tab button*/
 
-.automizy-button.sutomizy-skin-tab-button{}
+.automizy-button.automizy-skin-tab-button{
+
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    font-weight: 700;
+    padding: 15px 10px;
+    text-align: center;
+    text-overflow: ellipsis;
+    border-color: rgba(158, 173, 195, 0.16);
+    border-width: 1px;
+    border-style: solid;
+}
+
+.automizy-button.automizy-skin-tab-button a{
+    color: #a9a9a9;
+}
+
+
+.automizy-button.automizy-skin-tab-button .automizy-button-icon.automizy-button-icon-position-top{
+    padding:11px 0 0 0;
+    display:block;
+}
+.automizy-button.automizy-skin-tab-button .automizy-button-icon.automizy-button-icon-position-bottom{
+    padding:0 0 9px 0;
+    display:block;
+}
