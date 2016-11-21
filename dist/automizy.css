@@ -108,7 +108,7 @@
 .automizy-button.automizy-skin-simple-orange a,
 .automizy-button.automizy-skin-simple-green a{
     line-height: 32px;
-    height: 34px;
+    
     min-width: 34px;
     box-sizing: border-box;
     -webkit-border-radius: 3px;
@@ -265,6 +265,14 @@
 }
 .automizy-button.automizy-skin-menuicon .automizy-button-text{
     display:none;
+}
+.automizy-button .automizy-button-icon.automizy-button-icon-position-top{
+    padding:11px 0 0 0;
+    display:block;
+}
+.automizy-button .automizy-button-icon.automizy-button-icon-position-bottom{
+    padding:0 0 9px 0;
+    display:block;
 }
 .automizy-input {
     display: inline-block;
@@ -2304,7 +2312,6 @@ label.iPhoneCheckLabelOff span {
     background-position:-18px -18px;
 }
 .automizy-alert {
-    margin-bottom: 20px;
     border-radius: 3px;
     padding: 10px;
     padding-right: 36px;
@@ -2331,8 +2338,6 @@ label.iPhoneCheckLabelOff span {
     opacity: .50;
     color: #000;
     filter: alpha(opacity=50);
-}
-.automizy-alert a {
     font-weight: bold;
     background: none;
 }
@@ -2348,4 +2353,43 @@ label.iPhoneCheckLabelOff span {
 .automizy-alert-content {
     overflow: hidden;
     text-align: left;
+}
+.automizy-message {
+    display: block;
+    position: relative;
+    border-radius: 3px;
+    padding: 0;
+    box-sizing: border-box;
+}
+.automizy-message-icon {
+    position: absolute;
+    top:10px;
+    left: 10px;
+    padding:8px 0 8px 0;
+    width:20px;
+    text-align:center;
+}
+.automizy-message-title{
+    position: absolute;
+    top:10px;
+    left: 38px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    box-sizing: border-box;
+}
+.automizy-message-close {
+    position: absolute;
+    top:0;
+    right: 0;
+    padding:10px;
+    opacity: 0.50;
+    filter: alpha(opacity=50);
+    color: #000;
+    font-weight: bold;
+}
+..automizy-message-content {
+    text-align: left;
+    box-sizing: border-box;
+    padding:38px 24px 18px
 }

@@ -43,7 +43,7 @@
 .automizy-button.automizy-skin-simple-orange a,
 .automizy-button.automizy-skin-simple-green a{
     line-height: 32px;
-    height: 34px;
+    /*height: 34px;*/
     min-width: 34px;
     box-sizing: border-box;
     -webkit-border-radius: 3px;
@@ -219,6 +219,19 @@
 .automizy-button.automizy-skin-menuicon .automizy-button-text{
     display:none;
 }
+
+
+
+.automizy-button .automizy-button-icon.automizy-button-icon-position-top{
+    padding:11px 0 0 0;
+    display:block;
+}
+.automizy-button .automizy-button-icon.automizy-button-icon-position-bottom{
+    padding:0 0 9px 0;
+    display:block;
+}
+
+
 
 /*Tab button*/
 

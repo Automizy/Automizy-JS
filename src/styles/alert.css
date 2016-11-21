@@ -1,5 +1,4 @@
 .automizy-alert {
-    margin-bottom: 20px;
     border-radius: 3px;
     padding: 10px;
     padding-right: 36px;
@@ -28,12 +27,16 @@
     opacity: .50;
     color: #000;
     filter: alpha(opacity=50);
+    font-weight: bold;
+    background: none;
 }
 
+/*
 .automizy-alert a {
     font-weight: bold;
     background: none;
 }
+*/
 
 .automizy-alert-icon {
     border-radius: 3px;
