@@ -5,6 +5,7 @@ var $A = {};
     window.AutomizyGlobalZIndex = window.AutomizyGlobalZIndex || 2000;
     $A = new function () {
         var t = this;
+        t.$tmp = $('<div></div>');
         t.d = {
             version: '0.5.3',
             settings: {
@@ -327,13 +328,14 @@ var $A = {};
                 return this.d.$widget;
             };
         p.skin = p.skin || function (skin) {
+                var t = this;
                 if (typeof skin !== 'undefined') {
-                    this.d.skin = skin;
-                    this.d.$widget.removeClassPrefix('automizy-skin-');
-                    this.d.$widget.addClass('automizy-skin-' + skin);
-                    return this;
+                    t.d.skin = skin;
+                    t.d.$widget.removeClassPrefix('automizy-skin-');
+                    t.d.$widget.addClass('automizy-skin-' + skin);
+                    return t;
                 }
-                return this.d.skin;
+                return t.d.skin;
             };
 
 
@@ -899,10 +901,23 @@ var $A = {};
     p.iconPosition = function(position){
         var t = this;
         if(typeof position !== 'undefined'){
-            if(position === 'right'){
-                t.d.$icon.insertAfter(t.d.$text);
-            }else{
+            if(position === 'left' || position === 'top'){
                 t.d.$icon.insertBefore(t.d.$text);
+            }else if(position === 'right' || position === 'bottom'){
+                t.d.$icon.insertAfter(t.d.$text);
+            }
+            if(position === 'top' || position === 'bottom'){
+                t.d.$icon.addClass('automizy-newrow');
+            }else{
+                t.d.$icon.removeClass('automizy-newrow');
+            }
+
+            if(position === 'top'){
+                t.d.$icon.addClass('automizy-button-icon-position-top');
+            }else if(position === 'bottom'){
+                t.d.$icon.addClass('automizy-button-icon-position-bottom');
+            }else{
+                t.d.$icon.removeClass('automizy-button-icon-position-top automizy-button-icon-position-bottom');
             }
         }
         return t.d.iconPosition;
@@ -1581,10 +1596,10 @@ var $A = {};
         var t = this;
         t.d = {
             $widget: $('<div class="automizy-alert alert alert-close">'),
-            $alertBoxClose: $('<a href="#" title="Close" class="automizy-alert-close glyph-icon alert-close-btn icon-remove"></a>'),
-            $alertBoxIcon: $('<div class="automizy-alert-icon bg-green alert-icon">'),
-            $alertBoxContent: $('<div class="automizy-alert-content alert-content">'),
-            $alertBoxTitle: $('<h4 class="automizy-alert-title alert-title">'),
+            $alertBoxClose: $('<a href="#" title="Close" class="automizy-alert-close fa-icon fa-icon-remove"></a>'),
+            $alertBoxIcon: $('<div class="automizy-alert-icon">'),
+            $alertBoxContent: $('<div class="automizy-alert-content">'),
+            $alertBoxTitle: $('<h4 class="automizy-alert-title">'),
             $alertBoxHtml: $('<p>&nbsp;</p>'),
 
             title: '',
@@ -1634,7 +1649,7 @@ var $A = {};
                 t.closable(obj.closable);
             }
             if (typeof obj.target !== 'undefined') {
-                t.d.target = obj.target;
+                t.target(obj.target);
             }
             if (typeof obj.forceHidden !== 'undefined') {
                 t.forceHidden(obj.forceHidden);
@@ -1687,6 +1702,26 @@ var $A = {};
             return t;
         }
         return t.d.text;
+    };
+
+    p.content = function (content) {
+        var t = this;
+        if (typeof content !== 'undefined') {
+            if (t.d.$alertBoxHtml.contents() instanceof jQuery) {
+                t.d.$alertBoxHtml.contents().appendTo($A.$tmp);
+            }
+            t.d.$alertBoxHtml.empty();
+            t.d.content = content;
+            if (t.d.content instanceof jQuery) {
+                t.d.content.appendTo(t.d.$alertBoxHtml);
+            } else if(typeof t.d.content.drawTo === 'function') {
+                t.d.content.drawTo(t.d.$alertBoxHtml);
+            } else {
+                t.d.$alertBoxHtml.html(t.d.content);
+            }
+            return t;
+        }
+        return t.d.content;
     };
 
     p.open = function (func, name, life) {
@@ -8509,6 +8544,232 @@ var $A = {};
 })();
 
 (function(){
+    var Message = function (obj) {
+        var t = this;
+        t.d = {
+            $widget: $('<div class="automizy-message"></div>'),
+            $close: $('<span class="automizy-message-close fa fa-remove"></span>'),
+            $icon: $('<div class="automizy-message-icon fa fa-info"></div>'),
+            $content: $('<div class="automizy-message-content"></div>'),
+            $title: $('<div class="automizy-message-title"></div>'),
+
+            title: $A.translate('Info'),
+            content: '',
+            type: 'info',
+            target: 'body',
+            closable: true,
+            id: 'automizy-message-' + $A.getUniqueString()
+        };
+        t.f = {};
+        t.init();
+
+        t.d.$icon.appendTo(t.d.$widget);
+        t.d.$title.appendTo(t.d.$widget);
+        t.d.$content.appendTo(t.d.$widget);
+        t.d.$close.appendTo(t.d.$widget);
+
+        if (typeof obj !== 'undefined') {
+            if (typeof obj.title !== 'undefined') {
+                t.title(obj.title);
+            }
+            if (typeof obj.text !== 'undefined') {
+                t.text(obj.text);
+            }
+            if (typeof obj.html !== 'undefined') {
+                t.html(obj.html);
+            }
+            if (typeof obj.content !== 'undefined') {
+                t.content(obj.content);
+            }
+            if (typeof obj.type !== 'undefined') {
+                t.type(obj.type);
+            }
+            if (typeof obj.open === 'function') {
+                t.open(obj.open);
+            }
+            if (typeof obj.close === 'function') {
+                t.close(obj.close);
+            }
+            if (typeof obj.closable !== 'undefined') {
+                t.closable(obj.closable);
+            }
+            if (typeof obj.target !== 'undefined') {
+                t.drawTo(obj.target);
+            }
+            t.initParameter(obj);
+        }
+
+        t.d.$close.click(function () {
+            t.close();
+        });
+
+    };
+
+    var p = Message.prototype;
+
+    p.title = function (title) {
+        var t = this;
+        if (typeof title !== 'undefined') {
+            t.d.title = title;
+            t.d.$title.html(t.d.title);
+            return t;
+        }
+        return t.d.title;
+    };
+
+    p.html = function (html) {
+        var t = this;
+        if (typeof html !== 'undefined') {
+            t.d.html = html;
+            t.d.$content.html(t.d.html);
+            return t;
+        }
+        return t.d.html;
+    };
+
+    p.text = function (text) {
+        var t = this;
+        if (typeof text !== 'undefined') {
+            t.d.text = text;
+            t.d.$content.text(t.d.text);
+            return t;
+        }
+        return t.d.text;
+    };
+
+    p.content = function (content) {
+        var t = this;
+        if (typeof content !== 'undefined') {
+            if (t.d.$content.contents() instanceof jQuery) {
+                t.d.$content.contents().appendTo($A.$tmp);
+            }
+            t.d.$content.empty();
+            t.d.content = content;
+            if (t.d.content instanceof jQuery) {
+                t.d.content.appendTo(t.d.$content);
+            } else if (typeof t.d.content.drawTo === 'function') {
+                t.d.content.drawTo(t.d.$content);
+            } else {
+                t.d.$content.html(t.d.content);
+            }
+            return t;
+        }
+        return t.d.content;
+    };
+
+
+    p.open = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction.apply(t, ['open', func, name, life]);
+        } else {
+            t.widget().fadeOut(function () {
+                t.runFunctions('open');
+            });
+        }
+        return t;
+    };
+
+    p.close = function (func, name, life) {
+        var t = this;
+        if(!t.closable()){
+            return t;
+        }
+        if (typeof func === 'function') {
+            t.addFunction.apply(t, ['close', func, name, life]);
+        } else {
+            t.widget().fadeOut(function () {
+                t.runFunctions('close');
+            });
+        }
+        return t;
+    };
+
+    p.closable = function (value) {
+        var t = this;
+        if (typeof value !== 'undefined') {
+            t.d.closable = $A.parseBoolean(value);
+            if (value === true) {
+                t.widget().removeClass('automizy-disable-close');
+            } else {
+                t.widget().addClass('automizy-disable-close');
+            }
+            return t;
+        }
+        return t.d.closable;
+    };
+
+    p.type = function (type) {
+        var t = this;
+        if (typeof type !== 'undefined') {
+            t.d.type = type;
+
+            t.widget().removeClass('automizy-message-type-info automizy-message-type-success automizy-message-type-warning automizy-message-type-error');
+
+            switch (type) {
+                case "info":
+                    t.widget().addClass('automizy-message-type-info');
+                    t.icon('fa-info');
+                    if (t.title() === false) {
+                        t.d.$title.text($A.translate('Info'));
+                    }
+                    break;
+                case "success":
+                    t.widget().addClass('automizy-message-type-success');
+                    t.icon('fa-check');
+                    if (t.title() === false) {
+                        t.d.$title.text($A.translate('Success!'));
+                    }
+                    break;
+                case "warning":
+                    t.widget().addClass('automizy-message-type-warning');
+                    t.icon('fa-exclamation');
+                    if (t.title() === false) {
+                        t.d.$title.text($A.translate('Warning!'));
+                    }
+                    break;
+                case "error":
+                    t.widget().addClass('automizy-message-type-error');
+                    t.icon('fa-times');
+                    if (t.title() === false) {
+                        t.d.$title.text($A.translate('Error!'));
+                    }
+                    break;
+            }
+
+            return t;
+        }
+        return t.d.type;
+    };
+
+    p.icon = function (icon, iconType) {
+        var t = this;
+        if (typeof icon !== 'undefined') {
+            t.d.icon = icon;
+            if (t.d.icon === false) {
+                t.widget().removeClass('automizy-has-icon');
+            } else if (t.d.icon === true) {
+                t.widget().addClass('automizy-has-icon');
+            } else {
+                t.widget().addClass('automizy-has-icon');
+                var iconType = iconType || 'fa';
+                if (iconType === 'fa') {
+                    t.d.$icon.removeClass(function (index, css) {
+                        return (css.match(/(^|\s)fa-\S+/g) || []).join(' ');
+                    }).addClass('fa').addClass(icon);
+                }
+            }
+            return t;
+        }
+        return t.d.icon || false;
+    };
+
+    $A.initBasicFunctions(Message, "Message", ['close', 'open']);
+
+
+})();
+
+(function(){
     if (!Date.now) {
         Date.now = function () {
             return new Date().getTime();
@@ -9674,7 +9935,6 @@ var $A = {};
 
 (function(){
     console.log('%c AutomizyJs module loaded! ', 'background: #000000; color: #bada55; font-size:14px');
-    return $A;
 })();
 window.$A = $A;
 window.AutomizyJs = $A;

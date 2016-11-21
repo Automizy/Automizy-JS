@@ -9,10 +9,10 @@ define([
         var t = this;
         t.d = {
             $widget: $('<div class="automizy-alert alert alert-close">'),
-            $alertBoxClose: $('<a href="#" title="Close" class="automizy-alert-close glyph-icon alert-close-btn icon-remove"></a>'),
-            $alertBoxIcon: $('<div class="automizy-alert-icon bg-green alert-icon">'),
-            $alertBoxContent: $('<div class="automizy-alert-content alert-content">'),
-            $alertBoxTitle: $('<h4 class="automizy-alert-title alert-title">'),
+            $alertBoxClose: $('<a href="#" title="Close" class="automizy-alert-close fa-icon fa-icon-remove"></a>'),
+            $alertBoxIcon: $('<div class="automizy-alert-icon">'),
+            $alertBoxContent: $('<div class="automizy-alert-content">'),
+            $alertBoxTitle: $('<h4 class="automizy-alert-title">'),
             $alertBoxHtml: $('<p>&nbsp;</p>'),
 
             title: '',
@@ -62,7 +62,7 @@ define([
                 t.closable(obj.closable);
             }
             if (typeof obj.target !== 'undefined') {
-                t.d.target = obj.target;
+                t.target(obj.target);
             }
             if (typeof obj.forceHidden !== 'undefined') {
                 t.forceHidden(obj.forceHidden);
@@ -115,6 +115,26 @@ define([
             return t;
         }
         return t.d.text;
+    };
+
+    p.content = function (content) {
+        var t = this;
+        if (typeof content !== 'undefined') {
+            if (t.d.$alertBoxHtml.contents() instanceof jQuery) {
+                t.d.$alertBoxHtml.contents().appendTo($A.$tmp);
+            }
+            t.d.$alertBoxHtml.empty();
+            t.d.content = content;
+            if (t.d.content instanceof jQuery) {
+                t.d.content.appendTo(t.d.$alertBoxHtml);
+            } else if(typeof t.d.content.drawTo === 'function') {
+                t.d.content.drawTo(t.d.$alertBoxHtml);
+            } else {
+                t.d.$alertBoxHtml.html(t.d.content);
+            }
+            return t;
+        }
+        return t.d.content;
     };
 
     p.open = function (func, name, life) {

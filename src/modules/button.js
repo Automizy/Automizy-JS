@@ -232,10 +232,23 @@ define([
     p.iconPosition = function(position){
         var t = this;
         if(typeof position !== 'undefined'){
-            if(position === 'right'){
-                t.d.$icon.insertAfter(t.d.$text);
-            }else{
+            if(position === 'left' || position === 'top'){
                 t.d.$icon.insertBefore(t.d.$text);
+            }else if(position === 'right' || position === 'bottom'){
+                t.d.$icon.insertAfter(t.d.$text);
+            }
+            if(position === 'top' || position === 'bottom'){
+                t.d.$icon.addClass('automizy-newrow');
+            }else{
+                t.d.$icon.removeClass('automizy-newrow');
+            }
+
+            if(position === 'top'){
+                t.d.$icon.addClass('automizy-button-icon-position-top');
+            }else if(position === 'bottom'){
+                t.d.$icon.addClass('automizy-button-icon-position-bottom');
+            }else{
+                t.d.$icon.removeClass('automizy-button-icon-position-top automizy-button-icon-position-bottom');
             }
         }
         return t.d.iconPosition;

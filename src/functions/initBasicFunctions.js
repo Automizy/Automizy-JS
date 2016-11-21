@@ -95,13 +95,14 @@ define([
                 return this.d.$widget;
             };
         p.skin = p.skin || function (skin) {
+                var t = this;
                 if (typeof skin !== 'undefined') {
-                    this.d.skin = skin;
-                    this.d.$widget.removeClassPrefix('automizy-skin-');
-                    this.d.$widget.addClass('automizy-skin-' + skin);
-                    return this;
+                    t.d.skin = skin;
+                    t.d.$widget.removeClassPrefix('automizy-skin-');
+                    t.d.$widget.addClass('automizy-skin-' + skin);
+                    return t;
                 }
-                return this.d.skin;
+                return t.d.skin;
             };
 
 

@@ -2,6 +2,7 @@ define([], function () {
     window.AutomizyGlobalZIndex = window.AutomizyGlobalZIndex || 2000;
     $A = new function () {
         var t = this;
+        t.$tmp = $('<div></div>');
         t.d = {
             version: '0.5.3',
             settings: {
