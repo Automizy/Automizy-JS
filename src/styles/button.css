@@ -199,9 +199,7 @@
 }
 
 
-
-
-
+/*Menu iconed button*/
 .automizy-button.automizy-skin-menuicon{
 
 }
@@ -221,3 +219,7 @@
 .automizy-button.automizy-skin-menuicon .automizy-button-text{
     display:none;
 }
+
+/*Tab button*/
+
+.automizy-button.sutomizy-skin-tab-button{}

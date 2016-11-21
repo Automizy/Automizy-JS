@@ -10,25 +10,30 @@
     <script>
         $(function () {
 
-                //Creating Button module with object
-                btn1 = $A.newButton({
-                    text: "New Button",
-                    float: "left",
-                    target: $('body'),
-                    skin: "simple-white"
-                });
-
-                    //Creating Button module with method chaining
-                    btn2 = $A.newButton().text("New Button").float('right').skin('simple-orange').draw();
-                    //Creating Button module with method chaining
-                    btn3 = $A.newButton().text("New Button").float('right').skin('simple-green').draw();
-
-                    //Creating Button module with method chaining
-                    btn4 = $A.newButton().text("New Button").float('right').skin('nobox-orange').draw();
-                    //Creating Button module with method chaining
-                    btn5 = $A.newButton().text("New Button").float('right').skin('nobox-green').draw();
+            //Creating Button module with object
+            btn1 = $A.newButton({
+                text: "New Button",
+                float: "left",
+                target: $('body'),
+                skin: "simple-white"
             });
-        </script>
-    </head>
-    <body></body>
+
+            //Creating Button module with method chaining
+            btn2 = $A.newButton().text("New Button").float('right').skin('simple-orange').draw();
+            //Creating Button module with method chaining
+            btn3 = $A.newButton().text("New Button").float('right').skin('simple-green').draw();
+
+            //Creating Button module with method chaining
+            btn4 = $A.newButton().text("New Button").float('right').skin('nobox-orange').draw();
+            //Creating Button module with method chaining
+            btn5 = $A.newButton().text("New Button").float('right').skin('nobox-green').draw();
+
+            btn6 = $A.newButton({
+                icon: 'fa-users',
+                iconPosition: 'bottom'
+            }).draw();
+        });
+    </script>
+</head>
+<body></body>
 </html>
