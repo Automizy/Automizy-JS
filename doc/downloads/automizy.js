@@ -680,13 +680,14 @@ var $A = {};
             $widget: $('<span class="automizy-button"></span>'),
             $widgetButton: $('<a href="javascript:;"></a>'),
             $text: $('<span class="automizy-button-text"></span>'),
-            $icon:$('<span class="automizy-button-icon"></span>'),
-            iconPosition:'left',
+            $icon: $('<span class="automizy-button-icon"></span>'),
+            iconPosition: 'left',
             text: 'My Button',
             title: '',
             skin: 'simple-white',
             float: 'none',
             width: '',
+            active: false,
             hasObject: false,
             newRow: false,
             disabled: false,
@@ -747,11 +748,14 @@ var $A = {};
             if (typeof obj.align !== 'undefined') {
                 t.align(obj.align);
             }
+            if (typeof obj.active === 'boolean') {
+                t.active(obj.active);
+            }
             t.initParameter(obj);
         }
 
 
-        if(typeof $().tooltipster === 'function'){
+        if (typeof $().tooltipster === 'function') {
             t.d.$widget.tooltipster({
                 delay: 1
             });
@@ -782,7 +786,7 @@ var $A = {};
         var t = this;
         if (typeof align !== 'undefined') {
             t.d.$widgetButton.css({
-                textAlign:align
+                textAlign: align
             });
             return t;
         }
@@ -792,7 +796,7 @@ var $A = {};
         var t = this;
         if (typeof title !== 'undefined') {
             t.d.title = title;
-            t.d.$widget.attr('title',title);
+            t.d.$widget.attr('title', title);
             return t;
         }
         return t.d.title;
@@ -852,12 +856,32 @@ var $A = {};
         return t.d.$widgetButton;
     };
 
+    p.active = function (active) {
+        var t = this;
+        if (typeof active !== "undefined") {
+            active=$A.parseBoolean(active)
+            t.d.active = active;
+
+            if(active === true){
+                t.d.$widget.addClass("automizy-active");
+            }
+            else{
+                t.d.$widget.removeClass("automizy-active");
+            }
+
+            return t;
+        }
+        else {
+            return t.d.active;
+        }
+    }
+
     p.click = function (func, name, life) {
         var t = this;
         if (typeof func === 'function') {
             t.addFunction('click', func, name, life);
         } else {
-            if(t.disabled()){
+            if (t.disabled()) {
                 return t;
             }
             var a = t.runFunctions('click');
@@ -865,11 +889,11 @@ var $A = {};
         }
         return t;
     };
-    p.thin = function(value){
+    p.thin = function (value) {
         var t = this;
         if (typeof value !== 'undefined') {
             value = $A.parseBoolean(value);
-            if(!value){
+            if (!value) {
                 t.widget().removeClass('automizy-button-thin');
                 return t;
             }
@@ -877,46 +901,46 @@ var $A = {};
         t.widget().addClass('automizy-button-thin');
         return t;
     };
-    p.icon = function(icon, iconType){
-            var t = this;
-            if (typeof icon !== 'undefined') {
-                t.d.icon = icon;
-                if(t.d.icon === false){
-                    t.widget().removeClass('automizy-has-icon');
-                }else if(t.d.icon === true){
-                    t.widget().addClass('automizy-has-icon');
-                }else{
-                    t.widget().addClass('automizy-has-icon');
-                    var iconType = iconType || 'fa';
-                    if (iconType === 'fa') {
-                        t.d.$icon.removeClass(function (index, css) {
-                            return (css.match(/(^|\s)fa-\S+/g) || []).join(' ');
-                        }).addClass('fa').addClass(icon);
-                    }
-                }
-                return t;
-            }
-            return t.d.icon || false;
-        };
-    p.iconPosition = function(position){
+    p.icon = function (icon, iconType) {
         var t = this;
-        if(typeof position !== 'undefined'){
-            if(position === 'left' || position === 'top'){
+        if (typeof icon !== 'undefined') {
+            t.d.icon = icon;
+            if (t.d.icon === false) {
+                t.widget().removeClass('automizy-has-icon');
+            } else if (t.d.icon === true) {
+                t.widget().addClass('automizy-has-icon');
+            } else {
+                t.widget().addClass('automizy-has-icon');
+                var iconType = iconType || 'fa';
+                if (iconType === 'fa') {
+                    t.d.$icon.removeClass(function (index, css) {
+                        return (css.match(/(^|\s)fa-\S+/g) || []).join(' ');
+                    }).addClass('fa').addClass(icon);
+                }
+            }
+            return t;
+        }
+        return t.d.icon || false;
+    };
+    p.iconPosition = function (position) {
+        var t = this;
+        if (typeof position !== 'undefined') {
+            if (position === 'left' || position === 'top') {
                 t.d.$icon.insertBefore(t.d.$text);
-            }else if(position === 'right' || position === 'bottom'){
+            } else if (position === 'right' || position === 'bottom') {
                 t.d.$icon.insertAfter(t.d.$text);
             }
-            if(position === 'top' || position === 'bottom'){
+            if (position === 'top' || position === 'bottom') {
                 t.d.$icon.addClass('automizy-newrow');
-            }else{
+            } else {
                 t.d.$icon.removeClass('automizy-newrow');
             }
 
-            if(position === 'top'){
+            if (position === 'top') {
                 t.d.$icon.addClass('automizy-button-icon-position-top');
-            }else if(position === 'bottom'){
+            } else if (position === 'bottom') {
                 t.d.$icon.addClass('automizy-button-icon-position-bottom');
-            }else{
+            } else {
                 t.d.$icon.removeClass('automizy-button-icon-position-top automizy-button-icon-position-bottom');
             }
         }

@@ -4,7 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Select Example</title>
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         @font-face {
             font-family: 'FontAwesome';
@@ -46,9 +47,11 @@
                 icon: 'fa-users',
                 iconPosition: 'top',
                 skin: 'tab-button'
-            }).draw();
+            }).drawTo($('#tab-button-container'));
         });
     </script>
 </head>
-<body></body>
+<body>
+<div id="tab-button-container" style="width: 250px"></div>
+</body>
 </html>

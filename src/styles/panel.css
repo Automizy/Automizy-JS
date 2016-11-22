@@ -6,13 +6,15 @@
     border-radius: 4px;
     background-color: #fff;
     box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+    overflow: hidden;
 }
 .automizy-panel .automizy-panel-title{
     padding: 10px 15px;
     box-sizing: border-box;
     font-size: 14px;
     border-bottom: #F7F7F7 solid 1px;
-    background: #FFFFFF;
+    color: #555a60;
+    background-color: #FEFEFF;
     font-family: 'Montserrat', sans-serif;
 }
 .automizy-panel .automizy-panel-content{
