@@ -19,7 +19,6 @@ define([
         t.f = {};
         t.init();
 
-        t.d.$title.appendTo(t.d.$widget);
         t.d.$content.appendTo(t.d.$widget);
         if (typeof obj !== 'undefined') {
 
@@ -41,6 +40,7 @@ define([
         if (typeof title !== 'undefined') {
             t.d.title = title;
             t.d.$title.html(title);
+            t.d.$title.appendTo(t.d.$widget);
             return t;
         }
         return t.d.title;
