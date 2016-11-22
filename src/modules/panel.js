@@ -40,7 +40,7 @@ define([
         if (typeof title !== 'undefined') {
             t.d.title = title;
             t.d.$title.html(title);
-            t.d.$title.appendTo(t.d.$widget);
+            t.d.$title.prependTo(t.d.$widget);
             return t;
         }
         return t.d.title;

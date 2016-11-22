@@ -13,11 +13,27 @@
     box-sizing: border-box;
     font-size: 14px;
     border-bottom: #F7F7F7 solid 1px;
-    color: #555a60;
-    background-color: #FEFEFF;
+    color: #3e4855;
+    background-color: #FFFFFF;
     font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
 }
 .automizy-panel .automizy-panel-content{
     padding: 15px 20px;
     font-family: 'Montserrat', sans-serif;
+}
+
+.automizy-panel.automizy-skin-content-box{
+    border: 1px solid #eff1f6;
+    border-bottom: none;
+}
+.automizy-panel.automizy-skin-content-box .automizy-panel-title{
+    font-size: 14px;
+    text-transform: uppercase;
+    padding: 15px;
+    color: #555a60;
+    background-color: #FEFEFF;
+}
+.automizy-panel.automizy-skin-content-box .automizy-panel-content{
+    padding: 15px;
 }

@@ -10,12 +10,19 @@
     <script>
         $(function () {
 
-            var $content = $('<div>This is the content</div>');
+            var $content = $('<div></div>');
 
             $A.newPanel({
-                title:'Apple',
+                title:'Panel',
                 content:$content,
                 target:'body'
+            });
+
+            $A.newPanel({
+                title:'Content box in panel',
+                skin: 'content-box',
+                content:$('<div>this is the content</div>'),
+                target:$content
             });
 
         });
