@@ -25,6 +25,7 @@ define([
     "automizy/modules/select/select",
     "automizy/modules/message",
     "automizy/modules/panel",
+    "automizy/modules/progressBar",
 
     "automizy/defines/input",
     
