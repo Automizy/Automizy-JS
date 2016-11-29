@@ -20,6 +20,7 @@
     -moz-transition: background-color, color 0.2s;
     transition: background-color, color 0.2s;
     display: inline-block;
+    box-sizing: border-box;
 }
 
 /*Nobox buttons*/
@@ -271,6 +272,7 @@
     color: #a9a9a9;
     text-decoration: none;
     padding: 15px 10px;
+    width: 100%;
 }
 
 /*Tab button hover state*/
