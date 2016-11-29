@@ -37,7 +37,7 @@ define([
         t.d.$text.appendTo(t.d.$widgetButton);
         t.d.$text.text(t.d.text);
         t.d.$widget.addClass('automizy-skin-' + t.d.skin).attr('id', t.id());
-        t.d.$widgetButton.click(function () {
+        t.d.$widget.click(function () {
             if (t.click().returnValue() === false) {
                 return false;
             }
