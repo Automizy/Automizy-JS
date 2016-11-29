@@ -4001,12 +4001,12 @@ var $A = {};
     };
     p.check = function () {
         var t = this;
-        t.d.input().prop('checked', true).trigger('change');
+        t.input().prop('checked', true).trigger('change');
         return t;
     };
     p.uncheck = function () {
         var t = this;
-        t.d.input().prop('checked', false).trigger('change');
+        t.input().prop('checked', false).trigger('change');
         return t;
     };
 
@@ -4119,7 +4119,7 @@ var $A = {};
         var t = this;
         if (typeof placeholder !== 'undefined') {
             t.d.placeholder = placeholder;
-            t.d.input().attr('placeholder', placeholder);
+            t.input().attr('placeholder', placeholder);
             return t;
         }
         return t.d.placeholder;
