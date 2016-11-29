@@ -19,6 +19,17 @@
             var temp;
                     window.temp = $A.newForm({
                         inputs: [
+                                $A.newInput2({
+                                    name:'email',
+                                    newRow:true,
+                                    type: 'text',
+                                    id: 'automizy-login-email',
+                                    validator: 'email',
+                                    iconLeft: 'fa-envelope-o',
+                                    enter: function(){
+
+                                    }
+                                }),
                             {
                                 label: 'Név',
                                 help: "Név of something",

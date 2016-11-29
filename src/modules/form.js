@@ -155,7 +155,7 @@ define([
     p.input = p.addInput = function (obj) {
         var t = this;
         if (typeof obj !== 'undefined') {
-            if (obj instanceof $A.m.Input || obj instanceof $A.m.Select) {
+            if (typeof obj.drawTo === 'function') {
                 obj.drawTo(t.d.$inputs);
                 t.d.inputs.push(obj);
             } else {
