@@ -711,7 +711,7 @@ var $A = {};
         t.d.$text.appendTo(t.d.$widgetButton);
         t.d.$text.text(t.d.text);
         t.d.$widget.addClass('automizy-skin-' + t.d.skin).attr('id', t.id());
-        t.d.$widgetButton.add(t.d.$badge).click(function () {
+        t.d.$widgetButton.click(function () {
             if (t.click().returnValue() === false) {
                 return false;
             }
@@ -867,18 +867,22 @@ var $A = {};
     p.active = function (active) {
         var t = this;
         if (typeof active !== "undefined") {
-            t.d.active = $A.parseBoolean(active);
+            active=$A.parseBoolean(active)
+            t.d.active = active;
 
-            if(t.d.active === true){
+            if(active === true){
                 t.d.$widget.addClass("automizy-active");
-            } else{
+            }
+            else{
                 t.d.$widget.removeClass("automizy-active");
             }
 
             return t;
         }
-        return t.d.active;
-    };
+        else {
+            return t.d.active;
+        }
+    }
 
     p.click = function (func, name, life) {
         var t = this;
