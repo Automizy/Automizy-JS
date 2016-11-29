@@ -4142,16 +4142,19 @@ var $A = {};
             delete attributes.type;
             delete attributes.checked;
             if (t.d.type === 'select' || t.d.type === 'automizy-select') {
-                t.d.$input = $('<select></select>');
+                t.d.$inputClone = $('<select></select>');
             } else if (t.d.type === 'textarea') {
-                t.d.$input = $('<textarea></textarea>');
+                t.d.$inputClone = $('<textarea></textarea>');
             } else if (t.d.type === 'html') {
-                t.d.$input = $('<span></span>');
+                t.d.$inputClone = $('<span></span>');
             } else {
-                t.d.$input = $('<input/>').attr('type', t.d.type);
+                t.d.$inputClone = $('<input/>').attr('type', t.d.type);
             }
             t.widget().attr('type',t.d.type);
-            t.d.$input.attr(attributes);
+            t.d.$inputClone.attr(attributes);
+            t.d.$inputClone.insertAfter(t.d.$input);
+            t.d.$input.remove();
+            t.d.$input = t.d.$inputClone;
             setTimeout(function () {
                 t.setupJQueryEvents();
             }, 10);
