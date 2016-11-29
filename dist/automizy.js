@@ -1620,7 +1620,7 @@ var $A = {};
         var t = this;
         t.d = {
             $widget: $('<div class="automizy-alert alert alert-close">'),
-            $alertBoxClose: $('<a href="#" title="Close" class="automizy-alert-close fa-icon fa-icon-remove"></a>'),
+            $alertBoxClose: $('<a href="#" title="Close" class="automizy-alert-close fa fa-remove"></a>'),
             $alertBoxIcon: $('<div class="automizy-alert-icon">'),
             $alertBoxContent: $('<div class="automizy-alert-content">'),
             $alertBoxTitle: $('<h4 class="automizy-alert-title">'),
@@ -1629,7 +1629,6 @@ var $A = {};
             title: '',
             content: '',
             type: '',
-            target: '',
             closable: true,
             forceHidden: false,
             onCloseIconClick: function () {
@@ -1671,9 +1670,6 @@ var $A = {};
             }
             if (typeof obj.closable !== 'undefined') {
                 t.closable(obj.closable);
-            }
-            if (typeof obj.target !== 'undefined') {
-                t.target(obj.target);
             }
             if (typeof obj.forceHidden !== 'undefined') {
                 t.forceHidden(obj.forceHidden);
