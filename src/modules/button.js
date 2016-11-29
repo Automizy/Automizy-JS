@@ -22,6 +22,9 @@ define([
             hasObject: false,
             newRow: false,
             disabled: false,
+            badge:{
+                active:false
+            },
             triggers: {
                 click: 0
             },
@@ -33,6 +36,7 @@ define([
         t.init();
 
         t.d.$widgetButton.appendTo(t.d.$widget);
+        t.d.$badge.appendTo(t.d.$widget).hide();
         t.d.$icon.appendTo(t.d.$widgetButton);
         t.d.$text.appendTo(t.d.$widgetButton);
         t.d.$text.text(t.d.text);
@@ -81,6 +85,9 @@ define([
             }
             if (typeof obj.active === 'boolean') {
                 t.active(obj.active);
+            }
+            if (typeof obj.badge !== 'undefined') {
+                t.badge(obj.badge);
             }
             t.initParameter(obj);
         }
@@ -232,6 +239,65 @@ define([
         t.widget().addClass('automizy-button-thin');
         return t;
     };
+
+    p.badge = function(badge){
+        var t = this;
+
+        if(typeof badge !== 'undefined') {
+            if (typeof badge === 'array' || typeof badge === 'object') {
+                t.d.badge.active = true;
+                if (typeof badge.content !== 'undefined') {
+                    t.d.badge.content = badge.content;
+                    t.d.$badge.html(t.d.badge.content);
+                }
+                if (typeof badge.color !== 'undefined') {
+                    t.d.badge.color = badge.color;
+                }
+                if (typeof badge.position !== 'undefined') {
+                    t.d.badge.position = badge.position;
+                    if(typeof t.d.badge.position === 'array' || typeof t.d.badge.position === 'object'){
+                        if(typeof t.d.badge.position.top !== 'undefined'){
+                            if(typeof t.d.badge.position.top === 'number'){
+                                t.d.badge.position.top = t.d.badge.position.top + 'px';
+                            }
+                            t.d.$badge.css('top', t.d.badge.position.top);
+                        }
+                        if(typeof t.d.badge.position.left !== 'undefined'){
+                            if(typeof t.d.badge.position.left === 'number'){
+                                t.d.badge.position.left = t.d.badge.position.left + 'px';
+                            }
+                            t.d.$badge.css('left', t.d.badge.position.left);
+                        }
+                        if(typeof t.d.badge.position.right !== 'undefined'){
+                            if(typeof t.d.badge.position.right === 'number'){
+                                t.d.badge.position.right = t.d.badge.position.right + 'px';
+                            }
+                            t.d.$badge.css('right', t.d.badge.position.right);
+                        }
+                        if(typeof t.d.badge.position.bottom !== 'undefined'){
+                            if(typeof t.d.badge.position.bottom === 'number'){
+                                t.d.badge.position.bottom = t.d.badge.position.bottom + 'px';
+                            }
+                            t.d.$badge.css('bottom', t.d.badge.position.bottom);
+                        }
+                    }
+                }
+                if (typeof badge.active !== 'undefined') {
+                    t.d.badge.active = $A.parseBoolean(badge.active);
+                }
+            }else{
+                t.d.badge.active = $A.parseBoolean(badge);
+            }
+            if(t.d.badge.active){
+                t.d.$badge.show();
+            }else{
+                t.d.$badge.hide();
+            }
+            return t;
+        }
+        return t.d.badge;
+    };
+
     p.icon = function (icon, iconType) {
         var t = this;
         if (typeof icon !== 'undefined') {
