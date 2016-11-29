@@ -15,10 +15,10 @@
                     .labelAfter('After label')
                     .iconLeft('fa-users')
                     .iconRight('fa-paper-plane-o')
-                    .iconLeftClick(function () {
+                    .iconLeftClick(function(){
                         alert('Click left');
                     })
-                    .iconRightClick(function () {
+                    .iconRightClick(function(){
                         alert('Click right');
                     });
 
@@ -28,28 +28,17 @@
                     .labelTop('Top label')
                     .labelBottom('Bottom label')
                     .iconLeft('fa-users')
-                    .iconLeftClick(function () {
+                    .iconLeftClick(function(){
                         alert('Click left');
                     })
-                    .iconRightClick(function () {
+                    .iconRightClick(function(){
                         alert('Click right');
-                    });
-
-            $A.newForm({
-                inputs: [
-                    $A.newInput2({
-                        name: 'email',
-                        newRow: true,
-                        type: 'text',
-                        id: 'automizy-login-email',
-                        validator: 'email',
-                        iconLeft: 'fa-envelope-o',
-                        enter: function () {
-
-                        }
-                    })
-                ],
-                target: $('body')
+                    }).placeholder('asd')
+            window.input3 = $A.newInput2({
+                target: 'body',
+                newRow: true,
+                placeholder: 'asd',
+                iconLeft: 'fa-users'
             });
         });
     </script>

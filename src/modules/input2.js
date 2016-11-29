@@ -372,12 +372,12 @@ define([
     };
     p.check = function () {
         var t = this;
-        t.d.input().prop('checked', true).trigger('change');
+        t.input().prop('checked', true).trigger('change');
         return t;
     };
     p.uncheck = function () {
         var t = this;
-        t.d.input().prop('checked', false).trigger('change');
+        t.input().prop('checked', false).trigger('change');
         return t;
     };
 
@@ -490,7 +490,7 @@ define([
         var t = this;
         if (typeof placeholder !== 'undefined') {
             t.d.placeholder = placeholder;
-            t.d.input().attr('placeholder', placeholder);
+            t.input().attr('placeholder', placeholder);
             return t;
         }
         return t.d.placeholder;
@@ -678,16 +678,20 @@ define([
             t.d.iconLeft = icon;
             if (t.d.iconLeft === false) {
                 t.d.$inputIconLeftCell.ahide();
-            } else if (t.d.iconLeft === true) {
-                t.d.$inputIconLeftCell.ashow();
-            } else {
-                t.d.$inputIconLeftCell.ashow();
-                var iconType = iconType || 'fa';
-                if (iconType === 'fa') {
-                    t.d.$inputIconLeftCell.empty();
-                    var icons = t.d.iconLeft.split(" ");
-                    for(var i = 0; i < icons.length; i++){
-                        t.d.$inputIconLeftCell.append('<span class="fa ' + icons[i] + '"></span>');
+                t.d.$widget.removeClass('automizy-input2-has-left-icon');
+            } else{
+                t.d.$widget.addClass('automizy-input2-has-left-icon');
+                if (t.d.iconLeft === true) {
+                    t.d.$inputIconLeftCell.ashow();
+                } else {
+                    t.d.$inputIconLeftCell.ashow();
+                    var iconType = iconType || 'fa';
+                    if (iconType === 'fa') {
+                        t.d.$inputIconLeftCell.empty();
+                        var icons = t.d.iconLeft.split(" ");
+                        for(var i = 0; i < icons.length; i++){
+                            t.d.$inputIconLeftCell.append('<span class="fa ' + icons[i] + '"></span>');
+                        }
                     }
                 }
             }
@@ -701,16 +705,20 @@ define([
             t.d.iconRight = icon;
             if (t.d.iconRight === false) {
                 t.d.$inputIconRightCell.ahide();
-            } else if (t.d.iconRight === true) {
-                t.d.$inputIconRightCell.ashow();
-            } else {
-                t.d.$inputIconRightCell.ashow();
-                var iconType = iconType || 'fa';
-                if (iconType === 'fa') {
-                    t.d.$inputIconRightCell.empty();
-                    var icons = t.d.iconRight.split(" ");
-                    for(var i = 0; i < icons.length; i++){
-                        t.d.$inputIconRightCell.append('<span class="fa ' + icons[i] + '"></span>');
+                t.d.$widget.removeClass('automizy-input2-has-right-icon');
+            } else{
+                t.d.$widget.addClass('automizy-input2-has-right-icon');
+                if (t.d.iconRight === true) {
+                    t.d.$inputIconRightCell.ashow();
+                } else {
+                    t.d.$inputIconRightCell.ashow();
+                    var iconType = iconType || 'fa';
+                    if (iconType === 'fa') {
+                        t.d.$inputIconRightCell.empty();
+                        var icons = t.d.iconRight.split(" ");
+                        for(var i = 0; i < icons.length; i++){
+                            t.d.$inputIconRightCell.append('<span class="fa ' + icons[i] + '"></span>');
+                        }
                     }
                 }
             }

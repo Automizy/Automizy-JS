@@ -864,10 +864,22 @@ input.automizy-table-rowcheck:focus:disabled:checked { background-position: -15p
     border: 1px solid #dfe8f1;
     border-radius: 4px;
     -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-top-right-radius: 0;
+    -webkit-border-top-right-radius: 0;
+    -moz-border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    -webkit-border-bottom-right-radius: 0;
+    -moz-border-bottom-right-radius: 0;
     padding: 0 4px 0 4px;
+    border-right: none;
 }
 .automizy-input2-icon-left-cell span{
     padding: 0 2px 0 2px;
+    opacity: 0.5;
+}
+.automizy-input2-icon-left-cell.automizy-clickable span{
+    opacity: 1;
 }
 .automizy-input2-input-cell{
     vertical-align: middle;
@@ -881,9 +893,20 @@ input.automizy-table-rowcheck:focus:disabled:checked { background-position: -15p
     border: 1px solid #dfe8f1;
     border-radius: 4px;
     -webkit-border-radius: 4px;
+    border-top-left-radius: 0;
+    -webkit-border-top-left-radius: 0;
+    -moz-border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    -webkit-border-bottom-left-radius: 0;
+    -moz-border-bottom-left-radius: 0;
+    border-left: none;
 }
 .automizy-input2-icon-right-cell span{
     padding: 0 2px 0 2px;
+    opacity: 0.5;
+}
+.automizy-input2-icon-right-cell.automizy-clickable span{
+    opacity: 1;
 }
 .automizy-input2-label-after-cell{
     vertical-align: middle;
@@ -918,6 +941,22 @@ input.automizy-table-rowcheck:focus:disabled:checked { background-position: -15p
     box-shadow: inset 1px 1px 3px #f6f6f6;
     line-height: normal;
     display: inline-block;
+}
+.automizy-input2-has-left-icon .automizy-input2-input{
+    border-top-left-radius: 0;
+    -webkit-border-top-left-radius: 0;
+    -moz-border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    -webkit-border-bottom-left-radius: 0;
+    -moz-border-bottom-left-radius: 0;
+}
+.automizy-input2-has-right-icon .automizy-input2-input{
+    border-top-right-radius: 0;
+    -webkit-border-top-right-radius: 0;
+    -moz-border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    -webkit-border-bottom-right-radius: 0;
+    -moz-border-bottom-right-radius: 0;
 }
 .automizy-form .automizy-form-subtitle{
     margin-bottom: 10px;
