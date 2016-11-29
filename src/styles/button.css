@@ -19,6 +19,7 @@
     -webkit-transition: background-color, color 0.2s;
     -moz-transition: background-color, color 0.2s;
     transition: background-color, color 0.2s;
+    display: inline-block;
 }
 
 /*Nobox buttons*/
@@ -260,7 +261,6 @@
     background-color: #FFFFFF;
     border-radius: 3px;
     font-weight: 700;
-    padding: 15px 10px;
     text-align: center;
     text-overflow: ellipsis;
     border: 1px solid rgba(158, 173, 195, 0.16);
@@ -270,6 +270,7 @@
 .automizy-button.automizy-skin-tab-button a {
     color: #a9a9a9;
     text-decoration: none;
+    padding: 15px 10px;
 }
 
 /*Tab button hover state*/

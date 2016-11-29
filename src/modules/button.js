@@ -12,6 +12,7 @@ define([
             $widgetButton: $('<a href="javascript:;"></a>'),
             $text: $('<span class="automizy-button-text"></span>'),
             $icon: $('<span class="automizy-button-icon"></span>'),
+            $badge:$('<span class="automizy-button-badge"></span>'),
             iconPosition: 'left',
             text: 'My Button',
             title: '',
@@ -41,7 +42,7 @@ define([
         t.d.$text.appendTo(t.d.$widgetButton);
         t.d.$text.text(t.d.text);
         t.d.$widget.addClass('automizy-skin-' + t.d.skin).attr('id', t.id());
-        t.d.$widget.click(function () {
+        t.d.$widgetButton.click(function () {
             if (t.click().returnValue() === false) {
                 return false;
             }
