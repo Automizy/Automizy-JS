@@ -3801,9 +3801,6 @@ var $A = {};
             if (typeof obj.width !== 'undefined') {
                 t.width(obj.width);
             }
-            if (typeof obj.placeholder !== 'undefined') {
-                t.placeholder(obj.placeholder);
-            }
             if (typeof obj.breakInput !== 'undefined') {
                 t.breakInput(obj.breakInput);
             }
@@ -3869,6 +3866,9 @@ var $A = {};
             }
             if (typeof obj.labelAfter !== 'undefined') {
                 t.labelAfter(obj.labelAfter);
+            }
+            if (typeof obj.placeholder !== 'undefined') {
+                t.placeholder(obj.placeholder);
             }
             t.initParameter(obj);
         }
