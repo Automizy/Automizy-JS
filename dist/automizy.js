@@ -2266,6 +2266,15 @@ var $A = {};
             if (typeof obj.iconClick === 'function') {
                 t.iconClick(obj.iconClick);
             }
+            if(typeof obj.inputClasses !== 'undefined') {
+                t.addClassesToWidgetInput(obj.inputClasses);
+            }
+            if(typeof obj.min !== 'undefined') {
+                t.setMinToWidgetInput(obj.min);
+            }
+            if(typeof obj.max !== 'undefined') {
+                t.setMaxToWidgetInput(obj.max);
+            }
             t.initParameter(obj);
         }
     };
@@ -3092,6 +3101,23 @@ var $A = {};
     p.automizySelect = function(){
         return this.input().automizySelect();
     };
+    p.addClassesToWidgetInput = function (classes) {
+        var t = this;
+        if(typeof classes === 'string' || classes instanceof String){
+            t.d.$widgetInput.addClass(classes);
+        }
+        return t;
+    }
+    p.setMinToWidgetInput = function (min) {
+        var t = this;
+        t.d.$widgetInput.attr('min', min);;
+        return t;
+    }
+    p.setMaxToWidgetInput = function (max) {
+        var t = this;
+        t.d.$widgetInput.attr('max', max);
+        return t;
+    }
 
 
     $A.initBasicFunctions(Input, "Input", ["change", "keyup", "enter", "focus", "blur", "click"]);
