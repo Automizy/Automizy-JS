@@ -2269,6 +2269,12 @@ var $A = {};
             if(typeof obj.inputClasses !== 'undefined') {
                 t.addClassesToWidgetInput(obj.inputClasses);
             }
+            if(typeof obj.min !== 'undefined') {
+                t.setMinToWidgetInput(obj.min);
+            }
+            if(typeof obj.max !== 'undefined') {
+                t.setMaxToWidgetInput(obj.max);
+            }
             t.initParameter(obj);
         }
     };
@@ -3097,9 +3103,19 @@ var $A = {};
     };
     p.addClassesToWidgetInput = function (classes) {
         var t = this;
-        if(typeof myVar === 'string' || myVar instanceof String){
+        if(typeof classes === 'string' || classes instanceof String){
             t.d.$widgetInput.addClass(classes);
         }
+        return t;
+    }
+    p.setMinToWidgetInput = function (min) {
+        var t = this;
+        t.d.$widgetInput.attr('min', min);;
+        return t;
+    }
+    p.setMaxToWidgetInput = function (max) {
+        var t = this;
+        t.d.$widgetInput.attr('max', max);
         return t;
     }
 
