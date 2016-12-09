@@ -228,6 +228,9 @@ define([
             if (typeof obj.iconClick === 'function') {
                 t.iconClick(obj.iconClick);
             }
+            if(typeof obj.inputClasses !== 'undefined') {
+                t.addClassesToWidgetInput(obj.inputClasses);
+            }
             t.initParameter(obj);
         }
     };
@@ -1054,6 +1057,13 @@ define([
     p.automizySelect = function(){
         return this.input().automizySelect();
     };
+    p.addClassesToWidgetInput = function (classes) {
+        var t = this;
+        if(typeof myVar === 'string' || myVar instanceof String){
+            t.d.$widgetInput.addClass(classes);
+        }
+        return t;
+    }
 
 
     $A.initBasicFunctions(Input, "Input", ["change", "keyup", "enter", "focus", "blur", "click"]);
