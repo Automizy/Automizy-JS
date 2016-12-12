@@ -50,6 +50,7 @@ define([
     "automizy/functions/base64Decode",
     "automizy/functions/dateFormat",
     "automizy/functions/store",
+    "automizy/functions/cookie",
     "automizy/functions/convertToResponsive",
     "automizy/functions/numberFormat",
     "automizy/functions/decodeEntities",

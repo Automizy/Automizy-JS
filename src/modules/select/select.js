@@ -699,6 +699,12 @@ define([
             });
             selectModule.options(options);
 
+            if($t.hasClass('automizy-input2-input')){
+                //var input2 = $A.getInput2($t.closest('.automizy-input2').attr('id'));
+                //input2.data('automizy-select', selectModule);
+                selectModule.width('100%');
+            }
+
             $t.data('automizy-select', selectModule);
 
             lastElement = selectModule;

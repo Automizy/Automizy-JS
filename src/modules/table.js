@@ -1312,12 +1312,13 @@ define([
         var t = this;
         if (typeof inlineButtons !== 'undefined') {
             t.d.inlineButtons = inlineButtons;
-            t.openableInlineBox(true)
+            t.openableInlineBox(true);
             for (var i = 0; i < inlineButtons.length; i++) {
                 var inlineButton = inlineButtons[i];
                 var title = inlineButton.title || '';
-                var content = inlineButton.text || inlineButton.html;
-                var $button = $('<a title="' + title + '">' + content + '</a>').data('click', inlineButton.click || function () {
+                var content = inlineButton.text || inlineButton.html || '';
+                var icon = (typeof inlineButton.icon !== 'undefined' ? '<span class="fa ' + inlineButton.icon + '"></span>' : '');
+                var $button = $('<a title="' + title + '">' + content + icon + '</a>').data('click', inlineButton.click || function () {
                     }).click(function () {
                     var $t = $(this);
                     var $row = $t.closest('tr').prev();
@@ -1325,6 +1326,11 @@ define([
                     t.openedRow(row);
                     $t.data('click').apply(row, [t, t.d.$widget]);
                 }).appendTo(t.d.$inlineButtons);
+                if (typeof $().tooltipster === 'function') {
+                    $button.tooltipster({
+                        delay: 1
+                    });
+                }
                 if (!inlineButton.permission) {
                     $button.wrap('<span class="automizy-permission-trap"></span>');
                 }

@@ -63,6 +63,12 @@ define([
             if (typeof obj.float !== 'undefined') {
                 t.float(obj.float);
             }
+            if (typeof obj.margin !== 'undefined') {
+                t.margin(obj.margin);
+            }
+            if (typeof obj.href !== 'undefined') {
+                t.href(obj.href);
+            }
             if (typeof obj.width !== 'undefined') {
                 t.width(obj.width);
             }
@@ -108,6 +114,7 @@ define([
         if (typeof text !== 'undefined') {
             t.d.text = text;
             t.d.$text.text(text);
+            t.widget().addClass('automizy-has-text');
             return t;
         }
         return t.d.text;
@@ -117,6 +124,7 @@ define([
         if (typeof html !== 'undefined') {
             t.d.html = html;
             t.d.$text.html(html);
+            t.widget().addClass('automizy-has-text');
             return t;
         }
         return t.d.html;
@@ -151,6 +159,24 @@ define([
         }
         return t.d.width;
     };
+    p.margin = function (margin) {
+        var t = this;
+        if (typeof margin !== 'undefined') {
+            t.d.margin = margin;
+            t.widget().css('margin', t.d.margin);
+            return t;
+        }
+        return t.d.margin;
+    };
+    p.href = function (href) {
+        var t = this;
+        if (typeof href !== 'undefined') {
+            t.d.href = href;
+            t.d.$widgetButton.attr('href', href);
+            return t;
+        }
+        return t.d.href;
+    };
     p.disabled = function (disabled) {
         var t = this;
         if (typeof disabled !== 'undefined') {
@@ -182,9 +208,9 @@ define([
             newRow = $A.parseBoolean(newRow);
             t.d.newRow = newRow;
             if (newRow) {
-                t.d.$widget.addClass('new-row');
+                t.d.$widget.addClass('automizy-newrow');
             } else {
-                t.d.$widget.removeClass('new-row');
+                t.d.$widget.removeClass('automizy-newrow');
             }
             return t;
         }
@@ -198,22 +224,19 @@ define([
     p.active = function (active) {
         var t = this;
         if (typeof active !== "undefined") {
-            active=$A.parseBoolean(active)
+            active = $A.parseBoolean(active);
             t.d.active = active;
 
-            if(active === true){
+            if(t.d.active === true){
                 t.d.$widget.addClass("automizy-active");
-            }
-            else{
+            }else{
                 t.d.$widget.removeClass("automizy-active");
             }
 
             return t;
         }
-        else {
-            return t.d.active;
-        }
-    }
+        return t.d.active;
+    };
 
     p.click = function (func, name, life) {
         var t = this;

@@ -24,6 +24,7 @@ define([
             maxWidth: '100%',
             minWidth: '0',
             hasObject: false,
+            targetBlank:false,
             id: 'automizy-form-' + $A.getUniqueString(),
             create: function () {
             },
@@ -57,6 +58,8 @@ define([
                 t.method(obj.method);
             if (typeof obj.enctype !== 'undefined')
                 t.enctype(obj.enctype);
+            if (typeof obj.targetBlank !== 'undefined')
+                t.targetBlank(obj.targetBlank);
             if (typeof obj.submit === 'function')
                 t.submit(obj.submit);
             if (typeof obj.alignment !== 'undefined') {
@@ -324,6 +327,19 @@ define([
             return t;
         }
         return t.d.url;
+    };
+    p.targetBlank = function (targetBlank) {
+        var t = this;
+        if (typeof targetBlank !== 'undefined') {
+            t.d.targetBlank = $A.parseBoolean(targetBlank);
+            if(t.d.targetBlank){
+                t.widget().attr('target', '_blank');
+            }else{
+                t.widget().attr('target', '_self');
+            }
+            return t;
+        }
+        return t.d.targetBlank;
     };
     p.submit = function (func) {
         var t = this;

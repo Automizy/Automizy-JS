@@ -24,9 +24,12 @@
 }
 
 /*Nobox buttons*/
+.automizy-button.automizy-skin-nobox a{
+    color:inherit;
+}
+
 .automizy-button.automizy-skin-nobox-green a,
 .automizy-button.automizy-skin-nobox-orange a {
-    line-height: 1.286;
     text-align: left;
     text-decoration: none;
 }
@@ -44,6 +47,7 @@
     color: #4CAF50;
 }
 
+.automizy-button.automizy-skin-nobox a:hover,
 .automizy-button.automizy-skin-nobox-green a:hover,
 .automizy-button.automizy-skin-nobox-orange a:hover {
     text-decoration: underline;
@@ -62,7 +66,7 @@
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
-    text-indent: 0px;
+    text-indent: 0;
     display: inline-block;
     text-align: center;
     font-style: normal;
@@ -78,7 +82,7 @@
     -ms-user-select: none;
     user-select: none;
     outline: 0;
-    font-weight: 700;
+    font-weight: bold;
     border-width: 1px;
     border-style: solid;
     border-color: transparent;
@@ -220,6 +224,13 @@
     display: inline-block;
 }
 
+.automizy-button.automizy-has-icon:not(.automizy-has-text) .automizy-button-text {
+    display: none;
+}
+.automizy-button.automizy-has-icon:not(.automizy-has-text) .automizy-button-icon {
+    padding: 0 2px 0 2px;
+}
+
 /*Menu iconed button*/
 .automizy-button.automizy-skin-menuicon {
 
@@ -228,7 +239,7 @@
 .automizy-button.automizy-skin-menuicon .automizy-button-icon {
     font-size: 18px;
     color: #a9a9a9;
-    padding: 20px;
+    padding: 20px !important;
 }
 
 .automizy-button.automizy-skin-menuicon:hover .automizy-button-icon,

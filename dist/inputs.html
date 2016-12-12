@@ -24,7 +24,6 @@
 
             window.input2 = $A.newInput2()
                     .drawTo('body')
-                    .newRow(true)
                     .labelTop('Top label')
                     .labelBottom('Bottom label')
                     .iconLeft('fa-users')
@@ -37,7 +36,6 @@
 
             window.input3 = $A.newInput2({
                 target: 'body',
-                newRow: true,
                 placeholder: 'asd',
                 iconLeft: 'fa-users'
             });
@@ -45,10 +43,8 @@
 
             window.input4 = $A.newInput2({
                 name:'email',
-                placeholder:'gdfgdfgdf',
-                newRow:true,
+                placeholder:'Email address',
                 type: 'text',
-                id: 'automizy-login-email',
                 validator: 'email',
                 iconLeft: 'fa-envelope-o',
                 enter: function(){
@@ -56,13 +52,116 @@
                 }
             });
 
+            window.input5 = $A.newInput2({
+                labelTop:'Enter your name',
+                buttonLeft: {
+                    text:'Clear',
+                    click: function(){
+                        window.input5.val('');
+                    }
+                }
+            });
 
             $A.newForm({
                 inputs: [
-                    window.input4
+                    window.input4,
+                    window.input5
                 ],
                 target: $('body')
             });
+
+            window.input6 = $A.newInput2({
+                labelBefore:'Send email',
+                target: 'body',
+                validator:'email',
+                buttonRight: {
+                    skin:'nobox-orange',
+                    text:'preview',
+                    icon:'fa-eye',
+                    click: function(){
+                        alert('Send')
+                    }
+                }
+            });
+
+            window.input7 = $A.newInput2({
+                labelBefore:'Subject',
+                target: 'body',
+                validator:'notEmpty',
+                buttonBottom: {
+                    skin:'nobox-orange',
+                    text:'Insert custom field',
+                    icon:'fa-envelope',
+                    click: function(){
+                        alert('Custom Field List')
+                    }
+                }
+            });
+
+            window.input8 = $A.newInput2({
+                name:'password',
+                type:'password',
+                placeholder:$A.translate('Enter password'),
+                iconLeft:'fa-unlock-alt',
+                buttonRight: {
+                    icon:'fa-eye',
+                    click: function(){
+                        if(this.active()){
+                            this.active(false).icon('fa-eye');
+                            window.input8.input().attr('type', 'password');
+                        }else{
+                            this.active(true).icon('fa-eye-slash');
+                            window.input8.input().attr('type', 'text');
+                        }
+                    }
+                },
+                target: 'body'
+            });
+
+
+
+            $A.newInput2({
+                placeholder:'YYYY',
+                labelAfter:'-',
+                newRow:false,
+                target: 'body',
+                width:80
+            });
+            $A.newInput2({
+                placeholder:'MM',
+                labelAfter:'-',
+                newRow:false,
+                target: 'body',
+                width:70
+            });
+            $A.newInput2({
+                placeholder:'DD',
+                labelAfter:' ',
+                newRow:false,
+                target: 'body',
+                width:65
+            });
+            $A.newInput2({
+                placeholder:'hh',
+                labelAfter:':',
+                newRow:false,
+                target: 'body',
+                width:70
+            });
+            $A.newInput2({
+                placeholder:'mm',
+                labelAfter:':',
+                newRow:false,
+                target: 'body',
+                width:70
+            });
+            $A.newInput2({
+                placeholder:'ss',
+                newRow:false,
+                target: 'body',
+                width:50
+            });
+
         });
     </script>
 </head>

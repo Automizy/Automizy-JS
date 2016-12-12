@@ -9,6 +9,13 @@ define([
         var t = this;
         t.d = {
             $widget: $('<div class="automizy-message"></div>'),
+
+            $table: $('<table cellpadding="0" cellspacing="0" border="0" class="automizy-message-table"></table>'),
+            $row: $('<tr class="automizy-message-row"></tr>'),
+            $iconCell: $('<td class="automizy-message-icon-cell"></td>'),
+            $containerCell: $('<td class="automizy-message-container-cell"></td>'),
+            $closeCell: $('<td class="automizy-message-close-cell"></td>'),
+
             $close: $('<span class="automizy-message-close fa fa-remove"></span>'),
             $icon: $('<div class="automizy-message-icon fa fa-info"></div>'),
             $content: $('<div class="automizy-message-content"></div>'),
@@ -24,10 +31,16 @@ define([
         t.f = {};
         t.init();
 
-        t.d.$icon.appendTo(t.d.$widget);
-        t.d.$title.appendTo(t.d.$widget);
-        t.d.$content.appendTo(t.d.$widget);
-        t.d.$close.appendTo(t.d.$widget);
+        t.d.$table.appendTo(t.d.$widget);
+        t.d.$row.appendTo(t.d.$table);
+        t.d.$iconCell.appendTo(t.d.$row);
+        t.d.$containerCell.appendTo(t.d.$row);
+        t.d.$closeCell.appendTo(t.d.$row);
+
+        t.d.$icon.appendTo(t.d.$iconCell);
+        t.d.$title.appendTo(t.d.$containerCell);
+        t.d.$content.appendTo(t.d.$containerCell);
+        t.d.$close.appendTo(t.d.$closeCell);
 
         if (typeof obj !== 'undefined') {
             if (typeof obj.title !== 'undefined') {
@@ -57,6 +70,9 @@ define([
             if (typeof obj.target !== 'undefined') {
                 t.drawTo(obj.target);
             }
+            if (typeof obj.name !== 'undefined') {
+                t.name(obj.name);
+            }
             t.initParameter(obj);
         }
 
@@ -67,6 +83,18 @@ define([
     };
 
     var p = Message.prototype;
+
+    p.name = function(name){
+        var t = this;
+        if(typeof name !== 'undefined') {
+            t.d.name = name;
+            if(typeof $A.messagesByName[t.d.name] !== 'undefined'){
+                $A.messagesByName[t.d.name].close(0);
+            }
+            $A.messagesByName[t.d.name] = t;
+        }
+        return t.d.name;
+    };
 
     p.title = function (title) {
         var t = this;
@@ -131,15 +159,19 @@ define([
         return t;
     };
 
-    p.close = function (func, name, life) {
+    p.close = function (param1, name, life) {
         var t = this;
         if(!t.closable()){
             return t;
         }
-        if (typeof func === 'function') {
-            t.addFunction.apply(t, ['close', func, name, life]);
+        if (typeof param1 === 'function') {
+            t.addFunction.apply(t, ['close', param1, name, life]);
         } else {
-            t.widget().fadeOut(function () {
+            var delay = 350;
+            if (typeof param1 !== 'undefined') {
+                delay = param1;
+            }
+            t.widget().fadeOut(delay, function () {
                 t.runFunctions('close');
             });
         }
@@ -184,7 +216,7 @@ define([
                     break;
                 case "warning":
                     t.widget().addClass('automizy-message-type-warning');
-                    t.icon('fa-exclamation');
+                    t.icon('fa-warning');
                     if (t.title() === false) {
                         t.d.$title.text($A.translate('Warning!'));
                     }
@@ -224,6 +256,8 @@ define([
         }
         return t.d.icon || false;
     };
+
+    $A.messagesByName = {};
 
     $A.initBasicFunctions(Message, "Message", ['close', 'open']);
 
