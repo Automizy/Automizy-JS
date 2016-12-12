@@ -81,6 +81,9 @@ define([
             if (typeof obj.thin !== 'undefined') {
                 t.thin(obj.thin);
             }
+            if (typeof obj.thick !== 'undefined') {
+                t.thick(obj.thick);
+            }
             if (typeof obj.icon !== 'undefined') {
                 t.icon(obj.icon);
             }
@@ -261,6 +264,18 @@ define([
             }
         }
         t.widget().addClass('automizy-button-thin');
+        return t;
+    };
+    p.thick = function (value) {
+        var t = this;
+        if (typeof value !== 'undefined') {
+            value = $A.parseBoolean(value);
+            if (!value) {
+                t.widget().removeClass('automizy-button-thick');
+                return t;
+            }
+        }
+        t.widget().addClass('automizy-button-thick');
         return t;
     };
 

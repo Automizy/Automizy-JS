@@ -118,6 +118,7 @@
 .automizy-button.automizy-skin-simple-white a,
 .automizy-button.automizy-skin-image-white a,
 .automizy-button.automizy-skin-simple-orange a,
+.automizy-button.automizy-skin-simple-blue a,
 .automizy-button.automizy-skin-simple-green a {
     line-height: 32px;
     
@@ -154,8 +155,20 @@
 .automizy-button.automizy-skin-simple-white.automizy-button-thin a,
 .automizy-button.automizy-skin-image-white.automizy-button-thin a,
 .automizy-button.automizy-skin-simple-orange.automizy-button-thin a,
+.automizy-button.automizy-skin-simple-blue.automizy-button-thin a,
 .automizy-button.automizy-skin-simple-green.automizy-button-thin a {
     padding: 6px 10px 6px 10px;
+    height: auto;
+    line-height: normal;
+}
+.automizy-button.automizy-skin-simple-likemenu.automizy-button-thick a,
+.automizy-button.automizy-skin-simple-white.automizy-button-thick a,
+.automizy-button.automizy-skin-image-white.automizy-button-thick a,
+.automizy-button.automizy-skin-simple-orange.automizy-button-thick a,
+.automizy-button.automizy-skin-simple-blue.automizy-button-thick a,
+.automizy-button.automizy-skin-simple-green.automizy-button-thick a {
+    padding: 12px 18px 12px 18px;
+    font-size:15px;
     height: auto;
     line-height: normal;
 }
@@ -169,6 +182,7 @@
 .automizy-button.automizy-skin-simple-likemenu a:active,
 .automizy-button.automizy-skin-simple-white a:active,
 .automizy-button.automizy-skin-simple-green a:active,
+.automizy-button.automizy-skin-simple-blue a:active,
 .automizy-button.automizy-skin-simple-orange a:active {
     outline: 0;
     background-image: none;
@@ -237,6 +251,21 @@
 .automizy-button.disabled.automizy-skin-simple-orange a {
     background-color: rgb(244, 106, 31) !important;
     color: rgb(255, 255, 255) !important;
+}
+.automizy-button.automizy-skin-simple-blue a {
+    color: rgb(255, 255, 255);
+    border-color: rgb(20, 137, 230);
+    background: rgb(33, 150, 243);
+}
+.automizy-button.automizy-skin-simple-blue a:hover,
+.automizy-input-box input[type="file"]:hover + span .automizy-skin-simple-blue a {
+    border-color: rgb(21, 153, 255);
+    background: rgb(34, 157, 255);
+}
+.automizy-button.disabled.automizy-skin-simple-blue a {
+    color: #555a60;
+    background-color: #FEFEFF;
+    border-color: rgba(158, 173, 195, .16);
 }
 .automizy-button.automizy-skin-simple-green a {
     color: #fff;
