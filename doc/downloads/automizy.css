@@ -882,9 +882,12 @@ input.automizy-table-rowcheck:focus:disabled:checked { background-position: -15p
     font-weight: bold;
     font-size: 14px;
     color: #3e4855;
-    padding: 0 20px 0 0;
+    padding: 8px 20px 8px 0;
     box-sizing: border-box;
     display: inline-block;
+}
+.automizy-input2-label-before-box .automizy-input2-label-before{
+    vertical-align: middle;
 }
 .automizy-input2-table {
     width: 100%;
@@ -1041,11 +1044,49 @@ textarea.automizy-input2-input {
     white-space: nowrap;
 }
 .automizy-input2-has-left-button .automizy-input2-button-left-cell {
+    border-right: 1px solid #dfe8f1;
+}
+.automizy-input2-has-left-button input{
+    border-top-left-radius: 0;
+    -webkit-border-top-left-radius: 0;
+    -moz-border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    -webkit-border-bottom-left-radius: 0;
+    -moz-border-bottom-left-radius: 0;
+    border-left: none;
+}
+.automizy-input2-has-left-button .automizy-input2-button-left-cell .automizy-button > a{
+    border-top-right-radius: 0;
+    -webkit-border-top-right-radius: 0;
+    -moz-border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    -webkit-border-bottom-right-radius: 0;
+    -moz-border-bottom-right-radius: 0;
+    border-right: none;
 }
 .automizy-input2-button-right-cell {
     white-space: nowrap;
 }
-.automizy-input2-has-right-button .automizy-input2-button-right-cell {
+.automizy-input2-has-right-button .automizy-input2-button-right-cell{
+    border-left: 1px solid #dfe8f1;
+}
+.automizy-input2-has-right-button input{
+    border-top-right-radius: 0;
+    -webkit-border-top-right-radius: 0;
+    -moz-border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    -webkit-border-bottom-right-radius: 0;
+    -moz-border-bottom-right-radius: 0;
+    border-right: none;
+}
+.automizy-input2-has-right-button .automizy-input2-button-right-cell .automizy-button > a{
+    border-top-left-radius: 0;
+    -webkit-border-top-left-radius: 0;
+    -moz-border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    -webkit-border-bottom-left-radius: 0;
+    -moz-border-bottom-left-radius: 0;
+    border-left: none;
 }
 .automizy-input2-top-button-box {
 }
@@ -2784,7 +2825,6 @@ label.iPhoneCheckLabelOff span {
 }
 .automizy-panel .automizy-panel-content{
     padding: 15px 20px;
-    font-family: 'Montserrat', sans-serif;
 }
 .automizy-panel.automizy-skin-content-box{
     border: 1px solid #eff1f6;
