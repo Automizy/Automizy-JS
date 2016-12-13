@@ -876,20 +876,26 @@ input.automizy-table-rowcheck:focus:disabled:checked { background-position: -15p
     width: 100%;
 }
 .automizy-input2-label-before-box {
-    vertical-align: top;
+    vertical-align: middle;
     width: 33%;
     text-align: right;
     font-weight: bold;
     font-size: 14px;
     color: #3e4855;
-    padding: 8px 20px 8px 0;
+    padding: 0 20px 0 0;
     box-sizing: border-box;
     display: inline-block;
+}
+.automizy-input2-has-bottom-button .automizy-input2-label-before-box,
+.automizy-input2[type="textarea"] .automizy-input2-label-before-box{
+    vertical-align: top;
+    padding: 8px 20px 8px 0;
 }
 .automizy-input2-label-before-box .automizy-input2-label-before{
     vertical-align: middle;
 }
 .automizy-input2-table {
+    vertical-align: middle;
     width: 100%;
     box-sizing: border-box;
     margin: 0;
