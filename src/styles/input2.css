@@ -2,6 +2,7 @@
     display: inline-block;
     width: 100%;
     margin-bottom: 14px;
+    vertical-align: top;
 }
 
 .automizy-input2.automizy-newrow {

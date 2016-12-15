@@ -103,6 +103,7 @@
                 type:'password',
                 placeholder:$A.translate('Enter password'),
                 iconLeft:'fa-unlock-alt',
+                help: 'asd asd asd ',
                 buttonRight: {
                     icon:'fa-eye',
                     click: function(){
@@ -122,10 +123,11 @@
 
             $A.newInput2({
                 placeholder:'YYYY',
+                labelBefore: 'Delay:',
                 labelAfter:'-',
                 newRow:false,
                 target: 'body',
-                width:80
+                width:150
             });
             $A.newInput2({
                 placeholder:'MM',

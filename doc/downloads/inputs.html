@@ -122,10 +122,11 @@
 
             $A.newInput2({
                 placeholder:'YYYY',
+                labelBefore: 'Delay:',
                 labelAfter:'-',
                 newRow:false,
                 target: 'body',
-                width:80
+                width:150
             });
             $A.newInput2({
                 placeholder:'MM',
@@ -160,6 +161,14 @@
                 newRow:false,
                 target: 'body',
                 width:50
+            });
+
+
+
+            window.input9 = $A.newInput2({
+                labelBefore:'Comment',
+                target: 'body',
+                type:'textarea'
             });
 
         });
