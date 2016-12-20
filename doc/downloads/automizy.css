@@ -401,6 +401,12 @@
     clear: both;
     display: block;
 }
+.automizy-input input::-webkit-outer-spin-button,
+.automizy-input input::-webkit-inner-spin-button {
+    
+    -webkit-appearance: none;
+    margin: 0; 
+}
 .automizy-input.automizy-skin-simple-automizy input[type='text'],
 .automizy-input.automizy-skin-simple-automizy input[type='number'],
 .automizy-input.automizy-skin-simple-automizy input[type='password'],
@@ -868,6 +874,12 @@ input.automizy-table-rowcheck:focus:disabled:checked { background-position: -15p
     vertical-align: top;
 }
 .automizy-input2.automizy-newrow {
+}
+.automizy-input2 input::-webkit-outer-spin-button,
+.automizy-input2 input::-webkit-inner-spin-button {
+    
+    -webkit-appearance: none;
+    margin: 0; 
 }
 .automizy-input2-top-label-box {
     text-align: left;
@@ -1860,6 +1872,15 @@ textarea.automizy-input2-input {
 .automizy-table-steppage-box {
     padding: 10px 0;
     text-align: right;
+}
+.automizy-table-steppage-box input::-webkit-outer-spin-button,
+.automizy-table-steppage-box input::-webkit-inner-spin-button {
+    
+    -webkit-appearance: none;
+    margin: 0; 
+}
+.automizy-table-steppage-box input {
+    -moz-appearance:textfield;
 }
 .automizy-table-steppage-box .automizy-table-steppage-box-wrapper {
     display: inline-block;

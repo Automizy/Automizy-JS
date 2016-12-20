@@ -9,6 +9,11 @@
 
 }
 
+
+.automizy-input input[type='number']{
+    -moz-appearance:textfield;
+}
+
 .automizy-input2-top-label-box {
     text-align: left;
     font-weight: bold;

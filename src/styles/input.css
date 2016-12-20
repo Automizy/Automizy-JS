@@ -24,6 +24,11 @@
     display: block;
 }
 
+
+.automizy-input input[type='number']{
+    -moz-appearance:textfield;
+}
+
 .automizy-input.automizy-skin-simple-automizy input[type='text'],
 .automizy-input.automizy-skin-simple-automizy input[type='number'],
 .automizy-input.automizy-skin-simple-automizy input[type='password'],
