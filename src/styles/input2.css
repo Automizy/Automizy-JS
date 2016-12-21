@@ -94,6 +94,12 @@
     display: block;
 }
 
+.automizy-disabled .automizy-input2-input{
+    cursor: not-allowed;
+    opacity: .65;
+    background: #fafafa;
+}
+
 .automizy-input2-icon-left-cell {
     min-width: 38px;
     vertical-align: middle;

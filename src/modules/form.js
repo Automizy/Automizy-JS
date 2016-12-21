@@ -68,6 +68,9 @@ define([
             if (typeof obj.width !== 'undefined') {
                 t.width(obj.width);
             }
+            if (typeof obj.name !== 'undefined') {
+                t.name(obj.name);
+            }
             if (typeof obj.maxWidth !== 'undefined') {
                 t.maxWidth(obj.maxWidth);
             }
@@ -76,6 +79,9 @@ define([
             }
             if (typeof obj.maxWidth !== 'undefined') {
                 t.maxWidth(obj.maxWidth);
+            }
+            if (typeof obj.autocomplete !== 'undefined') {
+                t.autocomplete(obj.autocomplete);
             }
             if (typeof obj.url !== 'undefined' || typeof obj.action !== 'undefined')
                 t.url(obj.url || obj.action);
@@ -328,6 +334,15 @@ define([
         }
         return t.d.url;
     };
+    p.name = function (name) {
+        var t = this;
+        if (typeof name !== 'undefined') {
+            t.d.name = name;
+            t.widget().attr('name', name);
+            return t;
+        }
+        return t.d.name;
+    };
     p.targetBlank = function (targetBlank) {
         var t = this;
         if (typeof targetBlank !== 'undefined') {
@@ -452,6 +467,20 @@ define([
             return t;
         }
         return t.d.minWidth;
+    };
+
+    p.autocomplete = function (autocomplete) {
+        var t = this;
+        if (typeof autocomplete !== 'undefined') {
+            t.d.autocomplete = $A.parseBoolean(autocomplete);
+            if(t.d.autocomplete){
+                t.widget().removeAttr('autocomplete');
+            }else{
+                t.widget().attr('autocomplete', 'off');
+            }
+            return t;
+        }
+        return t.d.autocomplete;
     };
 
     p.json = function () {

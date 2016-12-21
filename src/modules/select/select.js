@@ -484,6 +484,16 @@ define([
         var val = t.val();
         var before = before || false;
         var options = options || [];
+        if(!(options instanceof Array)){
+            var optionsArray = [];
+            for(var i in options){
+                optionsArray.push({
+                    value:i,
+                    html:options[i]
+                })
+            }
+            options = optionsArray;
+        }
         for(var i = 0; i < options.length; i++){
             if(options[i] instanceof Array){
                 options[i] = {

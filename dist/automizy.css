@@ -401,11 +401,8 @@
     clear: both;
     display: block;
 }
-.automizy-input input::-webkit-outer-spin-button,
-.automizy-input input::-webkit-inner-spin-button {
-    
-    -webkit-appearance: none;
-    margin: 0; 
+.automizy-input input[type='number']{
+    -moz-appearance:textfield;
 }
 .automizy-input.automizy-skin-simple-automizy input[type='text'],
 .automizy-input.automizy-skin-simple-automizy input[type='number'],
@@ -875,11 +872,8 @@ input.automizy-table-rowcheck:focus:disabled:checked { background-position: -15p
 }
 .automizy-input2.automizy-newrow {
 }
-.automizy-input2 input::-webkit-outer-spin-button,
-.automizy-input2 input::-webkit-inner-spin-button {
-    
-    -webkit-appearance: none;
-    margin: 0; 
+.automizy-input input[type='number']{
+    -moz-appearance:textfield;
 }
 .automizy-input2-top-label-box {
     text-align: left;
@@ -947,6 +941,11 @@ input.automizy-table-rowcheck:focus:disabled:checked { background-position: -15p
 }
 .automizy-input2.automizy-has-error .automizy-input2-error-box {
     display: block;
+}
+.automizy-disabled .automizy-input2-input{
+    cursor: not-allowed;
+    opacity: .65;
+    background: #fafafa;
 }
 .automizy-input2-icon-left-cell {
     min-width: 38px;
@@ -1872,12 +1871,6 @@ textarea.automizy-input2-input {
 .automizy-table-steppage-box {
     padding: 10px 0;
     text-align: right;
-}
-.automizy-table-steppage-box input::-webkit-outer-spin-button,
-.automizy-table-steppage-box input::-webkit-inner-spin-button {
-    
-    -webkit-appearance: none;
-    margin: 0; 
 }
 .automizy-table-steppage-box input {
     -moz-appearance:textfield;
