@@ -502,6 +502,12 @@
     text-align: right;
 }
 
+
+.automizy-table-steppage-box input {
+    -moz-appearance:textfield;
+}
+
+
 .automizy-table-steppage-box .automizy-table-steppage-box-wrapper {
     display: inline-block;
     float: none;

@@ -2,10 +2,16 @@
     display: inline-block;
     width: 100%;
     margin-bottom: 14px;
+    vertical-align: top;
 }
 
 .automizy-input2.automizy-newrow {
 
+}
+
+
+.automizy-input input[type='number']{
+    -moz-appearance:textfield;
 }
 
 .automizy-input2-top-label-box {
