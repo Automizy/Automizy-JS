@@ -37,7 +37,7 @@ define([
         t.init();
 
         t.d.$widgetButton.appendTo(t.d.$widget);
-        t.d.$badge.appendTo(t.d.$widget).hide();
+        t.d.$badge.appendTo(t.d.$widgetButton).hide();
         t.d.$icon.appendTo(t.d.$widgetButton);
         t.d.$text.appendTo(t.d.$widgetButton);
         t.d.$text.text(t.d.text);

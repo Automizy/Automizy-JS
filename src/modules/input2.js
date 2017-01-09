@@ -62,6 +62,7 @@ define([
             buttonRight:false,
             buttonTop:false,
             buttonBottom:false,
+            tabindex:false,
             labelBeforeWidth: '',
             value: '',
             placeholder: '',
@@ -278,6 +279,21 @@ define([
             }
             if (typeof obj.placeholder !== 'undefined') {
                 t.placeholder(obj.placeholder);
+            }
+            if (typeof obj.tabindex !== 'undefined') {
+                t.tabindex(obj.tabindex);
+            }
+            if (typeof obj.autocomplete !== 'undefined') {
+                t.autocomplete(obj.autocomplete);
+            }
+            if (typeof obj.autocorrect !== 'undefined') {
+                t.autocorrect(obj.autocorrect);
+            }
+            if (typeof obj.autocapitalize !== 'undefined') {
+                t.autocapitalize(obj.autocapitalize);
+            }
+            if (typeof obj.spellcheck !== 'undefined') {
+                t.spellcheck(obj.spellcheck);
             }
             t.initParameter(obj);
         }
@@ -519,6 +535,69 @@ define([
         }
         return t.d.$widgetInput.attr('name');
     };
+    p.tabindex = function (tabindex) {
+        var t = this;
+        if (typeof tabindex !== 'undefined') {
+            t.d.tabindex = parseInt(tabindex);
+            t.input().attr('tabindex', t.d.tabindex);
+            return t;
+        }
+        return t.d.$widgetInput.attr('tabindex');
+    };
+
+    p.autocomplete = function (autocomplete) {
+        var t = this;
+        if (typeof autocomplete !== 'undefined') {
+            t.d.autocomplete = $A.parseBoolean(autocomplete);
+            if(t.d.autocomplete){
+                t.input().removeAttr('autocomplete');
+            }else{
+                t.input().attr('autocomplete', 'off')
+            }
+            return t;
+        }
+        return t.d.autocomplete;
+    };
+    p.autocorrect = function (autocorrect) {
+        var t = this;
+        if (typeof autocorrect !== 'undefined') {
+            t.d.autocorrect = $A.parseBoolean(autocorrect);
+            if(t.d.autocorrect){
+                t.input().removeAttr('autocorrect');
+            }else{
+                t.input().attr('autocorrect', 'off')
+            }
+            return t;
+        }
+        return t.d.autocorrect;
+    };
+    p.autocapitalize = function (autocapitalize) {
+        var t = this;
+        if (typeof autocapitalize !== 'undefined') {
+            t.d.autocapitalize = $A.parseBoolean(autocapitalize);
+            if(t.d.autocapitalize){
+                t.input().removeAttr('autocapitalize');
+            }else{
+                t.input().attr('autocapitalize', 'off')
+            }
+            return t;
+        }
+        return t.d.autocapitalize;
+    };
+    p.spellcheck = function (spellcheck) {
+        var t = this;
+        if (typeof spellcheck !== 'undefined') {
+            t.d.spellcheck = $A.parseBoolean(spellcheck);
+            if(t.d.spellcheck){
+                t.input().removeAttr('spellcheck');
+            }else{
+                t.input().attr('spellcheck', 'false')
+            }
+            return t;
+        }
+        return t.d.spellcheck;
+    };
+
     p.placeholder = function (placeholder) {
         var t = this;
         if (typeof placeholder !== 'undefined') {
@@ -929,7 +1008,8 @@ define([
         return this;
     };
     p.automizySelect = function () {
-        return this.input().automizySelect();
+        this.d.automizySelect = this.input().automizySelect();
+        return this.d.automizySelect;
     };
 
 

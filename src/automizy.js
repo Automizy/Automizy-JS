@@ -41,6 +41,7 @@ define([
     "automizy/functions/insertAtCaret",
     "automizy/functions/delay",
     "automizy/functions/rand",
+    "automizy/functions/md5",
     "automizy/functions/getUniqueString",
     "automizy/functions/getFileNameFromUrl",
     "automizy/functions/parseBoolean",
