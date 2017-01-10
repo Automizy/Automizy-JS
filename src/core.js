@@ -6,7 +6,7 @@ define([], function () {
         t.d = {
             version: '0.5.3',
             settings: {
-                logTranslateMissings:true
+                logTranslateMissings:window.automizylogTranslateMissings || false
             },
             uniques:[],
             defines: {},
