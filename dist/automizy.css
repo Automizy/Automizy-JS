@@ -2419,6 +2419,7 @@ label.iPhoneCheckLabelOff span {
     -moz-box-shadow: inset 1px 1px 3px #f6f6f6;
     box-shadow: inset 1px 1px 3px #f6f6f6;
     line-height: normal;
+    font-weight: normal;
     position:relative;
 }
 .automizy-select.automizy-active{
@@ -2833,7 +2834,7 @@ label.iPhoneCheckLabelOff span {
     padding: 0;
     position: relative;
     box-sizing: border-box;
-    margin-bottom: 20px;
+    margin: 0;
     border-radius: 4px;
     background-color: #fff;
     box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
