@@ -8,9 +8,7 @@ define([
             file: '',
             hasFile: true,
             missingTranslates:[],
-            translate: {
-                'Upload': 'UpLoad'
-            }
+            translate: window.I18N || {}
         };
 
         if (typeof obj !== 'undefined') {

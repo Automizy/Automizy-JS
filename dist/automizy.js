@@ -351,17 +351,20 @@ var $A = {};
                 return p.drawTo($target, 'before');
             };
 
-        p.drawTo = p.appendTo = p.drawTo || function ($target, where) {
+        p.drawTo = p.appendTo = p.drawTo || function (target, where) {
                 var t = this;
-                var $target = $target || $('body');
+                var target = target || $('body');
+                if(typeof target.widget === 'function') {
+                    target = target.widget();
+                }
                 var where = where || 'in';
                 var $elem = t.d.$widget;
                 if(where === 'after'){
-                    $elem.insertAfter($target);
+                    $elem.insertAfter(target);
                 }else if(where === 'before'){
-                    $elem.insertBefore($target);
+                    $elem.insertBefore(target);
                 }else{
-                    $elem.appendTo($target);
+                    $elem.appendTo(target);
                 }
                 t.d.hasObject = true;
                 if(!t.permission()){
@@ -1066,9 +1069,7 @@ var $A = {};
             file: '',
             hasFile: true,
             missingTranslates:[],
-            translate: {
-                'Upload': 'UpLoad'
-            }
+            translate: window.I18N || {}
         };
 
         if (typeof obj !== 'undefined') {
