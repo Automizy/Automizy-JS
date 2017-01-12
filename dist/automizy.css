@@ -1071,7 +1071,7 @@ textarea.automizy-input2-input {
     border-bottom-left-radius: 0;
     -webkit-border-bottom-left-radius: 0;
     -moz-border-bottom-left-radius: 0;
-    border-left: none;
+    border-left-width: 0;
 }
 .automizy-input2-has-left-button .automizy-input2-button-left-cell .automizy-button > a{
     border-top-right-radius: 0;
@@ -1080,7 +1080,7 @@ textarea.automizy-input2-input {
     border-bottom-right-radius: 0;
     -webkit-border-bottom-right-radius: 0;
     -moz-border-bottom-right-radius: 0;
-    border-right: none;
+    border-right-width: 0;
 }
 .automizy-input2-button-right-cell {
     white-space: nowrap;
@@ -1095,7 +1095,7 @@ textarea.automizy-input2-input {
     border-bottom-right-radius: 0;
     -webkit-border-bottom-right-radius: 0;
     -moz-border-bottom-right-radius: 0;
-    border-right: none;
+    border-right-width: 0;
 }
 .automizy-input2-has-right-button .automizy-input2-button-right-cell .automizy-button > a{
     border-top-left-radius: 0;
@@ -1104,7 +1104,7 @@ textarea.automizy-input2-input {
     border-bottom-left-radius: 0;
     -webkit-border-bottom-left-radius: 0;
     -moz-border-bottom-left-radius: 0;
-    border-left: none;
+    border-left-width: 0;
 }
 .automizy-input2-top-button-box {
 }

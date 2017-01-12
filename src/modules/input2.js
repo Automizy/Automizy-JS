@@ -78,6 +78,7 @@ define([
             validationEvents: '',
             createFunctions: [],
             automizySelect: false,
+            inlineEditable: false,
             id: 'automizy-input-' + $A.getUniqueString(),
             inputId: 'automizy-input-' + $A.getUniqueString() + '-input',
             change: function () { //change keyup paste
@@ -1011,6 +1012,10 @@ define([
         this.d.automizySelect = this.input().automizySelect();
         return this.d.automizySelect;
     };
+    p.inlineEditable = function (){
+        this.d.inlineEditable = $A.newInlineEditable(this);
+        return this.d.inlineEditable;
+    }
 
 
     $A.initBasicFunctions(Input2, "Input2", ["change", "keyup", "enter", "focus", "blur", "click"]);

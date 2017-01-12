@@ -14,6 +14,7 @@ define([
     "automizy/modules/button",
     "automizy/modules/input",
     "automizy/modules/input2",
+    "automizy/modules/inlineEditable",
     "automizy/modules/form",
     "automizy/modules/validator",
     "automizy/modules/slideWindow",
