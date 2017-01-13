@@ -257,6 +257,7 @@
 
 .automizy-button.automizy-has-icon .automizy-button-icon {
     display: inline-block;
+    line-height: 32px;
 }
 
 .automizy-button.automizy-has-icon:not(.automizy-has-text) .automizy-button-text {

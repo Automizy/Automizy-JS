@@ -286,6 +286,7 @@
 }
 .automizy-button.automizy-has-icon .automizy-button-icon {
     display: inline-block;
+    line-height: 32px;
 }
 .automizy-button.automizy-has-icon:not(.automizy-has-text) .automizy-button-text {
     display: none;
@@ -2394,6 +2395,38 @@ label.iPhoneCheckLabelOff span {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
     border-right: none;
+}
+.automizy-inline-editable.inline-edit-inactive  .automizy-input2 input{
+    border: none;
+    box-shadow: none;
+    cursor: pointer;
+}
+.automizy-inline-editable.inline-edit-inactive .automizy-input2-button-right-cell{
+    display: none;
+}
+.automizy-inline-editable .automizy-input2-has-right-button .automizy-input2-button-right-cell .automizy-button{
+    margin-left: 10px;
+}
+.automizy-inline-editable .automizy-input2-has-right-button .automizy-input2-button-right-cell{
+    border-left: none;
+}
+.automizy-inline-editable .automizy-input2-has-right-button input{
+    border-top-right-radius: 3px;
+    -webkit-border-top-right-radius: 3px;
+    -moz-border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    -webkit-border-bottom-right-radius: 3px;
+    -moz-border-bottom-right-radius: 3px;
+    border-right-width: 1px;
+}
+.automizy-inline-editable .automizy-input2-has-right-button .automizy-input2-button-right-cell .automizy-button > a{
+    border-top-left-radius: 3px;
+    -webkit-border-top-left-radius: 3px;
+    -moz-border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    -webkit-border-bottom-left-radius: 3px;
+    -moz-border-bottom-left-radius: 3px;
+    border-left-width: 1px;
 }
 .automizy-select{   
     border:1px solid rgba(0,0,0,0.15);

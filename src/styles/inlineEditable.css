@@ -1,4 +1,4 @@
-.automizy-inline-editable.inline-edit-inactive  .automizy-input2 input{
+.automizy-inline-editable.inline-edit-inactive  .automizy-input2 input:not(:placeholder-shown){
     border: none;
     box-shadow: none;
     cursor: pointer;
