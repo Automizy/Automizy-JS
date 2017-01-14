@@ -26,6 +26,7 @@ define([
     "automizy/modules/select/select",
     "automizy/modules/message",
     "automizy/modules/panel",
+    "automizy/modules/tag/tagger",
     "automizy/modules/progressBar",
 
     "automizy/defines/input",

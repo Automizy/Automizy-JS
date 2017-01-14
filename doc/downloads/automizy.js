@@ -9535,6 +9535,211 @@ var $A = {};
 })();
 
 (function(){
+    var Tag = function (obj) {
+        var t = this;
+        t.d = {
+            $widget: $('<div class="automizy-tag"></div>'),
+            $text: $('<div class="automizy-tag-text"></div>'),
+            $icon: $('<div class="automizy-tag-icon"></div>'),
+            $remove: $('<div class="automizy-tag-close fa fa-times-circle">'),
+
+            tagger: false,
+            text: '',
+            icon: 'fa-tag'
+        };
+        t.f = {};
+        t.init();
+
+        if (typeof obj !== 'undefined') {
+
+
+            if (typeof obj.text !== 'undefined') {
+                t.text(obj.text);
+            }
+            if (typeof obj.icon !== 'undefined') {
+                t.icon(obj.icon);
+            }
+            if (typeof obj.tagger !== 'undefined') {
+                t.tagger(obj.tagger);
+            }
+
+
+            t.initParameter(obj);
+        }
+
+        t.d.$icon.appendTo(t.d.$widget);
+        t.d.$text.appendTo(t.d.$widget);
+        t.d.$remove.appendTo(t.d.$widget);
+        t.icon(t.icon());
+
+        t.d.$remove.click(function () {
+            t.remove();
+        })
+
+    };
+
+    var p = Tag.prototype;
+
+    p.text = function (text) {
+        var t = this;
+        if (typeof text !== 'undefined') {
+            t.d.text = text;
+            t.d.$text.html(text);
+            return t;
+        }
+        return t.d.text;
+    };
+
+    p.tagger = function (tagger) {
+        var t = this;
+        if (typeof tagger !== 'undefined') {
+            t.d.tagger = tagger;
+            return t;
+        }
+        return t.d.tagger;
+    };
+
+
+    p.remove = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('remove', func, name, life);
+        } else {
+            var a = t.runFunctions('remove');
+            t.returnValue(!(a[0] === false || a[1] === false));
+            t.widget().fadeOut('fast', function () {
+                this.remove();
+            });
+            t.tagger().onRemoveTag(t);
+            return;
+        }
+        return t;
+    };
+
+    p.icon = function (icon) {
+        var t = this;
+        if (typeof icon !== 'undefined') {
+            t.d.icon = icon;
+            t.d.$icon.removeClass(function (index, css) {
+                return (css.match(/(^|\s)fa-\S+/g) || []).join(' ');
+            }).addClass('fa').addClass(icon);
+            return t;
+        }
+        return t.d.icon;
+    };
+
+
+    $A.initBasicFunctions(Tag, "Tag", []);
+
+
+})();
+
+(function(){
+    var Tagger = function (obj) {
+        var t = this;
+        t.d = {
+            $widget: $('<div class="automizy-tagger"></div>'),
+
+            tags: []
+        };
+        t.f = {};
+        t.init();
+
+        if (typeof obj !== 'undefined') {
+
+            if (typeof obj.tags !== 'undefined') {
+                t.tags(obj.tags);
+            }
+            if (typeof obj.onRemoveTag === 'function') {
+                t.onRemoveTag(obj.onRemoveTag);
+            }
+
+            t.initParameter(obj);
+        }
+
+    };
+
+    var p = Tagger.prototype;
+
+    p.addTag = p.addTag || function (obj) {
+            var t = this;
+            if (typeof t.d.tags === 'undefined') {
+                return t;
+            }
+            if (typeof obj !== 'undefined') {
+                if (obj instanceof $A.m.Tag) {
+                    obj.tagger(t);
+                    obj.drawTo(t.d.$widget);
+                } else {
+                    if (typeof obj === 'string') {
+                        obj = {text: obj};
+                    }
+                    obj.tagger = t;
+                    var tag = $A.newTag(obj);
+                    t.d.tags.push(tag);
+                    tag.drawTo(t.d.$widget);
+                }
+                return t;
+            }
+            var tag = $A.newTag();
+            t.d.tags.push(tag);
+            tag.drawTo(t.d.$widget);
+            return tag;
+        };
+
+    p.removeTag = p.removeTag || function (tag) {
+            var t = this;
+            if (typeof t.d.tags === 'undefined') {
+                return t;
+            }
+            if (typeof tag === 'string') {
+                for (var i = 0; i < t.d.tags.length; i++) {
+                    if (t.d.tags[i].text() === tag) {
+                        t.d.tags[i].remove();
+                    }
+                }
+            } else if (typeof tag === 'object') {
+                tag.remove();
+            }
+            return t;
+        };
+
+    p.onRemoveTag = function (obj) {
+        var t = this;
+        if (typeof obj === 'function') {
+            t.f.onRemoveTag = obj;
+        }
+        else {
+            t.f.onRemoveTag(obj);
+        }
+        return t;
+    };
+
+
+    p.tags = p.tags || function (tags) {
+            var t = this;
+            if (typeof t.d.tags === 'undefined') {
+                t.d.tags = [];
+            }
+            if (typeof tags !== 'undefined') {
+                for (var i = 0; i < t.d.tags.length; i++) {
+                    t.d.tags[i].remove();
+                }
+                for (var i in tags) {
+                    t.addTag(tags[i]);
+                }
+                return t;
+            }
+            return t.d.tags;
+        };
+
+
+    $A.initBasicFunctions(Tagger, "Tagger", []);
+
+
+})();
+
+(function(){
     var ProgressBar = function (obj) {
         var t = this;
         t.d = {
