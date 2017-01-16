@@ -22,7 +22,9 @@ define([
 
         if (typeof obj !== 'undefined') {
 
-
+            if (typeof obj === 'string'){
+                t.text(obj);
+            }
             if (typeof obj.text !== 'undefined') {
                 t.text(obj.text);
             }
@@ -69,7 +71,6 @@ define([
         return t.d.tagger;
     };
 
-
     p.remove = function (func, name, life) {
         var t = this;
         if (typeof func === 'function') {
@@ -80,7 +81,10 @@ define([
             t.widget().fadeOut('fast', function () {
                 this.remove();
             });
-            t.tagger().onRemoveTag(t);
+
+            if(t.tagger() instanceof $A.m.Tagger){
+                t.tagger().onRemoveTag(t);
+            }
             return;
         }
         return t;

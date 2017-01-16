@@ -2945,7 +2945,7 @@ label.iPhoneCheckLabelOff span {
 }
 .automizy-progress .automizy-progress-percent{
 }
-.automizy-tag{
+.automizy-tag {
     display: inline-block;
     box-sizing: border-box;
     border: 1px solid #b9b9b9;
@@ -2953,19 +2953,20 @@ label.iPhoneCheckLabelOff span {
     -moz-border-radius: 10px;
     border-radius: 10px;;
     margin: 0 10px;
+    position: relative;
 }
-.automizy-tag .automizy-tag-icon{
+.automizy-tag .automizy-tag-icon {
     display: inline-block;
     box-sizing: border-box;
     color: #b9b9b9;
     padding: 5px 10px 5px 5px;
     vertical-align: middle;
 }
-.automizy-tag .automizy-tag-text{
+.automizy-tag .automizy-tag-text {
     display: inline-block;
     box-sizing: border-box;
 }
-.automizy-tag .automizy-tag-close{
+.automizy-tag .automizy-tag-close {
     display: inline-block;
     box-sizing: border-box;
     color: #b9b9b9;
@@ -2978,6 +2979,42 @@ label.iPhoneCheckLabelOff span {
     -o-transition: color 0.2s;
     transition: color 0.2s;
 }
-.automizy-tag .automizy-tag-close:hover{
+.automizy-tag .automizy-tag-close:hover {
     color: #555a60;
+}
+.automizy-tag input.automizy-tagger-new-tag-input {
+    border: none;
+    outline: none !important;
+}
+.automizy-tagger-options-list {
+    position: absolute;
+    border: 1px solid #b9b9b9;
+    border-top: none;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    -webkit-border-bottom-left-radius: 3px;
+    -webkit-border-bottom-right-radius: 3px;
+    margin: auto;
+    width: 173px;
+    box-sizing: border-box;
+    left: 28px;
+    top: 26px;
+    background: #fff;
+    padding: 0;
+}
+.automizy-tagger-options-list > li {
+    list-style: none;
+    padding: 2px 5px;
+    margin: 4px;
+}
+.automizy-tagger-options-list > li :first-child{
+    margin-top: 10px;
+}
+.automizy-tagger-options-list > li :last-child{
+    margin-bottom: 10px;
+}
+.automizy-tagger-options-list > li:hover {
+    background-color: #dadada;
+    border-radius: 4px;
+    cursor: pointer;
 }

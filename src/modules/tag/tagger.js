@@ -9,55 +9,304 @@ define([
         var t = this;
         t.d = {
             $widget: $('<div class="automizy-tagger"></div>'),
+            $options: $('<ul class="automizy-tagger-options-list">'),
 
-            tags: []
+            tags: [],
+            options: {},
+            newTag: $A.newTag({text: '<input class="automizy-tagger-new-tag-input">'})
+        }
+        ;
+        t.f = {
+            onRemoveTag: function () {
+            },
+            onNewTagAdded: function () {
+            },
+            onTagAlreadyAdded: function () {
+            }
         };
-        t.f = {};
         t.init();
 
         if (typeof obj !== 'undefined') {
 
+            if (typeof obj.options !== 'undefined') {
+                t.options(obj.options);
+            }
             if (typeof obj.tags !== 'undefined') {
                 t.tags(obj.tags);
             }
             if (typeof obj.onRemoveTag === 'function') {
                 t.onRemoveTag(obj.onRemoveTag);
             }
+            if (typeof obj.onTagAlreadyAdded === 'function') {
+                t.onTagAlreadyAdded(obj.onTagAlreadyAdded);
+            }
+            if (typeof obj.onNewTagAdded === 'function') {
+                t.onNewTagAdded(obj.onNewTagAdded);
+            }
 
             t.initParameter(obj);
         }
+
+        t.d.$options.appendTo(t.d.newTag.widget()).hide();
 
     };
 
     var p = Tagger.prototype;
 
-    p.addTag = p.addTag || function (obj) {
-            var t = this;
-            if (typeof t.d.tags === 'undefined') {
-                return t;
-            }
-            if (typeof obj !== 'undefined') {
-                if (obj instanceof $A.m.Tag) {
-                    obj.tagger(t);
-                    obj.drawTo(t.d.$widget);
-                } else {
-                    if (typeof obj === 'string') {
-                        obj = {text: obj};
-                    }
-                    obj.tagger = t;
-                    var tag = $A.newTag(obj);
-                    t.d.tags.push(tag);
-                    tag.drawTo(t.d.$widget);
-                }
-                return t;
-            }
-            var tag = $A.newTag();
-            t.d.tags.push(tag);
-            tag.drawTo(t.d.$widget);
-            return tag;
-        };
+    p.hasTag = function (tag) {
+        var t = this;
+        var val = '';
 
-    p.removeTag = p.removeTag || function (tag) {
+        if (tag instanceof $A.m.Tag) {
+            val = tag.text();
+        } else {
+            val = tag;
+        }
+
+        var hasTag = false;
+
+        var tags = t.d.tags;
+        for (var i = 0; i < tags.length; i++) {
+            if (tags[i].text() === val) {
+                hasTag = true;
+            }
+        }
+
+        return hasTag;
+    };
+
+    p.hasOption = function (tag) {
+        var t = this;
+        var val = '';
+
+        if (tag instanceof $A.m.Tag) {
+            val = tag.text();
+        } else {
+            val = tag;
+        }
+
+        var hasOption = false;
+
+        var options = Object.keys(t.d.options);
+        if (options.indexOf(val) !== -1) {
+            hasOption = true;
+        }
+
+        return hasOption;
+    };
+
+    p.addTag = function (obj) {
+        var t = this;
+        if (typeof obj !== 'undefined') {
+            var tag;
+            if (obj instanceof $A.m.Tag) {
+                obj.tagger(t);
+                tag = obj;
+            } else {
+                if (typeof obj === 'string') {
+                    obj = {
+                        text: obj,
+                        tagger: t
+                    };
+                }
+                tag = $A.newTag(obj);
+            }
+
+            if (t.hasTag(tag) === false) {
+                t.d.tags.push(tag);
+                tag.drawTo(t.d.$widget);
+            }
+            else {
+                t.onTagAlreadyAdded(tag)
+            }
+            if (t.hasOption(tag) === false) {
+                t.addOption(tag.text(),true);
+            }
+            else {
+                t.addOption(tag.text(),false)
+            }
+            return t;
+        }
+        else {
+            var tag = t.d.newTag;
+            resetNewTag();
+
+            /*Detecting click outside the tagger*/
+            function removeFunction(event) {
+                var ignoreOutClick = ['.automizy-tagger input.automizy-tagger-new-tag-input'];
+
+                var clickedIn = false;
+                /*Iterating through all the ignore selectors*/
+                for (var i = 0; i < ignoreOutClick.length; i++) {
+                    if (!($(event.target).closest(ignoreOutClick[i]).length == false && tag.widget().is(":visible"))) {
+                        clickedIn = true;
+                    }
+                }
+                if (!clickedIn) {
+                    resetNewTag();
+                }
+            }
+
+            function resetNewTag() {
+                tag.widget().hide();
+                tag.text('<input class="automizy-tagger-new-tag-input">');
+
+                var $input = tag.widget().find('input');
+
+                $input.keyup(function (e) {
+                    if (t.d.$options.is(':visible') == false) {
+                        t.d.$options.show();
+                    }
+                    var val = $input.val();
+                    if (e.which == 13) {
+                        if (val !== '') {
+                            var realNewTag = $A.newTag(val);
+                            if(t.hasTag(val) === false){
+                                t.addTag(realNewTag);
+                                t.onNewTagAdded(realNewTag);
+                            }
+                            else {
+                                t.onTagAlreadyAdded(realNewTag);
+                            }
+                        }
+                        resetNewTag();
+                    }
+                    else {
+                        t.search(val);
+                    }
+                });
+
+                t.d.$options.children().hide();
+                $(document).off('click', removeFunction);
+            }
+
+            setTimeout(function () {
+                $(document).on('click', removeFunction);
+
+                tag.drawTo(t.widget()).widget().show();
+                tag.widget().find('input').focus();
+            }, 10);
+        }
+        return t;
+    };
+
+    p.tags = function (tags) {
+        var t = this;
+        if (typeof t.d.tags === 'undefined') {
+            t.d.tags = [];
+        }
+        if (typeof tags !== 'undefined') {
+            for (var i = 0; i < t.d.tags.length; i++) {
+                t.d.tags[i].remove();
+            }
+            for (var i in tags) {
+                t.addTag(tags[i]);
+            }
+            return t;
+        }
+        return t.d.tags;
+    };
+
+    p.addOption = function (option, isShown) {
+        var t = this;
+        if(typeof isShown === 'undefined'){
+            isShown = true;
+        }
+        if (typeof option !== 'undefined') {
+
+            if (option instanceof Array) {
+
+                option = option.sort();
+                for (var i = 0; i<option.length; i++){
+                    var alreadyExists = (typeof t.d.options[option[i]] !== 'undefined');
+                    t.d.options[option[i]] = isShown;
+                    if(!alreadyExists){
+                        createOptionElement(option[i]);
+                    }
+                }
+            }
+            else{
+
+                var alreadyExists = (typeof t.d.options[option] !== 'undefined');
+                t.d.options[option]= isShown;
+                if(!alreadyExists){
+                    createOptionElement(option);
+                }
+            }
+
+            function createOptionElement(option){
+                var options = Object.keys(t.d.options).sort();
+                var index = options.indexOf(option);
+
+                if(index !== -1){
+
+                    if (index === 0) {
+                        index = 1;
+                    }
+                    var $option = $('<li>' + option + '</li>').click(function () {
+                        var val = $(this).text();
+                        var realNewTag = $A.newTag(val);
+                        if(t.hasTag(val) === false){
+                            t.addTag(realNewTag);
+                            t.onNewTagAdded(realNewTag);
+                        }
+                        else {
+                            t.onTagAlreadyAdded(realNewTag);
+                        }
+                    });
+
+
+                    var $prevLi = t.d.$options.find('li').eq(index - 1);
+                    if($prevLi.length!==0){
+                        $prevLi.after($option);
+                    }
+                    else {
+                        t.d.$options.append($option);
+                    }
+                }
+
+            }
+        }
+        return t;
+    };
+
+    p.options = function (options) {
+        var t = this;
+        if (typeof options !== 'undefined') {
+            t.addOption(options);
+            return t;
+        }
+        return t.d.options;
+    };
+
+
+    p.search = function (text) {
+        var t = this;
+        var text = text || '';
+        var options = Object.keys(t.d.options).sort();
+
+        var optionsToShow = [];
+        for(var i in options){
+            if(t.d.options[options[i]] == true){
+                optionsToShow.push(options[i]);
+            }
+        }
+        var $options = t.d.$options.children();
+
+            for (var i = 0; i < optionsToShow.length; i++) {
+                var str = optionsToShow[i];
+                var optionIndex = options.indexOf(optionsToShow[i]);
+                if (str.toLowerCase().search(text.toLowerCase()) > -1 || text.length <= 0) {
+                    $($options[optionIndex]).show();
+                } else {
+                    $($options[optionIndex]).hide();
+                }
+            }
+
+        return t;
+    };
+
+    p.removeTag = function (tag) {
             var t = this;
             if (typeof t.d.tags === 'undefined') {
                 return t;
@@ -69,10 +318,14 @@ define([
                     }
                 }
             } else if (typeof tag === 'object') {
-                tag.remove();
+                var index = t.d.tags.indexOf(tag);
+                if(index !== -1){
+                    tag.remove();
+                }
             }
             return t;
         };
+
 
     p.onRemoveTag = function (obj) {
         var t = this;
@@ -81,28 +334,37 @@ define([
         }
         else {
             t.f.onRemoveTag(obj);
+            var index = t.d.tags.indexOf(obj);
+            if(index !== -1){
+                t.addOption(obj.text(), true);
+                t.d.tags.splice(index,1);
+            }
         }
         return t;
     };
 
 
-    p.tags = p.tags || function (tags) {
-            var t = this;
-            if (typeof t.d.tags === 'undefined') {
-                t.d.tags = [];
-            }
-            if (typeof tags !== 'undefined') {
-                for (var i = 0; i < t.d.tags.length; i++) {
-                    t.d.tags[i].remove();
-                }
-                for (var i in tags) {
-                    t.addTag(tags[i]);
-                }
-                return t;
-            }
-            return t.d.tags;
-        };
+    p.onNewTagAdded = function (obj) {
+        var t = this;
+        if (typeof obj === 'function') {
+            t.f.onNewTagAdded = obj;
+        }
+        else {
+            t.f.onNewTagAdded(obj);
+        }
+        return t;
+    };
 
+    p.onTagAlreadyAdded = function (obj) {
+        var t = this;
+        if (typeof obj === 'function') {
+            t.f.onTagAlreadyAdded = obj;
+        }
+        else {
+            t.f.onTagAlreadyAdded(obj);
+        }
+        return t;
+    };
 
     $A.initBasicFunctions(Tagger, "Tagger", []);
 

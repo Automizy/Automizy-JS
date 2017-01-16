@@ -24,10 +24,25 @@
 
             tagger = $A.newTagger({
                 tags: ["asd", "newtag", "another ver-very long tag"],
+                options: ["asd", "another tag", "more option", "newtag", "another ver-very long tag", "last tag"],
                 onRemoveTag: function (tag) {
                     console.log(tag.text()+" removed!")
+                },
+                onTagAlreadyAdded: function (tag) {
+                    console.log(tag.text()+" already added");
+                },
+                onNewTagAdded: function (tag) {
+                    console.log(tag.text()+" added")
                 }
             }).draw();
+
+
+            $A.newButton({
+                text:'add new tag',
+                click: function () {
+                    tagger.addTag();
+                }
+            }).draw()
         })
     </script>
 </head>
