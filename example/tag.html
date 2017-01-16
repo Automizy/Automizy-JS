@@ -23,8 +23,8 @@
         $(function () {
 
             tagger = $A.newTagger({
-                tags: ["asd", "newtag", "another ver-very long tag"],
-                options: ["asd", "another tag", "more option", "newtag", "another ver-very long tag", "last tag"],
+                tags: ["another ver-very long tag"],
+                options: ["asd", "another tag", "more option", "newtag", "ANOTHER_VERY_VERY_LONG_TAG_in_one_word", "last tag", "needmoretag", "stillnotenough", "anotherone", "tagtagtag"],
                 onRemoveTag: function (tag) {
                     console.log(tag.text()+" removed!")
                 },

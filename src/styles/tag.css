@@ -55,18 +55,22 @@
     -webkit-border-bottom-left-radius: 3px;
     -webkit-border-bottom-right-radius: 3px;
     margin: auto;
-    width: 173px;
     box-sizing: border-box;
-    left: 28px;
-    top: 26px;
     background: #fff;
     padding: 0;
+    max-height: 200px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    z-index: 10;
 }
 
 .automizy-tagger-options-list > li {
     list-style: none;
     padding: 2px 5px;
     margin: 4px;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    overflow: hidden;
 }
 
 .automizy-tagger-options-list > li :first-child{

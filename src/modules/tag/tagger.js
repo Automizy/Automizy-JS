@@ -47,11 +47,31 @@ define([
             t.initParameter(obj);
         }
 
-        t.d.$options.appendTo(t.d.newTag.widget()).hide();
+        t.d.$options.appendTo('body').hide();
 
     };
 
     var p = Tagger.prototype;
+
+    p.positionOptionBox = function () {
+        var t = this;
+        var $optionBox = t.d.$options;
+        var $newTag = t.d.newTag.widget();
+
+        var $input = $newTag.find('input');
+        var inputOffset = $input.offset();
+        var offsetTop = $newTag.offset().top;
+        var inputOffsetLeft = inputOffset.left;
+        var tagHeight = t.d.newTag.widget().height();
+        var inputWidth = $input.outerWidth();
+
+        $optionBox.css({
+            bottom: 'auto',
+            left: inputOffsetLeft + 'px',
+            top: (offsetTop + tagHeight + 1) + 'px',
+            width: inputWidth + 'px'
+        });
+    };
 
     p.hasTag = function (tag) {
         var t = this;
@@ -119,12 +139,8 @@ define([
             else {
                 t.onTagAlreadyAdded(tag)
             }
-            if (t.hasOption(tag) === false) {
-                t.addOption(tag.text(),true);
-            }
-            else {
-                t.addOption(tag.text(),false)
-            }
+            t.addOption(tag.text(), false);
+
             return t;
         }
         else {
@@ -148,6 +164,7 @@ define([
             }
 
             function resetNewTag() {
+                t.d.$options.hide();
                 tag.widget().hide();
                 tag.text('<input class="automizy-tagger-new-tag-input">');
 
@@ -161,7 +178,7 @@ define([
                     if (e.which == 13) {
                         if (val !== '') {
                             var realNewTag = $A.newTag(val);
-                            if(t.hasTag(val) === false){
+                            if (t.hasTag(val) === false) {
                                 t.addTag(realNewTag);
                                 t.onNewTagAdded(realNewTag);
                             }
@@ -185,6 +202,8 @@ define([
 
                 tag.drawTo(t.widget()).widget().show();
                 tag.widget().find('input').focus();
+                t.d.$options.show();
+                t.positionOptionBox();
             }, 10);
         }
         return t;
@@ -209,7 +228,7 @@ define([
 
     p.addOption = function (option, isShown) {
         var t = this;
-        if(typeof isShown === 'undefined'){
+        if (typeof isShown === 'undefined') {
             isShown = true;
         }
         if (typeof option !== 'undefined') {
@@ -217,36 +236,36 @@ define([
             if (option instanceof Array) {
 
                 option = option.sort();
-                for (var i = 0; i<option.length; i++){
+                for (var i = 0; i < option.length; i++) {
                     var alreadyExists = (typeof t.d.options[option[i]] !== 'undefined');
                     t.d.options[option[i]] = isShown;
-                    if(!alreadyExists){
+                    if (!alreadyExists) {
                         createOptionElement(option[i]);
                     }
                 }
             }
-            else{
+            else {
 
                 var alreadyExists = (typeof t.d.options[option] !== 'undefined');
-                t.d.options[option]= isShown;
-                if(!alreadyExists){
+                t.d.options[option] = isShown;
+                if (!alreadyExists) {
                     createOptionElement(option);
                 }
             }
 
-            function createOptionElement(option){
+            function createOptionElement(option) {
                 var options = Object.keys(t.d.options).sort();
                 var index = options.indexOf(option);
 
-                if(index !== -1){
+                if (index !== -1) {
 
                     if (index === 0) {
                         index = 1;
                     }
-                    var $option = $('<li>' + option + '</li>').click(function () {
+                    var $option = $('<li title="' + option + '">' + option + '</li>').click(function () {
                         var val = $(this).text();
                         var realNewTag = $A.newTag(val);
-                        if(t.hasTag(val) === false){
+                        if (t.hasTag(val) === false) {
                             t.addTag(realNewTag);
                             t.onNewTagAdded(realNewTag);
                         }
@@ -257,7 +276,7 @@ define([
 
 
                     var $prevLi = t.d.$options.find('li').eq(index - 1);
-                    if($prevLi.length!==0){
+                    if ($prevLi.length !== 0) {
                         $prevLi.after($option);
                     }
                     else {
@@ -286,45 +305,45 @@ define([
         var options = Object.keys(t.d.options).sort();
 
         var optionsToShow = [];
-        for(var i in options){
-            if(t.d.options[options[i]] == true){
+        for (var i in options) {
+            if (t.d.options[options[i]] == true) {
                 optionsToShow.push(options[i]);
             }
         }
         var $options = t.d.$options.children();
 
-            for (var i = 0; i < optionsToShow.length; i++) {
-                var str = optionsToShow[i];
-                var optionIndex = options.indexOf(optionsToShow[i]);
-                if (str.toLowerCase().search(text.toLowerCase()) > -1 || text.length <= 0) {
-                    $($options[optionIndex]).show();
-                } else {
-                    $($options[optionIndex]).hide();
-                }
+        for (var i = 0; i < optionsToShow.length; i++) {
+            var str = optionsToShow[i];
+            var optionIndex = options.indexOf(optionsToShow[i]);
+            if (str.toLowerCase().search(text.toLowerCase()) > -1 || text.length <= 0) {
+                $($options[optionIndex]).show();
+            } else {
+                $($options[optionIndex]).hide();
             }
+        }
 
         return t;
     };
 
     p.removeTag = function (tag) {
-            var t = this;
-            if (typeof t.d.tags === 'undefined') {
-                return t;
-            }
-            if (typeof tag === 'string') {
-                for (var i = 0; i < t.d.tags.length; i++) {
-                    if (t.d.tags[i].text() === tag) {
-                        t.d.tags[i].remove();
-                    }
-                }
-            } else if (typeof tag === 'object') {
-                var index = t.d.tags.indexOf(tag);
-                if(index !== -1){
-                    tag.remove();
-                }
-            }
+        var t = this;
+        if (typeof t.d.tags === 'undefined') {
             return t;
-        };
+        }
+        if (typeof tag === 'string') {
+            for (var i = 0; i < t.d.tags.length; i++) {
+                if (t.d.tags[i].text() === tag) {
+                    t.d.tags[i].remove();
+                }
+            }
+        } else if (typeof tag === 'object') {
+            var index = t.d.tags.indexOf(tag);
+            if (index !== -1) {
+                tag.remove();
+            }
+        }
+        return t;
+    };
 
 
     p.onRemoveTag = function (obj) {
@@ -335,9 +354,9 @@ define([
         else {
             t.f.onRemoveTag(obj);
             var index = t.d.tags.indexOf(obj);
-            if(index !== -1){
+            if (index !== -1) {
                 t.addOption(obj.text(), true);
-                t.d.tags.splice(index,1);
+                t.d.tags.splice(index, 1);
             }
         }
         return t;
