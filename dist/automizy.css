@@ -2952,8 +2952,9 @@ label.iPhoneCheckLabelOff span {
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;;
-    margin: 0 10px;
+    margin: 10px;
     position: relative;
+    cursor: default;
 }
 .automizy-tag .automizy-tag-icon {
     display: inline-block;
@@ -3021,4 +3022,23 @@ label.iPhoneCheckLabelOff span {
     background-color: #dadada;
     border-radius: 4px;
     cursor: pointer;
+}
+@keyframes tag-highlight {
+    from {
+        border-color: #b9b9b9;
+        color: #b9b9b9;
+    }
+    to {
+        border-color: #2196F3;
+        color: #2196F3;
+    }
+}
+.automizy-tag.automizy-tag-highlighted,
+.automizy-tag.automizy-tag-highlighted .automizy-tag-icon,
+.automizy-tag.automizy-tag-highlighted .automizy-tag-close {
+    
+    animation-name: tag-highlight;
+    animation-duration: 0.2s;
+    animation-iteration-count: 2;
+    animation-direction: alternate;
 }

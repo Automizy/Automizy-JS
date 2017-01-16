@@ -115,6 +115,23 @@ define([
         return hasOption;
     };
 
+    p.getTag = function (tag) {
+        var t = this;
+        var text;
+        if(tag instanceof $A.m.Tag){
+            text=tag.text();
+        }
+        else {
+            text = tag;
+        }
+        for(var i = 0; i<t.d.tags.length; i++){
+            if(t.d.tags[i].text() === text){
+                return t.d.tags[i]
+            }
+        }
+        return false;
+    };
+
     p.addTag = function (obj) {
         var t = this;
         if (typeof obj !== 'undefined') {
@@ -381,6 +398,7 @@ define([
         }
         else {
             t.f.onTagAlreadyAdded(obj);
+            t.getTag(obj.text()).highlight();
         }
         return t;
     };

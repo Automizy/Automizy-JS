@@ -22,7 +22,7 @@ define([
 
         if (typeof obj !== 'undefined') {
 
-            if (typeof obj === 'string'){
+            if (typeof obj === 'string') {
                 t.text(obj);
             }
             if (typeof obj.text !== 'undefined') {
@@ -82,7 +82,7 @@ define([
                 this.remove();
             });
 
-            if(t.tagger() instanceof $A.m.Tagger){
+            if (t.tagger() instanceof $A.m.Tagger) {
                 t.tagger().onRemoveTag(t);
             }
             return;
@@ -100,6 +100,15 @@ define([
             return t;
         }
         return t.d.icon;
+    };
+
+    p.highlight = function () {
+        var t = this;
+        var $widget = t.d.$widget;
+        $widget.addClass(' automizy-tag-highlighted');
+        setTimeout(function () {
+            $widget.removeClass('automizy-tag-highlighted');
+        },1000);
     };
 
 

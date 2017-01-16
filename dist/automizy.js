@@ -9552,7 +9552,7 @@ var $A = {};
 
         if (typeof obj !== 'undefined') {
 
-            if (typeof obj === 'string'){
+            if (typeof obj === 'string') {
                 t.text(obj);
             }
             if (typeof obj.text !== 'undefined') {
@@ -9612,7 +9612,7 @@ var $A = {};
                 this.remove();
             });
 
-            if(t.tagger() instanceof $A.m.Tagger){
+            if (t.tagger() instanceof $A.m.Tagger) {
                 t.tagger().onRemoveTag(t);
             }
             return;
@@ -9630,6 +9630,15 @@ var $A = {};
             return t;
         }
         return t.d.icon;
+    };
+
+    p.highlight = function () {
+        var t = this;
+        var $widget = t.d.$widget;
+        $widget.addClass(' automizy-tag-highlighted');
+        setTimeout(function () {
+            $widget.removeClass('automizy-tag-highlighted');
+        },1000);
     };
 
 
@@ -9747,6 +9756,23 @@ var $A = {};
         }
 
         return hasOption;
+    };
+
+    p.getTag = function (tag) {
+        var t = this;
+        var text;
+        if(tag instanceof $A.m.Tag){
+            text=tag.text();
+        }
+        else {
+            text = tag;
+        }
+        for(var i = 0; i<t.d.tags.length; i++){
+            if(t.d.tags[i].text() === text){
+                return t.d.tags[i]
+            }
+        }
+        return false;
     };
 
     p.addTag = function (obj) {
@@ -10015,6 +10041,7 @@ var $A = {};
         }
         else {
             t.f.onTagAlreadyAdded(obj);
+            t.getTag(obj.text()).highlight();
         }
         return t;
     };
