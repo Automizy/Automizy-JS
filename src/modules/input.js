@@ -496,7 +496,7 @@ define([
                 t.input().data('value', value);
             } else if (t.d.type === 'html') {
                 t.input().html(value);
-            }else{
+            } else {
                 t.input().val(value);
             }
             if (t.d.multiselect) {
@@ -509,8 +509,6 @@ define([
         }
         if (t.d.type === 'html') {
             return t.input().html();
-        } else if(t.d.type === 'radio'){
-            return t.input().is(':checked');
         }
         return t.input().val();
     };
