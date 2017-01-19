@@ -9690,7 +9690,7 @@ var $A = {};
             t.initParameter(obj);
         }
 
-        t.d.$options.appendTo('body').hide();
+        t.d.$options.appendTo('body').ahide();
 
     };
 
@@ -9824,15 +9824,15 @@ var $A = {};
             }
 
             function resetNewTag() {
-                t.d.$options.hide();
-                tag.widget().hide();
+                t.d.$options.ahide();
+                tag.widget().ahide();
                 tag.text('<input class="automizy-tagger-new-tag-input">');
 
                 var $input = tag.widget().find('input');
 
                 $input.keyup(function (e) {
                     if (t.d.$options.is(':visible') == false) {
-                        t.d.$options.show();
+                        t.d.$options.ashow();
                     }
                     var val = $input.val();
                     if (e.which == 13) {
@@ -9853,16 +9853,16 @@ var $A = {};
                     }
                 });
 
-                t.d.$options.children().hide();
+                t.d.$options.children().ahide();
                 $(document).off('click', removeFunction);
             }
 
             setTimeout(function () {
                 $(document).on('click', removeFunction);
 
-                tag.drawTo(t.widget()).widget().show();
+                tag.drawTo(t.widget()).widget().ashow().show();
                 tag.widget().find('input').focus();
-                t.d.$options.show();
+                t.d.$options.ashow();
                 t.positionOptionBox();
             }, 10);
         }
@@ -9976,9 +9976,9 @@ var $A = {};
             var str = optionsToShow[i];
             var optionIndex = options.indexOf(optionsToShow[i]);
             if (str.toLowerCase().search(text.toLowerCase()) > -1 || text.length <= 0) {
-                $($options[optionIndex]).show();
+                $($options[optionIndex]).ashow();
             } else {
-                $($options[optionIndex]).hide();
+                $($options[optionIndex]).ahide();
             }
         }
 

@@ -21,7 +21,7 @@
 .automizy-tag .automizy-tag-text {
     display: inline-block;
     box-sizing: border-box;
-
+    vertical-align: middle;
 }
 
 .automizy-tag .automizy-tag-close {
