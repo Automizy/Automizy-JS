@@ -3024,7 +3024,7 @@ var $A = {};
                 t.input().data('value', value);
             } else if (t.d.type === 'html') {
                 t.input().html(value);
-            }else{
+            } else {
                 t.input().val(value);
             }
             if (t.d.multiselect) {
@@ -3037,8 +3037,6 @@ var $A = {};
         }
         if (t.d.type === 'html') {
             return t.input().html();
-        } else if(t.d.type === 'radio'){
-            return t.input().is(':checked');
         }
         return t.input().val();
     };
@@ -9873,12 +9871,10 @@ var $A = {};
 
     p.tags = function (tags) {
         var t = this;
-        if (typeof t.d.tags === 'undefined') {
-            t.d.tags = [];
-        }
         if (typeof tags !== 'undefined') {
             for (var i = 0; i < t.d.tags.length; i++) {
-                t.d.tags[i].remove();
+                t.d.tags = [];
+                t.d.$widget.empty();
             }
             for (var i in tags) {
                 t.addTag(tags[i]);
@@ -9954,6 +9950,8 @@ var $A = {};
     p.options = function (options) {
         var t = this;
         if (typeof options !== 'undefined') {
+            t.d.options = {};
+            t.d.$options.empty();
             t.addOption(options);
             return t;
         }

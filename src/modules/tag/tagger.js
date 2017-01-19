@@ -228,12 +228,10 @@ define([
 
     p.tags = function (tags) {
         var t = this;
-        if (typeof t.d.tags === 'undefined') {
-            t.d.tags = [];
-        }
         if (typeof tags !== 'undefined') {
             for (var i = 0; i < t.d.tags.length; i++) {
-                t.d.tags[i].remove();
+                t.d.tags = [];
+                t.d.$widget.empty();
             }
             for (var i in tags) {
                 t.addTag(tags[i]);
@@ -309,6 +307,8 @@ define([
     p.options = function (options) {
         var t = this;
         if (typeof options !== 'undefined') {
+            t.d.options = {};
+            t.d.$options.empty();
             t.addOption(options);
             return t;
         }
