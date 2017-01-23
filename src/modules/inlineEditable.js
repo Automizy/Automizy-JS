@@ -33,6 +33,9 @@ define([
                 if (typeof obj.onInlineEditComplete === 'function') {
                     t.onInlineEditComplete(obj.onInlineEditComplete);
                 }
+                if (typeof obj.onInlineEditCanceled === 'function') {
+                    t.onInlineEditCanceled(obj.onInlineEditCanceled);
+                }
                 t.initParameter(obj);
             }
         }
@@ -50,61 +53,6 @@ define([
         return t.d.$editableContent.html();
     };
 
-    p.inlineEdit = function () {
-        var t = this;
-        var inlineInput = t.inlineInput();
-
-
-        /*Saving old value*/
-        inlineInput.data('old-value', inlineInput.value());
-
-        t.showInlineEdit();
-
-
-        /*Fill this array with the selector of elements
-         which could be clicked when the inline edit input is open,
-         without closing it
-         */
-        var ignoreOutClick = [];
-
-        /*Any click in the edit box is ignored*/
-        ignoreOutClick.push(inlineInput.d.$inputTable);
-
-        switch (inlineInput.type()) {
-            case "date":
-                ignoreOutClick.push('#ui-datepicker-div');
-                break;
-            case "datetime":
-                ignoreOutClick.push('#ui-datepicker-div');
-                break;
-            case "select":
-                /*Option window click is ignored*/
-                ignoreOutClick.push('.automizy-select-option-box');
-                break;
-            default:
-                break;
-        }
-
-        $(document).on('click', removeFunction);
-
-        /*Detecting click outside the inline input*/
-        function removeFunction(event) {
-
-            var clickedIn = false;
-            /*Iterating through all the ignore selectors*/
-            for (var i = 0; i < ignoreOutClick.length; i++) {
-                if (!($(event.target).closest(ignoreOutClick[i]).length == false && t.widget().hasClass('inline-edit-active'))) {
-                    clickedIn = true;
-                    $A.d.inlineEditClick = true;
-                }
-            }
-            if (!clickedIn) {
-                t.onInlineEditCanceled();
-                $A.d.inlineEditClick = false;
-            }
-        }
-    };
-
     p.inlineInput = function (obj) {
         var t = this;
 
@@ -119,11 +67,30 @@ define([
                 inlineInput = $A.newInput2(obj);
             }
 
+            /*Showing inline input on focus*/
+            inlineInput.focus(function () {
+                $(document).click();
+
+                /*Showing inline editable*/
+                t.showInlineEdit();
+                $(document).on('click', removeFunction);
+            });
+
+            /*Hiding on escape key*/
+            inlineInput.input().keyup(function (e) {
+                if (e.keyCode == 27) {
+                    cancelButton.click();
+                }
+            });
+
+            /*Save & cancel buttons*/
+
             var saveButton = $A.newButton({
                 icon: 'fa-check',
                 skin: 'simple-orange',
                 click: function () {
                     t.onInlineEditComplete(inlineInput);
+                    $(document).off('click', removeFunction);
                 }
             });
 
@@ -134,16 +101,61 @@ define([
                 skin: 'simple-white',
                 click: function () {
                     t.onInlineEditCanceled();
+                    $(document).off('click', removeFunction);
                 }
             }).drawTo(inlineInput.d.$inputButtonRightCell);
 
-            inlineInput.focus(function () {
-                t.inlineEdit();
-            });
 
             inlineInput.enter(function () {
                 t.onInlineEditComplete(inlineInput);
+                $(document).off('click', removeFunction);
             });
+
+
+            /*Saving old value*/
+            inlineInput.data('old-value', inlineInput.value());
+
+
+
+            /*Fill this array with the selector of elements
+             which could be clicked when the inline edit input is open,
+             without closing it
+             */
+            var ignoreOutClick = [];
+
+            /*Any click in the edit box is ignored*/
+            ignoreOutClick.push(inlineInput.d.$inputCell);
+
+            switch (inlineInput.type()) {
+                case "date":
+                    ignoreOutClick.push('#ui-datepicker-div');
+                    break;
+                case "datetime":
+                    ignoreOutClick.push('#ui-datepicker-div');
+                    break;
+                case "select":
+                    /*Option window click is ignored*/
+                    ignoreOutClick.push('.automizy-select-option-box');
+                    break;
+                default:
+                    break;
+            }
+
+
+            /*Detecting click outside the inline input*/
+            function removeFunction(event) {
+                var clickedIn = false;
+                /*Iterating through all the ignore selectors*/
+                for (var i = 0; i < ignoreOutClick.length; i++) {
+                    if (!($(event.target).closest(ignoreOutClick[i]).length == false && t.widget().hasClass('inline-edit-active'))) {
+                        clickedIn = true;
+                    }
+                }
+                if (!clickedIn) {
+                    $(document).off('click', removeFunction);
+                    t.onInlineEditCanceled();
+                }
+            }
 
             t.d.inlineInput = inlineInput;
             inlineInput.drawTo(t.d.$widget);
@@ -169,7 +181,7 @@ define([
     p.onInlineEditCanceled = function (func) {
         var t = this;
         if (typeof func === 'function') {
-            t.addFunction('onInlineEditCanceled');
+            t.addFunction('onInlineEditCanceled',func);
         } else {
             t.runFunctions('onInlineEditCanceled');
             t.hideInlineEdit();
@@ -181,6 +193,10 @@ define([
         var t = this;
         t.widget().addClass("inline-edit-active");
         t.widget().removeClass("inline-edit-inactive");
+    };
+
+    p.isShown = function(){
+        return this.widget().hasClass('inline-edit-active');
     };
 
     p.hideInlineEdit = function () {

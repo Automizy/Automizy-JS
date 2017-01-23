@@ -165,7 +165,7 @@ define([
         var a = this.d.regular.email.test(value);
         if (a === false) {
             this.d.isValid = false;
-            this.d.errors.push("Invalid email address");
+            this.d.errors.push("Invalid email address.");
         }
         return a;
     };
@@ -174,7 +174,7 @@ define([
         var a = this.d.regular.domain.test(value);
         if (a === false) {
             this.d.isValid = false;
-            this.d.errors.push("Invalid domain");
+            this.d.errors.push("Invalid domain.");
         }
         return a;
     };
@@ -183,7 +183,7 @@ define([
         var a = this.d.regular.url.test(value);
         if (a === false) {
             this.d.isValid = false;
-            this.d.errors.push("Invalid URL");
+            this.d.errors.push("Invalid URL.");
         }
         return a;
     };
@@ -192,7 +192,7 @@ define([
         var a = this.d.regular.domain.test(value) || this.d.regular.url.test(value);
         if (a === false) {
             this.d.isValid = false;
-            this.d.errors.push("Invalid domain or URL");
+            this.d.errors.push("Invalid domain or URL.");
         }
         return a;
     };
@@ -201,7 +201,7 @@ define([
         var a = (value == +value && value == (value | 0));
         if (a === false) {
             this.d.isValid = false;
-            this.d.errors.push("Not an integer");
+            this.d.errors.push("Not an integer.");
         }
         return a;
     };
@@ -210,7 +210,7 @@ define([
         var a = !isNaN(value);
         if (a === false) {
             this.d.isValid = false;
-            this.d.errors.push("Not a number");
+            this.d.errors.push("Not a number.");
         }
         return a;
     };
@@ -220,7 +220,7 @@ define([
         var a = value.length >= len;
         if (a === false) {
             this.d.isValid = false;
-            this.d.errors.push("Too short");
+            this.d.errors.push("Not enough characters. Minimal length: "+this.d.minLength);
         }
         return a;
     };
@@ -229,7 +229,7 @@ define([
         var a = value != '';
         if (a === false) {
             this.d.isValid = false;
-            this.d.errors.push("No empty");
+            this.d.errors.push("This field is required.");
         }
         return a;
     };
@@ -239,7 +239,7 @@ define([
         var a = value.length <= len;
         if (a === false) {
             this.d.isValid = false;
-            this.d.errors.push("Too long");
+            this.d.errors.push("Too many characters. Maximal length: "+this.d.maxLength);
         }
         return a;
     };
@@ -249,7 +249,7 @@ define([
         var a = value >= number;
         if (a === false) {
             this.d.isValid = false;
-            this.d.errors.push("Too little");
+            this.d.errors.push("Too low value. Minimal value: "+this.d.min);
         }
         return a;
     };
@@ -259,7 +259,7 @@ define([
         var a = value <= number;
         if (a === false) {
             this.d.isValid = false;
-            this.d.errors.push("Too many");
+            this.d.errors.push("Too high value. Maximal value: "+this.d.max);
         }
         return a;
     };
@@ -272,7 +272,7 @@ define([
         var a = value === otherValue;
         if (a === false) {
             this.d.isValid = false;
-            this.d.errors.push("The values are not equals");
+            this.d.errors.push("The two values are not equal.");
         }
         return a;
     };
@@ -281,7 +281,7 @@ define([
         var a = value != invalidValue;
         if (a === false) {
             this.d.isValid = false;
-            this.d.errors.push("Invalid value");
+            this.d.errors.push("Invalid value.");
         }
         return a;
     };

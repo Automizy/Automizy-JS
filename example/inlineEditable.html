@@ -22,10 +22,20 @@
         $(function () {
             inlineEditable = $A.newInput2({
                 labelBefore: "Label",
-                type: "text",
-                placeholder: "placeholder"
+                type: "text"
             }).inlineEditable().drawTo('body').onInlineEditComplete(function (inlineEditable) {
                 console.log(inlineEditable.value());
+            }).onInlineEditCanceled(function () {
+                console.log('cancel1')
+            });
+
+            inlineEditable2 = $A.newInlineEditable($A.newInput2({
+                labelBefore: "Name",
+                type: "text"
+            })).drawTo('body').onInlineEditComplete(function (inlineEditable) {
+                console.log(inlineEditable.value());
+            }).onInlineEditCanceled(function () {
+                console.log('cancel2')
             });
 
 
