@@ -309,6 +309,9 @@ textarea.automizy-input2-input {
 .automizy-input2 input[type='checkbox'], .automizy-input2 input[type='radio'] {
     background-image: url(../images/checkbox-radio.png);
     background-repeat: no-repeat;
+    -moz-background-image: url(../images/checkbox-radio.png);
+    -o-background-image: url(../images/checkbox-radio.png);
+    -webkit-background-image: url(../images/checkbox-radio.png);
     margin: 0 8px 0 0;
     padding: 0;
     border:none;
@@ -342,84 +345,128 @@ textarea.automizy-input2-input {
 
 .automizy-input2 input[type='radio'] {
     background-position: -30px 0;
+    -ms-background-position-x: -30px;
+    -ms-background-position-y: 0;
 }
 
 .automizy-input2 input[type='radio']:checked {
     background-position: -48px 0;
+    -ms-background-position-x: -48px;
+    -ms-background-position-y: 0;
 }
 
 .automizy-input2 input[type='checkbox']:checked {
     background-position: -15px 0;
+    -ms-background-position-x: -15px;
+    -ms-background-position-y: 0;
 }
 
 .automizy-input2 input[type='checkbox']:hover:checked,
 .automizy-input2 input[type='checkbox']:focus:checked {
     background-position: -15px -18px;
+    -ms-background-position-x: -15px;
+    -ms-background-position-y: -18px;
 }
 
 .automizy-input2 input[type='radio']:hover:checked,
 .automizy-input2 input[type='radio']:focus:checked {
     background-position: -48px -18px;
+    -ms-background-position-x: -48px;
+    -ms-background-position-y: -18px;
 }
 
 .automizy-input2 input[type='checkbox']:hover,
 .automizy-input2 input[type='checkbox']:focus {
     background-position: 0 -18px;
+    -ms-background-position-x: 0;
+    -ms-background-position-y: -18px;
 }
 
 .automizy-input2 input[type='radio']:hover,
 .automizy-input2 input[type='radio']:focus {
     background-position: -30px -18px;
+    -ms-background-position-x: -30px;
+    -ms-background-position-y: -18px;
 }
 
 .automizy-input2 input[type='checkbox']:active {
     background-position: 0 -36px;
+    -ms-background-position-x: 0;
+    -ms-background-position-y: -36px;
 }
 
 .automizy-input2 input[type='radio']:active {
     background-position: -30px -36px;
+    -ms-background-position-x: -30px;
+    -ms-background-position-y: -36px;
 }
 
 .automizy-input2 input[type='checkbox']:active:checked {
     background-position: -15px -36px;
+    -ms-background-position-x: -15px;
+    -ms-background-position-y: -36px;
 }
 
 .automizy-input2 input[type='radio']:active:checked {
     background-position: -48px -36px;
+    -ms-background-position-x: -48px;
+    -ms-background-position-y: -36px;
 }
 
 .automizy-input2 input[type='checkbox']:disabled {
     background-position: 0 -54px;
+    -ms-background-position-x: 0;
+    -ms-background-position-y: -54px;
 }
 
 .automizy-input2 input[type='radio']:disabled {
     background-position: -30px -54px;
+    -ms-background-position-x: -30px;
+    -ms-background-position-y: -54px;
 }
 
 .automizy-input2 input[type='checkbox']:disabled:checked {
     background-position: -15px -54px;
+    -ms-background-position-x: -15px;
+    -ms-background-position-y: -54px;
 }
 
 .automizy-input2 input[type='radio']:disabled:checked {
     background-position: -48px -54px;
+    -ms-background-position-x: -48px;
+    -ms-background-position-y: -54px;
 }
 
 .automizy-input2 input[type='checkbox']:hover:disabled,
 .automizy-input2 input[type='checkbox']:focus:disabled {
     background-position: 0 -54px;
+    -ms-background-position-x: 0;
+    -ms-background-position-y: -54px;
 }
 
 .automizy-input2 input[type='radio']:hover:disabled,
 .automizy-input2 input[type='radio']:focus:disabled {
     background-position: -30px -54px;
+    -ms-background-position-x: -30px;
+    -ms-background-position-y: -54px;
 }
 
 .automizy-input2 input[type='checkbox']:hover:disabled:checked,
 .automizy-input2 input[type='checkbox']:focus:disabled:checked {
     background-position: -15px -54px;
+    -ms-background-position-x: -15px;
+    -ms-background-position-y: -54px;
 }
 
 .automizy-input2 input[type='radio']:hover:disabled:checked,
 .automizy-input2 input[type='radio']:focus:disabled:checked {
     background-position: -48px -54px;
+    -ms-background-position-x: -48px;
+    -ms-background-position-y: -54px;
+}
+
+.automizy-input2 td.automizy-permission-trap,
+.automizy-input2 td.automizy-force-hide,
+.automizy-input2 td.automizy-hide{
+    display:none !important;
 }
