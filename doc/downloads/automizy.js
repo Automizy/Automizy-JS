@@ -9,7 +9,7 @@ var $A = {};
         t.d = {
             version: '0.5.3',
             settings: {
-                logTranslateMissings:true
+                logTranslateMissings:window.automizylogTranslateMissings || false
             },
             uniques:[],
             defines: {},
@@ -352,17 +352,20 @@ var $A = {};
                 return p.drawTo($target, 'before');
             };
 
-        p.drawTo = p.appendTo = p.drawTo || function ($target, where) {
+        p.drawTo = p.appendTo = p.drawTo || function (target, where) {
                 var t = this;
-                var $target = $target || $('body');
+                var target = target || $('body');
+                if(typeof target.widget === 'function') {
+                    target = target.widget();
+                }
                 var where = where || 'in';
                 var $elem = t.d.$widget;
                 if(where === 'after'){
-                    $elem.insertAfter($target);
+                    $elem.insertAfter(target);
                 }else if(where === 'before'){
-                    $elem.insertBefore($target);
+                    $elem.insertBefore(target);
                 }else{
-                    $elem.appendTo($target);
+                    $elem.appendTo(target);
                 }
                 t.d.hasObject = true;
                 if(!t.permission()){
@@ -1067,9 +1070,7 @@ var $A = {};
             file: '',
             hasFile: true,
             missingTranslates:[],
-            translate: {
-                'Upload': 'UpLoad'
-            }
+            translate: window.I18N || {}
         };
 
         if (typeof obj !== 'undefined') {
@@ -1117,7 +1118,7 @@ var $A = {};
     p.translate = function (text) {
         var t = this;
         if (typeof t.d.translate[text] === 'undefined') {
-            if (1 === 2 && $A.d.settings.logTranslateMissings === true) {
+            if ($A.d.settings.logTranslateMissings === true) {
                 if($.inArray(text, t.d.missingTranslates) <= -1){
                     t.d.missingTranslates.push(text);
                     

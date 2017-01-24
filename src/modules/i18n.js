@@ -8,9 +8,7 @@ define([
             file: '',
             hasFile: true,
             missingTranslates:[],
-            translate: {
-                'Upload': 'UpLoad'
-            }
+            translate: window.I18N || {}
         };
 
         if (typeof obj !== 'undefined') {
@@ -58,7 +56,7 @@ define([
     p.translate = function (text) {
         var t = this;
         if (typeof t.d.translate[text] === 'undefined') {
-            if (1 === 2 && $A.d.settings.logTranslateMissings === true) {
+            if ($A.d.settings.logTranslateMissings === true) {
                 if($.inArray(text, t.d.missingTranslates) <= -1){
                     t.d.missingTranslates.push(text);
                     
