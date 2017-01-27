@@ -1060,6 +1060,7 @@ define([
                 rowArr = rowArr.values || [];
             }
             var row = table.insertRow(rowIndex);
+
             $(row).data('recordId', recordId).click(function (event) {
                 var $t = $(this);
                 setTimeout(function () {

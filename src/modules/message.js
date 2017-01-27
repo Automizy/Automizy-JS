@@ -147,12 +147,16 @@ define([
     };
 
 
-    p.open = function (func, name, life) {
+    p.open = function (param1, name, life) {
         var t = this;
-        if (typeof func === 'function') {
-            t.addFunction.apply(t, ['open', func, name, life]);
+        if (typeof param1 === 'function') {
+            t.addFunction.apply(t, ['open', param1, name, life]);
         } else {
-            t.widget().fadeOut(function () {
+            var delay = 350;
+            if (typeof param1 !== 'undefined') {
+                delay = param1;
+            }
+            t.widget().fadeIn(delay, function () {
                 t.runFunctions('open');
             });
         }

@@ -175,7 +175,11 @@ define([
         var t = this;
         if (typeof href !== 'undefined') {
             t.d.href = href;
-            t.d.$widgetButton.attr('href', href);
+            if(t.d.href === false){
+                t.d.$widgetButton.removeAttr('href');
+            } else {
+                t.d.$widgetButton.attr('href', href);
+            }
             return t;
         }
         return t.d.href;

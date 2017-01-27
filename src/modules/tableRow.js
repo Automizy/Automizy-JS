@@ -78,7 +78,7 @@ define([
             }
         }
         return cell || false;
-    }
+    };
     
     p.cells = function (type) {
         var t = this;
