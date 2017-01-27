@@ -5,18 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Select Example</title>
     <script src="js/jquery.min.js"></script>
-        <!--<link rel="stylesheet" href="../dist/automizy.css">-->
-        <link rel="stylesheet" href="../src/styles/table.css">
-        <link rel="stylesheet" href="../src/styles/button.css">
-        <link rel="stylesheet" href="../src/styles/input.css">
-        <link rel="stylesheet" href="../src/styles/select.css">
-        <link rel="stylesheet" href="../src/styles/icons.css">
-        <link rel="stylesheet" href="../src/styles/mobile.css">
-        <link rel="stylesheet" href="../src/styles/core.css">
+    <!--<link rel="stylesheet" href="../dist/automizy.css">-->
+    <link rel="stylesheet" href="../src/styles/table.css">
+    <link rel="stylesheet" href="../src/styles/button.css">
+    <link rel="stylesheet" href="../src/styles/input.css">
+    <link rel="stylesheet" href="../src/styles/select.css">
+    <link rel="stylesheet" href="../src/styles/icons.css">
+    <link rel="stylesheet" href="../src/styles/mobile.css">
+    <link rel="stylesheet" href="../src/styles/core.css">
     <script src="../dist/automizy.js"></script>
     <script>
         $(function () {
-                window.exampleInput1 = $A.newInput().drawTo('body:first').automizySelect().multiple(true).maxVisibleItems(3).searchable(true).options([
+            window.exampleInput1 = $A.newInput().drawTo('body:first').automizySelect().multiple(true).maxVisibleItems(3).searchable(true).options([
                 {value: 123, html: 'Meggybefőtt (normal)'},
                 {value: 321, html: 'Cseresznyelé (inactive)', disabled: true},
                 {value: 322, html: 'Alma fa (selected)', selected: true},
@@ -24,7 +24,11 @@
                 {value: 324, html: 'Barack <b>pálinka</b> (html code)'},
                 {value: 327, html: 'Szilva lekvár (different content)', textValue: 'Szilva <b>pálinka</b>'},
                 {value: 328, html: 'Eper leves'},
-                    {value:339, html:'Egy_tanulmany_arrol_hogy_hogyan_fozzunk_palinkat_lekvarbol (long content + icon)', icon:'form'}
+                {
+                    value: 339,
+                    html: 'Egy_tanulmany_arrol_hogy_hogyan_fozzunk_palinkat_lekvarbol (long content + icon)',
+                    icon: 'form'
+                }
             ]).change(function () {
                 console.log(this.val());
                 console.log(this.originalInput().val());

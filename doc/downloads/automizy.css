@@ -1016,7 +1016,7 @@ input.automizy-table-rowcheck:focus:disabled:checked { background-position: -15p
 .automizy-input2-help-icon-cell {
     vertical-align: top;
 }
-.automizy-input2-input {
+.automizy-input2-input:not(span) {
     width: 100%;
     height: 34px;
     box-sizing: border-box;
