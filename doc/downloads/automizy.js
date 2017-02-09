@@ -7005,6 +7005,7 @@ var $A = {};
                 rowArr = rowArr.values || [];
             }
             var row = table.insertRow(rowIndex);
+
             $(row).data('recordId', recordId).click(function (event) {
                 var $t = $(this);
                 setTimeout(function () {
@@ -7435,7 +7436,7 @@ var $A = {};
             }
         }
         return cell || false;
-    }
+    };
     
     p.cells = function (type) {
         var t = this;
@@ -10087,10 +10088,14 @@ var $A = {};
             $percentBox: $('<div class="automizy-progress-percent-box"></div>'),
             $percent: $('<span class="automizy-progress-percent">0</span>'),
 
-            percentPosition:'inner',
-            percent:0,
+            percentPosition: 'inner',
+            percent: 0,
 
-            id: 'automizy-progressbar-' + $A.getUniqueString()
+            id: 'automizy-progressbar-' + $A.getUniqueString(),
+
+            onPercentChange: function () {
+
+            }
         };
         t.init();
 
@@ -10107,6 +10112,9 @@ var $A = {};
             }
             if (typeof obj.text !== 'undefined') {
                 t.text(obj.text);
+            }
+            if (typeof obj.onPercentChange === 'function') {
+                t.onPercentChange(obj.onPercentChange);
             }
 
             t.initParameter(obj);
@@ -10135,6 +10143,7 @@ var $A = {};
         var t = this;
         if (typeof percent !== 'undefined') {
             var oldPercent = t.d.percent || 0;
+
             t.d.percent = percent;
             t.d.$bar.stop().animate({
                 width: t.d.percent + '%'
@@ -10148,6 +10157,11 @@ var $A = {};
                     t.d.$percent.text(Math.ceil(now));
                 }
             });
+
+            if(percent !== oldPercent){
+                t.onPercentChange();
+            }
+            
             return t;
         }
         return t.d.percent;
@@ -10156,15 +10170,15 @@ var $A = {};
         var t = this;
         if (typeof position !== 'undefined') {
             t.d.percentPosition = position;
-            switch(t.d.percentPosition) {
+            switch (t.d.percentPosition) {
                 case 'top':
-                    t.d.$percentBox.insertBefore(t.d.$barBox).css({textAlign:'right'});
+                    t.d.$percentBox.insertBefore(t.d.$barBox).css({textAlign: 'right'});
                     break;
                 case 'bottom':
-                    t.d.$percentBox.insertAfter(t.d.$barBox).css({textAlign:'right'});
+                    t.d.$percentBox.insertAfter(t.d.$barBox).css({textAlign: 'right'});
                     break;
                 case 'inner':
-                    t.d.$percentBox.appendTo(t.d.$bar).css({textAlign:'center'});
+                    t.d.$percentBox.appendTo(t.d.$bar).css({textAlign: 'center'});
                     break;
             }
             return t;
@@ -10172,7 +10186,19 @@ var $A = {};
         return t.d.percentPosition;
     };
 
-
+    p.onPercentChange = function (func) {
+        var t = this;
+        if (typeof func !== 'undefined') {
+            if (typeof func === 'function') {
+                t.d.onPercentChange = func;
+            }
+            else {
+                t.d.onPercentChange(func);
+            }
+            return t;
+        }
+        t.d.onPercentChange();
+    };
 
     $A.initBasicFunctions(ProgressBar, "ProgressBar", []);
 
