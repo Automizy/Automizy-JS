@@ -402,12 +402,12 @@ define([
 
     p.disable = function () {
         var t = this;
-        t.d.$widgetInput.prop('disabled', true);
+        t.d.$input.prop('disabled', true);
         return t;
     };
     p.enable = function () {
         var t = this;
-        t.d.$widgetInput.prop('disabled', false);
+        t.d.$input.prop('disabled', false);
         return t;
     };
     p.checked = function (checked) {
@@ -534,7 +534,7 @@ define([
             t.input().attr('name', name);
             return t;
         }
-        return t.d.$widgetInput.attr('name');
+        return t.d.$input.attr('name');
     };
     p.tabindex = function (tabindex) {
         var t = this;
@@ -543,7 +543,7 @@ define([
             t.input().attr('tabindex', t.d.tabindex);
             return t;
         }
-        return t.d.$widgetInput.attr('tabindex');
+        return t.d.$input.attr('tabindex');
     };
 
     p.autocomplete = function (autocomplete) {

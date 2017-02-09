@@ -9,8 +9,16 @@
 
 }
 
+.automizy-input2 input:disabled,
+.automizy-input2 textarea:disabled{
+    cursor: not-allowed;
+    opacity: .65;
+    background: #fafafa;
+    filter: alpha(opacity:65);
+}
 
-.automizy-input input[type='number']{
+
+.automizy-input2 input[type='number']{
     -moz-appearance:textfield;
 }
 

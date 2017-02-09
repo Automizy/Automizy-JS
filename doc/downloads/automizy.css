@@ -876,7 +876,14 @@ input.automizy-table-rowcheck:focus:disabled:checked { background-position: -15p
 }
 .automizy-input2.automizy-newrow {
 }
-.automizy-input input[type='number']{
+.automizy-input2 input:disabled,
+.automizy-input2 textarea:disabled{
+    cursor: not-allowed;
+    opacity: .65;
+    background: #fafafa;
+    filter: alpha(opacity:65);
+}
+.automizy-input2 input[type='number']{
     -moz-appearance:textfield;
 }
 .automizy-input2-top-label-box {
