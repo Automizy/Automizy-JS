@@ -1782,7 +1782,7 @@ textarea.automizy-input2-input {
 }
 .automizy-table.checkboxed > tbody > tr > td:nth-child(2) {
 }
-.automizy-table-clickable > tbody > tr > * {
+.automizy-table-clickable > tbody > tr > td {
     cursor: pointer;
 }
 .automizy-table-clickable > tbody > tr:hover > td {

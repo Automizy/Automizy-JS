@@ -324,7 +324,7 @@
 .automizy-table.checkboxed > tbody > tr > td:nth-child(2) {
 }
 
-.automizy-table-clickable > tbody > tr > * {
+.automizy-table-clickable > tbody > tr > td {
     cursor: pointer;
 }
 
