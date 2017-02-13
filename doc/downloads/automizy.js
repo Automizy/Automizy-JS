@@ -754,6 +754,9 @@ var $A = {};
             if (typeof obj.thin !== 'undefined') {
                 t.thin(obj.thin);
             }
+            if (typeof obj.thinner !== 'undefined') {
+                t.thinner(obj.thinner);
+            }
             if (typeof obj.thick !== 'undefined') {
                 t.thick(obj.thick);
             }
@@ -941,6 +944,18 @@ var $A = {};
             }
         }
         t.widget().addClass('automizy-button-thin');
+        return t;
+    };
+    p.thinner = function (value) {
+        var t = this;
+        if (typeof value !== 'undefined') {
+            value = $A.parseBoolean(value);
+            if (!value) {
+                t.widget().removeClass('automizy-button-thinner');
+                return t;
+            }
+        }
+        t.widget().addClass('automizy-button-thinner');
         return t;
     };
     p.thick = function (value) {
@@ -11461,8 +11476,11 @@ var $A = {};
             okText:$A.translate('OK'),
             cancel:function(){},
             cancelText:$A.translate('Cancel'),
+            other:false,
+            otherText:$A.translate('MAYBE'),
             content:'',
-            title:$A.translate('Please confirm your action.')
+            title:$A.translate('Please confirm your action.'),
+            skin:''
         };
         if(typeof obj.ok === 'function'){
             data.ok = obj.ok;
@@ -11470,17 +11488,26 @@ var $A = {};
         if(typeof obj.cancel !== 'undefined'){
             data.cancel = obj.cancel;
         }
+        if(typeof obj.other !== 'undefined'){
+            data.other = obj.other;
+        }
         if(typeof obj.okText !== 'undefined'){
             data.okText = obj.okText;
         }
         if(typeof obj.cancelText !== 'undefined'){
             data.cancelText = obj.cancelText;
         }
+        if(typeof obj.otherText !== 'undefined'){
+            data.otherText = obj.otherText;
+        }
         if(typeof obj.content !== 'undefined'){
             data.content = obj.content;
         }
         if(typeof obj.title !== 'undefined'){
             data.title = obj.title;
+        }
+        if(typeof obj.skin !== 'undefined'){
+            data.skin = obj.skin;
         }
 
         var buttons = [];
@@ -11494,13 +11521,27 @@ var $A = {};
                 }
             });
         }
+        if(data.other !== false){
+            buttons.push({
+                text: data.otherText,
+                skin: 'simple-orange',
+                click: function () {
+                    data.other();
+                    dialog.close();
+                }
+            });
+        }
         if(data.ok !== false){
             buttons.push({
                 text: data.okText,
                 skin: 'simple-orange',
                 click: function () {
-                    data.ok();
-                    dialog.close();
+                    var okValue = data.ok();
+                    if(typeof okValue !== 'undefined' && okValue === false){
+
+                    }else {
+                        dialog.close();
+                    }
                 }
             });
         }
@@ -11508,6 +11549,7 @@ var $A = {};
         var dialog = $A.newDialog({
             content:data.content,
             width:'500px',
+            skin:data.skin,
             positionY:'40px',
             title:data.title,
             close:function(){
@@ -11515,6 +11557,8 @@ var $A = {};
             },
             buttons:buttons
         }).open();
+
+        return dialog;
 
     };
 
@@ -11529,7 +11573,8 @@ var $A = {};
             ok:function(){},
             okText:$A.translate('OK'),
             content:'',
-            title:$A.translate('Something wrong...')
+            title:$A.translate('Something wrong...'),
+            skin:''
         };
         if(typeof param1 === 'string'){
             data.content = param1;
@@ -11556,11 +11601,15 @@ var $A = {};
             if (typeof param1.title !== 'undefined') {
                 data.title = param1.title;
             }
+            if(typeof param1.skin !== 'undefined'){
+                data.skin = param1.skin;
+            }
         }
 
         var dialog = $A.newDialog({
             content:data.content,
             width:'500px',
+            skin:data.skin,
             positionY:'40px',
             title:data.title,
             close:function(){
@@ -11577,6 +11626,8 @@ var $A = {};
                 }
             ]
         }).open();
+
+        return dialog;
 
     };
 

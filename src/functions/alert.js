@@ -9,7 +9,8 @@ define([
             ok:function(){},
             okText:$A.translate('OK'),
             content:'',
-            title:$A.translate('Something wrong...')
+            title:$A.translate('Something wrong...'),
+            skin:''
         };
         if(typeof param1 === 'string'){
             data.content = param1;
@@ -36,11 +37,15 @@ define([
             if (typeof param1.title !== 'undefined') {
                 data.title = param1.title;
             }
+            if(typeof param1.skin !== 'undefined'){
+                data.skin = param1.skin;
+            }
         }
 
         var dialog = $A.newDialog({
             content:data.content,
             width:'500px',
+            skin:data.skin,
             positionY:'40px',
             title:data.title,
             close:function(){
@@ -57,6 +62,8 @@ define([
                 }
             ]
         }).open();
+
+        return dialog;
 
     };
 
