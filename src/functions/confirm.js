@@ -9,8 +9,11 @@ define([
             okText:$A.translate('OK'),
             cancel:function(){},
             cancelText:$A.translate('Cancel'),
+            other:false,
+            otherText:$A.translate('MAYBE'),
             content:'',
-            title:$A.translate('Please confirm your action.')
+            title:$A.translate('Please confirm your action.'),
+            skin:''
         };
         if(typeof obj.ok === 'function'){
             data.ok = obj.ok;
@@ -18,17 +21,26 @@ define([
         if(typeof obj.cancel !== 'undefined'){
             data.cancel = obj.cancel;
         }
+        if(typeof obj.other !== 'undefined'){
+            data.other = obj.other;
+        }
         if(typeof obj.okText !== 'undefined'){
             data.okText = obj.okText;
         }
         if(typeof obj.cancelText !== 'undefined'){
             data.cancelText = obj.cancelText;
         }
+        if(typeof obj.otherText !== 'undefined'){
+            data.otherText = obj.otherText;
+        }
         if(typeof obj.content !== 'undefined'){
             data.content = obj.content;
         }
         if(typeof obj.title !== 'undefined'){
             data.title = obj.title;
+        }
+        if(typeof obj.skin !== 'undefined'){
+            data.skin = obj.skin;
         }
 
         var buttons = [];
@@ -42,13 +54,27 @@ define([
                 }
             });
         }
+        if(data.other !== false){
+            buttons.push({
+                text: data.otherText,
+                skin: 'simple-orange',
+                click: function () {
+                    data.other();
+                    dialog.close();
+                }
+            });
+        }
         if(data.ok !== false){
             buttons.push({
                 text: data.okText,
                 skin: 'simple-orange',
                 click: function () {
-                    data.ok();
-                    dialog.close();
+                    var okValue = data.ok();
+                    if(typeof okValue !== 'undefined' && okValue === false){
+
+                    }else {
+                        dialog.close();
+                    }
                 }
             });
         }
@@ -56,6 +82,7 @@ define([
         var dialog = $A.newDialog({
             content:data.content,
             width:'500px',
+            skin:data.skin,
             positionY:'40px',
             title:data.title,
             close:function(){
@@ -63,6 +90,8 @@ define([
             },
             buttons:buttons
         }).open();
+
+        return dialog;
 
     };
 
