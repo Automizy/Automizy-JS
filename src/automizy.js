@@ -63,6 +63,7 @@ define([
     "automizy/functions/iphoneStyle",
     "automizy/functions/confirm",
     "automizy/functions/alert",
+    "automizy/functions/instructionsNotification",
     "automizy/functions/runEvent",
     "automizy/functions/isPageVisibility",
     "automizy/functions/sameAs"
