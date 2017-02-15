@@ -306,6 +306,7 @@
 }
 .automizy-button.automizy-has-icon .automizy-button-icon {
     display: inline-block;
+    line-height: normal;
 }
 .automizy-button.automizy-has-icon:not(.automizy-has-text) .automizy-button-text {
     display: none;
@@ -429,4 +430,8 @@
     text-align: center;
     border-radius: 10px;
     box-sizing: border-box;
+}
+
+.automizy-button-badge:empty{
+    display: none !important;
 }

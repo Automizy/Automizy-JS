@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Select Example</title>
+    <script src="js/jquery.min.js"></script>
+    <link rel="stylesheet" href="../dist/automizy.css">
+    <link rel="stylesheet" href="../src/styles/inlineEditable.css">
+    <link rel="stylesheet" href="../dist/fontawesome/css/font-awesome.min.css">
+    <!--
+    <link rel="stylesheet" href="../src/styles/table.css">
+    <link rel="stylesheet" href="../src/styles/button.css">
+    <link rel="stylesheet" href="../src/styles/input2.css">
+    <link rel="stylesheet" href="../src/styles/select.css">
+    <link rel="stylesheet" href="../src/styles/icons.css">
+    <link rel="stylesheet" href="../src/styles/mobile.css">
+    <link rel="stylesheet" href="../src/styles/core.css">
+    <link rel="stylesheet" href="../src/styles/inlineEditable.css">
+    -->
+    <script src="../dist/automizy.js"></script>
+    <script>
+        $(function () {
+            inlineEditable = $A.newInput2({
+                labelBefore: "Label",
+                type: "text"
+            }).inlineEditable().drawTo('body').onInlineEditComplete(function (inlineEditable) {
+                console.log(inlineEditable.value());
+            }).onInlineEditCanceled(function () {
+                console.log('cancel1')
+            });
+
+            inlineEditable2 = $A.newInlineEditable($A.newInput2({
+                labelBefore: "Name",
+                type: "text"
+            })).drawTo('body').onInlineEditComplete(function (inlineEditable) {
+                console.log(inlineEditable.value());
+            }).onInlineEditCanceled(function () {
+                console.log('cancel2')
+            });
+
+
+            exampleInput5 = $A.newInput2({
+                type: 'select',
+                name: 'segments[]',
+                labelBefore: 'Segment',
+                id: 'select',
+                options: [
+                    [0, '--- Nothing ---'],
+                    [12, 'First Segment'],
+                    [15, 'Second Segment']
+                ],
+                disabled: false
+            }).inlineEditable().draw();
+        });
+    </script>
+</head>
+<body>
+</body>
+</html>
+

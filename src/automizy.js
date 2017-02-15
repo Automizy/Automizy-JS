@@ -14,6 +14,7 @@ define([
     "automizy/modules/button",
     "automizy/modules/input",
     "automizy/modules/input2",
+    "automizy/modules/inlineEditable",
     "automizy/modules/form",
     "automizy/modules/validator",
     "automizy/modules/slideWindow",
@@ -25,6 +26,7 @@ define([
     "automizy/modules/select/select",
     "automizy/modules/message",
     "automizy/modules/panel",
+    "automizy/modules/tag/tagger",
     "automizy/modules/progressBar",
 
     "automizy/defines/input",
@@ -32,7 +34,7 @@ define([
     "automizy/addons/jqueryAddOns",
     "automizy/addons/dateAddOns",
     "automizy/addons/objectAddOns",
-    
+
     "automizy/functions/escapeJQuerySelector",
     "automizy/functions/initBasicFunctions",
     "automizy/functions/setWindowScroll",

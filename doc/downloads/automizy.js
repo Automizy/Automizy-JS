@@ -54,7 +54,8 @@ var $A = {};
         filterIcon:u('iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTExIDc5LjE1ODMyNSwgMjAxNS8wOS8xMC0wMToxMDoyMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKFdpbmRvd3MpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjYwQUJEQjU3Njg2QTExRTZBRUEyQjFEQkNCNjg3OUI4IiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjYwQUJEQjU4Njg2QTExRTZBRUEyQjFEQkNCNjg3OUI4Ij4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6NjBBQkRCNTU2ODZBMTFFNkFFQTJCMURCQ0I2ODc5QjgiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6NjBBQkRCNTY2ODZBMTFFNkFFQTJCMURCQ0I2ODc5QjgiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5dn8AQAAABnUlEQVR42mI8c+7S9TUbtmn8+vWLgRzAxsbGEB0ecJLl3fsP3x49fsrw//9/sgxiZGRkeP7i1W/m+fNmq7Oxs329ev2WEjmGxEUFH3Z1st3ECHPJpm27t6xcs9mbWJdBDdnr7mLvAuIzwSS83Z22hIf4rgEpINKQrW7OdjNgYswNDQ0g2omJiemnipLCFaA3fwO9qU/AkLVAQyYC2d+BQg+QDXoPxJxAw/4ADbsENOwv0DBDHIasBBrSA2SDovkTEIMM+wUz6AdUEGTYP6BhF1hYWTSAhskhGxQLCZM6oCG/gdyvQPwIiL+ghBHUoDtA/JmZmfmLkoLcFXQXSUuK3wQa8gOq+THUMAZ0gxigCkAY5Oy/WILoH1TuK9RLDLgMAoE/UIwtHYDEfmOzBJtBf6GK8Rn0hxiD/lDLoL9QhS9wGPQHGlZEueivqrLiKiMDnfs4DPtPjEGg6P3NycnxNjst3hlo2AM0Q/4Ra9AfaPTCDHMAGvYILQlghh8ot+PAzEDMBcTcX75+U9iz/8jMDx8/WQP5HEDMhq4eIMAA3cbXfUOBwj8AAAAASUVORK5CYII='),
         exportIcon:u('iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTExIDc5LjE1ODMyNSwgMjAxNS8wOS8xMC0wMToxMDoyMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKFdpbmRvd3MpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjdDOEI3RjM2Njg3NjExRTZBMTdGRUM4QUJGNEQxMUJCIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjdDOEI3RjM3Njg3NjExRTZBMTdGRUM4QUJGNEQxMUJCIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6N0M4QjdGMzQ2ODc2MTFFNkExN0ZFQzhBQkY0RDExQkIiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6N0M4QjdGMzU2ODc2MTFFNkExN0ZFQzhBQkY0RDExQkIiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz75cfwTAAACUUlEQVR42mIsrmz+/+z5SwZCwEBPiyE/K1mCnZ3tNVTo/517D/J///4joKmu0oim/D8TAwXg27fvBhOmzKm/fPVGH5oUIzkGMyLTn798ZZgyY0EBuuEUuRgIuGGGT5g6t+D8xavTYRIsyKqcHW0YkuPCGbGZcPf+w9sLlq4+f/3GHcm3794x/P37D0X++/cfDFNmLkjPSU9gMNTXzmQh5KRbd+79n7twJcPjJ88IOh9k+MRpc9PzMpP+4jX4wcMn/ydMncfw4cNHosMGmEoYrt24FYwzjN+9+/B/5rwlJBnKyMjI4Onm8DQy1F8Jp4t37Tv059HjZyzANMrg6mw3U11VabYAP981oOY/oHQKwpeuXF/R0TstBM1QNWZm5h9YDX7z9v1/YAwzZKfHz7M0M8oDavoLNewfzFCo0q8wQwN83V8E+XmADQXJYzX4xctXj7Q11XjMTQxLoC4EGfgXSoMAM8L3YENfAg1VhhrK8O79BwOsYfz27fuXLo428czMTN+hhv1GMhQ5TJ9BXaoEMxSYenxnz19+DquLuXm4HouLiR6BevkvrnhQU1Xq1dJQbYEZ+uLla/vJMxZs+PfvH/acJyYqch3q2v/YXAoLa3Y2tndAQ0HqGF6/eWsBTMP7njx9jpnzQODnz1/Z/Hy8+2ClFA7HIkcg2HGbtu3Z//DRUwasWRoIHjExMy1nY2XlIaPceA/E4rgM5mJlYfkMxF+QxFjRXIruYqwA3eBvSBoZkYpI9GBgxCL2DafBe/cfkQPiXwxUAEwMNAJDz2CAAAMAAwP1+9VSBsUAAAAASUVORK5CYII='),
         helpIcon:u('iVBORw0KGgoAAAANSUhEUgAAABEAAAARCAYAAAA7bUf6AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAHySURBVHjahJRNSFRRFMd/b3gLF8UEUVT0ta6IqUUmWItsnEqGh0VfIElFCYHlB0RimUzQRJg1RQuLDGkhESLj9PKjdGFBuQh1U5ts08qCAjGIFue0uU+G63v2h7O45/z4v3fvOfc6qoqtB6N1CaAK2AHEgTlgGvDrK7o+2rxTbHJ/9PwmoAM4AjiEKw80X6x4NLPIJPfmXAIoAOv5v2YB79L+xxMLJvden90AfADWFYGTQDfwzRjXALuL6j+AsobkkxkXQFVylsE0sLex8ul8kLg7croL8IFKk1oFPAQOOHeGTm0HpqwzONaU6nnROVzbAtQBvU2pnpbO4dpy4K21tVKnY6jmGpCxCmeAL+aMgu6sADYDXy02GxOVnaKCFd2iMi4qcbPONKeeqagkQ9htrqrEl+iCAo2XD/bmbg+eTAA3Q5hlrojMLWEydqXqee6Wf3wtMAisDGF+u6oyBXgRJn+zL48eNtO7JoL55IpKHrgeASSBEjP+UcrHWtN9k4r4ihAS2dZ03z5FTkTUxxR5HzPDVq8q31UFK7bcGPA2qsqukNovVblwNd2vC3cnk0+XAgPAaut3/5gtFesnUN3mFcYBYkG2zStMqEq5qvjWF0us9Yiq7AkMFj0Fgdr7D5WZjmwFlgPzwGfAb69+9c7m/w0A36Atg3n1+QkAAAAASUVORK5CYII='),
-        helpArrow:u('iVBORw0KGgoAAAANSUhEUgAAAA4AAAAcCAYAAABRVo5BAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAC3SURBVHjanNRNCoMwEIbht5KFAbt00UN4CumpxVN4CIWsY10lXVVIY37GWQYeBiYz38N7T6nMOv0/+QZ5DUoppHAA5rbVIjgAc9c9e63rYYCAMjTrFKEiTKEszKEkLKFLWIMiWIsCKEEnlCKA5g76ddyAzTknWtqmf70NMO67Xay1oo7cwedUpTj4RwmONqcWX+5qDU5eRwln7zGHiwmQwrWZE2FJygVYmqsGGI/jw50kN845vgMAISKSwdQyAJUAAAAASUVORK5CYII=')
+        helpArrow:u('iVBORw0KGgoAAAANSUhEUgAAAA4AAAAcCAYAAABRVo5BAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAC3SURBVHjanNRNCoMwEIbht5KFAbt00UN4CumpxVN4CIWsY10lXVVIY37GWQYeBiYz38N7T6nMOv0/+QZ5DUoppHAA5rbVIjgAc9c9e63rYYCAMjTrFKEiTKEszKEkLKFLWIMiWIsCKEEnlCKA5g76ddyAzTknWtqmf70NMO67Xay1oo7cwedUpTj4RwmONqcWX+5qDU5eRwln7zGHiwmQwrWZE2FJygVYmqsGGI/jw50kN845vgMAISKSwdQyAJUAAAAASUVORK5CYII='),
+        editIcon:u('iVBORw0KGgoAAAANSUhEUgAAAFIAAABTCAYAAAAMcFA+AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTExIDc5LjE1ODMyNSwgMjAxNS8wOS8xMC0wMToxMDoyMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKFdpbmRvd3MpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjAzNjJDNTkzRTIxNDExRTY5MDlEOUJFNTYwQTkwQTc2IiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjAzNjJDNTk0RTIxNDExRTY5MDlEOUJFNTYwQTkwQTc2Ij4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6MDM2MkM1OTFFMjE0MTFFNjkwOUQ5QkU1NjBBOTBBNzYiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6MDM2MkM1OTJFMjE0MTFFNjkwOUQ5QkU1NjBBOTBBNzYiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4fRozvAAAEbklEQVR42uzcTUjbUBwA8Gfq6mbBIYriB8wVLF5EBkqxCqMXB4KMMoR50B7EMRE7oRYGQyjIoB5qHbYqeJnCPphlFUR2EXZQei29SKkwRDw6cH7NFWuXhCllbdMmfcl7L3n/S1qSvJQf7zP5NyWpVApoJQ4PD1s2NjZe7+zsDFxcXOjLy8sT3d3dn/r6+jyNjY2xYsou0QJkIpHQr66uvvN6vS/Zzxn79Xo9cDqdS0NDQ6/YzwkKmQPR7/d/DAQCz/Ida7fbv7OgNoPB8EvsdXRut5si/otoNPqQbfLm9vb2dbZm/qGQEhCLxVQl5OXl5T2fz/d1aWnpqZTzpWCqDpJDnJubCy4vL/cWU45YTFUNNrAQ06O/vz8yNTVlzTcAMRRRONbW1h5NT09/Pz8/v696SLkQxWAyFBEOJvGQ8Xi8a3Nzs1eJawlhEj9q19bW/mhtbY2Gw+Hnp6ensl9vd3e37ujo6ElnZ+fn9NFcFdOfhoaGGGpM4iCTyaSOnbIxbKRwwiQKkuubZmZmNre3t4eyTZRRYJ6dnXVZLJYPxEByiF6vN7SysmIVWnUgwHxgMpl+EgGZjljIEk5JzOvra3BycvIYe8hsiLhhXl1d3cEaUggRJ0y2n8R31C4EESdMLCHFIOKAWVdXhx+kFETUmG1tbb+xgiwGERVmaWkpmJycdDEkIg4ODoJIJAKCwSCoqanJ2M+VwZWV7eZCR0fH+uzsrK2+vh7K7x4dHf3S09PjZ0hDtNvtwOVygYqKCr5vqqqqynqcEpjc49uRkZEXbK1MIm/aYhGdTicwGAzcecDv94OtrS0kzfz/Z+BIIYtBZM/jah2SPjNbIgEySCUQ5cDMlY2BBFJJRJiYQiktikOiQISBmS8vSFFIlIjFYBaSXKUYJA6IUjALzVBTBBInRDGY7GT/rsPhGCgkzU/2lBUcEcX0fVjc/cEdMV/NxAKSBESYmIzWEdPX5qFQ6A33uBcLSBIRb/pKm832VqfTJZFDkoxY7IDDUEQ4ozZDEYtHhAJJESFAUkQIkBQRAiRFhABJESFAUkQIkBQRAiRFhABJESFAUkQIkBQRAiRFhAApBtFqtYKJiQnNI2ZASs1P1DoiF7dPEaUiGo1G7v0R3Dt1NIt4CwkjU1bLiHzTLhSxqakJ+Hw+fksRM0NXVlb2rRDExcVFYLFYgNlsBuFwGBwfH1PEdMiDg4P3Qgc0NzeDhYUFYDKZ+O/V1dVIMXFE5CErKyvdQojz8/P8Nj1QYeKKKAiZCxEVJs6IgkvE4eHhnIg30dLSAgKBgOwDEO6IBd39yRdyY5KACAVSTkxSEKFByoFJEiJUSJiYpCFCh4SBSSIiv9Y2Go2ic589Hg/3FjvBY2KxGBgbGwP7+/uqR5SlRkqtmSQjygrJF84wmkCUFTIej3P/Zc7btNWAKBvk3t4ecDgcmkGUBZJDHB8f57daQYQOqVVEydMfrU22kY/aWkFUFFLNiIpBqh1REUgtIMoOqRVEWSG1hMjFXwEGAHyxM9jyvsphAAAAAElFTkSuQmCC')
     };
 })();
 
@@ -2384,7 +2385,7 @@ var $A = {};
         var a = this.d.regular.email.test(value);
         if (a === false) {
             this.d.isValid = false;
-            this.d.errors.push("Invalid email address");
+            this.d.errors.push("Invalid email address.");
         }
         return a;
     };
@@ -2393,7 +2394,7 @@ var $A = {};
         var a = this.d.regular.domain.test(value);
         if (a === false) {
             this.d.isValid = false;
-            this.d.errors.push("Invalid domain");
+            this.d.errors.push("Invalid domain.");
         }
         return a;
     };
@@ -2402,7 +2403,7 @@ var $A = {};
         var a = this.d.regular.url.test(value);
         if (a === false) {
             this.d.isValid = false;
-            this.d.errors.push("Invalid URL");
+            this.d.errors.push("Invalid URL.");
         }
         return a;
     };
@@ -2411,7 +2412,7 @@ var $A = {};
         var a = this.d.regular.domain.test(value) || this.d.regular.url.test(value);
         if (a === false) {
             this.d.isValid = false;
-            this.d.errors.push("Invalid domain or URL");
+            this.d.errors.push("Invalid domain or URL.");
         }
         return a;
     };
@@ -2420,7 +2421,7 @@ var $A = {};
         var a = (value == +value && value == (value | 0));
         if (a === false) {
             this.d.isValid = false;
-            this.d.errors.push("Not an integer");
+            this.d.errors.push("Not an integer.");
         }
         return a;
     };
@@ -2429,7 +2430,7 @@ var $A = {};
         var a = !isNaN(value);
         if (a === false) {
             this.d.isValid = false;
-            this.d.errors.push("Not a number");
+            this.d.errors.push("Not a number.");
         }
         return a;
     };
@@ -2439,7 +2440,7 @@ var $A = {};
         var a = value.length >= len;
         if (a === false) {
             this.d.isValid = false;
-            this.d.errors.push("Too short");
+            this.d.errors.push("Not enough characters. Minimal length: "+this.d.minLength);
         }
         return a;
     };
@@ -2448,7 +2449,7 @@ var $A = {};
         var a = value != '';
         if (a === false) {
             this.d.isValid = false;
-            this.d.errors.push("No empty");
+            this.d.errors.push("This field is required.");
         }
         return a;
     };
@@ -2458,7 +2459,7 @@ var $A = {};
         var a = value.length <= len;
         if (a === false) {
             this.d.isValid = false;
-            this.d.errors.push("Too long");
+            this.d.errors.push("Too many characters. Maximal length: "+this.d.maxLength);
         }
         return a;
     };
@@ -2468,7 +2469,7 @@ var $A = {};
         var a = value >= number;
         if (a === false) {
             this.d.isValid = false;
-            this.d.errors.push("Too little");
+            this.d.errors.push("Too low value. Minimal value: "+this.d.min);
         }
         return a;
     };
@@ -2478,7 +2479,7 @@ var $A = {};
         var a = value <= number;
         if (a === false) {
             this.d.isValid = false;
-            this.d.errors.push("Too many");
+            this.d.errors.push("Too high value. Maximal value: "+this.d.max);
         }
         return a;
     };
@@ -2491,7 +2492,7 @@ var $A = {};
         var a = value === otherValue;
         if (a === false) {
             this.d.isValid = false;
-            this.d.errors.push("The values are not equals");
+            this.d.errors.push("The two values are not equal.");
         }
         return a;
     };
@@ -2500,7 +2501,7 @@ var $A = {};
         var a = value != invalidValue;
         if (a === false) {
             this.d.isValid = false;
-            this.d.errors.push("Invalid value");
+            this.d.errors.push("Invalid value.");
         }
         return a;
     };
@@ -3765,6 +3766,7 @@ var $A = {};
             validationEvents: '',
             createFunctions: [],
             automizySelect: false,
+            inlineEditable: false,
             id: 'automizy-input-' + $A.getUniqueString(),
             inputId: 'automizy-input-' + $A.getUniqueString() + '-input',
             change: function () { //change keyup paste
@@ -4088,12 +4090,12 @@ var $A = {};
 
     p.disable = function () {
         var t = this;
-        t.d.$widgetInput.prop('disabled', true);
+        t.d.$input.prop('disabled', true);
         return t;
     };
     p.enable = function () {
         var t = this;
-        t.d.$widgetInput.prop('disabled', false);
+        t.d.$input.prop('disabled', false);
         return t;
     };
     p.checked = function (checked) {
@@ -4220,7 +4222,7 @@ var $A = {};
             t.input().attr('name', name);
             return t;
         }
-        return t.d.$widgetInput.attr('name');
+        return t.d.$input.attr('name');
     };
     p.tabindex = function (tabindex) {
         var t = this;
@@ -4229,7 +4231,7 @@ var $A = {};
             t.input().attr('tabindex', t.d.tabindex);
             return t;
         }
-        return t.d.$widgetInput.attr('tabindex');
+        return t.d.$input.attr('tabindex');
     };
 
     p.autocomplete = function (autocomplete) {
@@ -4698,9 +4700,230 @@ var $A = {};
         this.d.automizySelect = this.input().automizySelect();
         return this.d.automizySelect;
     };
+    p.inlineEditable = function (){
+        this.d.inlineEditable = $A.newInlineEditable(this);
+        return this.d.inlineEditable;
+    }
 
 
     $A.initBasicFunctions(Input2, "Input2", ["change", "keyup", "enter", "focus", "blur", "click"]);
+})();
+
+(function(){
+    var InlineEditable = function (obj) {
+        var t = this;
+        t.d = {
+            $widget: $('<div class="automizy-inline-editable inline-edit-inactive"></div>'),
+            $editableContent: $('<span class="automizy-inline-editable-editable-content">'),
+            inlineInput: null,
+
+            value: ''
+        };
+        t.f = {};
+
+        t.init();
+        if (typeof obj !== 'undefined') {
+
+            if (obj instanceof $A.m.Input2) {
+                t.inlineInput(obj);
+            }
+            else {
+                if (typeof obj.inlineInput !== 'undefined') {
+                    t.inlineInput(obj.inlineInput);
+                }
+                if (typeof obj.editableContent !== 'undefined') {
+                    t.editableContent(obj.editableContent);
+                }
+                if (typeof obj.onInlineEditComplete === 'function') {
+                    t.onInlineEditComplete(obj.onInlineEditComplete);
+                }
+                if (typeof obj.onInlineEditCanceled === 'function') {
+                    t.onInlineEditCanceled(obj.onInlineEditCanceled);
+                }
+                t.initParameter(obj);
+            }
+        }
+
+    };
+
+    var p = InlineEditable.prototype;
+
+    p.editableContent = function (editableContent) {
+        var t = this;
+        if (typeof editableContent !== 'undefined') {
+            t.d.$editableContent.html(editableContent);
+            return t;
+        }
+        return t.d.$editableContent.html();
+    };
+
+    p.inlineInput = function (obj) {
+        var t = this;
+
+        if (typeof obj !== "undefined") {
+
+            var inlineInput;
+
+            if (obj instanceof $A.m.Input2) {
+                inlineInput = obj;
+            }
+            else {
+                inlineInput = $A.newInput2(obj);
+            }
+
+            /*Showing inline input on focus*/
+            inlineInput.focus(function () {
+                $(document).click();
+
+                /*Showing inline editable*/
+                t.showInlineEdit();
+                $(document).on('click', removeFunction);
+            });
+
+            /*Hiding on escape key*/
+            inlineInput.input().keyup(function (e) {
+                if (e.keyCode == 27) {
+                    cancelButton.click();
+                }
+            });
+
+            /*Save & cancel buttons*/
+
+            var saveButton = $A.newButton({
+                icon: 'fa-check',
+                skin: 'simple-orange',
+                click: function () {
+                    t.onInlineEditComplete(inlineInput);
+                    $(document).off('click', removeFunction);
+                }
+            });
+
+            inlineInput.buttonRight(saveButton);
+
+            var cancelButton = $A.newButton({
+                icon: 'fa-close',
+                skin: 'simple-white',
+                click: function () {
+                    t.onInlineEditCanceled();
+                    $(document).off('click', removeFunction);
+                }
+            }).drawTo(inlineInput.d.$inputButtonRightCell);
+
+
+            inlineInput.enter(function () {
+                t.onInlineEditComplete(inlineInput);
+                $(document).off('click', removeFunction);
+            });
+
+
+            /*Saving old value*/
+            inlineInput.data('old-value', inlineInput.value());
+
+
+
+            /*Fill this array with the selector of elements
+             which could be clicked when the inline edit input is open,
+             without closing it
+             */
+            var ignoreOutClick = [];
+
+            /*Any click in the edit box is ignored*/
+            ignoreOutClick.push(inlineInput.d.$inputCell);
+
+            switch (inlineInput.type()) {
+                case "date":
+                    ignoreOutClick.push('#ui-datepicker-div');
+                    break;
+                case "datetime":
+                    ignoreOutClick.push('#ui-datepicker-div');
+                    break;
+                case "select":
+                    /*Option window click is ignored*/
+                    ignoreOutClick.push('.automizy-select-option-box');
+                    break;
+                default:
+                    break;
+            }
+
+
+            /*Detecting click outside the inline input*/
+            function removeFunction(event) {
+                var clickedIn = false;
+                /*Iterating through all the ignore selectors*/
+                for (var i = 0; i < ignoreOutClick.length; i++) {
+                    if (!($(event.target).closest(ignoreOutClick[i]).length == false && t.widget().hasClass('inline-edit-active'))) {
+                        clickedIn = true;
+                    }
+                }
+                if (!clickedIn) {
+                    $(document).off('click', removeFunction);
+                    t.onInlineEditCanceled();
+                }
+            }
+
+            t.d.inlineInput = inlineInput;
+            inlineInput.drawTo(t.d.$widget);
+            return t;
+        }
+        return t.d.inlineInput;
+    };
+
+    p.onInlineEditComplete = function (func) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('onInlineEditComplete', func);
+        } else {
+            var inlineInput = t.inlineInput();
+            inlineInput.data('old-value', inlineInput.value());
+            t.value(inlineInput.value());
+            t.hideInlineEdit();
+            t.runFunctions('onInlineEditComplete');
+        }
+        return t;
+    };
+
+    p.onInlineEditCanceled = function (func) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('onInlineEditCanceled',func);
+        } else {
+            t.runFunctions('onInlineEditCanceled');
+            t.hideInlineEdit();
+        }
+        return t;
+    };
+
+    p.showInlineEdit = function () {
+        var t = this;
+        t.widget().addClass("inline-edit-active");
+        t.widget().removeClass("inline-edit-inactive");
+    };
+
+    p.isShown = function(){
+        return this.widget().hasClass('inline-edit-active');
+    };
+
+    p.hideInlineEdit = function () {
+        var t = this;
+        var inlineInput = t.inlineInput();
+        t.widget().removeClass("inline-edit-active");
+        t.widget().addClass("inline-edit-inactive");
+        inlineInput.value(inlineInput.data('old-value'));
+        inlineInput.input().blur();
+    };
+
+    p.value = function (value){
+        var t = this;
+        if(typeof value !=="undefined"){
+            t.d.value = value;
+            return t;
+        }
+        return t.d.value;
+    };
+
+    $A.initBasicFunctions(InlineEditable, "InlineEditable", []);
+
+
 })();
 
 (function(){
@@ -9359,6 +9582,523 @@ var $A = {};
 })();
 
 (function(){
+    var Tag = function (obj) {
+        var t = this;
+        t.d = {
+            $widget: $('<div class="automizy-tag"></div>'),
+            $text: $('<div class="automizy-tag-text"></div>'),
+            $icon: $('<div class="automizy-tag-icon"></div>'),
+            $remove: $('<div class="automizy-tag-close fa fa-times-circle">'),
+
+            tagger: false,
+            text: '',
+            icon: 'fa-tag'
+        };
+        t.f = {};
+        t.init();
+
+        if (typeof obj !== 'undefined') {
+
+            if (typeof obj === 'string') {
+                t.text(obj);
+            }
+            if (typeof obj.text !== 'undefined') {
+                t.text(obj.text);
+            }
+            if (typeof obj.icon !== 'undefined') {
+                t.icon(obj.icon);
+            }
+            if (typeof obj.tagger !== 'undefined') {
+                t.tagger(obj.tagger);
+            }
+
+
+            t.initParameter(obj);
+        }
+
+        t.d.$icon.appendTo(t.d.$widget);
+        t.d.$text.appendTo(t.d.$widget);
+        t.d.$remove.appendTo(t.d.$widget);
+        t.icon(t.icon());
+
+        t.d.$remove.click(function () {
+            t.remove();
+        })
+
+    };
+
+    var p = Tag.prototype;
+
+    p.text = function (text) {
+        var t = this;
+        if (typeof text !== 'undefined') {
+            t.d.text = text;
+            t.d.$text.html(text);
+            return t;
+        }
+        return t.d.text;
+    };
+
+    p.tagger = function (tagger) {
+        var t = this;
+        if (typeof tagger !== 'undefined') {
+            t.d.tagger = tagger;
+            return t;
+        }
+        return t.d.tagger;
+    };
+
+    p.remove = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('remove', func, name, life);
+        } else {
+            var a = t.runFunctions('remove');
+            t.returnValue(!(a[0] === false || a[1] === false));
+            t.widget().fadeOut('fast', function () {
+                this.remove();
+            });
+
+            if (t.tagger() instanceof $A.m.Tagger) {
+                t.tagger().onRemoveTag(t);
+            }
+            return;
+        }
+        return t;
+    };
+
+    p.icon = function (icon) {
+        var t = this;
+        if (typeof icon !== 'undefined') {
+            t.d.icon = icon;
+            t.d.$icon.removeClass(function (index, css) {
+                return (css.match(/(^|\s)fa-\S+/g) || []).join(' ');
+            }).addClass('fa').addClass(icon);
+            return t;
+        }
+        return t.d.icon;
+    };
+
+    p.highlight = function () {
+        var t = this;
+        var $widget = t.d.$widget;
+        $widget.addClass(' automizy-tag-highlighted');
+        setTimeout(function () {
+            $widget.removeClass('automizy-tag-highlighted');
+        },1000);
+    };
+
+
+    $A.initBasicFunctions(Tag, "Tag", []);
+
+
+})();
+
+(function(){
+    var Tagger = function (obj) {
+        var t = this;
+        t.d = {
+            $widget: $('<div class="automizy-tagger"></div>'),
+            $options: $('<ul class="automizy-tagger-options-list">'),
+
+            tags: [],
+            options: {},
+            newTag: $A.newTag({text: '<input class="automizy-tagger-new-tag-input">'})
+        }
+        ;
+        t.f = {
+            onRemoveTag: function () {
+            },
+            onNewTagAdded: function () {
+            },
+            onTagAlreadyAdded: function () {
+            }
+        };
+        t.init();
+
+        if (typeof obj !== 'undefined') {
+
+            if (typeof obj.options !== 'undefined') {
+                t.options(obj.options);
+            }
+            if (typeof obj.tags !== 'undefined') {
+                t.tags(obj.tags);
+            }
+            if (typeof obj.onRemoveTag === 'function') {
+                t.onRemoveTag(obj.onRemoveTag);
+            }
+            if (typeof obj.onTagAlreadyAdded === 'function') {
+                t.onTagAlreadyAdded(obj.onTagAlreadyAdded);
+            }
+            if (typeof obj.onNewTagAdded === 'function') {
+                t.onNewTagAdded(obj.onNewTagAdded);
+            }
+
+            t.initParameter(obj);
+        }
+
+        t.d.$options.appendTo('body').ahide();
+
+    };
+
+    var p = Tagger.prototype;
+
+    p.positionOptionBox = function () {
+        var t = this;
+        var $optionBox = t.d.$options;
+        var $newTag = t.d.newTag.widget();
+
+        var $input = $newTag.find('input');
+        var inputOffset = $input.offset();
+        var offsetTop = $newTag.offset().top;
+        var inputOffsetLeft = inputOffset.left;
+        var tagHeight = t.d.newTag.widget().height();
+        var inputWidth = $input.outerWidth();
+
+        $optionBox.css({
+            bottom: 'auto',
+            left: inputOffsetLeft + 'px',
+            top: (offsetTop + tagHeight + 1) + 'px',
+            width: inputWidth + 'px'
+        });
+    };
+
+    p.hasTag = function (tag) {
+        var t = this;
+        var val = '';
+
+        if (tag instanceof $A.m.Tag) {
+            val = tag.text();
+        } else {
+            val = tag;
+        }
+
+        var hasTag = false;
+
+        var tags = t.d.tags;
+        for (var i = 0; i < tags.length; i++) {
+            if (tags[i].text() === val) {
+                hasTag = true;
+            }
+        }
+
+        return hasTag;
+    };
+
+    p.hasOption = function (tag) {
+        var t = this;
+        var val = '';
+
+        if (tag instanceof $A.m.Tag) {
+            val = tag.text();
+        } else {
+            val = tag;
+        }
+
+        var hasOption = false;
+
+        var options = Object.keys(t.d.options);
+        if (options.indexOf(val) !== -1) {
+            hasOption = true;
+        }
+
+        return hasOption;
+    };
+
+    p.getTag = function (tag) {
+        var t = this;
+        var text;
+        if(tag instanceof $A.m.Tag){
+            text=tag.text();
+        }
+        else {
+            text = tag;
+        }
+        for(var i = 0; i<t.d.tags.length; i++){
+            if(t.d.tags[i].text() === text){
+                return t.d.tags[i]
+            }
+        }
+        return false;
+    };
+
+    p.addTag = function (obj) {
+        var t = this;
+        if (typeof obj !== 'undefined') {
+            var tag;
+            if (obj instanceof $A.m.Tag) {
+                obj.tagger(t);
+                tag = obj;
+            } else {
+                if (typeof obj === 'string') {
+                    obj = {
+                        text: obj,
+                        tagger: t
+                    };
+                }
+                tag = $A.newTag(obj);
+            }
+
+            if (t.hasTag(tag) === false) {
+                t.d.tags.push(tag);
+                tag.drawTo(t.d.$widget);
+            }
+            else {
+                t.onTagAlreadyAdded(tag)
+            }
+            t.addOption(tag.text(), false);
+
+            return t;
+        }
+        else {
+            var tag = t.d.newTag;
+            resetNewTag();
+
+            /*Detecting click outside the tagger*/
+            function removeFunction(event) {
+                var ignoreOutClick = ['.automizy-tagger input.automizy-tagger-new-tag-input'];
+
+                var clickedIn = false;
+                /*Iterating through all the ignore selectors*/
+                for (var i = 0; i < ignoreOutClick.length; i++) {
+                    if (!($(event.target).closest(ignoreOutClick[i]).length == false && tag.widget().is(":visible"))) {
+                        clickedIn = true;
+                    }
+                }
+                if (!clickedIn) {
+                    resetNewTag();
+                }
+            }
+
+            function resetNewTag() {
+                t.d.$options.ahide();
+                tag.widget().ahide();
+                tag.text('<input class="automizy-tagger-new-tag-input">');
+
+                var $input = tag.widget().find('input');
+
+                $input.keyup(function (e) {
+                    if (t.d.$options.is(':visible') == false) {
+                        t.d.$options.ashow();
+                    }
+                    var val = $input.val();
+                    if (e.which == 13) {
+                        if (val !== '') {
+                            var realNewTag = $A.newTag(val);
+                            if (t.hasTag(val) === false) {
+                                t.addTag(realNewTag);
+                                t.onNewTagAdded(realNewTag);
+                            }
+                            else {
+                                t.onTagAlreadyAdded(realNewTag);
+                            }
+                        }
+                        resetNewTag();
+                    }
+                    else {
+                        t.search(val);
+                    }
+                });
+
+                t.d.$options.children().ahide();
+                $(document).off('click', removeFunction);
+            }
+
+            setTimeout(function () {
+                $(document).on('click', removeFunction);
+
+                tag.drawTo(t.widget()).widget().ashow().show();
+                tag.widget().find('input').focus();
+                t.d.$options.ashow();
+                t.positionOptionBox();
+            }, 10);
+        }
+        return t;
+    };
+
+    p.tags = function (tags) {
+        var t = this;
+        if (typeof tags !== 'undefined') {
+            for (var i = 0; i < t.d.tags.length; i++) {
+                t.d.tags = [];
+                t.d.$widget.empty();
+            }
+            for (var i in tags) {
+                t.addTag(tags[i]);
+            }
+            return t;
+        }
+        return t.d.tags;
+    };
+
+    p.addOption = function (option, isShown) {
+        var t = this;
+        if (typeof isShown === 'undefined') {
+            isShown = true;
+        }
+        if (typeof option !== 'undefined') {
+
+            if (option instanceof Array) {
+
+                option = option.sort();
+                for (var i = 0; i < option.length; i++) {
+                    var alreadyExists = (typeof t.d.options[option[i]] !== 'undefined');
+                    t.d.options[option[i]] = isShown;
+                    if (!alreadyExists) {
+                        createOptionElement(option[i]);
+                    }
+                }
+            }
+            else {
+
+                var alreadyExists = (typeof t.d.options[option] !== 'undefined');
+                t.d.options[option] = isShown;
+                if (!alreadyExists) {
+                    createOptionElement(option);
+                }
+            }
+
+            function createOptionElement(option) {
+                var options = Object.keys(t.d.options).sort();
+                var index = options.indexOf(option);
+
+                if (index !== -1) {
+
+                    if (index === 0) {
+                        index = 1;
+                    }
+                    var $option = $('<li title="' + option + '">' + option + '</li>').click(function () {
+                        var val = $(this).text();
+                        var realNewTag = $A.newTag(val);
+                        if (t.hasTag(val) === false) {
+                            t.addTag(realNewTag);
+                            t.onNewTagAdded(realNewTag);
+                        }
+                        else {
+                            t.onTagAlreadyAdded(realNewTag);
+                        }
+                    });
+
+
+                    var $prevLi = t.d.$options.find('li').eq(index - 1);
+                    if ($prevLi.length !== 0) {
+                        $prevLi.after($option);
+                    }
+                    else {
+                        t.d.$options.append($option);
+                    }
+                }
+
+            }
+        }
+        return t;
+    };
+
+    p.options = function (options) {
+        var t = this;
+        if (typeof options !== 'undefined') {
+            t.d.options = {};
+            t.d.$options.empty();
+            t.addOption(options);
+            return t;
+        }
+        return t.d.options;
+    };
+
+
+    p.search = function (text) {
+        var t = this;
+        var text = text || '';
+        var options = Object.keys(t.d.options).sort();
+
+        var optionsToShow = [];
+        for (var i in options) {
+            if (t.d.options[options[i]] == true) {
+                optionsToShow.push(options[i]);
+            }
+        }
+        var $options = t.d.$options.children();
+
+        for (var i = 0; i < optionsToShow.length; i++) {
+            var str = optionsToShow[i];
+            var optionIndex = options.indexOf(optionsToShow[i]);
+            if (str.toLowerCase().search(text.toLowerCase()) > -1 || text.length <= 0) {
+                $($options[optionIndex]).ashow();
+            } else {
+                $($options[optionIndex]).ahide();
+            }
+        }
+
+        return t;
+    };
+
+    p.removeTag = function (tag) {
+        var t = this;
+        if (typeof t.d.tags === 'undefined') {
+            return t;
+        }
+        if (typeof tag === 'string') {
+            for (var i = 0; i < t.d.tags.length; i++) {
+                if (t.d.tags[i].text() === tag) {
+                    t.d.tags[i].remove();
+                }
+            }
+        } else if (typeof tag === 'object') {
+            var index = t.d.tags.indexOf(tag);
+            if (index !== -1) {
+                tag.remove();
+            }
+        }
+        return t;
+    };
+
+
+    p.onRemoveTag = function (obj) {
+        var t = this;
+        if (typeof obj === 'function') {
+            t.f.onRemoveTag = obj;
+        }
+        else {
+            t.f.onRemoveTag(obj);
+            var index = t.d.tags.indexOf(obj);
+            if (index !== -1) {
+                t.addOption(obj.text(), true);
+                t.d.tags.splice(index, 1);
+            }
+        }
+        return t;
+    };
+
+
+    p.onNewTagAdded = function (obj) {
+        var t = this;
+        if (typeof obj === 'function') {
+            t.f.onNewTagAdded = obj;
+        }
+        else {
+            t.f.onNewTagAdded(obj);
+        }
+        return t;
+    };
+
+    p.onTagAlreadyAdded = function (obj) {
+        var t = this;
+        if (typeof obj === 'function') {
+            t.f.onTagAlreadyAdded = obj;
+        }
+        else {
+            t.f.onTagAlreadyAdded(obj);
+            t.getTag(obj.text()).highlight();
+        }
+        return t;
+    };
+
+    $A.initBasicFunctions(Tagger, "Tagger", []);
+
+
+})();
+
+(function(){
     var ProgressBar = function (obj) {
         var t = this;
         t.d = {
@@ -9368,10 +10108,14 @@ var $A = {};
             $percentBox: $('<div class="automizy-progress-percent-box"></div>'),
             $percent: $('<span class="automizy-progress-percent">0</span>'),
 
-            percentPosition:'inner',
-            percent:0,
+            percentPosition: 'inner',
+            percent: 0,
 
-            id: 'automizy-progressbar-' + $A.getUniqueString()
+            id: 'automizy-progressbar-' + $A.getUniqueString(),
+
+            onPercentChange: function () {
+
+            }
         };
         t.init();
 
@@ -9388,6 +10132,9 @@ var $A = {};
             }
             if (typeof obj.text !== 'undefined') {
                 t.text(obj.text);
+            }
+            if (typeof obj.onPercentChange === 'function') {
+                t.onPercentChange(obj.onPercentChange);
             }
 
             t.initParameter(obj);
@@ -9416,6 +10163,7 @@ var $A = {};
         var t = this;
         if (typeof percent !== 'undefined') {
             var oldPercent = t.d.percent || 0;
+
             t.d.percent = percent;
             t.d.$bar.stop().animate({
                 width: t.d.percent + '%'
@@ -9429,6 +10177,11 @@ var $A = {};
                     t.d.$percent.text(Math.ceil(now));
                 }
             });
+
+            if(percent !== oldPercent){
+                t.onPercentChange();
+            }
+
             return t;
         }
         return t.d.percent;
@@ -9437,15 +10190,15 @@ var $A = {};
         var t = this;
         if (typeof position !== 'undefined') {
             t.d.percentPosition = position;
-            switch(t.d.percentPosition) {
+            switch (t.d.percentPosition) {
                 case 'top':
-                    t.d.$percentBox.insertBefore(t.d.$barBox).css({textAlign:'right'});
+                    t.d.$percentBox.insertBefore(t.d.$barBox).css({textAlign: 'right'});
                     break;
                 case 'bottom':
-                    t.d.$percentBox.insertAfter(t.d.$barBox).css({textAlign:'right'});
+                    t.d.$percentBox.insertAfter(t.d.$barBox).css({textAlign: 'right'});
                     break;
                 case 'inner':
-                    t.d.$percentBox.appendTo(t.d.$bar).css({textAlign:'center'});
+                    t.d.$percentBox.appendTo(t.d.$bar).css({textAlign: 'center'});
                     break;
             }
             return t;
@@ -9453,7 +10206,19 @@ var $A = {};
         return t.d.percentPosition;
     };
 
-
+    p.onPercentChange = function (func) {
+        var t = this;
+        if (typeof func !== 'undefined') {
+            if (typeof func === 'function') {
+                t.d.onPercentChange = func;
+            }
+            else {
+                t.d.onPercentChange(func);
+            }
+            return t;
+        }
+        t.d.onPercentChange();
+    };
 
     $A.initBasicFunctions(ProgressBar, "ProgressBar", []);
 

@@ -1,0 +1,122 @@
+.automizy-tag {
+    display: inline-block;
+    box-sizing: border-box;
+    border: 1px solid #b9b9b9;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;;
+    margin: 10px;
+    position: relative;
+    cursor: default;
+}
+
+.automizy-tag .automizy-tag-icon {
+    display: inline-block;
+    box-sizing: border-box;
+    color: #b9b9b9;
+    padding: 5px 10px 5px 5px;
+    vertical-align: middle;
+}
+
+.automizy-tag .automizy-tag-text {
+    display: inline-block;
+    box-sizing: border-box;
+    vertical-align: middle;
+}
+
+.automizy-tag .automizy-tag-close {
+    display: inline-block;
+    box-sizing: border-box;
+    color: #b9b9b9;
+    padding: 5px 5px 5px 10px;
+    cursor: pointer;
+    vertical-align: middle;
+    -webkit-transition: color 0.2s;
+    -moz-transition: color 0.2s;
+    -ms-transition: color 0.2s;
+    -o-transition: color 0.2s;
+    transition: color 0.2s;
+}
+
+.automizy-tag .automizy-tag-close:hover {
+    color: #555a60;
+}
+
+.automizy-tag input.automizy-tagger-new-tag-input {
+    border: none;
+    outline: none !important;
+}
+
+.automizy-tagger-options-list {
+    position: absolute;
+    border: 1px solid #b9b9b9;
+    border-top: none;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    -webkit-border-bottom-left-radius: 3px;
+    -webkit-border-bottom-right-radius: 3px;
+    margin: auto;
+    box-sizing: border-box;
+    background: #fff;
+    padding: 0;
+    max-height: 200px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    z-index: 10;
+}
+
+.automizy-tagger-options-list > li {
+    list-style: none;
+    padding: 2px 5px;
+    margin: 4px;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.automizy-tagger-options-list > li :first-child{
+    margin-top: 10px;
+}
+
+.automizy-tagger-options-list > li :last-child{
+    margin-bottom: 10px;
+}
+
+.automizy-tagger-options-list > li:hover {
+    background-color: #dadada;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/*Highlight*/
+@keyframes tag-highlight {
+    from {
+        border-color: #b9b9b9;
+        color: #b9b9b9;
+    }
+    to {
+        border-color: #2196F3;
+        color: #2196F3;
+    }
+}
+
+
+.automizy-tag.automizy-tag-highlighted,
+.automizy-tag.automizy-tag-highlighted .automizy-tag-icon,
+.automizy-tag.automizy-tag-highlighted .automizy-tag-close {
+    /*
+    border-color: #2196F3;
+    color: #2196F3;
+    -webkit-transition: color, border-color 0.5s;
+    -moz-transition: color, border-color 0.5s;
+    -ms-transition: color, border-color 0.5s;
+    -o-transition: color, border-color 0.5s;
+    transition: color, border-color 0.5s;
+    */
+    animation-name: tag-highlight;
+    animation-duration: 0.2s;
+    animation-iteration-count: 2;
+    animation-direction: alternate;
+}
+
+

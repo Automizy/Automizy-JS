@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Select Example</title>
+    <script src="js/jquery.min.js"></script>
+    <link rel="stylesheet" href="../dist/automizy.css">
+    <link rel="stylesheet" href="../dist/fontawesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../src/styles/tag.css">
+    <!--
+    <link rel="stylesheet" href="../src/styles/table.css">
+    <link rel="stylesheet" href="../src/styles/button.css">
+    <link rel="stylesheet" href="../src/styles/input2.css">
+    <link rel="stylesheet" href="../src/styles/select.css">
+    <link rel="stylesheet" href="../src/styles/icons.css">
+    <link rel="stylesheet" href="../src/styles/mobile.css">
+    <link rel="stylesheet" href="../src/styles/core.css">
+    <link rel="stylesheet" href="../src/styles/inlineEditable.css">
+    -->
+    <script src="../dist/automizy.js"></script>
+    <script>
+        $(function () {
+
+            tagger = $A.newTagger({
+                tags: ["another ver-very long tag"],
+                options: ["asd", "another tag", "more option", "newtag", "ANOTHER_VERY_VERY_LONG_TAG_in_one_word", "last tag", "needmoretag", "stillnotenough", "anotherone", "tagtagtag"],
+                onRemoveTag: function (tag) {
+                    console.log(tag.text()+" removed!")
+                },
+                onTagAlreadyAdded: function (tag) {
+                    console.log(tag.text()+" already added");
+                },
+                onNewTagAdded: function (tag) {
+                    console.log(tag.text()+" added")
+                }
+            }).draw();
+
+
+            $A.newButton({
+                text:'add new tag',
+                click: function () {
+                    tagger.addTag();
+                }
+            }).draw()
+        })
+    </script>
+</head>
+<body>
+</body>
+</html>
+

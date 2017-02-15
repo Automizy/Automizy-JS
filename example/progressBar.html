@@ -10,32 +10,9 @@
     <script>
         $(function () {
 
-            function translate(a) {
-                return a;
-            }
-
-            var $head = $('<div class="automizy-progress-bar"><div class="automizy-progress-bar-label">Progress bar</div><div class="automizy-progress-bar-percent">&nbsp(50%)</div><div class="automizy-progress-bar-close-tab">_</div></div>');
-            temp = $A.newSlideWindow({
-                tab: {
-                    html: $head,
-                    text: ' '
-                },
-                title: '',
-                skin: 'progress-bar',
-                target: $('body'),
-                position: 'bottom',
-                width: 500,
-                animation: {
-                    open: 'swing',
-                    close: 'swing',
-                    openTime: 1,
-                    closeTime: 1
-                },
-                positionX: 'right'
+            progressbar = $A.newProgressBar().percent(0).percentPosition('bottom').draw().onPercentChange(function () {
+                console.log(progressbar.percent())
             });
-            temp.d.$head.remove();
-            temp.tabWidth('100%');
-            //temp.widget().css({'border-top': temp.d.$tab.outerHeight() + 'px solid ' +'#ffffff'});
         });
     </script>
 </head>
