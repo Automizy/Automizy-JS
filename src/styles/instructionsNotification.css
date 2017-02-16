@@ -27,7 +27,7 @@
 
 #automizy-instructions-notification-content-table{
     width:100%;
-    border: 1px solid #cccccc;
+    /*border: 1px solid #cccccc;*/
     padding: 32px;
     box-sizing: border-box;
 }
