@@ -44,6 +44,7 @@ define([
 
         var dialog = $A.newDialog({
             content:data.content,
+            id:'automizy-alert-dialog',
             width:'500px',
             skin:data.skin,
             positionY:'40px',

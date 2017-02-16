@@ -1182,7 +1182,7 @@ define([
                         if (typeof t.d.settings.cols[jMod].cellData !== 'undefined') {
                             cell.automizyData = t.d.settings.cols[jMod].cellData;
                         }
-                        t.d.settings.cols[jMod].cellFunction.apply(cell, [cell, value, i, j]);
+                        t.d.settings.cols[jMod].cellFunction.apply(cell, [cell, value, i, j, row, table]);
                     }
                     if (typeof t.d.settings.cols[jMod].mainCell !== 'undefined') {
                         if ($A.parseBoolean(t.d.settings.cols[jMod].mainCell)) {
@@ -1316,24 +1316,29 @@ define([
             t.openableInlineBox(true);
             for (var i = 0; i < inlineButtons.length; i++) {
                 var inlineButton = inlineButtons[i];
-                var title = inlineButton.title || '';
-                var content = inlineButton.text || inlineButton.html || '';
-                var icon = (typeof inlineButton.icon !== 'undefined' ? '<span class="fa ' + inlineButton.icon + '"></span>' : '');
-                var $button = $('<a title="' + title + '">' + content + icon + '</a>').data('click', inlineButton.click || function () {
-                    }).click(function () {
-                    var $t = $(this);
-                    var $row = $t.closest('tr').prev();
-                    var row = $A.tableRow($row);
-                    t.openedRow(row);
-                    $t.data('click').apply(row, [t, t.d.$widget]);
-                }).appendTo(t.d.$inlineButtons);
-                if (typeof $().tooltipster === 'function') {
-                    $button.tooltipster({
-                        delay: 1
-                    });
-                }
-                if (!inlineButton.permission) {
-                    $button.wrap('<span class="automizy-permission-trap"></span>');
+
+                if(typeof inlineButton.drawTo === 'function'){
+                    inlineButton.drawTo(t.d.$inlineButtons);
+                }else {
+                    var title = inlineButton.title || '';
+                    var content = inlineButton.text || inlineButton.html || '';
+                    var icon = (typeof inlineButton.icon !== 'undefined' ? '<span class="fa ' + inlineButton.icon + '"></span>' : '');
+                    var $button = $('<a title="' + title + '">' + content + icon + '</a>').data('click', inlineButton.click || function () {
+                        }).click(function () {
+                        var $t = $(this);
+                        var $row = $t.closest('tr').prev();
+                        var row = $A.tableRow($row);
+                        t.openedRow(row);
+                        $t.data('click').apply(row, [t, t.d.$widget]);
+                    }).appendTo(t.d.$inlineButtons);
+                    if (typeof $().tooltipster === 'function') {
+                        $button.tooltipster({
+                            delay: 1
+                        });
+                    }
+                    if (!inlineButton.permission) {
+                        $button.wrap('<span class="automizy-permission-trap"></span>');
+                    }
                 }
             }
             return t;

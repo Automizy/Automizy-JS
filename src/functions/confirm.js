@@ -81,6 +81,7 @@ define([
 
         var dialog = $A.newDialog({
             content:data.content,
+            id:'automizy-confirmation-dialog',
             width:'500px',
             skin:data.skin,
             positionY:'40px',
