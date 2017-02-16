@@ -306,7 +306,7 @@
 }
 .automizy-button.automizy-has-icon .automizy-button-icon {
     display: inline-block;
-    line-height: normal;
+    line-height: 32px;
 }
 .automizy-button.automizy-has-icon:not(.automizy-has-text) .automizy-button-text {
     display: none;
@@ -324,6 +324,7 @@
     font-size: 18px;
     color: #a9a9a9;
     padding: 20px !important;
+    line-height: normal;
 }
 
 .automizy-button.automizy-skin-menuicon:hover .automizy-button-icon,

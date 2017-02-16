@@ -62,7 +62,7 @@
     max-height: 200px;
     overflow-x: hidden;
     overflow-y: auto;
-    z-index: 10;
+    z-index: 16777270;
 }
 
 .automizy-tagger-options-list > li {
