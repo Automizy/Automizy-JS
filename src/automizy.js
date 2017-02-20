@@ -68,6 +68,7 @@ define([
     "automizy/functions/instructionsNotification",
     "automizy/functions/runEvent",
     "automizy/functions/isPageVisibility",
+    "automizy/functions/escapeHtml",
     "automizy/functions/sameAs"
 ], function () {
     console.log('%c AutomizyJs module loaded! ', 'background: #000000; color: #bada55; font-size:14px');
