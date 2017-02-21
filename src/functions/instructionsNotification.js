@@ -17,7 +17,24 @@ define([
         target:$buttons
     });
 
+    var module = {
+        $widget:$widget,
+        $cover:$cover,
+        $content:$content,
+        $table:$table,
+        $tr:$tr,
+        $td1:$td1,
+        $td2:$td2,
+        $img:$img,
+        $text:$text,
+        $buttons:$buttons,
+        okButton:ok
+    };
+
     $A.instructionsNotification = function (obj) {
+        if(typeof obj === 'undefined'){
+            return module;
+        }
         obj = obj || {};
         if(obj === 'close'){
             $widget.hide();
