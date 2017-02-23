@@ -2239,7 +2239,7 @@ var $A = {};
             file: false,
             sameas: false,
             isValid: true,
-            notEmpty:false,
+            notEmpty: false,
             validValues: [],
             errors: [],
             options: {},
@@ -2279,7 +2279,7 @@ var $A = {};
     var p = Validator.prototype;
     p.set = function (obj) {
         var t = this;
-        if (typeof obj === 'string'){
+        if (typeof obj === 'string') {
             var os = obj;
             obj = {};
             obj[os] = true;
@@ -2314,6 +2314,10 @@ var $A = {};
             t.d.options.notEmpty = obj.notEmpty;
         if (typeof obj.invalidValue !== 'undefined')
             t.d.options.invalidValue = obj.invalidValue;
+        if (typeof obj.onValid === 'function')
+            t.onValid(obj.onValid);
+        if (typeof obj.onInvalid === 'function')
+            t.onInvalid(obj.onInvalid);
         return t;
     };
     p.run = function (obj) {
@@ -2361,9 +2365,15 @@ var $A = {};
     };
     p.execute = function (obj) {
         var t = this;
-        if(typeof obj === 'undefined')var obj = false;
-        if(obj === null)obj = [];
+        if (typeof obj === 'undefined')var obj = false;
+        if (obj === null) obj = [];
         t.run(obj);
+        if(t.d.isValid){
+            t.onValid();
+        }
+        else {
+            t.onInvalid();
+        }
         return t.d.isValid;
     };
 
@@ -2440,7 +2450,7 @@ var $A = {};
         var a = value.length >= len;
         if (a === false) {
             this.d.isValid = false;
-            this.d.errors.push("Not enough characters. Minimal length: "+this.d.minLength);
+            this.d.errors.push("Not enough characters. Minimal length: " + this.d.minLength);
         }
         return a;
     };
@@ -2459,7 +2469,7 @@ var $A = {};
         var a = value.length <= len;
         if (a === false) {
             this.d.isValid = false;
-            this.d.errors.push("Too many characters. Maximal length: "+this.d.maxLength);
+            this.d.errors.push("Too many characters. Maximal length: " + this.d.maxLength);
         }
         return a;
     };
@@ -2469,7 +2479,7 @@ var $A = {};
         var a = value >= number;
         if (a === false) {
             this.d.isValid = false;
-            this.d.errors.push("Too low value. Minimal value: "+this.d.min);
+            this.d.errors.push("Too low value. Minimal value: " + this.d.min);
         }
         return a;
     };
@@ -2479,14 +2489,14 @@ var $A = {};
         var a = value <= number;
         if (a === false) {
             this.d.isValid = false;
-            this.d.errors.push("Too high value. Maximal value: "+this.d.max);
+            this.d.errors.push("Too high value. Maximal value: " + this.d.max);
         }
         return a;
     };
     p.file = function () {
     };
     p.sameas = function (value, otherValue) {
-        if(typeof otherValue.val === 'function'){
+        if (typeof otherValue.val === 'function') {
             otherValue = otherValue.val();
         }
         var a = value === otherValue;
@@ -2532,9 +2542,48 @@ var $A = {};
         return this;
     };
 
+    p.onInvalid = function (func) {
+        var t = this;
+        if (typeof func !== 'undefined') {
+            if (typeof func === 'function') {
+                t.d.onInvalid = func;
+            }
+            else {
+                if(typeof t.d.onInvalid !== 'undefined'){
+                    t.d.onInvalid(func);
+                }
+            }
+        }
+        else {
+            if(typeof t.d.onInvalid !== 'undefined'){
+                t.d.onInvalid();
+            }
+        }
+        return t;
+    };
+    p.onValid = function (func) {
+        var t = this;
+        if (typeof func !== 'undefined') {
+            if (typeof func === 'function') {
+                t.d.onValid = func;
+            }
+            else {
+                if(typeof t.d.onValid !== 'undefined'){
+                    t.d.onValid(func);
+                }
+            }
+        }
+        else {
+            if(typeof t.d.onValid !== 'undefined'){
+                t.d.onValid();
+            }
+        }
+        return t;
+    };
+
     $A.m.Validator = Validator;
     $A.d.validator = new $A.m.Validator();
-    $A.validate = function(){
+    $A.validate = function () {
         return $A.d.validator;
     };
     $A.newValidator = $A.createValidator = function (obj) {
@@ -4793,19 +4842,36 @@ var $A = {};
                 }
             });
 
-            /*Save & cancel buttons*/
+            /*Initializing validator if exists*/
+            var validator = inlineInput.validator();
 
+            /*Save & cancel buttons*/
             var saveButton = $A.newButton({
                 icon: 'fa-check',
                 skin: 'simple-orange',
                 click: function () {
-                    if(typeof inlineInput.validator() !== 'undefined'){
-                        if(inlineInput.validate()){
+                    if (typeof inlineInput.validator() !== 'undefined') {
+                        if (inlineInput.validate()) {
+                            /*If input was valid when pressing save/enter*/
                             t.onInlineEditComplete(inlineInput);
                             $(document).off('click', removeFunction);
                         }
                         else {
+                            /*If input was invalid when pressing save/enter*/
                             saveButton.disabled(true);
+                            $(document).off('click', removeFunction);
+                            inlineInput.focus();
+
+                            /*If input becomes invalid, enable save button*/
+                            validator.onInvalid(function () {
+                                saveButton.disable();
+                            });
+
+                            /*If input becomes valid, enable save button*/
+                            validator.onValid(function () {
+                                saveButton.enable();
+                            });
+
                         }
                     }
                     else {
@@ -4828,14 +4894,16 @@ var $A = {};
 
 
             inlineInput.enter(function () {
-                t.onInlineEditComplete(inlineInput);
-                $(document).off('click', removeFunction);
+                saveButton.click();
+                /*
+                 t.onInlineEditComplete(inlineInput);
+                 $(document).off('click', removeFunction);
+                 */
             });
 
 
             /*Saving old value*/
             inlineInput.data('old-value', inlineInput.value());
-
 
 
             /*Fill this array with the selector of elements
@@ -4846,6 +4914,8 @@ var $A = {};
 
             /*Any click in the edit box is ignored*/
             ignoreOutClick.push(inlineInput.d.$inputCell);
+            ignoreOutClick.push(saveButton.widget());
+            //ignoreOutClick.push(inlineInput.d.$inputCell);
 
             switch (inlineInput.type()) {
                 case "date":
@@ -4865,6 +4935,7 @@ var $A = {};
 
             /*Detecting click outside the inline input*/
             function removeFunction(event) {
+                console.log('remove function called')
                 var clickedIn = false;
                 /*Iterating through all the ignore selectors*/
                 for (var i = 0; i < ignoreOutClick.length; i++) {
@@ -4873,6 +4944,7 @@ var $A = {};
                     }
                 }
                 if (!clickedIn) {
+                    console.log('clicked out')
                     $(document).off('click', removeFunction);
                     t.onInlineEditCanceled();
                 }
@@ -4902,7 +4974,7 @@ var $A = {};
     p.onInlineEditCanceled = function (func) {
         var t = this;
         if (typeof func === 'function') {
-            t.addFunction('onInlineEditCanceled',func);
+            t.addFunction('onInlineEditCanceled', func);
         } else {
             t.runFunctions('onInlineEditCanceled');
             t.hideInlineEdit();
@@ -4916,7 +4988,7 @@ var $A = {};
         t.widget().removeClass("inline-edit-inactive");
     };
 
-    p.isShown = function(){
+    p.isShown = function () {
         return this.widget().hasClass('inline-edit-active');
     };
 
@@ -4927,11 +4999,13 @@ var $A = {};
         t.widget().addClass("inline-edit-inactive");
         inlineInput.value(inlineInput.data('old-value'));
         inlineInput.input().blur();
+        inlineInput.hideError();
+        inlineInput.buttonRight().enable();
     };
 
-    p.value = function (value){
+    p.value = function (value) {
         var t = this;
-        if(typeof value !=="undefined"){
+        if (typeof value !== "undefined") {
             t.d.value = value;
             return t;
         }

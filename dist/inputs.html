@@ -10,57 +10,73 @@
     <script>
         $(function () {
             window.input1 = $A.newInput2()
-                    .drawTo('body')
-                    .labelBefore('Before label')
-                    .labelAfter('After label')
-                    .iconLeft('fa-users')
-                    .iconRight('fa-paper-plane-o')
-                    .iconLeftClick(function(){
-                        alert('Click left');
-                    })
-                    .iconRightClick(function(){
-                        alert('Click right');
-                    });
+                .drawTo('body')
+                .labelBefore('Before label')
+                .labelAfter('After label')
+                .iconLeft('fa-users')
+                .iconRight('fa-paper-plane-o')
+                .iconLeftClick(function () {
+                    alert('Click left');
+                })
+                .iconRightClick(function () {
+                    alert('Click right');
+                })
+                .validator('notEmpty')
+                .enter(function () {
+                    this.validate();
+                });
+
 
             window.input2 = $A.newInput2()
-                    .drawTo('body')
-                    .labelTop('Top label')
-                    .labelBottom('Bottom label')
-                    .iconLeft('fa-users')
-                    .iconLeftClick(function(){
-                        alert('Click left');
-                    })
-                    .iconRightClick(function(){
-                        alert('Click right');
-                    }).placeholder('asd');
+                .drawTo('body')
+                .labelTop('Top label')
+                .labelBottom('Bottom label')
+                .iconLeft('fa-users')
+                .iconLeftClick(function () {
+                    alert('Click left');
+                })
+                .iconRightClick(function () {
+                    alert('Click right');
+                }).placeholder('asd')
+                .validator('notEmpty')
+                .enter(function () {
+                    this.validate();
+                });
 
             window.input3 = $A.newInput2({
                 target: 'body',
                 placeholder: 'asd',
                 iconLeft: 'fa-users'
-            });
+            }).validator('notEmpty')
+                .enter(function () {
+                    this.validate();
+                });
 
 
             window.input4 = $A.newInput2({
-                name:'email',
-                placeholder:'Email address',
+                name: 'email',
+                placeholder: 'Email address',
                 type: 'text',
                 validator: 'email',
                 iconLeft: 'fa-envelope-o',
-                enter: function(){
+                enter: function () {
                     this.validate();
                 }
             });
 
             window.input5 = $A.newInput2({
-                labelTop:'Enter your name',
+                labelTop: 'Enter your name',
                 buttonLeft: {
-                    text:'Clear',
-                    click: function(){
+                    text: 'Clear',
+                    click: function () {
                         window.input5.val('');
                     }
                 }
-            }).disable();
+            }).disable()
+                .validator('notEmpty')
+                .enter(function () {
+                    this.validate();
+                });
 
             $A.newForm({
                 inputs: [
@@ -71,110 +87,121 @@
             });
 
             window.input6 = $A.newInput2({
-                labelBefore:'Send email',
+                labelBefore: 'Send email',
                 target: 'body',
-                validator:'email',
+                validator: 'email',
                 buttonRight: {
-                    skin:'nobox-orange',
-                    text:'preview',
-                    icon:'fa-eye',
-                    click: function(){
+                    skin: 'nobox-orange',
+                    text: 'preview',
+                    icon: 'fa-eye',
+                    click: function () {
                         alert('Send')
                     }
                 }
-            });
+            })
+                .validator('notEmpty')
+                .enter(function () {
+                    this.validate();
+                });
 
             window.input7 = $A.newInput2({
-                labelBefore:'Subject',
+                labelBefore: 'Subject',
                 target: 'body',
-                validator:'notEmpty',
+                validator: 'notEmpty',
                 buttonBottom: {
-                    skin:'nobox-orange',
-                    text:'Insert custom field',
-                    icon:'fa-envelope',
-                    click: function(){
+                    skin: 'nobox-orange',
+                    text: 'Insert custom field',
+                    icon: 'fa-envelope',
+                    click: function () {
                         alert('Custom Field List')
                     }
                 }
-            });
+            })
+                .validator('notEmpty')
+                .enter(function () {
+                    this.validate();
+                });
 
             window.input8 = $A.newInput2({
-                name:'password',
-                type:'password',
-                placeholder:$A.translate('Enter password'),
-                iconLeft:'fa-unlock-alt',
+                name: 'password',
+                type: 'password',
+                id: 'password',
+                placeholder: $A.translate('Enter password'),
+                iconLeft: 'fa-unlock-alt',
                 help: 'asd asd asd ',
                 validator: 'notEmpty',
                 buttonRight: {
-                    icon:'fa-eye',
-                    click: function(){
-                        if(this.active()){
+                    icon: 'fa-eye',
+                    click: function () {
+                        if (this.active()) {
                             this.active(false).icon('fa-eye');
                             window.input8.input().attr('type', 'password');
-                        }else{
+                        } else {
                             this.active(true).icon('fa-eye-slash');
                             window.input8.input().attr('type', 'text');
                         }
                     }
                 },
-                enter: function(){
+                enter: function () {
                     this.validate();
                 },
                 target: 'body'
             });
 
 
-
             $A.newInput2({
-                placeholder:'YYYY',
+                placeholder: 'YYYY',
                 labelBefore: 'Delay:',
-                labelAfter:'-',
-                newRow:false,
+                labelAfter: '-',
+                newRow: false,
                 target: 'body',
-                width:150
+                width: 150
             });
             $A.newInput2({
-                placeholder:'MM',
-                labelAfter:'-',
-                newRow:false,
+                placeholder: 'MM',
+                labelAfter: '-',
+                newRow: false,
                 target: 'body',
-                width:70
+                width: 70
             });
             $A.newInput2({
-                placeholder:'DD',
-                labelAfter:' ',
-                newRow:false,
+                placeholder: 'DD',
+                labelAfter: ' ',
+                newRow: false,
                 target: 'body',
-                width:65
+                width: 65
             });
             $A.newInput2({
-                placeholder:'hh',
-                labelAfter:':',
-                newRow:false,
+                placeholder: 'hh',
+                labelAfter: ':',
+                newRow: false,
                 target: 'body',
-                width:70
+                width: 70
             });
             $A.newInput2({
-                placeholder:'mm',
-                labelAfter:':',
-                newRow:false,
+                placeholder: 'mm',
+                labelAfter: ':',
+                newRow: false,
                 target: 'body',
-                width:70
+                width: 70
             });
             $A.newInput2({
-                placeholder:'ss',
-                newRow:false,
+                placeholder: 'ss',
+                newRow: false,
                 target: 'body',
-                width:50
+                width: 50
             });
-
 
 
             window.input9 = $A.newInput2({
-                labelBefore:'Comment',
+                labelBefore: 'Comment',
                 target: 'body',
-                type:'textarea'
-            });
+                type: 'textarea'
+            })
+                .validator('notEmpty')
+                .enter(function () {
+                    this.validate();
+                });
 
         });
     </script>

@@ -19,7 +19,7 @@ define([
             file: false,
             sameas: false,
             isValid: true,
-            notEmpty:false,
+            notEmpty: false,
             validValues: [],
             errors: [],
             options: {},
@@ -59,7 +59,7 @@ define([
     var p = Validator.prototype;
     p.set = function (obj) {
         var t = this;
-        if (typeof obj === 'string'){
+        if (typeof obj === 'string') {
             var os = obj;
             obj = {};
             obj[os] = true;
@@ -94,6 +94,10 @@ define([
             t.d.options.notEmpty = obj.notEmpty;
         if (typeof obj.invalidValue !== 'undefined')
             t.d.options.invalidValue = obj.invalidValue;
+        if (typeof obj.onValid === 'function')
+            t.onValid(obj.onValid);
+        if (typeof obj.onInvalid === 'function')
+            t.onInvalid(obj.onInvalid);
         return t;
     };
     p.run = function (obj) {
@@ -141,9 +145,15 @@ define([
     };
     p.execute = function (obj) {
         var t = this;
-        if(typeof obj === 'undefined')var obj = false;
-        if(obj === null)obj = [];
+        if (typeof obj === 'undefined')var obj = false;
+        if (obj === null) obj = [];
         t.run(obj);
+        if(t.d.isValid){
+            t.onValid();
+        }
+        else {
+            t.onInvalid();
+        }
         return t.d.isValid;
     };
 
@@ -220,7 +230,7 @@ define([
         var a = value.length >= len;
         if (a === false) {
             this.d.isValid = false;
-            this.d.errors.push("Not enough characters. Minimal length: "+this.d.minLength);
+            this.d.errors.push("Not enough characters. Minimal length: " + this.d.minLength);
         }
         return a;
     };
@@ -239,7 +249,7 @@ define([
         var a = value.length <= len;
         if (a === false) {
             this.d.isValid = false;
-            this.d.errors.push("Too many characters. Maximal length: "+this.d.maxLength);
+            this.d.errors.push("Too many characters. Maximal length: " + this.d.maxLength);
         }
         return a;
     };
@@ -249,7 +259,7 @@ define([
         var a = value >= number;
         if (a === false) {
             this.d.isValid = false;
-            this.d.errors.push("Too low value. Minimal value: "+this.d.min);
+            this.d.errors.push("Too low value. Minimal value: " + this.d.min);
         }
         return a;
     };
@@ -259,14 +269,14 @@ define([
         var a = value <= number;
         if (a === false) {
             this.d.isValid = false;
-            this.d.errors.push("Too high value. Maximal value: "+this.d.max);
+            this.d.errors.push("Too high value. Maximal value: " + this.d.max);
         }
         return a;
     };
     p.file = function () {
     };
     p.sameas = function (value, otherValue) {
-        if(typeof otherValue.val === 'function'){
+        if (typeof otherValue.val === 'function') {
             otherValue = otherValue.val();
         }
         var a = value === otherValue;
@@ -312,9 +322,48 @@ define([
         return this;
     };
 
+    p.onInvalid = function (func) {
+        var t = this;
+        if (typeof func !== 'undefined') {
+            if (typeof func === 'function') {
+                t.d.onInvalid = func;
+            }
+            else {
+                if(typeof t.d.onInvalid !== 'undefined'){
+                    t.d.onInvalid(func);
+                }
+            }
+        }
+        else {
+            if(typeof t.d.onInvalid !== 'undefined'){
+                t.d.onInvalid();
+            }
+        }
+        return t;
+    };
+    p.onValid = function (func) {
+        var t = this;
+        if (typeof func !== 'undefined') {
+            if (typeof func === 'function') {
+                t.d.onValid = func;
+            }
+            else {
+                if(typeof t.d.onValid !== 'undefined'){
+                    t.d.onValid(func);
+                }
+            }
+        }
+        else {
+            if(typeof t.d.onValid !== 'undefined'){
+                t.d.onValid();
+            }
+        }
+        return t;
+    };
+
     $A.m.Validator = Validator;
     $A.d.validator = new $A.m.Validator();
-    $A.validate = function(){
+    $A.validate = function () {
         return $A.d.validator;
     };
     $A.newValidator = $A.createValidator = function (obj) {
