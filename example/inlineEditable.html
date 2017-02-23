@@ -31,8 +31,10 @@
             });
 
             inlineEditable2 = $A.newInlineEditable($A.newInput2({
-                labelBefore: "Name",
-                type: "text"
+                id: "email",
+                labelBefore: "Email",
+                type: "text",
+                validator: 'email'
             })).drawTo('body').onInlineEditComplete(function (inlineEditable) {
                 console.log(inlineEditable.value());
             }).onInlineEditCanceled(function () {

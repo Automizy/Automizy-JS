@@ -89,8 +89,19 @@ define([
                 icon: 'fa-check',
                 skin: 'simple-orange',
                 click: function () {
-                    t.onInlineEditComplete(inlineInput);
-                    $(document).off('click', removeFunction);
+                    if(typeof inlineInput.validator() !== 'undefined'){
+                        if(inlineInput.validate()){
+                            t.onInlineEditComplete(inlineInput);
+                            $(document).off('click', removeFunction);
+                        }
+                        else {
+                            saveButton.disabled(true);
+                        }
+                    }
+                    else {
+                        t.onInlineEditComplete(inlineInput);
+                        $(document).off('click', removeFunction);
+                    }
                 }
             });
 

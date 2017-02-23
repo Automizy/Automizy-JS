@@ -90,6 +90,7 @@
     border-top:none;
     text-align:center;
 }
+
 .automizy-button {
     display: inline-block;
     position: relative;
@@ -453,6 +454,7 @@
 .automizy-button-badge:empty{
     display: none !important;
 }
+
 .automizy-input {
     display: inline-block;
     position: relative;
@@ -1002,7 +1004,7 @@ input.automizy-table-rowcheck:focus:disabled:checked { background-position: -15p
 }
 .automizy-input2 .automizy-input2-error-box {
     display: none;
-    margin: 0 0 5px 0;
+    margin-top: 2px;
     position: relative;
     box-sizing: border-box;
     color: #da4b50;
@@ -1091,7 +1093,19 @@ input.automizy-table-rowcheck:focus:disabled:checked { background-position: -15p
     padding: 0 6px 0 6px;
 }
 .automizy-input2-help-icon-cell {
-    vertical-align: top;
+    vertical-align: middle;
+    padding-left: 10px;
+}
+.automizy-input2-help-icon-cell .automizy-input2-help{
+    opacity: 0.7;
+    -webkit-transition: opacity 0.2s;
+    -moz-transition: opacity 0.2s;
+    -ms-transition: opacity 0.2s;
+    -o-transition: opacity 0.2s;
+    transition: opacity 0.2s;
+}
+.automizy-input2-help-icon-cell .automizy-input2-help{
+    opacity: 0.9;
 }
 .automizy-input2-input:not(span) {
     width: 100%;
@@ -1333,6 +1347,7 @@ textarea.automizy-input2-input {
 .automizy-input2 td.automizy-hide{
     display:none !important;
 }
+
 .automizy-form .automizy-form-subtitle{
     margin-bottom: 10px;
 }
@@ -1411,6 +1426,7 @@ textarea.automizy-input2-input {
     color: #2b2f33;
     border-color: #DCD8E7;
 }
+
 .clr {
     clear: both;
 }
@@ -1585,6 +1601,7 @@ textarea.automizy-input2-input {
 .automizy-skin-progress-bar .automizy-progress-bar-close-tab:hover{
     background-color: #669138;
 }
+
 .automizy-table-box {
     width: 100%;
     max-width: 100%;
@@ -2105,6 +2122,7 @@ textarea.automizy-input2-input {
     color: #414C59;
     font-family: Segoe UI, Helvetica, Arial, sans-serif;
 }
+
 .automizy-noselect {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -2228,6 +2246,7 @@ td.automizy-hide{
     clear: both;
     display: block;
 }
+
 .automizy-mobile .automizy-dialog-box,
 .automizy-mobile .automizy-input,
 .automizy-mobile .automizy-input-box,
@@ -2372,6 +2391,7 @@ td.automizy-hide{
         min-width:0;
     }
 }
+
 .iPhoneCheckContainer {
     -webkit-transform:translate3d(0,0,0);
     position: relative;
@@ -2519,6 +2539,7 @@ label.iPhoneCheckLabelOff span {
     border-bottom-right-radius: 0;
     border-right: none;
 }
+
 .automizy-inline-editable.inline-edit-inactive .automizy-input2 input {
     border: none;
     box-shadow: none;
@@ -3215,7 +3236,7 @@ label.iPhoneCheckLabelOff span {
 }
 #automizy-instructions-notification-content-table{
     width:100%;
-    border: 1px solid #cccccc;
+    
     padding: 32px;
     box-sizing: border-box;
 }

@@ -30,9 +30,10 @@ define([
             $helpIconCell: $('<td class="automizy-input2-td automizy-input2-help-icon-cell automizy-hide"></td>'),
 
             $bottomRow: $('<tr class="automizy-input2-bottom-tr"></tr>'),
-            $bottomBeforeCell: $('<td class="automizy-input2-td" colspan="2"></td>'),
-            $bottomInputCell: $('<td class="automizy-input2-td"></td>'),
-            $bottomAfterCell: $('<td class="automizy-input2-td" colspan="5"></td>'),
+
+            $inputButtonLeftCellShadow: $('<td class="automizy-input2-td automizy-hide"></td>'),
+            $inputIconLeftCellShadow: $('<td class="automizy-input2-td automizy-hide"></td>'),
+            $inputCellShadow: $('<td class="automizy-input2-td"></td>'),
 
             $errorBox: $('<div class="automizy-input2-error-box"></div>'),
             $buttonBottomBox: $('<div class="automizy-input2-bottom-button-box automizy-hide"></div>'),
@@ -113,11 +114,11 @@ define([
         t.d.$helpIconCell.appendTo(t.d.$inputRow);
 
         t.d.$bottomRow.appendTo(t.d.$inputTable);
-        t.d.$bottomBeforeCell.appendTo(t.d.$bottomRow);
-        t.d.$bottomInputCell.appendTo(t.d.$bottomRow);
-        t.d.$bottomAfterCell.appendTo(t.d.$bottomRow);
-        t.d.$errorBox.appendTo(t.d.$bottomInputCell);
-        t.d.$buttonBottomBox.appendTo(t.d.$bottomInputCell);
+        t.d.$inputButtonLeftCellShadow.appendTo(t.d.$bottomRow);
+        t.d.$inputIconLeftCellShadow.appendTo(t.d.$bottomRow);
+        t.d.$inputCellShadow.appendTo(t.d.$bottomRow);
+        t.d.$errorBox.appendTo(t.d.$inputCellShadow);
+        t.d.$buttonBottomBox.appendTo(t.d.$inputCellShadow);
 
         t.d.$labelBottomBox.appendTo(t.d.$widget);
 
@@ -818,9 +819,11 @@ define([
             if (t.d.buttonLeft === false) {
                 t.d.$widget.removeClass('automizy-input2-has-left-button');
                 t.d.$inputButtonLeftCell.addClass('automizy-hide');
+                t.d.$inputButtonLeftCellShadow.addClass('automizy-hide');
             } else {
                 t.d.$widget.addClass('automizy-input2-has-left-button');
                 t.d.$inputButtonLeftCell.removeClass('automizy-hide');
+                t.d.$inputButtonLeftCellShadow.removeClass('automizy-hide');
                 if (typeof t.d.buttonLeft.drawTo !== 'function') {
                     t.d.buttonLeft = $A.newButton(t.d.buttonLeft);
                 } else {
@@ -906,13 +909,16 @@ define([
             t.d.iconLeft = icon;
             if (t.d.iconLeft === false) {
                 t.d.$inputIconLeftCell.ahide();
+                t.d.$inputIconLeftCellShadow.ahide();
                 t.d.$widget.removeClass('automizy-input2-has-left-icon');
             } else {
                 t.d.$widget.addClass('automizy-input2-has-left-icon');
                 if (t.d.iconLeft === true) {
                     t.d.$inputIconLeftCell.ashow();
+                    t.d.$inputIconLeftCellShadow.ashow();
                 } else {
                     t.d.$inputIconLeftCell.ashow();
+                    t.d.$inputIconLeftCellShadow.ashow();
                     var iconType = iconType || 'fa';
                     if (iconType === 'fa') {
                         t.d.$inputIconLeftCell.empty();

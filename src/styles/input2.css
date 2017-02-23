@@ -81,7 +81,7 @@
 
 .automizy-input2 .automizy-input2-error-box {
     display: none;
-    margin: 0 0 5px 0;
+    margin-top: 2px;
     position: relative;
     box-sizing: border-box;
     color: #da4b50;
@@ -183,7 +183,19 @@
 }
 
 .automizy-input2-help-icon-cell {
-    vertical-align: top;
+    vertical-align: middle;
+    padding-left: 10px;
+}
+.automizy-input2-help-icon-cell .automizy-input2-help{
+    opacity: 0.7;
+    -webkit-transition: opacity 0.2s;
+    -moz-transition: opacity 0.2s;
+    -ms-transition: opacity 0.2s;
+    -o-transition: opacity 0.2s;
+    transition: opacity 0.2s;
+}
+.automizy-input2-help-icon-cell .automizy-input2-help{
+    opacity: 0.9;
 }
 
 .automizy-input2-input:not(span) {
