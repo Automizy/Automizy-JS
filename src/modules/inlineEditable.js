@@ -176,7 +176,6 @@ define([
 
             /*Detecting click outside the inline input*/
             function removeFunction(event) {
-                console.log('remove function called')
                 var clickedIn = false;
                 /*Iterating through all the ignore selectors*/
                 for (var i = 0; i < ignoreOutClick.length; i++) {
@@ -185,7 +184,6 @@ define([
                     }
                 }
                 if (!clickedIn) {
-                    console.log('clicked out')
                     $(document).off('click', removeFunction);
                     t.onInlineEditCanceled();
                 }
@@ -238,7 +236,7 @@ define([
         var inlineInput = t.inlineInput();
         t.widget().removeClass("inline-edit-active");
         t.widget().addClass("inline-edit-inactive");
-        inlineInput.value(inlineInput.data('old-value'));
+        inlineInput.value(t.value());
         inlineInput.input().blur();
         inlineInput.hideError();
         inlineInput.buttonRight().enable();
