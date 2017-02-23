@@ -248,6 +248,7 @@ define([
         var t = this;
         if (typeof value !== "undefined") {
             t.d.value = value;
+            t.d.inlineInput.value(value);
             return t;
         }
         return t.d.value;
