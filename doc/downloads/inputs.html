@@ -48,7 +48,7 @@
                 validator: 'email',
                 iconLeft: 'fa-envelope-o',
                 enter: function(){
-                    alert('ok')
+                    this.validate();
                 }
             });
 
@@ -104,6 +104,8 @@
                 placeholder:$A.translate('Enter password'),
                 iconLeft:'fa-unlock-alt',
                 help: 'asd asd asd ',
+                validator: 'notEmpty',
+                iconRight: "fa-lock",
                 buttonRight: {
                     icon:'fa-eye',
                     click: function(){
@@ -115,6 +117,9 @@
                             window.input8.input().attr('type', 'text');
                         }
                     }
+                },
+                enter: function(){
+                    this.validate();
                 },
                 target: 'body'
             });

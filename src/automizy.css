@@ -9,12 +9,12 @@
 @import url("styles/core.css");
 @import url("styles/mobile.css");
 @import url("styles/iphoneStyle.css");
+@import url("styles/inlineEditable.css");
 @import url("styles/select.css");
 @import url("styles/icons.css");
 @import url("styles/alert.css");
 @import url("styles/message.css");
 @import url("styles/panel.css");
 @import url("styles/progressbar.css");
-@import url("styles/instructionsNotification.css");
-@import url("styles/inlineEditable.css");
 @import url("styles/tag.css");
+@import url("styles/instructionsNotification.css");
