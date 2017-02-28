@@ -42,7 +42,7 @@ define([
             $labelTop: $('<label class="automizy-input2-label-top"></label>'),
             $labelBefore: $('<label class="automizy-input2-label-before"></label>'),
             $input: $('<input type="text" class="automizy-input2-input" />'),
-            $loading: $('<div class="automizy-input2-loading"></div>'),
+            $loading: $('<div class="automizy-input2-loading"><div class="automizy-spinner"><div class="automizy-bounce1"></div><div class="automizy-bounce2"></div><div class="automizy-bounce3"></div></div></div>'),
             $labelAfter: $('<label class="automizy-input2-label-after"></label>'),
             $helpIcon: $('<span class="automizy-input2-help fa fa-question-circle"></span>'),
             $labelBottom: $('<label class="automizy-input2-label-bottom"></label>'),
@@ -801,12 +801,14 @@ define([
     };
     p.loadingOn = function () {
         var t = this;
-        t.d.$loading.show();
+        t.d.$inputCell.ahide();
+        t.d.$loadingCell.ashow();
         return t;
     };
     p.loadingOff = function () {
         var t = this;
-        t.d.$loading.hide();
+        t.d.$loadingCell.ahide();
+        t.d.$inputCell.ashow();
         return t;
     };
     p.buttonLeft = function(buttonLeft){

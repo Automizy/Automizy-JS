@@ -83,19 +83,36 @@ define([
                 }
             });
 
-            /*Save & cancel buttons*/
+            /*Initializing validator if exists*/
+            var validator = inlineInput.validator();
 
+            /*Save & cancel buttons*/
             var saveButton = $A.newButton({
                 icon: 'fa-check',
                 skin: 'simple-orange',
                 click: function () {
-                    if(typeof inlineInput.validator() !== 'undefined'){
-                        if(inlineInput.validate()){
+                    if (typeof inlineInput.validator() !== 'undefined') {
+                        if (inlineInput.validate()) {
+                            /*If input was valid when pressing save/enter*/
                             t.onInlineEditComplete(inlineInput);
                             $(document).off('click', removeFunction);
                         }
                         else {
+                            /*If input was invalid when pressing save/enter*/
                             saveButton.disabled(true);
+                            $(document).off('click', removeFunction);
+                            inlineInput.focus();
+
+                            /*If input becomes invalid, enable save button*/
+                            validator.onInvalid(function () {
+                                saveButton.disable();
+                            });
+
+                            /*If input becomes valid, enable save button*/
+                            validator.onValid(function () {
+                                saveButton.enable();
+                            });
+
                         }
                     }
                     else {
@@ -118,14 +135,16 @@ define([
 
 
             inlineInput.enter(function () {
-                t.onInlineEditComplete(inlineInput);
-                $(document).off('click', removeFunction);
+                saveButton.click();
+                /*
+                 t.onInlineEditComplete(inlineInput);
+                 $(document).off('click', removeFunction);
+                 */
             });
 
 
             /*Saving old value*/
             inlineInput.data('old-value', inlineInput.value());
-
 
 
             /*Fill this array with the selector of elements
@@ -136,6 +155,8 @@ define([
 
             /*Any click in the edit box is ignored*/
             ignoreOutClick.push(inlineInput.d.$inputCell);
+            ignoreOutClick.push(saveButton.widget());
+            //ignoreOutClick.push(inlineInput.d.$inputCell);
 
             switch (inlineInput.type()) {
                 case "date":
@@ -192,7 +213,7 @@ define([
     p.onInlineEditCanceled = function (func) {
         var t = this;
         if (typeof func === 'function') {
-            t.addFunction('onInlineEditCanceled',func);
+            t.addFunction('onInlineEditCanceled', func);
         } else {
             t.runFunctions('onInlineEditCanceled');
             t.hideInlineEdit();
@@ -206,7 +227,7 @@ define([
         t.widget().removeClass("inline-edit-inactive");
     };
 
-    p.isShown = function(){
+    p.isShown = function () {
         return this.widget().hasClass('inline-edit-active');
     };
 
@@ -215,14 +236,17 @@ define([
         var inlineInput = t.inlineInput();
         t.widget().removeClass("inline-edit-active");
         t.widget().addClass("inline-edit-inactive");
-        inlineInput.value(inlineInput.data('old-value'));
+        inlineInput.value(t.value());
         inlineInput.input().blur();
+        inlineInput.hideError();
+        inlineInput.buttonRight().enable();
     };
 
-    p.value = function (value){
+    p.value = function (value) {
         var t = this;
-        if(typeof value !=="undefined"){
+        if (typeof value !== "undefined") {
             t.d.value = value;
+            t.d.inlineInput.value(value);
             return t;
         }
         return t.d.value;
