@@ -4799,6 +4799,8 @@ var $A = {};
                 }
                 t.initParameter(obj);
             }
+
+            t.value(t.inlineInput().value());
         }
 
     };

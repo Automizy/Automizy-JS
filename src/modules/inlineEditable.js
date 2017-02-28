@@ -38,6 +38,8 @@ define([
                 }
                 t.initParameter(obj);
             }
+
+            t.value(t.inlineInput().value());
         }
 
     };
