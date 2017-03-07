@@ -9863,13 +9863,17 @@ var $A = {};
                 t.d.$options.ahide();
             }
             else {
-                if ($(event.target).closest(t.d.$options).length === 0) {
-                    t.d.$options.ahide();
+                console.log("this:")
+                console.log(t)
+                console.log('data:')
+                console.log(event.data)
+                if ($(event.target).closest(event.data.d.$options).length === 0) {
+                    event.data.d.$options.ahide();
                     $(document).off('mousewheel DOMMouseScroll', event.data.hideOptions);
                 }
 
             }
-        }
+        };
 
         p.showOptions = function () {
             var t = this;

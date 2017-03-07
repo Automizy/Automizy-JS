@@ -79,18 +79,16 @@ define([
                 t.d.$options.ahide();
             }
             else {
-                if ($(event.target).closest(t.d.$options).length === 0) {
-                    t.d.$options.ahide();
+                if ($(event.target).closest(event.data.d.$options).length === 0) {
+                    event.data.d.$options.ahide();
                     $(document).off('mousewheel DOMMouseScroll', event.data.hideOptions);
                 }
-
             }
-        }
+        };
 
         p.showOptions = function () {
             var t = this;
             t.d.$options.ashow();
-
             $(document).on('mousewheel DOMMouseScroll', t, t.hideOptions);
         };
 
