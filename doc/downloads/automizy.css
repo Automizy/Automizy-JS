@@ -40,14 +40,13 @@
     opacity: 0.5;
 }
 .automizy-dialog-head{
-    font-size: 16px;
-    line-height: 1.42857143;
-    color: #3e4855;
-    text-align: left;
     position: relative;
     padding: 15px;
     border-bottom: 1px solid #dfe8f1;
     margin: 0;
+    font-size: 16px;
+    color: #3e4855;
+    text-align: left;
 }
 .automizy-dialog-buttons{
     padding:15px;
