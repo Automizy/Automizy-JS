@@ -2342,8 +2342,8 @@ var $A = {};
                 t.domainOrUrl(t.d.value);
             if (i === 'int' && a === true)
                 t.int(t.d.value);
-            if (i === 'num' && a === true)
-                t.num(t.d.value);
+            if (i === 'number' && a === true)
+                t.number(t.d.value);
             if (i === 'minLength' && !isNaN(a))
                 t.minLength(t.d.value, a);
             if (i === 'maxLength' && !isNaN(a))
@@ -9863,22 +9863,16 @@ var $A = {};
                 t.d.$options.ahide();
             }
             else {
-                console.log("this:")
-                console.log(t)
-                console.log('data:')
-                console.log(event.data)
                 if ($(event.target).closest(event.data.d.$options).length === 0) {
                     event.data.d.$options.ahide();
                     $(document).off('mousewheel DOMMouseScroll', event.data.hideOptions);
                 }
-
             }
         };
 
         p.showOptions = function () {
             var t = this;
             t.d.$options.ashow();
-
             $(document).on('mousewheel DOMMouseScroll', t, t.hideOptions);
         };
 

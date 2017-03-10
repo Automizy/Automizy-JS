@@ -122,8 +122,8 @@ define([
                 t.domainOrUrl(t.d.value);
             if (i === 'int' && a === true)
                 t.int(t.d.value);
-            if (i === 'num' && a === true)
-                t.num(t.d.value);
+            if (i === 'number' && a === true)
+                t.number(t.d.value);
             if (i === 'minLength' && !isNaN(a))
                 t.minLength(t.d.value, a);
             if (i === 'maxLength' && !isNaN(a))
