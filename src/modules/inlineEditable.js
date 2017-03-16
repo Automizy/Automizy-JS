@@ -75,8 +75,7 @@ define([
 
                 /*Showing inline editable*/
                 t.showInlineEdit();
-                $(document).on('click', removeFunction);
-                activateHover();
+                $(document).on('mouseup', removeFunction);
             });
 
             /*Hiding on escape key*/
@@ -98,14 +97,12 @@ define([
                         if (inlineInput.validate()) {
                             /*If input was valid when pressing save/enter*/
                             t.onInlineEditComplete(inlineInput);
-                            $(document).off('click', removeFunction);
-                            deactivateHover();
+                            $(document).off('mouseup', removeFunction);
                         }
                         else {
                             /*If input was invalid when pressing save/enter*/
                             saveButton.disabled(true);
-                            $(document).off('click', removeFunction);
-                            deactivateHover();
+                            $(document).off('mouseup', removeFunction);
                             inlineInput.focus();
 
                             /*If input becomes invalid, enable save button*/
@@ -122,8 +119,7 @@ define([
                     }
                     else {
                         t.onInlineEditComplete(inlineInput);
-                        $(document).off('click', removeFunction);
-                        deactivateHover();
+                        $(document).off('mouseup', removeFunction);
                     }
                 }
             });
@@ -135,8 +131,7 @@ define([
                 skin: 'simple-white',
                 click: function () {
                     t.onInlineEditCanceled();
-                    $(document).off('click', removeFunction);
-                    deactivateHover();
+                    $(document).off('mouseup', removeFunction);
                 }
             }).drawTo(inlineInput.d.$inputButtonRightCell);
 
@@ -180,66 +175,22 @@ define([
                     break;
             }
 
-            var over = false;
-
-            function activateHover() {
-                deactivateHover();
-                console.log("hover activated!")
-                for (var i = 0; i < ignoreOutClick.length; i++) {
-                    $(ignoreOutClick[i]).on('mouseover', overOn);
-                    $(ignoreOutClick[i]).on('mouseleave', overOff);
-                }
-            }
-
-            function deactivateHover() {
-                for (var i = 0; i < ignoreOutClick.length; i++) {
-                    $(ignoreOutClick[i]).off('mouseover', overOn);
-                    $(ignoreOutClick[i]).off('mouseleave', overOff);
-                }
-            }
-
-            function overOn() {
-                console.log("over on!")
-                over = true;
-            }
-
-            function overOff() {
-                console.log("over off!")
-                over = false;
-            }
 
             /*Detecting click outside the inline input*/
+
             function removeFunction(event) {
-                console.log(over)
                 var clickedIn = false;
                 /*Iterating through all the ignore selectors*/
                 for (var i = 0; i < ignoreOutClick.length; i++) {
-                    if ((($(event.target).closest(ignoreOutClick[i]).length > 0 || over === true ) && t.widget().hasClass('inline-edit-active'))) {
+                    if ((($(event.target).closest(ignoreOutClick[i]).length > 0 ) && t.widget().hasClass('inline-edit-active'))) {
                         clickedIn = true;
                     }
                 }
                 if (!clickedIn) {
-                    $(document).off('click', removeFunction);
-                    deactivateHover();
+                    $(document).off('mouseup', removeFunction);
                     t.onInlineEditCanceled();
                 }
             }
-
-            /**
-             function checker(event) {
-                var clickedIn = false;
-                var ignoreOutClick = ["#ui-datepicker-div"];
-                for (var i = 0; i < ignoreOutClick.length; i++) {
-                    if (!($(event.target).closest(ignoreOutClick[i]).length == false && date.widget().hasClass('inline-edit-active'))) {
-                        clickedIn = true;
-                    }
-                }
-                if (!clickedIn) {
-                    console.log('click out')
-                }
-            }
-             $(document).on('click', checker);
-             */
 
             t.d.inlineInput = inlineInput;
             inlineInput.drawTo(t.d.$widget);
