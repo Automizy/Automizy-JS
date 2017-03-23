@@ -1726,6 +1726,16 @@ var $A = {};
         }
         return t;
     };
+    p.forceClose = function (disableEvents) {
+        var t = this;
+        if(disableEvents === false){
+            return t;
+        }
+        t.beforeClose();
+        t.hide();
+        t.runFunctions('close');
+        return t;
+    };
     p.beforeClose = function (func, name, life) {
         var t = this;
         if (typeof func === 'function') {
