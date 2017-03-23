@@ -3753,13 +3753,14 @@ var $A = {};
             $buttonTopBox: $('<div class="automizy-input2-top-button-box automizy-hide"></div>'),
 
             $labelBeforeBox: $('<div class="automizy-input2-td automizy-input2-label-before-box automizy-hide"></div>'),
-            
+
             $inputTable: $('<table cellpadding="0" cellspacing="0" border="0" class="automizy-input2-table"></table>'),
 
             $inputRow: $('<tr class="automizy-input2-tr"></tr>'),
             $inputButtonLeftCell: $('<td class="automizy-input2-td automizy-input2-button-left-cell automizy-hide"></td>'),
             $inputIconLeftCell: $('<td class="automizy-input2-td automizy-input2-icon-left-cell automizy-hide"></td>'),
             $inputCell: $('<td class="automizy-input2-td automizy-input2-input-cell"></td>'),
+            $colorPickerCell: $('<td class="automizy-input2-td automizy-input2-colorpicker-input-cell automizy-hide">&nbsp;</td>'),
             $loadingCell: $('<td class="automizy-input2-td automizy-input2-input-loading-cell automizy-hide"></td>'),
             $inputIconRightCell: $('<td class="automizy-input2-td automizy-input2-icon-right-cell automizy-hide"></td>'),
             $inputButtonRightCell: $('<td class="automizy-input2-td automizy-input2-button-right-cell automizy-hide"></td>'),
@@ -3779,6 +3780,7 @@ var $A = {};
             $labelTop: $('<label class="automizy-input2-label-top"></label>'),
             $labelBefore: $('<label class="automizy-input2-label-before"></label>'),
             $input: $('<input type="text" class="automizy-input2-input" />'),
+            $colorPickerInput: $('<input type="color" class="automizy-input2-colorpicker-input" />'),
             $loading: $('<div class="automizy-input2-loading"><div class="automizy-spinner"><div class="automizy-bounce1"></div><div class="automizy-bounce2"></div><div class="automizy-bounce3"></div></div></div>'),
             $labelAfter: $('<label class="automizy-input2-label-after"></label>'),
             $helpIcon: $('<span class="automizy-input2-help fa fa-question-circle"></span>'),
@@ -3796,11 +3798,11 @@ var $A = {};
             readonly: false,
             newRow: true,
             disabled: false,
-            buttonLeft:false,
-            buttonRight:false,
-            buttonTop:false,
-            buttonBottom:false,
-            tabindex:false,
+            buttonLeft: false,
+            buttonRight: false,
+            buttonTop: false,
+            buttonBottom: false,
+            tabindex: false,
             labelBeforeWidth: '',
             value: '',
             placeholder: '',
@@ -3811,6 +3813,7 @@ var $A = {};
             labelAfter: '',
             labelBottom: '',
             accept: [],
+            attachColorPicker: false,
             validate: function () {
             },
             validationEvents: '',
@@ -3844,6 +3847,8 @@ var $A = {};
         t.d.$inputButtonLeftCell.appendTo(t.d.$inputRow);
         t.d.$inputIconLeftCell.appendTo(t.d.$inputRow);
         t.d.$inputCell.appendTo(t.d.$inputRow);
+        t.d.$colorPickerCell.appendTo(t.d.$inputRow);
+        t.d.$colorPickerInput.appendTo(t.d.$colorPickerCell);
         t.d.$loadingCell.appendTo(t.d.$inputRow);
         t.d.$inputIconRightCell.appendTo(t.d.$inputRow);
         t.d.$inputButtonRightCell.appendTo(t.d.$inputRow);
@@ -3867,7 +3872,6 @@ var $A = {};
         t.d.$labelAfter.appendTo(t.d.$labelAfterCell).attr('for', t.d.inputId);
         t.d.$helpIcon.appendTo(t.d.$helpIconCell);
         t.d.$labelBottom.appendTo(t.d.$labelBottomBox).attr('for', t.d.inputId);
-
 
         t.d.$widget.attr('type', 'text').attr('id', t.id()).addClass('automizy-skin-' + t.d.skin);
         t.setupJQueryEvents();
@@ -3904,6 +3908,10 @@ var $A = {};
             }
             if (typeof obj.checked !== 'undefined') {
                 t.checked(obj.checked);
+            }
+
+            if (typeof obj.attachColorPicker !== 'undefined') {
+                t.attachColorPicker(obj.attachColorPicker);
             }
             if (typeof obj.click !== 'undefined') {
                 t.click(obj.click);
@@ -4039,9 +4047,14 @@ var $A = {};
             }
             t.initParameter(obj);
         }
+
+        //additional initializations after parameter object is parsed
+
+        //initializing automizySelect if necessary
         if (t.d.automizySelect) {
             t.automizySelect();
         }
+
     };
 
     var p = Input2.prototype;
@@ -4291,9 +4304,9 @@ var $A = {};
         var t = this;
         if (typeof autocomplete !== 'undefined') {
             t.d.autocomplete = $A.parseBoolean(autocomplete);
-            if(t.d.autocomplete){
+            if (t.d.autocomplete) {
                 t.input().removeAttr('autocomplete');
-            }else{
+            } else {
                 t.input().attr('autocomplete', 'off')
             }
             return t;
@@ -4304,9 +4317,9 @@ var $A = {};
         var t = this;
         if (typeof autocorrect !== 'undefined') {
             t.d.autocorrect = $A.parseBoolean(autocorrect);
-            if(t.d.autocorrect){
+            if (t.d.autocorrect) {
                 t.input().removeAttr('autocorrect');
-            }else{
+            } else {
                 t.input().attr('autocorrect', 'off')
             }
             return t;
@@ -4317,9 +4330,9 @@ var $A = {};
         var t = this;
         if (typeof autocapitalize !== 'undefined') {
             t.d.autocapitalize = $A.parseBoolean(autocapitalize);
-            if(t.d.autocapitalize){
+            if (t.d.autocapitalize) {
                 t.input().removeAttr('autocapitalize');
-            }else{
+            } else {
                 t.input().attr('autocapitalize', 'off')
             }
             return t;
@@ -4330,9 +4343,9 @@ var $A = {};
         var t = this;
         if (typeof spellcheck !== 'undefined') {
             t.d.spellcheck = $A.parseBoolean(spellcheck);
-            if(t.d.spellcheck){
+            if (t.d.spellcheck) {
                 t.input().removeAttr('spellcheck');
-            }else{
+            } else {
                 t.input().attr('spellcheck', 'false')
             }
             return t;
@@ -4551,10 +4564,10 @@ var $A = {};
         t.d.$inputCell.ashow();
         return t;
     };
-    p.buttonLeft = function(buttonLeft){
+    p.buttonLeft = function (buttonLeft) {
         var t = this;
         if (typeof buttonLeft !== 'undefined') {
-            if(t.d.buttonLeft !== false && t.d.buttonLeft.remove === 'function'){
+            if (t.d.buttonLeft !== false && t.d.buttonLeft.remove === 'function') {
                 t.d.buttonLeft.remove();
             }
             t.d.buttonLeft = buttonLeft;
@@ -4576,10 +4589,10 @@ var $A = {};
         }
         return t.d.buttonLeft;
     };
-    p.buttonRight = function(buttonRight){
+    p.buttonRight = function (buttonRight) {
         var t = this;
         if (typeof buttonRight !== 'undefined') {
-            if(t.d.buttonRight !== false && t.d.buttonRight.remove === 'function'){
+            if (t.d.buttonRight !== false && t.d.buttonRight.remove === 'function') {
                 t.d.buttonRight.remove();
             }
             t.d.buttonRight = buttonRight;
@@ -4599,10 +4612,10 @@ var $A = {};
         }
         return t.d.buttonRight;
     };
-    p.buttonTop = function(buttonTop){
+    p.buttonTop = function (buttonTop) {
         var t = this;
         if (typeof buttonTop !== 'undefined') {
-            if(t.d.buttonTop !== false && t.d.buttonTop.remove === 'function'){
+            if (t.d.buttonTop !== false && t.d.buttonTop.remove === 'function') {
                 t.d.buttonTop.remove();
             }
             t.d.buttonTop = buttonTop;
@@ -4622,10 +4635,10 @@ var $A = {};
         }
         return t.d.buttonTop;
     };
-    p.buttonBottom = function(buttonBottom){
+    p.buttonBottom = function (buttonBottom) {
         var t = this;
         if (typeof buttonBottom !== 'undefined') {
-            if(t.d.buttonBottom !== false && t.d.buttonBottom.remove === 'function'){
+            if (t.d.buttonBottom !== false && t.d.buttonBottom.remove === 'function') {
                 t.d.buttonTop.remove();
             }
             t.d.buttonBottom = buttonBottom;
@@ -4726,32 +4739,32 @@ var $A = {};
         t.d.$inputIconRightCell.click();
         return t;
     };
-    p.options = function(){
+    p.options = function () {
         var select = this.automizySelect();
         select.options.apply(select, arguments || []);
         return this;
     };
-    p.addOption = function(){
+    p.addOption = function () {
         var select = this.automizySelect();
         select.addOption.apply(select, arguments || []);
         return this;
     };
-    p.addOptions = function(){
+    p.addOptions = function () {
         var select = this.automizySelect();
         select.addOptions.apply(select, arguments || []);
         return this;
     };
-    p.removeOption = function(){
+    p.removeOption = function () {
         var select = this.automizySelect();
         select.removeOption.apply(select, arguments || []);
         return this;
     };
-    p.removeOptions = function(){
+    p.removeOptions = function () {
         var select = this.automizySelect();
         select.removeOptions.apply(select, arguments || []);
         return this;
     };
-    p.multiple = function(){
+    p.multiple = function () {
         var select = this.automizySelect();
         select.multiple.apply(select, arguments || []);
         return this;
@@ -4760,7 +4773,7 @@ var $A = {};
         this.d.automizySelect = this.input().automizySelect();
         return this.d.automizySelect;
     };
-    p.inlineEditable = function (){
+    p.inlineEditable = function () {
         this.d.inlineEditable = $A.newInlineEditable(this);
         return this.d.inlineEditable;
     };
@@ -4768,14 +4781,69 @@ var $A = {};
     //Adding unit or any text in the right side of the input field
     p.measure = function (measure) {
         var t = this;
-        if(typeof measure !== 'undefined') {
+        if (typeof measure !== 'undefined') {
             t.d.measure = measure;
-            t.d.$inputCell.attr('data-measure',measure);
+            t.d.$inputCell.attr('data-measure', measure);
             return t;
         }
         return t.d.measure;
     };
 
+    p.showColorPicker = function () {
+        var t = this;
+        t.d.$widget.addClass('has-colorpicker');
+        t.d.$colorPickerCell.removeClass('automizy-hide');
+        return t;
+    };
+
+    p.hideColorPicker = function () {
+        var t = this;
+        t.d.$widget.removeClass('has-colorpicker');
+        t.d.$colorPickerCell.addClass('automizy-hide');
+        return t;
+    };
+
+    p.colorPickerValue = function (value) {
+        var t = this;
+        if (typeof value !== 'undefined') {
+            t.d.$colorPickerInput.val(value);
+
+            return t;
+        }
+        return t.d.$colorPickerInput.val();
+    };
+
+    //ues to connect the colorpicker input with the main input
+    p.attachColorPicker = function (attach) {
+        var t = this;
+        if (typeof attach !== 'undefined') {
+            attach = $A.parseBoolean(attach);
+            t.d.attachColorPicker = attach;
+
+            if (attach) {
+                t.showColorPicker();
+
+                t.d.$colorPickerInput.on('change', colorChangedInPicker)
+                t.d.$input.on('change',colorChangedInInput);
+            }
+            else {
+                t.hideColorPicker();
+
+                t.d.$colorPickerInput.off('change', colorChangedInPicker)
+                t.d.$input.off('change',colorChangedInInput);
+            }
+
+            function colorChangedInPicker() {
+                t.value(t.colorPickerValue());
+            }
+            function colorChangedInInput() {
+                t.colorPickerValue(t.val());
+            }
+
+            return t;
+        }
+        return t.d.attachColorPicker;
+    };
 
     $A.initBasicFunctions(Input2, "Input2", ["change", "keyup", "enter", "focus", "blur", "click"]);
 })();

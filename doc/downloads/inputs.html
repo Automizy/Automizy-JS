@@ -7,11 +7,6 @@
     <script src="automizy.js"></script>
     <link rel="stylesheet" href="fontawesome/css/font-awesome.css">
     <link rel="stylesheet" href="automizy.css">
-    <style>
-        .automizy-input2-td.automizy-input2-input-cell::after{
-            content: 'px';
-        }
-    </style>
     <script>
         $(function () {
             window.input1 = $A.newInput2()
@@ -31,6 +26,13 @@
                 .enter(function () {
                     this.validate();
                 });
+
+            window.colorInput = $A.newInput2()
+                .drawTo('body')
+                .labelBefore('Before label')
+                .labelAfter('After label')
+                .iconLeft('fa-users')
+                .attachColorPicker(true);
 
 
             window.input2 = $A.newInput2()

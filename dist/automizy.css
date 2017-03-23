@@ -1234,6 +1234,28 @@ textarea.automizy-input2-input {
 .automizy-input2 .automizy-input2-input-cell[data-measure] input.automizy-input2-input{
    padding-right: 50px;
 }
+.automizy-input2.has-colorpicker input{
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: none;
+}
+.automizy-input2 .automizy-input2-td.automizy-input2-colorpicker-input-cell{
+    position: relative;
+    min-width: 34px;
+}
+.automizy-input2 .automizy-input2-td.automizy-input2-colorpicker-input-cell input[type="color"].automizy-input2-colorpicker-input{
+    height: 42px;
+    width: 38px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    position: absolute;
+    top: -4px;
+    left: 0px;
+    margin-left: -2px;
+}
 .automizy-input2 input[type='checkbox'], .automizy-input2 input[type='radio'] {
     background-image: url(images/checkbox-radio.png);
     background-repeat: no-repeat;

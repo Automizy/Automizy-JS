@@ -27,6 +27,13 @@
                     this.validate();
                 });
 
+            window.colorInput = $A.newInput2()
+                .drawTo('body')
+                .labelBefore('Before label')
+                .labelAfter('After label')
+                .iconLeft('fa-users')
+                .attachColorPicker(true);
+
 
             window.input2 = $A.newInput2()
                 .drawTo('body')
