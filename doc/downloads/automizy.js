@@ -1729,11 +1729,12 @@ var $A = {};
     p.forceClose = function (disableEvents) {
         var t = this;
         if(disableEvents === false){
+            t.beforeClose();
+            t.hide();
+            t.runFunctions('close');
             return t;
         }
-        t.beforeClose();
         t.hide();
-        t.runFunctions('close');
         return t;
     };
     p.beforeClose = function (func, name, life) {
