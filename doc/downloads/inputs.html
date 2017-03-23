@@ -7,6 +7,11 @@
     <script src="automizy.js"></script>
     <link rel="stylesheet" href="fontawesome/css/font-awesome.css">
     <link rel="stylesheet" href="automizy.css">
+    <style>
+        .automizy-input2-td.automizy-input2-input-cell::after{
+            content: 'px';
+        }
+    </style>
     <script>
         $(function () {
             window.input1 = $A.newInput2()
@@ -22,6 +27,7 @@
                     alert('Click right');
                 })
                 .validator('notEmpty')
+                .measure('px')
                 .enter(function () {
                     this.validate();
                 });

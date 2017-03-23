@@ -22,6 +22,7 @@
                     alert('Click right');
                 })
                 .validator('notEmpty')
+                .measure('px')
                 .enter(function () {
                     this.validate();
                 });

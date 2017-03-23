@@ -249,6 +249,9 @@ define([
             if (typeof obj.focus !== 'undefined') {
                 t.focus(obj.focus);
             }
+            if (typeof obj.measure !== 'undefined') {
+                t.measure(obj.measure);
+            }
             if (typeof obj.buttonLeft !== 'undefined') {
                 t.buttonLeft(obj.buttonLeft);
             }
@@ -1023,7 +1026,18 @@ define([
     p.inlineEditable = function (){
         this.d.inlineEditable = $A.newInlineEditable(this);
         return this.d.inlineEditable;
-    }
+    };
+
+    //Adding unit or any text in the right side of the input field
+    p.measure = function (measure) {
+        var t = this;
+        if(typeof measure !== 'undefined') {
+            t.d.measure = measure;
+            t.d.$inputCell.attr('data-measure',measure);
+            return t;
+        }
+        return t.d.measure;
+    };
 
 
     $A.initBasicFunctions(Input2, "Input2", ["change", "keyup", "enter", "focus", "blur", "click"]);
