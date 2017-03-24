@@ -3760,9 +3760,9 @@ var $A = {};
             $inputButtonLeftCell: $('<td class="automizy-input2-td automizy-input2-button-left-cell automizy-hide"></td>'),
             $inputIconLeftCell: $('<td class="automizy-input2-td automizy-input2-icon-left-cell automizy-hide"></td>'),
             $inputCell: $('<td class="automizy-input2-td automizy-input2-input-cell"></td>'),
+            $loadingCell: $('<td class="automizy-input2-td automizy-input2-input-loading-cell automizy-hide"></td>'),
             $spinnerCell: $('<td class="automizy-input2-td automizy-input2-spinner-cell automizy-hide"></td>'),
             $colorPickerCell: $('<td class="automizy-input2-td automizy-input2-colorpicker-input-cell automizy-hide">&nbsp;</td>'),
-            $loadingCell: $('<td class="automizy-input2-td automizy-input2-input-loading-cell automizy-hide"></td>'),
             $inputIconRightCell: $('<td class="automizy-input2-td automizy-input2-icon-right-cell automizy-hide"></td>'),
             $inputButtonRightCell: $('<td class="automizy-input2-td automizy-input2-button-right-cell automizy-hide"></td>'),
             $labelAfterCell: $('<td class="automizy-input2-td automizy-input2-label-after-cell automizy-hide"></td>'),
@@ -3852,12 +3852,12 @@ var $A = {};
         t.d.$inputButtonLeftCell.appendTo(t.d.$inputRow);
         t.d.$inputIconLeftCell.appendTo(t.d.$inputRow);
         t.d.$inputCell.appendTo(t.d.$inputRow);
+        t.d.$loadingCell.appendTo(t.d.$inputRow);
         t.d.$spinnerCell.appendTo(t.d.$inputRow);
         t.d.$spinnerUp.appendTo(t.d.$spinnerCell);
         t.d.$spinnerDown.appendTo(t.d.$spinnerCell);
         t.d.$colorPickerCell.appendTo(t.d.$inputRow);
         t.d.$colorPickerInput.appendTo(t.d.$colorPickerCell);
-        t.d.$loadingCell.appendTo(t.d.$inputRow);
         t.d.$inputIconRightCell.appendTo(t.d.$inputRow);
         t.d.$inputButtonRightCell.appendTo(t.d.$inputRow);
         t.d.$labelAfterCell.appendTo(t.d.$inputRow);
@@ -4801,14 +4801,14 @@ var $A = {};
 
     p.showColorPicker = function () {
         var t = this;
-        t.d.$widget.addClass('has-colorpicker');
+        t.d.$widget.addClass('automizy-input2-has-colorpicker');
         t.d.$colorPickerCell.removeClass('automizy-hide');
         return t;
     };
 
     p.hideColorPicker = function () {
         var t = this;
-        t.d.$widget.removeClass('has-colorpicker');
+        t.d.$widget.removeClass('automizy-input2-has-colorpicker');
         t.d.$colorPickerCell.addClass('automizy-hide');
         return t;
     };
@@ -4864,11 +4864,11 @@ var $A = {};
             t.d.enableCustomSpinner = enable;
 
             if (enable) {
-                t.d.$widget.addClass('has-custom-spinner');
+                t.d.$widget.addClass('automizy-input2-has-custom-spinner');
                 t.d.$spinnerCell.removeClass('automizy-hide');
             }
             else {
-                t.d.$widget.removeClass('has-custom-spinner');
+                t.d.$widget.removeClass('automizy-input2-has-custom-spinner');
                 t.d.$spinnerCell.addClass('automizy-hide');
 
             }
