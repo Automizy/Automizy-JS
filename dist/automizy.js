@@ -4065,6 +4065,7 @@ var $A = {};
             t.automizySelect();
         }
 
+
     };
 
     var p = Input2.prototype;
@@ -4427,6 +4428,10 @@ var $A = {};
                 t.d.createFunctions.push(function () {
                     $A.skin(t);
                 });
+            } else if (type === 'number') {
+                if (isNaN(parseInt(t.val()))) {
+                    t.val(0);
+                }
             }
             return t;
         }
@@ -4861,16 +4866,35 @@ var $A = {};
         var t = this;
         if (typeof enable !== 'undefined') {
             enable = $A.parseBoolean(enable);
-            t.d.enableCustomSpinner = enable;
 
-            if (enable) {
-                t.d.$widget.addClass('automizy-input2-has-custom-spinner');
-                t.d.$spinnerCell.removeClass('automizy-hide');
-            }
-            else {
-                t.d.$widget.removeClass('automizy-input2-has-custom-spinner');
-                t.d.$spinnerCell.addClass('automizy-hide');
+            if (enable !== t.d.enableCustomSpinner) {
+                t.d.enableCustomSpinner = enable;
 
+                if (enable) {
+                    t.d.$widget.addClass('automizy-input2-has-custom-spinner');
+                    t.d.$spinnerCell.removeClass('automizy-hide');
+
+                    t.d.$spinnerUp.on('click', spinnerUpFunction);
+                    t.d.$spinnerDown.on('click', spinnerDownFunction);
+
+                }
+                else {
+                    t.d.$widget.removeClass('automizy-input2-has-custom-spinner');
+                    t.d.$spinnerCell.addClass('automizy-hide');
+
+
+                    t.d.$spinnerUp.off('click', spinnerUpFunction);
+                    t.d.$spinnerDown.off('click', spinnerDownFunction);
+
+                }
+
+                function spinnerUpFunction() {
+                    t.value(parseInt(t.value()) + 1)
+                }
+
+                function spinnerDownFunction() {
+                    t.value(parseInt(t.value()) - 1)
+                }
             }
 
             return t;
