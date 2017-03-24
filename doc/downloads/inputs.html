@@ -6,9 +6,39 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="automizy.js"></script>
     <link rel="stylesheet" href="fontawesome/css/font-awesome.css">
+    <!--<link rel="stylesheet" href="automizy.css">-->
     <link rel="stylesheet" href="automizy.css">
+    <link rel="stylesheet" href="../src/styles/input2.css">
     <script>
         $(function () {
+            window.allInOne = $A.newInput2()
+                .drawTo('body')
+                .labelBefore('Before label')
+                .labelAfter('After label')
+                .labelTop('Top label')
+                .labelBottom('Bottom label')
+                .iconLeft('fa-users')
+                .iconRight('fa-paper-plane-o')
+                .iconLeftClick(function () {
+                    alert('Click left');
+                })
+                .iconRightClick(function () {
+                    alert('Click right');
+                })
+                .buttonLeft($A.newButton({
+                    text: 'Button'
+                }))
+                .buttonRight($A.newButton({
+                    icon: 'fa-eye'
+                }))
+                .validator('notEmpty')
+                .measure('px')
+                .showColorPicker(true)
+                .help('help me!')
+                .enter(function () {
+                    this.validate();
+                });
+
             window.input1 = $A.newInput2()
                 .drawTo('body')
                 .labelBefore('Before label')
@@ -29,10 +59,25 @@
 
             window.colorInput = $A.newInput2()
                 .drawTo('body')
-                .labelBefore('Before label')
+                .labelBefore('Attached color picker')
                 .labelAfter('After label')
                 .iconLeft('fa-users')
                 .attachColorPicker(true);
+
+            window.colorInput2 = $A.newInput2()
+                .drawTo('body')
+                .labelBefore('Unattached color picker')
+                .labelAfter('After label')
+                .iconLeft('fa-users')
+                .showColorPicker(true);
+
+
+            window.numberInput = $A.newInput2()
+                .drawTo('body')
+                .type('number')
+                .labelBefore('Number with spinner')
+                //.iconRight('fa-users')
+                .enableCustomSpinner(true)
 
 
             window.input2 = $A.newInput2()

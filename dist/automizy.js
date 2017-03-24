@@ -3760,6 +3760,7 @@ var $A = {};
             $inputButtonLeftCell: $('<td class="automizy-input2-td automizy-input2-button-left-cell automizy-hide"></td>'),
             $inputIconLeftCell: $('<td class="automizy-input2-td automizy-input2-icon-left-cell automizy-hide"></td>'),
             $inputCell: $('<td class="automizy-input2-td automizy-input2-input-cell"></td>'),
+            $spinnerCell: $('<td class="automizy-input2-td automizy-input2-spinner-cell automizy-hide"></td>'),
             $colorPickerCell: $('<td class="automizy-input2-td automizy-input2-colorpicker-input-cell automizy-hide">&nbsp;</td>'),
             $loadingCell: $('<td class="automizy-input2-td automizy-input2-input-loading-cell automizy-hide"></td>'),
             $inputIconRightCell: $('<td class="automizy-input2-td automizy-input2-icon-right-cell automizy-hide"></td>'),
@@ -3785,6 +3786,9 @@ var $A = {};
             $labelAfter: $('<label class="automizy-input2-label-after"></label>'),
             $helpIcon: $('<span class="automizy-input2-help fa fa-question-circle"></span>'),
             $labelBottom: $('<label class="automizy-input2-label-bottom"></label>'),
+
+            $spinnerUp: $('<div class="automizy-input2-spinner-up fa fa-chevron-up">'),
+            $spinnerDown: $('<div class="automizy-input2-spinner-down fa fa-chevron-down">'),
 
             type: 'text',
             triggers: {
@@ -3814,6 +3818,7 @@ var $A = {};
             labelBottom: '',
             accept: [],
             attachColorPicker: false,
+            enableCustomSpinner: false,
             validate: function () {
             },
             validationEvents: '',
@@ -3847,6 +3852,9 @@ var $A = {};
         t.d.$inputButtonLeftCell.appendTo(t.d.$inputRow);
         t.d.$inputIconLeftCell.appendTo(t.d.$inputRow);
         t.d.$inputCell.appendTo(t.d.$inputRow);
+        t.d.$spinnerCell.appendTo(t.d.$inputRow);
+        t.d.$spinnerUp.appendTo(t.d.$spinnerCell);
+        t.d.$spinnerDown.appendTo(t.d.$spinnerCell);
         t.d.$colorPickerCell.appendTo(t.d.$inputRow);
         t.d.$colorPickerInput.appendTo(t.d.$colorPickerCell);
         t.d.$loadingCell.appendTo(t.d.$inputRow);
@@ -3909,9 +3917,11 @@ var $A = {};
             if (typeof obj.checked !== 'undefined') {
                 t.checked(obj.checked);
             }
-
             if (typeof obj.attachColorPicker !== 'undefined') {
                 t.attachColorPicker(obj.attachColorPicker);
+            }
+            if (typeof obj.enableCustomSpinner !== 'undefined') {
+                t.enableCustomSpinner(obj.enableCustomSpinner);
             }
             if (typeof obj.click !== 'undefined') {
                 t.click(obj.click);
@@ -4813,7 +4823,7 @@ var $A = {};
         return t.d.$colorPickerInput.val();
     };
 
-    //ues to connect the colorpicker input with the main input
+    //used to connect the colorpicker input with the main input
     p.attachColorPicker = function (attach) {
         var t = this;
         if (typeof attach !== 'undefined') {
@@ -4824,18 +4834,19 @@ var $A = {};
                 t.showColorPicker();
 
                 t.d.$colorPickerInput.on('change', colorChangedInPicker)
-                t.d.$input.on('change',colorChangedInInput);
+                t.d.$input.on('change', colorChangedInInput);
             }
             else {
                 t.hideColorPicker();
 
                 t.d.$colorPickerInput.off('change', colorChangedInPicker)
-                t.d.$input.off('change',colorChangedInInput);
+                t.d.$input.off('change', colorChangedInInput);
             }
 
             function colorChangedInPicker() {
                 t.value(t.colorPickerValue());
             }
+
             function colorChangedInInput() {
                 t.colorPickerValue(t.val());
             }
@@ -4843,6 +4854,28 @@ var $A = {};
             return t;
         }
         return t.d.attachColorPicker;
+    };
+
+    //show custom spinner on number type inputs
+    p.enableCustomSpinner = function (enable) {
+        var t = this;
+        if (typeof enable !== 'undefined') {
+            enable = $A.parseBoolean(enable);
+            t.d.enableCustomSpinner = enable;
+
+            if (enable) {
+                t.d.$widget.addClass('has-custom-spinner');
+                t.d.$spinnerCell.removeClass('automizy-hide');
+            }
+            else {
+                t.d.$widget.removeClass('has-custom-spinner');
+                t.d.$spinnerCell.addClass('automizy-hide');
+
+            }
+
+            return t;
+        }
+        return t.d.enableCustomSpinner;
     };
 
     $A.initBasicFunctions(Input2, "Input2", ["change", "keyup", "enter", "focus", "blur", "click"]);
