@@ -111,6 +111,14 @@
     display: inline-block;
     box-sizing: border-box;
 }
+.automizy-button .automizy-button-fileupload-input{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0.01;
+}
 .automizy-button.automizy-skin-nobox a{
     color:inherit;
 }

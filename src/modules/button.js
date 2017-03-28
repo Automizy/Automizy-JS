@@ -12,7 +12,7 @@ define([
             $widgetButton: $('<a href="javascript:;"></a>'),
             $text: $('<span class="automizy-button-text"></span>'),
             $icon: $('<span class="automizy-button-icon"></span>'),
-            $badge:$('<span class="automizy-button-badge"></span>'),
+            $badge: $('<span class="automizy-button-badge"></span>'),
             iconPosition: 'left',
             text: 'My Button',
             title: '',
@@ -23,8 +23,9 @@ define([
             hasObject: false,
             newRow: false,
             disabled: false,
-            badge:{
-                active:false
+            filePicker: false,
+            badge: {
+                active: false
             },
             triggers: {
                 click: 0
@@ -102,6 +103,9 @@ define([
             if (typeof obj.badge !== 'undefined') {
                 t.badge(obj.badge);
             }
+            if (typeof obj.filePicker !== 'undefined') {
+                t.filePicker(obj.filePicker);
+            }
             t.initParameter(obj);
         }
 
@@ -178,7 +182,7 @@ define([
         var t = this;
         if (typeof href !== 'undefined') {
             t.d.href = href;
-            if(t.d.href === false){
+            if (t.d.href === false) {
                 t.d.$widgetButton.removeAttr('href');
             } else {
                 t.d.$widgetButton.attr('href', href);
@@ -237,9 +241,9 @@ define([
             active = $A.parseBoolean(active);
             t.d.active = active;
 
-            if(t.d.active === true){
+            if (t.d.active === true) {
                 t.d.$widget.addClass("automizy-active");
-            }else{
+            } else {
                 t.d.$widget.removeClass("automizy-active");
             }
 
@@ -298,10 +302,10 @@ define([
         return t;
     };
 
-    p.badge = function(badge){
+    p.badge = function (badge) {
         var t = this;
 
-        if(typeof badge !== 'undefined') {
+        if (typeof badge !== 'undefined') {
             if (typeof badge === 'array' || typeof badge === 'object') {
                 t.d.badge.active = true;
                 if (typeof badge.content !== 'undefined') {
@@ -313,27 +317,27 @@ define([
                 }
                 if (typeof badge.position !== 'undefined') {
                     t.d.badge.position = badge.position;
-                    if(typeof t.d.badge.position === 'array' || typeof t.d.badge.position === 'object'){
-                        if(typeof t.d.badge.position.top !== 'undefined'){
-                            if(typeof t.d.badge.position.top === 'number'){
+                    if (typeof t.d.badge.position === 'array' || typeof t.d.badge.position === 'object') {
+                        if (typeof t.d.badge.position.top !== 'undefined') {
+                            if (typeof t.d.badge.position.top === 'number') {
                                 t.d.badge.position.top = t.d.badge.position.top + 'px';
                             }
                             t.d.$badge.css('top', t.d.badge.position.top);
                         }
-                        if(typeof t.d.badge.position.left !== 'undefined'){
-                            if(typeof t.d.badge.position.left === 'number'){
+                        if (typeof t.d.badge.position.left !== 'undefined') {
+                            if (typeof t.d.badge.position.left === 'number') {
                                 t.d.badge.position.left = t.d.badge.position.left + 'px';
                             }
                             t.d.$badge.css('left', t.d.badge.position.left);
                         }
-                        if(typeof t.d.badge.position.right !== 'undefined'){
-                            if(typeof t.d.badge.position.right === 'number'){
+                        if (typeof t.d.badge.position.right !== 'undefined') {
+                            if (typeof t.d.badge.position.right === 'number') {
                                 t.d.badge.position.right = t.d.badge.position.right + 'px';
                             }
                             t.d.$badge.css('right', t.d.badge.position.right);
                         }
-                        if(typeof t.d.badge.position.bottom !== 'undefined'){
-                            if(typeof t.d.badge.position.bottom === 'number'){
+                        if (typeof t.d.badge.position.bottom !== 'undefined') {
+                            if (typeof t.d.badge.position.bottom === 'number') {
                                 t.d.badge.position.bottom = t.d.badge.position.bottom + 'px';
                             }
                             t.d.$badge.css('bottom', t.d.badge.position.bottom);
@@ -343,12 +347,12 @@ define([
                 if (typeof badge.active !== 'undefined') {
                     t.d.badge.active = $A.parseBoolean(badge.active);
                 }
-            }else{
+            } else {
                 t.d.badge.active = $A.parseBoolean(badge);
             }
-            if(t.d.badge.active){
+            if (t.d.badge.active) {
                 t.d.$badge.show();
-            }else{
+            } else {
                 t.d.$badge.hide();
             }
             return t;
@@ -400,6 +404,30 @@ define([
             }
         }
         return t.d.iconPosition;
+    };
+
+    p.filePicker = function (filePicker) {
+        var t = this;
+        if (typeof filePicker !== "undefined") {
+            filePicker = $A.parseBoolean(filePicker);
+
+            if (filePicker !== t.d.filePicker) {
+                t.d.filePicker = filePicker;
+
+                if(filePicker){
+                    var $input = $('<input class="automizy-button-fileupload-input" type="file">');
+                    $input.appendTo(t.d.$widgetButton);
+                    t.d.input = $input;
+                }
+                else {
+                    t.d.input.remove();
+                    delete t.d.input;
+                }
+
+                return t;
+            }
+        }
+        return t.d.filePicker;
     };
 
 
