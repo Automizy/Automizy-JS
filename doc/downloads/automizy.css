@@ -89,7 +89,6 @@
     border-top:none;
     text-align:center;
 }
-
 .automizy-button {
     display: inline-block;
     position: relative;
@@ -461,7 +460,6 @@
 .automizy-button-badge:empty{
     display: none !important;
 }
-
 .automizy-input {
     display: inline-block;
     position: relative;
@@ -1405,7 +1403,6 @@ textarea.automizy-input2-input {
 .automizy-input2 td.automizy-hide {
     display: none !important;
 }
-
 .automizy-form .automizy-form-subtitle{
     margin-bottom: 10px;
 }
@@ -1484,7 +1481,6 @@ textarea.automizy-input2-input {
     color: #2b2f33;
     border-color: #DCD8E7;
 }
-
 .clr {
     clear: both;
 }
@@ -1659,7 +1655,6 @@ textarea.automizy-input2-input {
 .automizy-skin-progress-bar .automizy-progress-bar-close-tab:hover{
     background-color: #669138;
 }
-
 .automizy-table-box {
     width: 100%;
     max-width: 100%;
@@ -2180,7 +2175,6 @@ textarea.automizy-input2-input {
     color: #414C59;
     font-family: Segoe UI, Helvetica, Arial, sans-serif;
 }
-
 .automizy-noselect {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -2304,7 +2298,6 @@ td.automizy-hide{
     clear: both;
     display: block;
 }
-
 .automizy-mobile .automizy-dialog-box,
 .automizy-mobile .automizy-input,
 .automizy-mobile .automizy-input-box,
@@ -2449,7 +2442,6 @@ td.automizy-hide{
         min-width:0;
     }
 }
-
 .iPhoneCheckContainer {
     -webkit-transform:translate3d(0,0,0);
     position: relative;
@@ -2597,7 +2589,6 @@ label.iPhoneCheckLabelOff span {
     border-bottom-right-radius: 0;
     border-right: none;
 }
-
 .automizy-inline-editable.inline-edit-inactive .automizy-input2 input {
     border: none;
     box-shadow: none;
