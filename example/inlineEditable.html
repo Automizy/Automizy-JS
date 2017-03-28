@@ -8,6 +8,11 @@
     <link rel="stylesheet" href="../dist/automizy.css">
     <link rel="stylesheet" href="../src/styles/inlineEditable.css">
     <link rel="stylesheet" href="../dist/fontawesome/css/font-awesome.min.css">
+
+    <script src="../external/jquery-ui/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="../external/jquery-ui/jquery-ui.min.css">
+    <script src="../external/jquery-ui-timepicker-addon/jquery-ui-timepicker-addon.js"></script>
+    <link rel="stylesheet" href="../external/jquery-ui-timepicker-addon/jquery-ui-timepicker-addon.css">
     <!--
     <link rel="stylesheet" href="../src/styles/table.css">
     <link rel="stylesheet" href="../src/styles/button.css">
@@ -34,11 +39,41 @@
                 id: "email",
                 labelBefore: "Email",
                 type: "text",
+                value: 'asd@asd.com',
                 validator: 'email'
             })).drawTo('body').onInlineEditComplete(function (inlineEditable) {
                 console.log(inlineEditable.value());
             }).onInlineEditCanceled(function () {
                 console.log('cancel2')
+            });
+            date = $A.newInlineEditable($A.newInput2({
+                id: "email",
+                labelBefore: "Birthday",
+                type: "datetime",
+            })).drawTo('body').onInlineEditComplete(function (inlineEditable) {
+                console.log(inlineEditable.value());
+            }).onInlineEditCanceled(function () {
+                console.log('cancel2')
+            });
+            date.inlineInput().input().datetimepicker({
+                dateFormat: 'yy-mm-dd',
+                timeFormat: 'HH:mm:ss',
+                changeYear: false,
+                changeMonth: false,
+                showOtherMonths: false,
+                selectOtherMonths: false,
+                yearRange: '1900:c',
+                showButtonPanel: true,
+                showMillisec: false,
+                showMicrosec: false,
+                showTimezone: false,
+                showSecond: false,
+                showTime: true,
+                secondMax: 0,
+                secondMin: 0,
+                controlType: 'slider',
+                pickerTimeFormat: "HH:mm",
+                closeText: $A.translate('Save')
             });
 
 
