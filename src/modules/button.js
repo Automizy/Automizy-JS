@@ -417,11 +417,13 @@ define([
                 if(filePicker){
                     var $input = $('<input class="automizy-button-fileupload-input" type="file">');
                     $input.appendTo(t.d.$widgetButton);
-                    t.d.input = $input;
+                    t.data('input',$input);
                 }
                 else {
-                    t.d.input.remove();
-                    delete t.d.input;
+                    if(typeof t.data('input') !== "undefined"){
+                        t.data('input').remove();
+                        delete t.d.data.input;
+                    }
                 }
 
                 return t;
