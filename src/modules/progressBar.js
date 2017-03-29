@@ -175,7 +175,7 @@ define([
             t.d.color = color;
             t.d.$widget.removeClass(function (index, css) {
                 return (css.match(/(^|\s)automizy-progress-bar-color-\S+/g) || []).join(' ');
-            }).addClass('automizy-progress-bar-color-'+color);
+            }).addClass('automizy-progress-bar-color-' + color);
 
             return t;
         }
