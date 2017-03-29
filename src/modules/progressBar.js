@@ -15,6 +15,9 @@ define([
             $percent: $('<span class="automizy-progress-percent">0</span>'),
 
             percentPosition: 'inner',
+            showPercent: true,
+            thick: false,
+            color: 'blue',
             percent: 0,
 
             id: 'automizy-progressbar-' + $A.getUniqueString(),
@@ -38,6 +41,15 @@ define([
             }
             if (typeof obj.text !== 'undefined') {
                 t.text(obj.text);
+            }
+            if (typeof obj.showPercent !== 'undefined') {
+                t.showPercent(obj.showPercent);
+            }
+            if (typeof obj.thick !== 'undefined') {
+                t.thick(obj.thick);
+            }
+            if (typeof obj.color !== 'undefined') {
+                t.color(obj.color);
             }
             if (typeof obj.onPercentChange === 'function') {
                 t.onPercentChange(obj.onPercentChange);
@@ -84,7 +96,7 @@ define([
                 }
             });
 
-            if(percent !== oldPercent){
+            if (percent !== oldPercent) {
                 t.onPercentChange();
             }
 
@@ -124,6 +136,50 @@ define([
             return t;
         }
         t.d.onPercentChange();
+    };
+
+
+    p.showPercent = function (showPercent) {
+        var t = this;
+        if (typeof showPercent !== 'undefined') {
+            showPercent = $A.parseBoolean(showPercent);
+            if (showPercent) {
+                t.d.$percentBox.removeClass('automizy-hide');
+            }
+            else {
+                t.d.$percentBox.addClass('automizy-hide');
+            }
+            return t;
+        }
+        return t.d.showPercent;
+    };
+
+    p.thick = function (thick) {
+        var t = this;
+        if (typeof thick !== 'undefined') {
+            thick = $A.parseBoolean(thick);
+            if (thick) {
+                t.d.$widget.addClass('automizy-progress-bar-thick');
+            }
+            else {
+                t.d.$widget.removeClass('automizy-progress-bar-thick');
+            }
+            return t;
+        }
+        return t.d.thick;
+    };
+
+    p.color = function (color) {
+        var t = this;
+        if (typeof color !== 'undefined') {
+            t.d.color = color;
+            t.d.$widget.removeClass(function (index, css) {
+                return (css.match(/(^|\s)automizy-progress-bar-color-\S+/g) || []).join(' ');
+            }).addClass('automizy-progress-bar-color-'+color);
+
+            return t;
+        }
+        return t.d.color;
     };
 
     $A.initBasicFunctions(ProgressBar, "ProgressBar", []);
