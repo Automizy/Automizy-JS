@@ -33,6 +33,12 @@
                 skin: "simple-white"
             });
 
+            //file upload button
+            file = $A.newButton({
+                text: 'click here to upload file!',
+                filePicker: true
+            }).draw();
+
             //Creating Button module with method chaining
             btn2 = $A.newButton().text("New Button").float('right').skin('simple-orange').draw();
             //Creating Button module with method chaining
