@@ -63,6 +63,8 @@ define([
             itemsArray: [],
             groups: {},
             activeGroup: false,
+            min:false,
+            max:false,
             validate: function () {
             },
             validationEvents: '',
@@ -74,6 +76,14 @@ define([
             change: function () { //change keyup paste
                 if (t.change().returnValue() === false) {
                     return false;
+                }
+                if(t.type() === 'number'){
+                    if(t.max() !== false && t.val() > t.max()){
+                        t.val(t.max());
+                    }
+                    if(t.min() !== false && t.val() < t.min()){
+                        t.val(t.min());
+                    }
                 }
             },
             focus: function () {
@@ -210,6 +220,12 @@ define([
             }
             if (typeof obj.needModify !== 'undefined') {
                 t.needModify(obj.needModify);
+            }
+            if (typeof obj.min !== 'undefined') {
+                t.min(obj.min);
+            }
+            if (typeof obj.max !== 'undefined') {
+                t.max(obj.max);
             }
             if (typeof obj.val !== 'undefined' || typeof obj.value !== 'undefined') {
                 t.val(obj.val || obj.value);
@@ -493,17 +509,17 @@ define([
             }
             t.d.value = value;
             if (t.d.type === 'file') {
-                t.input().data('value', value);
+                t.input().data('value', t.d.value);
             } else if (t.d.type === 'html') {
-                t.input().html(value);
+                t.input().html(t.d.value);
             } else {
-                t.input().val(value);
+                t.input().val(t.d.value);
             }
             if (t.d.multiselect) {
                 t.input().multiselect().multiselect('refresh');
             }
             if (t.d.needModify) {
-                t.input().data('originalValue', value);
+                t.input().data('originalValue', t.d.value);
             }
             return t;
         }
@@ -535,6 +551,24 @@ define([
             return t;
         }
         return t.d.$widgetInput.attr('name');
+    };
+    p.max = function (max) {
+        var t = this;
+        if (typeof max !== 'undefined') {
+            t.d.max = max;
+            t.d.$widgetInput.attr('max', max);
+            return t;
+        }
+        return t.d.$widgetInput.attr('max');
+    };
+    p.min = function (min) {
+        var t = this;
+        if (typeof min !== 'undefined') {
+            t.d.min = min;
+            t.d.$widgetInput.attr('min', min);
+            return t;
+        }
+        return t.d.$widgetInput.attr('min');
     };
     p.placeholder = function (placeholder) {
         var t = this;

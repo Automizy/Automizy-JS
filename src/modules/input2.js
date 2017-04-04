@@ -671,7 +671,7 @@ define([
             } else {
                 t.d.$inputClone = $('<input/>').attr('type', t.d.type);
             }
-            t.widget().attr('type', t.d.type);
+            t.widget().attr('data-type', t.d.type);
             t.d.$inputClone.attr(attributes);
             t.d.$inputClone.insertAfter(t.d.$input);
             t.d.$input.remove();

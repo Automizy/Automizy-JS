@@ -74,6 +74,10 @@
 .automizy-input2-tr .automizy-input2-td {
     border: 1px solid #dfe8f1;
 }
+.automizy-input2[data-type="radio"] .automizy-input2-tr .automizy-input2-td,
+.automizy-input2[data-type="checkbox"] .automizy-input2-tr .automizy-input2-td {
+    border: none;
+}
 
 /*cells after visible cells have no left border*/
 .automizy-input2-td:not(.automizy-hide) ~ .automizy-input2-td {

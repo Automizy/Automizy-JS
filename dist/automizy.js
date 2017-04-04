@@ -2702,6 +2702,8 @@ var $A = {};
             itemsArray: [],
             groups: {},
             activeGroup: false,
+            min:false,
+            max:false,
             validate: function () {
             },
             validationEvents: '',
@@ -2713,6 +2715,14 @@ var $A = {};
             change: function () { //change keyup paste
                 if (t.change().returnValue() === false) {
                     return false;
+                }
+                if(t.type() === 'number'){
+                    if(t.max() !== false && t.val() > t.max()){
+                        t.val(t.max());
+                    }
+                    if(t.min() !== false && t.val() < t.min()){
+                        t.val(t.min());
+                    }
                 }
             },
             focus: function () {
@@ -2849,6 +2859,12 @@ var $A = {};
             }
             if (typeof obj.needModify !== 'undefined') {
                 t.needModify(obj.needModify);
+            }
+            if (typeof obj.min !== 'undefined') {
+                t.min(obj.min);
+            }
+            if (typeof obj.max !== 'undefined') {
+                t.max(obj.max);
             }
             if (typeof obj.val !== 'undefined' || typeof obj.value !== 'undefined') {
                 t.val(obj.val || obj.value);
@@ -3132,17 +3148,17 @@ var $A = {};
             }
             t.d.value = value;
             if (t.d.type === 'file') {
-                t.input().data('value', value);
+                t.input().data('value', t.d.value);
             } else if (t.d.type === 'html') {
-                t.input().html(value);
+                t.input().html(t.d.value);
             } else {
-                t.input().val(value);
+                t.input().val(t.d.value);
             }
             if (t.d.multiselect) {
                 t.input().multiselect().multiselect('refresh');
             }
             if (t.d.needModify) {
-                t.input().data('originalValue', value);
+                t.input().data('originalValue', t.d.value);
             }
             return t;
         }
@@ -3174,6 +3190,24 @@ var $A = {};
             return t;
         }
         return t.d.$widgetInput.attr('name');
+    };
+    p.max = function (max) {
+        var t = this;
+        if (typeof max !== 'undefined') {
+            t.d.max = max;
+            t.d.$widgetInput.attr('max', max);
+            return t;
+        }
+        return t.d.$widgetInput.attr('max');
+    };
+    p.min = function (min) {
+        var t = this;
+        if (typeof min !== 'undefined') {
+            t.d.min = min;
+            t.d.$widgetInput.attr('min', min);
+            return t;
+        }
+        return t.d.$widgetInput.attr('min');
     };
     p.placeholder = function (placeholder) {
         var t = this;
@@ -4449,7 +4483,7 @@ var $A = {};
             } else {
                 t.d.$inputClone = $('<input/>').attr('type', t.d.type);
             }
-            t.widget().attr('type', t.d.type);
+            t.widget().attr('data-type', t.d.type);
             t.d.$inputClone.attr(attributes);
             t.d.$inputClone.insertAfter(t.d.$input);
             t.d.$input.remove();
@@ -6827,7 +6861,9 @@ var $A = {};
             if (t.d.storeData) {
                 $A.store.set(t.id() + '-per-page', t.d.perPage);
             }
-            if (t.d.hasObject)t.d.onPerPage.apply(t.d.perPageSelect, [t, t.d.$widget]);
+            if (t.d.hasObject){
+                t.d.onPerPage.apply(t.d.perPageSelect, [t, t.d.$widget]);
+            }
             return t;
         }
         return t.d.perPage;
@@ -12008,7 +12044,7 @@ var $A = {};
     var $tr = $('<tr></tr>').appendTo($table);
     var $td1 = $('<td id="automizy-instructions-notification-content-table-td1"></td>').appendTo($tr);
     var $td2 = $('<td id="automizy-instructions-notification-content-table-td2"></td>').appendTo($tr);
-    var $img = $('<img src="images/mizy-head-55x55.gif" id="automizy-instructions-notification-content-image" />').appendTo($td1);
+    var $img = $('<img id="automizy-instructions-notification-content-image" />').appendTo($td1);
     var $text = $('<div id="automizy-instructions-notification-content-text"></div>').appendTo($td2);
     var $buttons = $('<div id="automizy-instructions-notification-content-buttons"></div>').appendTo($content);
     var ok = $A.newButton({
@@ -12097,9 +12133,13 @@ var $A = {};
             ok.text(data.okText);
             ok.show();
         }
-        if(data.img !== false){
+        if(data.src !== false){
             $img.attr({
                 src:data.img
+            });
+        }else if(!$img.attr('src')){
+            $img.attr({
+                src:'images/mizy-head-55x55.gif'
             });
         }
         if(data.width !== false){

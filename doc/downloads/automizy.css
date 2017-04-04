@@ -1002,6 +1002,10 @@ input.automizy-table-rowcheck:focus:disabled:checked { background-position: -15p
 .automizy-input2-tr .automizy-input2-td {
     border: 1px solid #dfe8f1;
 }
+.automizy-input2[data-type="radio"] .automizy-input2-tr .automizy-input2-td,
+.automizy-input2[data-type="checkbox"] .automizy-input2-tr .automizy-input2-td {
+    border: none;
+}
 .automizy-input2-td:not(.automizy-hide) ~ .automizy-input2-td {
     border-left: none;
     border-top-left-radius: 0;

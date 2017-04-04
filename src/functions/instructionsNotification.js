@@ -9,7 +9,7 @@ define([
     var $tr = $('<tr></tr>').appendTo($table);
     var $td1 = $('<td id="automizy-instructions-notification-content-table-td1"></td>').appendTo($tr);
     var $td2 = $('<td id="automizy-instructions-notification-content-table-td2"></td>').appendTo($tr);
-    var $img = $('<img src="images/mizy-head-55x55.gif" id="automizy-instructions-notification-content-image" />').appendTo($td1);
+    var $img = $('<img id="automizy-instructions-notification-content-image" />').appendTo($td1);
     var $text = $('<div id="automizy-instructions-notification-content-text"></div>').appendTo($td2);
     var $buttons = $('<div id="automizy-instructions-notification-content-buttons"></div>').appendTo($content);
     var ok = $A.newButton({
@@ -98,9 +98,13 @@ define([
             ok.text(data.okText);
             ok.show();
         }
-        if(data.img !== false){
+        if(data.src !== false){
             $img.attr({
                 src:data.img
+            });
+        }else if(!$img.attr('src')){
+            $img.attr({
+                src:'images/mizy-head-55x55.gif'
             });
         }
         if(data.width !== false){
