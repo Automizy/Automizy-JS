@@ -3085,6 +3085,8 @@ label.iPhoneCheckLabelOff span {
 }
 .automizy-panel .automizy-panel-content{
     padding: 15px 20px;
+    margin: 0 auto;
+    max-width:100%;
 }
 .automizy-panel.automizy-skin-content-box{
     border: 1px solid #eff1f6;

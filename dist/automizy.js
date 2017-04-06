@@ -9830,6 +9830,15 @@ var $A = {};
         }
         return t.d.title;
     };
+    p.maxWidth = function (maxWidth) {
+        var t = this;
+        if (typeof maxWidth !== 'undefined') {
+            t.d.maxWidth = maxWidth;
+            t.d.$content.css('max-width', t.d.maxWidth);
+            return t;
+        }
+        return t.d.maxWidth;
+    };
     p.content = function (content) {
         var t = this;
         if (typeof content !== 'undefined') {
