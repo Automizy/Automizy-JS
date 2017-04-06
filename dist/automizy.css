@@ -966,6 +966,7 @@ input.automizy-table-rowcheck:focus:disabled:checked { background-position: -15p
     font-size: 14px;
     color: #3e4855;
     width: 100%;
+    margin-bottom: 5px;
 }
 .automizy-input2-label-before-box {
     vertical-align: middle;
@@ -1051,6 +1052,7 @@ input.automizy-table-rowcheck:focus:disabled:checked { background-position: -15p
     font-weight: bold;
     font-size: 14px;
     color: #3e4855;
+    margin-top: 5px;
 }
 .automizy-input2 .automizy-input2-error-box {
     display: none;

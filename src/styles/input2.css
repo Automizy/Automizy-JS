@@ -27,6 +27,7 @@
     font-size: 14px;
     color: #3e4855;
     width: 100%;
+    margin-bottom: 5px;
 }
 
 .automizy-input2-label-before-box {
@@ -144,6 +145,7 @@
     font-weight: bold;
     font-size: 14px;
     color: #3e4855;
+    margin-top: 5px;
 }
 
 .automizy-input2 .automizy-input2-error-box {
