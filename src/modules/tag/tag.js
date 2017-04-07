@@ -13,9 +13,9 @@ define([
             $tableBox:$('<div class="automizy-tag-table-box"></div>'),
             $table:$('<table cellpadding="0" cellspacing="0" border="0" class="automizy-tag-table"></table>'),
             $tr:$('<tr></tr>'),
-            $td1:$('<td style="width:29px"></td>'),
+            $td1:$('<td style="width:29px; max-width:29px"></td>'),
             $td2:$('<td></td>'),
-            $td3:$('<td style="width:29px"></td>'),
+            $td3:$('<td style="width:29px; max-width:29px"></td>'),
 
             $text: $('<span class="automizy-tag-text"></span>'),
             $icon: $('<span class="automizy-tag-icon"></span>'),
