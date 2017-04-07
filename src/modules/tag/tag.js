@@ -10,7 +10,8 @@ define([
         t.d = {
             $widget: $('<div class="automizy-tag"></div>'),
 
-            $table:$('<table cellpadding="0" cellspacing="0" border="0"></table>'),
+            $tableBox:$('<div class="automizy-tag-table-box"></div>'),
+            $table:$('<table cellpadding="0" cellspacing="0" border="0" class="automizy-tag-table"></table>'),
             $tr:$('<tr></tr>'),
             $td1:$('<td style="width:29px"></td>'),
             $td2:$('<td></td>'),
@@ -51,7 +52,8 @@ define([
             t.initParameter(obj);
         }
 
-        t.d.$table.appendTo(t.d.$widget);
+        t.d.$tableBox.appendTo(t.d.$widget);
+        t.d.$table.appendTo(t.d.$tableBox);
         t.d.$tr.appendTo(t.d.$table);
         t.d.$td1.appendTo(t.d.$tr);
         t.d.$td2.appendTo(t.d.$tr);
@@ -96,7 +98,7 @@ define([
         var t = this;
         if (typeof width !== 'undefined') {
             t.d.width = width;
-            t.d.$table.width(t.d.width);
+            t.d.$tableBox.width(t.d.width);
         }
         return t.d.width;
     };

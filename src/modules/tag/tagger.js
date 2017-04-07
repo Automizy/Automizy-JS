@@ -59,21 +59,20 @@ define([
 
         p.positionOptionBox = function () {
             var t = this;
-            var $optionBox = t.d.$options;
             var $newTag = t.d.newTag.widget();
 
-            var $input = $newTag.find('input');
-            var inputOffset = $input.offset();
-            var offsetTop = $newTag.offset().top;
-            var inputOffsetLeft = inputOffset.left;
-            var tagHeight = t.d.newTag.widget().height();
-            var inputWidth = $input.outerWidth();
+            var $element = $newTag.find('.automizy-tag-table-box').eq(0);
+            var inputOffset = $element.offset();
+            var offsetTop = inputOffset.top;
+            var offsetLeft = inputOffset.left;
+            var inputHeight = $element.height();
+            var inputWidth = $element.outerWidth();
 
-            $optionBox.css({
+            t.d.$options.css({
                 bottom: 'auto',
-                left: inputOffsetLeft + 'px',
-                top: (offsetTop + tagHeight + 1) + 'px',
-                width: inputWidth + 'px'
+                left: (offsetLeft + 10) + 'px',
+                top: (offsetTop + inputHeight + 1) + 'px',
+                width: (inputWidth - 20) + 'px'
             });
         };
 
