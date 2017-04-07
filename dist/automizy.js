@@ -10132,6 +10132,7 @@ var $A = {};
         p.showOptions = function () {
             var t = this;
             t.d.$options.ashow();
+            t.positionOptionBox();
             $(document).on('mousewheel DOMMouseScroll', t, t.hideOptions);
         };
 
