@@ -9981,6 +9981,9 @@ var $A = {};
         if (typeof text !== 'undefined') {
             t.d.text = text;
             t.d.$text.html(text).attr('title', text);
+            setTimeout(function(){
+                t.d.$text.css('max-width', t.d.$tableBox.outerWidth() - 59 + 'px');
+            }, 10);
             return t;
         }
         return t.d.text;
