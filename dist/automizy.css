@@ -3225,6 +3225,7 @@ label.iPhoneCheckLabelOff span {
 .automizy-tag-table{
     width:100%;
     max-width: 100%;
+    table-layout: fixed;
 }
 .automizy-tag .automizy-tag-icon {
     box-sizing: border-box;
@@ -3233,8 +3234,12 @@ label.iPhoneCheckLabelOff span {
     vertical-align: middle;
 }
 .automizy-tag .automizy-tag-text {
+    display: inline-block;
     box-sizing: border-box;
     vertical-align: middle;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .automizy-tag .automizy-tag-close {
     box-sizing: border-box;

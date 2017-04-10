@@ -9926,7 +9926,7 @@ var $A = {};
             text: '',
             icon: 'fa-tag',
 
-            width:'auto'
+            width:'100%'
         };
         t.f = {};
         t.init();
