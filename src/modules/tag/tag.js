@@ -79,7 +79,7 @@ define([
         var t = this;
         if (typeof text !== 'undefined') {
             t.d.text = text;
-            t.d.$text.html(text);
+            t.d.$text.html(text).attr('title', text);
             return t;
         }
         return t.d.text;
