@@ -752,6 +752,9 @@ var $A = {};
             if (typeof obj.newRow !== 'undefined') {
                 t.newRow(obj.newRow);
             }
+            if (typeof obj.semiThin !== 'undefined') {
+                t.semiThin(obj.semiThin);
+            }
             if (typeof obj.thin !== 'undefined') {
                 t.thin(obj.thin);
             }
@@ -936,6 +939,18 @@ var $A = {};
             var a = t.runFunctions('click');
             t.returnValue(!(a[0] === false || a[1] === false));
         }
+        return t;
+    };
+    p.semiThin = function (value) {
+        var t = this;
+        if (typeof value !== 'undefined') {
+            value = $A.parseBoolean(value);
+            if (!value) {
+                t.widget().removeClass('automizy-button-semithin');
+                return t;
+            }
+        }
+        t.widget().addClass('automizy-button-semithin');
         return t;
     };
     p.thin = function (value) {
