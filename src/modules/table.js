@@ -592,7 +592,9 @@ define([
             if (t.d.storeData) {
                 $A.store.set(t.id() + '-per-page', t.d.perPage);
             }
-            if (t.d.hasObject)t.d.onPerPage.apply(t.d.perPageSelect, [t, t.d.$widget]);
+            if (t.d.hasObject){
+                t.d.onPerPage.apply(t.d.perPageSelect, [t, t.d.$widget]);
+            }
             return t;
         }
         return t.d.perPage;

@@ -11,7 +11,6 @@
 }
 
 .automizy-tag .automizy-tag-icon {
-    display: inline-block;
     box-sizing: border-box;
     color: #b9b9b9;
     padding: 5px 10px 5px 5px;
@@ -19,13 +18,11 @@
 }
 
 .automizy-tag .automizy-tag-text {
-    display: inline-block;
     box-sizing: border-box;
     vertical-align: middle;
 }
 
 .automizy-tag .automizy-tag-close {
-    display: inline-block;
     box-sizing: border-box;
     color: #b9b9b9;
     padding: 5px 5px 5px 10px;
@@ -45,6 +42,7 @@
 .automizy-tag input.automizy-tagger-new-tag-input {
     border: none;
     outline: none !important;
+    width:100%;
 }
 
 .automizy-tagger-options-list {

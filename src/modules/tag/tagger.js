@@ -13,7 +13,8 @@ define([
 
                 tags: [],
                 options: {},
-                newTag: $A.newTag({text: '<input class="automizy-tagger-new-tag-input">'})
+                newTag: $A.newTag({text: '<input class="automizy-tagger-new-tag-input">'}),
+                tagWidth: '200px'
             }
             ;
             t.f = {
@@ -33,6 +34,9 @@ define([
                 }
                 if (typeof obj.tags !== 'undefined') {
                     t.tags(obj.tags);
+                }
+                if (typeof obj.tagWidth !== 'undefined') {
+                    t.tagWidth(obj.tagWidth);
                 }
                 if (typeof obj.onRemoveTag === 'function') {
                     t.onRemoveTag(obj.onRemoveTag);
@@ -114,6 +118,14 @@ define([
             return hasTag;
         };
 
+        p.tagWidth = function (tagWidth) {
+            var t = this;
+            if (typeof tagWidth !== 'undefined') {
+                t.d.tagWidth = tagWidth;
+            }
+            return t.d.tagWidth;
+        };
+
         p.hasOption = function (tag) {
             var t = this;
             var val = '';
@@ -162,7 +174,8 @@ define([
                     if (typeof obj === 'string') {
                         obj = {
                             text: obj,
-                            tagger: t
+                            tagger: t,
+                            width:t.d.tagWidth
                         };
                     }
                     tag = $A.newTag(obj);
@@ -178,14 +191,14 @@ define([
                 t.addOption(tag.text(), false);
 
                 return t;
-            }
-            else {
+            } else {
                 var tag = t.d.newTag;
+                tag.width(t.d.tagWidth);
                 resetNewTag();
 
                 /*Detecting click outside the tagger*/
                 function removeFunction(event) {
-                    var ignoreOutClick = ['.automizy-tagger input.automizy-tagger-new-tag-input'];
+                    var ignoreOutClick = ['.automizy-tagger .automizy-tag-text', '.automizy-tagger .automizy-tag-icon'];
 
                     var clickedIn = false;
                     /*Iterating through all the ignore selectors*/
@@ -202,7 +215,7 @@ define([
                 function resetNewTag() {
                     t.hideOptions();
                     tag.widget().ahide();
-                    tag.text('<input class="automizy-tagger-new-tag-input">');
+                    tag.text('<input type="text" class="automizy-tagger-new-tag-input">');
 
                     var $input = tag.widget().find('input');
 
@@ -233,14 +246,16 @@ define([
                     $(document).off('click', removeFunction);
                 }
 
-                setTimeout(function () {
-                    $(document).on('click', removeFunction);
+                (function(t){
+                    setTimeout(function () {
+                        $(document).on('click', removeFunction);
 
-                    tag.drawTo(t.widget()).widget().ashow().show();
-                    tag.widget().find('input').focus();
-                    t.showOptions();
-                    t.positionOptionBox();
-                }, 10);
+                        tag.drawTo(t.widget()).widget().ashow().show();
+                        tag.widget().find('input').focus();
+                        t.showOptions();
+                        t.positionOptionBox();
+                    }, 10);
+                })(t)
             }
             return t;
         };

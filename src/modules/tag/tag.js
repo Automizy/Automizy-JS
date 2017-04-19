@@ -9,13 +9,22 @@ define([
         var t = this;
         t.d = {
             $widget: $('<div class="automizy-tag"></div>'),
-            $text: $('<div class="automizy-tag-text"></div>'),
-            $icon: $('<div class="automizy-tag-icon"></div>'),
-            $remove: $('<div class="automizy-tag-close fa fa-times-circle">'),
+
+            $table:$('<table cellpadding="0" cellspacing="0" border="0"></table>'),
+            $tr:$('<tr></tr>'),
+            $td1:$('<td style="width:29px"></td>'),
+            $td2:$('<td></td>'),
+            $td3:$('<td style="width:29px"></td>'),
+
+            $text: $('<span class="automizy-tag-text"></span>'),
+            $icon: $('<span class="automizy-tag-icon"></span>'),
+            $remove: $('<span class="automizy-tag-close fa fa-times-circle">'),
 
             tagger: false,
             text: '',
-            icon: 'fa-tag'
+            icon: 'fa-tag',
+
+            width:'auto'
         };
         t.f = {};
         t.init();
@@ -34,14 +43,26 @@ define([
             if (typeof obj.tagger !== 'undefined') {
                 t.tagger(obj.tagger);
             }
+            if (typeof obj.width !== 'undefined') {
+                t.width(obj.width);
+            }
 
 
             t.initParameter(obj);
         }
 
-        t.d.$icon.appendTo(t.d.$widget);
-        t.d.$text.appendTo(t.d.$widget);
-        t.d.$remove.appendTo(t.d.$widget);
+        t.d.$table.appendTo(t.d.$widget);
+        t.d.$tr.appendTo(t.d.$table);
+        t.d.$td1.appendTo(t.d.$tr);
+        t.d.$td2.appendTo(t.d.$tr);
+        t.d.$td3.appendTo(t.d.$tr);
+
+        t.d.$icon.appendTo(t.d.$td1);
+        t.d.$text.appendTo(t.d.$td2);
+        t.d.$remove.appendTo(t.d.$td3);
+
+        t.d.$table.width(t.width());
+
         t.icon(t.icon());
 
         t.d.$remove.click(function () {
@@ -69,6 +90,15 @@ define([
             return t;
         }
         return t.d.tagger;
+    };
+
+    p.width = function (width) {
+        var t = this;
+        if (typeof width !== 'undefined') {
+            t.d.width = width;
+            t.d.$table.width(t.d.width);
+        }
+        return t.d.width;
     };
 
     p.remove = function (func, name, life) {

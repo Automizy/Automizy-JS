@@ -133,7 +133,6 @@ define([
         t.unselectAll();
         var hasValue = false;
 
-        console.log(t.d.value);
         if(typeof t.d.value === 'object' || typeof t.d.value === 'array'){
             for(var i = 0; i < t.d.options.length; i++){
                 for(var j = 0; j < t.d.value.length; j++){
@@ -160,7 +159,6 @@ define([
         }else{
             t.widget().removeClass('automizy-empty');
         }
-        console.log(t.d.value);
         t.d.originalInput.val(t.d.value).trigger('change');
 
         return t;

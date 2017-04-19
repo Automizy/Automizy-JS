@@ -2702,6 +2702,8 @@ var $A = {};
             itemsArray: [],
             groups: {},
             activeGroup: false,
+            min:false,
+            max:false,
             validate: function () {
             },
             validationEvents: '',
@@ -2713,6 +2715,14 @@ var $A = {};
             change: function () { //change keyup paste
                 if (t.change().returnValue() === false) {
                     return false;
+                }
+                if(t.type() === 'number'){
+                    if(t.max() !== false && t.val() > t.max()){
+                        t.val(t.max());
+                    }
+                    if(t.min() !== false && t.val() < t.min()){
+                        t.val(t.min());
+                    }
                 }
             },
             focus: function () {
@@ -2849,6 +2859,12 @@ var $A = {};
             }
             if (typeof obj.needModify !== 'undefined') {
                 t.needModify(obj.needModify);
+            }
+            if (typeof obj.min !== 'undefined') {
+                t.min(obj.min);
+            }
+            if (typeof obj.max !== 'undefined') {
+                t.max(obj.max);
             }
             if (typeof obj.val !== 'undefined' || typeof obj.value !== 'undefined') {
                 t.val(obj.val || obj.value);
@@ -3132,17 +3148,17 @@ var $A = {};
             }
             t.d.value = value;
             if (t.d.type === 'file') {
-                t.input().data('value', value);
+                t.input().data('value', t.d.value);
             } else if (t.d.type === 'html') {
-                t.input().html(value);
+                t.input().html(t.d.value);
             } else {
-                t.input().val(value);
+                t.input().val(t.d.value);
             }
             if (t.d.multiselect) {
                 t.input().multiselect().multiselect('refresh');
             }
             if (t.d.needModify) {
-                t.input().data('originalValue', value);
+                t.input().data('originalValue', t.d.value);
             }
             return t;
         }
@@ -3174,6 +3190,24 @@ var $A = {};
             return t;
         }
         return t.d.$widgetInput.attr('name');
+    };
+    p.max = function (max) {
+        var t = this;
+        if (typeof max !== 'undefined') {
+            t.d.max = max;
+            t.d.$widgetInput.attr('max', max);
+            return t;
+        }
+        return t.d.$widgetInput.attr('max');
+    };
+    p.min = function (min) {
+        var t = this;
+        if (typeof min !== 'undefined') {
+            t.d.min = min;
+            t.d.$widgetInput.attr('min', min);
+            return t;
+        }
+        return t.d.$widgetInput.attr('min');
     };
     p.placeholder = function (placeholder) {
         var t = this;
@@ -4449,7 +4483,7 @@ var $A = {};
             } else {
                 t.d.$inputClone = $('<input/>').attr('type', t.d.type);
             }
-            t.widget().attr('type', t.d.type);
+            t.widget().attr('data-type', t.d.type);
             t.d.$inputClone.attr(attributes);
             t.d.$inputClone.insertAfter(t.d.$input);
             t.d.$input.remove();
@@ -6827,7 +6861,9 @@ var $A = {};
             if (t.d.storeData) {
                 $A.store.set(t.id() + '-per-page', t.d.perPage);
             }
-            if (t.d.hasObject)t.d.onPerPage.apply(t.d.perPageSelect, [t, t.d.$widget]);
+            if (t.d.hasObject){
+                t.d.onPerPage.apply(t.d.perPageSelect, [t, t.d.$widget]);
+            }
             return t;
         }
         return t.d.perPage;
@@ -8933,7 +8969,6 @@ var $A = {};
         t.unselectAll();
         var hasValue = false;
 
-        console.log(t.d.value);
         if(typeof t.d.value === 'object' || typeof t.d.value === 'array'){
             for(var i = 0; i < t.d.options.length; i++){
                 for(var j = 0; j < t.d.value.length; j++){
@@ -8960,7 +8995,6 @@ var $A = {};
         }else{
             t.widget().removeClass('automizy-empty');
         }
-        console.log(t.d.value);
         t.d.originalInput.val(t.d.value).trigger('change');
 
         return t;
@@ -9870,13 +9904,22 @@ var $A = {};
         var t = this;
         t.d = {
             $widget: $('<div class="automizy-tag"></div>'),
-            $text: $('<div class="automizy-tag-text"></div>'),
-            $icon: $('<div class="automizy-tag-icon"></div>'),
-            $remove: $('<div class="automizy-tag-close fa fa-times-circle">'),
+
+            $table:$('<table cellpadding="0" cellspacing="0" border="0"></table>'),
+            $tr:$('<tr></tr>'),
+            $td1:$('<td style="width:29px"></td>'),
+            $td2:$('<td></td>'),
+            $td3:$('<td style="width:29px"></td>'),
+
+            $text: $('<span class="automizy-tag-text"></span>'),
+            $icon: $('<span class="automizy-tag-icon"></span>'),
+            $remove: $('<span class="automizy-tag-close fa fa-times-circle">'),
 
             tagger: false,
             text: '',
-            icon: 'fa-tag'
+            icon: 'fa-tag',
+
+            width:'auto'
         };
         t.f = {};
         t.init();
@@ -9895,14 +9938,26 @@ var $A = {};
             if (typeof obj.tagger !== 'undefined') {
                 t.tagger(obj.tagger);
             }
+            if (typeof obj.width !== 'undefined') {
+                t.width(obj.width);
+            }
 
 
             t.initParameter(obj);
         }
 
-        t.d.$icon.appendTo(t.d.$widget);
-        t.d.$text.appendTo(t.d.$widget);
-        t.d.$remove.appendTo(t.d.$widget);
+        t.d.$table.appendTo(t.d.$widget);
+        t.d.$tr.appendTo(t.d.$table);
+        t.d.$td1.appendTo(t.d.$tr);
+        t.d.$td2.appendTo(t.d.$tr);
+        t.d.$td3.appendTo(t.d.$tr);
+
+        t.d.$icon.appendTo(t.d.$td1);
+        t.d.$text.appendTo(t.d.$td2);
+        t.d.$remove.appendTo(t.d.$td3);
+
+        t.d.$table.width(t.width());
+
         t.icon(t.icon());
 
         t.d.$remove.click(function () {
@@ -9930,6 +9985,15 @@ var $A = {};
             return t;
         }
         return t.d.tagger;
+    };
+
+    p.width = function (width) {
+        var t = this;
+        if (typeof width !== 'undefined') {
+            t.d.width = width;
+            t.d.$table.width(t.d.width);
+        }
+        return t.d.width;
     };
 
     p.remove = function (func, name, life) {
@@ -9987,7 +10051,8 @@ var $A = {};
 
                 tags: [],
                 options: {},
-                newTag: $A.newTag({text: '<input class="automizy-tagger-new-tag-input">'})
+                newTag: $A.newTag({text: '<input class="automizy-tagger-new-tag-input">'}),
+                tagWidth: '200px'
             }
             ;
             t.f = {
@@ -10007,6 +10072,9 @@ var $A = {};
                 }
                 if (typeof obj.tags !== 'undefined') {
                     t.tags(obj.tags);
+                }
+                if (typeof obj.tagWidth !== 'undefined') {
+                    t.tagWidth(obj.tagWidth);
                 }
                 if (typeof obj.onRemoveTag === 'function') {
                     t.onRemoveTag(obj.onRemoveTag);
@@ -10088,6 +10156,14 @@ var $A = {};
             return hasTag;
         };
 
+        p.tagWidth = function (tagWidth) {
+            var t = this;
+            if (typeof tagWidth !== 'undefined') {
+                t.d.tagWidth = tagWidth;
+            }
+            return t.d.tagWidth;
+        };
+
         p.hasOption = function (tag) {
             var t = this;
             var val = '';
@@ -10136,7 +10212,8 @@ var $A = {};
                     if (typeof obj === 'string') {
                         obj = {
                             text: obj,
-                            tagger: t
+                            tagger: t,
+                            width:t.d.tagWidth
                         };
                     }
                     tag = $A.newTag(obj);
@@ -10152,14 +10229,14 @@ var $A = {};
                 t.addOption(tag.text(), false);
 
                 return t;
-            }
-            else {
+            } else {
                 var tag = t.d.newTag;
+                tag.width(t.d.tagWidth);
                 resetNewTag();
 
                 /*Detecting click outside the tagger*/
                 function removeFunction(event) {
-                    var ignoreOutClick = ['.automizy-tagger input.automizy-tagger-new-tag-input'];
+                    var ignoreOutClick = ['.automizy-tagger .automizy-tag-text', '.automizy-tagger .automizy-tag-icon'];
 
                     var clickedIn = false;
                     /*Iterating through all the ignore selectors*/
@@ -10176,7 +10253,7 @@ var $A = {};
                 function resetNewTag() {
                     t.hideOptions();
                     tag.widget().ahide();
-                    tag.text('<input class="automizy-tagger-new-tag-input">');
+                    tag.text('<input type="text" class="automizy-tagger-new-tag-input">');
 
                     var $input = tag.widget().find('input');
 
@@ -10207,14 +10284,16 @@ var $A = {};
                     $(document).off('click', removeFunction);
                 }
 
-                setTimeout(function () {
-                    $(document).on('click', removeFunction);
+                (function(t){
+                    setTimeout(function () {
+                        $(document).on('click', removeFunction);
 
-                    tag.drawTo(t.widget()).widget().ashow().show();
-                    tag.widget().find('input').focus();
-                    t.showOptions();
-                    t.positionOptionBox();
-                }, 10);
+                        tag.drawTo(t.widget()).widget().ashow().show();
+                        tag.widget().find('input').focus();
+                        t.showOptions();
+                        t.positionOptionBox();
+                    }, 10);
+                })(t)
             }
             return t;
         };
@@ -12008,7 +12087,7 @@ var $A = {};
     var $tr = $('<tr></tr>').appendTo($table);
     var $td1 = $('<td id="automizy-instructions-notification-content-table-td1"></td>').appendTo($tr);
     var $td2 = $('<td id="automizy-instructions-notification-content-table-td2"></td>').appendTo($tr);
-    var $img = $('<img src="images/mizy-head-55x55.gif" id="automizy-instructions-notification-content-image" />').appendTo($td1);
+    var $img = $('<img id="automizy-instructions-notification-content-image" />').appendTo($td1);
     var $text = $('<div id="automizy-instructions-notification-content-text"></div>').appendTo($td2);
     var $buttons = $('<div id="automizy-instructions-notification-content-buttons"></div>').appendTo($content);
     var ok = $A.newButton({
@@ -12097,9 +12176,13 @@ var $A = {};
             ok.text(data.okText);
             ok.show();
         }
-        if(data.img !== false){
+        if(data.src !== false){
             $img.attr({
                 src:data.img
+            });
+        }else if(!$img.attr('src')){
+            $img.attr({
+                src:'images/mizy-head-55x55.gif'
             });
         }
         if(data.width !== false){
@@ -12253,7 +12336,7 @@ var $A = {};
 })();
 
 (function(){
-    console.log('%c AutomizyJs module loaded! ', 'background: #000000; color: #bada55; font-size:14px');
+    //console.log('%c AutomizyJs module loaded! ', 'background: #000000; color: #bada55; font-size:14px');
 })();
 window.$A = $A;
 window.AutomizyJs = $A;
