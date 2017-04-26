@@ -499,6 +499,12 @@ define([
                     html:options[i][1] || options[i][0],
                     selected:$A.parseBoolean(options[i][2] || false)
                 };
+            }else if(typeof options[i] === 'string' || typeof options[i] === 'number'){
+                options[i] = {
+                    value:options[i],
+                    html:options[i],
+                    selected:false
+                };
             }
             options[i].selectModule = t;
             options[i].selectOptionBoxModule = t.optionBox();

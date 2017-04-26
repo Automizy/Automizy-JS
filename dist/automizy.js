@@ -752,6 +752,9 @@ var $A = {};
             if (typeof obj.newRow !== 'undefined') {
                 t.newRow(obj.newRow);
             }
+            if (typeof obj.semiThin !== 'undefined') {
+                t.semiThin(obj.semiThin);
+            }
             if (typeof obj.thin !== 'undefined') {
                 t.thin(obj.thin);
             }
@@ -936,6 +939,18 @@ var $A = {};
             var a = t.runFunctions('click');
             t.returnValue(!(a[0] === false || a[1] === false));
         }
+        return t;
+    };
+    p.semiThin = function (value) {
+        var t = this;
+        if (typeof value !== 'undefined') {
+            value = $A.parseBoolean(value);
+            if (!value) {
+                t.widget().removeClass('automizy-button-semithin');
+                return t;
+            }
+        }
+        t.widget().addClass('automizy-button-semithin');
         return t;
     };
     p.thin = function (value) {
@@ -9335,6 +9350,12 @@ var $A = {};
                     html:options[i][1] || options[i][0],
                     selected:$A.parseBoolean(options[i][2] || false)
                 };
+            }else if(typeof options[i] === 'string' || typeof options[i] === 'number'){
+                options[i] = {
+                    value:options[i],
+                    html:options[i],
+                    selected:false
+                };
             }
             options[i].selectModule = t;
             options[i].selectOptionBoxModule = t.optionBox();
@@ -9905,11 +9926,12 @@ var $A = {};
         t.d = {
             $widget: $('<div class="automizy-tag"></div>'),
 
-            $table:$('<table cellpadding="0" cellspacing="0" border="0"></table>'),
+            $tableBox:$('<div class="automizy-tag-table-box"></div>'),
+            $table:$('<table cellpadding="0" cellspacing="0" border="0" class="automizy-tag-table"></table>'),
             $tr:$('<tr></tr>'),
-            $td1:$('<td style="width:29px"></td>'),
+            $td1:$('<td style="width:29px; max-width:29px"></td>'),
             $td2:$('<td></td>'),
-            $td3:$('<td style="width:29px"></td>'),
+            $td3:$('<td style="width:29px; max-width:29px"></td>'),
 
             $text: $('<span class="automizy-tag-text"></span>'),
             $icon: $('<span class="automizy-tag-icon"></span>'),
@@ -9919,7 +9941,7 @@ var $A = {};
             text: '',
             icon: 'fa-tag',
 
-            width:'auto'
+            width:'100%'
         };
         t.f = {};
         t.init();
@@ -9946,7 +9968,8 @@ var $A = {};
             t.initParameter(obj);
         }
 
-        t.d.$table.appendTo(t.d.$widget);
+        t.d.$tableBox.appendTo(t.d.$widget);
+        t.d.$table.appendTo(t.d.$tableBox);
         t.d.$tr.appendTo(t.d.$table);
         t.d.$td1.appendTo(t.d.$tr);
         t.d.$td2.appendTo(t.d.$tr);
@@ -9972,7 +9995,10 @@ var $A = {};
         var t = this;
         if (typeof text !== 'undefined') {
             t.d.text = text;
-            t.d.$text.html(text);
+            t.d.$text.html(text).attr('title', text);
+            setTimeout(function(){
+                t.d.$text.css('max-width', t.d.$tableBox.outerWidth() - 59 + 'px');
+            }, 10);
             return t;
         }
         return t.d.text;
@@ -9991,7 +10017,7 @@ var $A = {};
         var t = this;
         if (typeof width !== 'undefined') {
             t.d.width = width;
-            t.d.$table.width(t.d.width);
+            t.d.$tableBox.width(t.d.width);
         }
         return t.d.width;
     };
@@ -10097,21 +10123,20 @@ var $A = {};
 
         p.positionOptionBox = function () {
             var t = this;
-            var $optionBox = t.d.$options;
             var $newTag = t.d.newTag.widget();
 
-            var $input = $newTag.find('input');
-            var inputOffset = $input.offset();
-            var offsetTop = $newTag.offset().top;
-            var inputOffsetLeft = inputOffset.left;
-            var tagHeight = t.d.newTag.widget().height();
-            var inputWidth = $input.outerWidth();
+            var $element = $newTag.find('.automizy-tag-table-box').eq(0);
+            var inputOffset = $element.offset();
+            var offsetTop = inputOffset.top;
+            var offsetLeft = inputOffset.left;
+            var inputHeight = $element.height();
+            var inputWidth = $element.outerWidth();
 
-            $optionBox.css({
+            t.d.$options.css({
                 bottom: 'auto',
-                left: inputOffsetLeft + 'px',
-                top: (offsetTop + tagHeight + 1) + 'px',
-                width: inputWidth + 'px'
+                left: (offsetLeft + 10) + 'px',
+                top: (offsetTop + inputHeight + 1) + 'px',
+                width: (inputWidth - 20) + 'px'
             });
         };
 
@@ -10131,6 +10156,7 @@ var $A = {};
         p.showOptions = function () {
             var t = this;
             t.d.$options.ashow();
+            t.positionOptionBox();
             $(document).on('mousewheel DOMMouseScroll', t, t.hideOptions);
         };
 

@@ -66,6 +66,7 @@
 /*Boxed buttons*/
 .automizy-button.automizy-skin-bordered-green a,
 .automizy-button.automizy-skin-bordered-black a,
+.automizy-button.automizy-skin-bordered-orange a,
 .automizy-button.automizy-skin-simple-likemenu a,
 .automizy-button.automizy-skin-simple-white a,
 .automizy-button.automizy-skin-image-white a,
@@ -105,8 +106,23 @@
     min-width: 50px;
 }
 
+.automizy-button.automizy-skin-bordered-green.automizy-button-semithin a,
+.automizy-button.automizy-skin-bordered-black.automizy-button-semithin a,
+.automizy-button.automizy-skin-bordered-orange.automizy-button-semithin a,
+.automizy-button.automizy-skin-simple-likemenu.automizy-button-semithin a,
+.automizy-button.automizy-skin-simple-white.automizy-button-semithin a,
+.automizy-button.automizy-skin-image-white.automizy-button-semithin a,
+.automizy-button.automizy-skin-simple-orange.automizy-button-semithin a,
+.automizy-button.automizy-skin-simple-blue.automizy-button-semithin a,
+.automizy-button.automizy-skin-simple-green.automizy-button-semithin a {
+    padding: 9px 10px 9px 10px;
+    height: auto;
+    line-height: normal;
+}
+
 .automizy-button.automizy-skin-bordered-green.automizy-button-thin a,
 .automizy-button.automizy-skin-bordered-black.automizy-button-thin a,
+.automizy-button.automizy-skin-bordered-orange.automizy-button-thin a,
 .automizy-button.automizy-skin-simple-likemenu.automizy-button-thin a,
 .automizy-button.automizy-skin-simple-white.automizy-button-thin a,
 .automizy-button.automizy-skin-image-white.automizy-button-thin a,
@@ -120,6 +136,7 @@
 
 .automizy-button.automizy-skin-bordered-green.automizy-button-thinner a,
 .automizy-button.automizy-skin-bordered-black.automizy-button-thinner a,
+.automizy-button.automizy-skin-bordered-orange.automizy-button-thinner a,
 .automizy-button.automizy-skin-simple-likemenu.automizy-button-thinner a,
 .automizy-button.automizy-skin-simple-white.automizy-button-thinner a,
 .automizy-button.automizy-skin-image-white.automizy-button-thinner a,
@@ -133,6 +150,7 @@
 
 .automizy-button.automizy-skin-bordered-green.automizy-button-thick a,
 .automizy-button.automizy-skin-bordered-black.automizy-button-thick a,
+.automizy-button.automizy-skin-bordered-orange.automizy-button-thick a,
 .automizy-button.automizy-skin-simple-likemenu.automizy-button-thick a,
 .automizy-button.automizy-skin-simple-white.automizy-button-thick a,
 .automizy-button.automizy-skin-image-white.automizy-button-thick a,
@@ -155,6 +173,7 @@
 
 .automizy-button.automizy-skin-bordered-green a:active,
 .automizy-button.automizy-skin-bordered-black a:active,
+.automizy-button.automizy-skin-bordered-orange a:active,
 .automizy-button.automizy-skin-simple-likemenu a:active,
 .automizy-button.automizy-skin-simple-white a:active,
 .automizy-button.automizy-skin-simple-green a:active,
@@ -289,6 +308,22 @@
     color: #464646;
 }
 .automizy-button.disabled.automizy-skin-bordered-black a {
+    opacity:0.5;
+}
+
+
+
+.automizy-button.automizy-skin-bordered-orange a {
+    color:#e98604;
+    border: 2px solid #e98604;
+    background: #ffffff;
+    padding: 4px 8px 4px 8px;
+}
+.automizy-button.automizy-skin-bordered-orange a:hover,
+.automizy-input-box input[type="file"]:hover + span .automizy-skin-bordered-orange a {
+    color: #e98604;
+}
+.automizy-button.disabled.automizy-skin-bordered-orange a {
     opacity:0.5;
 }
 

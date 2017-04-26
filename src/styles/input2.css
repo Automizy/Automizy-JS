@@ -81,6 +81,11 @@
     border: none;
 }
 
+.automizy-input2[data-type="radio"] .automizy-input2-input-cell,
+.automizy-input2[data-type="checkbox"] .automizy-input2-input-cell {
+    width:1px;
+}
+
 /*cells after visible cells have no left border*/
 .automizy-input2-td:not(.automizy-hide) ~ .automizy-input2-td {
     border-left: none;
@@ -449,7 +454,7 @@ textarea.automizy-input2-input {
 
 .automizy-input2 input[type="checkbox"],
 .automizy-input2 input[type="radio"] {
-    margin-top: 7px;
+    /*margin-top: 7px;*/
 }
 
 .automizy-input2 input[type='radio'] {

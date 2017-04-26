@@ -10,11 +10,12 @@ define([
         t.d = {
             $widget: $('<div class="automizy-tag"></div>'),
 
-            $table:$('<table cellpadding="0" cellspacing="0" border="0"></table>'),
+            $tableBox:$('<div class="automizy-tag-table-box"></div>'),
+            $table:$('<table cellpadding="0" cellspacing="0" border="0" class="automizy-tag-table"></table>'),
             $tr:$('<tr></tr>'),
-            $td1:$('<td style="width:29px"></td>'),
+            $td1:$('<td style="width:29px; max-width:29px"></td>'),
             $td2:$('<td></td>'),
-            $td3:$('<td style="width:29px"></td>'),
+            $td3:$('<td style="width:29px; max-width:29px"></td>'),
 
             $text: $('<span class="automizy-tag-text"></span>'),
             $icon: $('<span class="automizy-tag-icon"></span>'),
@@ -24,7 +25,7 @@ define([
             text: '',
             icon: 'fa-tag',
 
-            width:'auto'
+            width:'100%'
         };
         t.f = {};
         t.init();
@@ -51,7 +52,8 @@ define([
             t.initParameter(obj);
         }
 
-        t.d.$table.appendTo(t.d.$widget);
+        t.d.$tableBox.appendTo(t.d.$widget);
+        t.d.$table.appendTo(t.d.$tableBox);
         t.d.$tr.appendTo(t.d.$table);
         t.d.$td1.appendTo(t.d.$tr);
         t.d.$td2.appendTo(t.d.$tr);
@@ -77,7 +79,10 @@ define([
         var t = this;
         if (typeof text !== 'undefined') {
             t.d.text = text;
-            t.d.$text.html(text);
+            t.d.$text.html(text).attr('title', text);
+            setTimeout(function(){
+                t.d.$text.css('max-width', t.d.$tableBox.outerWidth() - 59 + 'px');
+            }, 10);
             return t;
         }
         return t.d.text;
@@ -96,7 +101,7 @@ define([
         var t = this;
         if (typeof width !== 'undefined') {
             t.d.width = width;
-            t.d.$table.width(t.d.width);
+            t.d.$tableBox.width(t.d.width);
         }
         return t.d.width;
     };

@@ -1,13 +1,22 @@
 .automizy-tag {
     display: inline-block;
     box-sizing: border-box;
+    padding: 10px;
+    position: relative;
+    cursor: default;
+    max-width:100%;
+}
+
+.automizy-tag-table-box{
     border: 1px solid #b9b9b9;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
-    border-radius: 10px;;
-    margin: 10px;
-    position: relative;
-    cursor: default;
+    border-radius: 10px;
+    max-width: 100%;
+}
+.automizy-tag-table{
+    width:100%;
+    max-width: 100%;
 }
 
 .automizy-tag .automizy-tag-icon {
@@ -18,8 +27,12 @@
 }
 
 .automizy-tag .automizy-tag-text {
+    display: inline-block;
     box-sizing: border-box;
     vertical-align: middle;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .automizy-tag .automizy-tag-close {

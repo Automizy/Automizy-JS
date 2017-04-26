@@ -143,6 +143,7 @@
 }
 .automizy-button.automizy-skin-bordered-green a,
 .automizy-button.automizy-skin-bordered-black a,
+.automizy-button.automizy-skin-bordered-orange a,
 .automizy-button.automizy-skin-simple-likemenu a,
 .automizy-button.automizy-skin-simple-white a,
 .automizy-button.automizy-skin-image-white a,
@@ -180,8 +181,22 @@
 .automizy-button.automizy-skin-image-white a {
     min-width: 50px;
 }
+.automizy-button.automizy-skin-bordered-green.automizy-button-semithin a,
+.automizy-button.automizy-skin-bordered-black.automizy-button-semithin a,
+.automizy-button.automizy-skin-bordered-orange.automizy-button-semithin a,
+.automizy-button.automizy-skin-simple-likemenu.automizy-button-semithin a,
+.automizy-button.automizy-skin-simple-white.automizy-button-semithin a,
+.automizy-button.automizy-skin-image-white.automizy-button-semithin a,
+.automizy-button.automizy-skin-simple-orange.automizy-button-semithin a,
+.automizy-button.automizy-skin-simple-blue.automizy-button-semithin a,
+.automizy-button.automizy-skin-simple-green.automizy-button-semithin a {
+    padding: 9px 10px 9px 10px;
+    height: auto;
+    line-height: normal;
+}
 .automizy-button.automizy-skin-bordered-green.automizy-button-thin a,
 .automizy-button.automizy-skin-bordered-black.automizy-button-thin a,
+.automizy-button.automizy-skin-bordered-orange.automizy-button-thin a,
 .automizy-button.automizy-skin-simple-likemenu.automizy-button-thin a,
 .automizy-button.automizy-skin-simple-white.automizy-button-thin a,
 .automizy-button.automizy-skin-image-white.automizy-button-thin a,
@@ -194,6 +209,7 @@
 }
 .automizy-button.automizy-skin-bordered-green.automizy-button-thinner a,
 .automizy-button.automizy-skin-bordered-black.automizy-button-thinner a,
+.automizy-button.automizy-skin-bordered-orange.automizy-button-thinner a,
 .automizy-button.automizy-skin-simple-likemenu.automizy-button-thinner a,
 .automizy-button.automizy-skin-simple-white.automizy-button-thinner a,
 .automizy-button.automizy-skin-image-white.automizy-button-thinner a,
@@ -206,6 +222,7 @@
 }
 .automizy-button.automizy-skin-bordered-green.automizy-button-thick a,
 .automizy-button.automizy-skin-bordered-black.automizy-button-thick a,
+.automizy-button.automizy-skin-bordered-orange.automizy-button-thick a,
 .automizy-button.automizy-skin-simple-likemenu.automizy-button-thick a,
 .automizy-button.automizy-skin-simple-white.automizy-button-thick a,
 .automizy-button.automizy-skin-image-white.automizy-button-thick a,
@@ -226,6 +243,7 @@
 }
 .automizy-button.automizy-skin-bordered-green a:active,
 .automizy-button.automizy-skin-bordered-black a:active,
+.automizy-button.automizy-skin-bordered-orange a:active,
 .automizy-button.automizy-skin-simple-likemenu a:active,
 .automizy-button.automizy-skin-simple-white a:active,
 .automizy-button.automizy-skin-simple-green a:active,
@@ -338,6 +356,19 @@
     color: #464646;
 }
 .automizy-button.disabled.automizy-skin-bordered-black a {
+    opacity:0.5;
+}
+.automizy-button.automizy-skin-bordered-orange a {
+    color:#e98604;
+    border: 2px solid #e98604;
+    background: #ffffff;
+    padding: 4px 8px 4px 8px;
+}
+.automizy-button.automizy-skin-bordered-orange a:hover,
+.automizy-input-box input[type="file"]:hover + span .automizy-skin-bordered-orange a {
+    color: #e98604;
+}
+.automizy-button.disabled.automizy-skin-bordered-orange a {
     opacity:0.5;
 }
 .automizy-button.automizy-skin-simple-green a {
@@ -1008,6 +1039,10 @@ input.automizy-table-rowcheck:focus:disabled:checked { background-position: -15p
 .automizy-input2[data-type="checkbox"] .automizy-input2-tr .automizy-input2-td {
     border: none;
 }
+.automizy-input2[data-type="radio"] .automizy-input2-input-cell,
+.automizy-input2[data-type="checkbox"] .automizy-input2-input-cell {
+    width:1px;
+}
 .automizy-input2-td:not(.automizy-hide) ~ .automizy-input2-td {
     border-left: none;
     border-top-left-radius: 0;
@@ -1300,7 +1335,7 @@ textarea.automizy-input2-input {
 }
 .automizy-input2 input[type="checkbox"],
 .automizy-input2 input[type="radio"] {
-    margin-top: 7px;
+    
 }
 .automizy-input2 input[type='radio'] {
     background-position: -30px 0;
@@ -3210,13 +3245,21 @@ label.iPhoneCheckLabelOff span {
 .automizy-tag {
     display: inline-block;
     box-sizing: border-box;
+    padding: 10px;
+    position: relative;
+    cursor: default;
+    max-width:100%;
+}
+.automizy-tag-table-box{
     border: 1px solid #b9b9b9;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
-    border-radius: 10px;;
-    margin: 10px;
-    position: relative;
-    cursor: default;
+    border-radius: 10px;
+    max-width: 100%;
+}
+.automizy-tag-table{
+    width:100%;
+    max-width: 100%;
 }
 .automizy-tag .automizy-tag-icon {
     box-sizing: border-box;
@@ -3225,8 +3268,12 @@ label.iPhoneCheckLabelOff span {
     vertical-align: middle;
 }
 .automizy-tag .automizy-tag-text {
+    display: inline-block;
     box-sizing: border-box;
     vertical-align: middle;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .automizy-tag .automizy-tag-close {
     box-sizing: border-box;
