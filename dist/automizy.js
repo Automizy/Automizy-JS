@@ -10520,6 +10520,8 @@ var $A = {};
             showPercent: true,
             thick: false,
             color: 'blue',
+            speed: 250,
+            easing: 'swing',
             percent: 0,
 
             id: 'automizy-progressbar-' + $A.getUniqueString(),
@@ -10543,6 +10545,12 @@ var $A = {};
             }
             if (typeof obj.text !== 'undefined') {
                 t.text(obj.text);
+            }
+            if (typeof obj.speed !== 'undefined') {
+                t.speed(obj.speed);
+            }
+            if (typeof obj.easing !== 'undefined') {
+                t.easing(obj.easing);
             }
             if (typeof obj.showPercent !== 'undefined') {
                 t.showPercent(obj.showPercent);
@@ -10579,6 +10587,22 @@ var $A = {};
         }
         return t.d.$bar.text();
     };
+    p.speed = function (speed) {
+        var t = this;
+        if (typeof speed !== 'undefined') {
+            t.d.speed = speed;
+            return t;
+        }
+        return t.d.speed;
+    };
+    p.easing = function (easing) {
+        var t = this;
+        if (typeof easing !== 'undefined') {
+            t.d.easing = easing;
+            return t;
+        }
+        return t.d.easing;
+    };
     p.percent = function (percent) {
         var t = this;
         if (typeof percent !== 'undefined') {
@@ -10587,12 +10611,12 @@ var $A = {};
             t.d.percent = percent;
             t.d.$bar.stop().animate({
                 width: t.d.percent + '%'
-            }, 250);
+            }, t.speed(), t.easing());
             t.d.$percent.prop('counter', oldPercent).stop().animate({
                 counter: t.d.percent
             }, {
-                duration: 250,
-                easing: 'swing',
+                duration: t.speed(),
+                easing: t.easing(),
                 step: function (now) {
                     t.d.$percent.text(Math.ceil(now));
                 }
