@@ -3121,7 +3121,7 @@ label.iPhoneCheckLabelOff span {
     margin: 0;
     border-radius: 4px;
     background-color: #fff;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+    box-shadow: inset 0 -1px 1px rgba(0, 0, 0, .05);
     overflow: hidden;
 }
 .automizy-panel .automizy-panel-title{
@@ -3133,6 +3133,7 @@ label.iPhoneCheckLabelOff span {
     background-color: #FFFFFF;
     font-family: 'Montserrat', sans-serif;
     font-weight: 500;
+    text-align: left;
 }
 .automizy-panel .automizy-panel-content{
     padding: 15px 20px;
