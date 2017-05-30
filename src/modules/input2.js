@@ -1098,16 +1098,15 @@ define([
             attach = $A.parseBoolean(attach);
             t.d.attachColorPicker = attach;
 
-            if (attach) {
+            if(attach){
                 t.showColorPicker();
 
-                t.d.$colorPickerInput.on('change', colorChangedInPicker)
+                t.d.$colorPickerInput.on('change', colorChangedInPicker);
                 t.d.$input.on('change', colorChangedInInput);
-            }
-            else {
+            } else {
                 t.hideColorPicker();
 
-                t.d.$colorPickerInput.off('change', colorChangedInPicker)
+                t.d.$colorPickerInput.off('change', colorChangedInPicker);
                 t.d.$input.off('change', colorChangedInInput);
             }
 

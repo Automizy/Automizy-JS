@@ -186,11 +186,11 @@
 
 /*The table itself*/
 
-.automizy-table-container-box {
+.automizy-table-box .automizy-table-container-box {
     width: 100%;
 }
 
-.automizy-table-container {
+.automizy-table-box .automizy-table-container {
     width: 100%;
     max-width: 100%;
     min-width: 100%;
@@ -202,8 +202,12 @@
     border: 1px solid #e4e7ef;
     background-color: #ffffff;
 }
+.automizy-table-box.automizy-skin-light .automizy-table-container {
+    padding: 30px 12px;
+    border: none;
+}
 
-.automizy-table {
+.automizy-table-box .automizy-table {
     border-spacing: 0;
     border-collapse: collapse;
     width: 100%;
@@ -216,27 +220,27 @@
     padding: 0;
 }
 
-.automizy-table > tbody > tr {
+.automizy-table-box .automizy-table > tbody > tr {
     background-color: #fefeff;
 }
 
-.automizy-table > tbody > tr:nth-child(even) {
+.automizy-table-box .automizy-table > tbody > tr:nth-child(even) {
     background-color: #ffffff;
 }
 
-.automizy-table > tbody > tr.selected {
+.automizy-table-box .automizy-table > tbody > tr.selected {
     background-color: #ffeedc;
 }
 
-.automizy-table > tbody > tr:last-child > * {
+.automizy-table-box .automizy-table > tbody > tr:last-child > * {
     border-bottom: none;
 }
 
-.automizy-table > tbody > tr:first-child > * {
+.automizy-table-box .automizy-table > tbody > tr:first-child > * {
     border-top: none;
 }
 
-.automizy-table > tbody > tr > * {
+.automizy-table-box .automizy-table > tbody > tr > * {
     margin: 0;
     border: 1px solid rgba(158, 173, 195, .16);
     border-width: 1px 1px 1px 0px;
@@ -254,8 +258,15 @@
     color: #555a60;
     font-weight: 400;
 }
+.automizy-table-box.automizy-skin-light .automizy-table > tbody > tr > td {
+    border: none;
+}
+.automizy-table-box.automizy-skin-light .automizy-table > tbody > tr > th {
+    border-left-style: none;
+    border-right-style: none;
+}
 
-.automizy-table.automizy-table-with-openable-inline-box > tbody > tr > td.automizy-main-cell::before {
+.automizy-table-box .automizy-table.automizy-table-with-openable-inline-box > tbody > tr > td.automizy-main-cell::before {
     content: '';
     font-size: 0;
     width: 0;
@@ -271,12 +282,12 @@
     border-radius: 3px;
 }
 
-.automizy-table.automizy-table-with-openable-inline-box > tbody > tr > td > .automizy-table-cell-editable-content:hover::before {
+.automizy-table-box .automizy-table.automizy-table-with-openable-inline-box > tbody > tr > td > .automizy-table-cell-editable-content:hover::before {
     display: none;
 }
 
-.automizy-table.automizy-table-with-openable-inline-box > tbody > tr.automizy-inline-buttons-opened > td.automizy-main-cell::before,
-.automizy-table.automizy-table-with-openable-inline-box > tbody > tr:hover > td.automizy-main-cell::before{
+.automizy-table-box .automizy-table.automizy-table-with-openable-inline-box > tbody > tr.automizy-inline-buttons-opened > td.automizy-main-cell::before,
+.automizy-table-box .automizy-table.automizy-table-with-openable-inline-box > tbody > tr:hover > td.automizy-main-cell::before{
     content: '';
     font-size: 0;
     width: 0;
@@ -292,7 +303,7 @@
     border-radius: 3px;
 }
 
-.automizy-table > tbody > tr > th {
+.automizy-table-box .automizy-table > tbody > tr > th {
     padding: 10px 36px;
     background: #fff;
     vertical-align: middle;
@@ -300,11 +311,11 @@
     border-bottom: 2px solid #e4e7ef
 }
 
-.automizy-table > tbody > tr > *:last-child {
+.automizy-table-box .automizy-table > tbody > tr > *:last-child {
     border-right: none;
 }
 
-.automizy-table.checkboxed > tbody > tr > *:first-child {
+.automizy-table-box .automizy-table.checkboxed > tbody > tr > *:first-child {
     cursor: pointer;
     overflow: hidden;
     padding: 2px 15px 0 12px;
@@ -313,16 +324,18 @@
     vertical-align: middle;
 }
 
-.automizy-table.checkboxed > tbody > tr > *:first-child input {
+.automizy-table-box .automizy-table.checkboxed > tbody > tr > *:first-child input {
     margin: 0;
 }
 
-.automizy-table.checkboxed > tbody > tr > *:first-child label {
+.automizy-table-box .automizy-table.checkboxed > tbody > tr > *:first-child label {
     width: 100%;
 }
 
-.automizy-table.checkboxed > tbody > tr > td:nth-child(2) {
+.automizy-table-box .automizy-table.checkboxed > tbody > tr > td:nth-child(2) {
 }
+
+
 
 .automizy-table-clickable > tbody > tr > td {
     cursor: pointer;
