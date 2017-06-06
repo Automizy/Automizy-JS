@@ -1242,9 +1242,9 @@ textarea.automizy-input2-input {
     color: rgba(0, 0, 0, 0.4);
 }
 .automizy-input2 .automizy-input2-input-cell[data-measure] input.automizy-input2-input {
-    padding-right: 50px;
+    padding-right: 38px;
 }
-.automizy-input2.automizy-input2-has-colorpicker input {
+.automizy-input2.automizy-input2-has-colorpicker input.automizy-input2-input {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
     border-right: none;

@@ -341,12 +341,11 @@ textarea.automizy-input2-input {
 }
 
 .automizy-input2 .automizy-input2-input-cell[data-measure] input.automizy-input2-input {
-    padding-right: 50px;
+    padding-right: 38px;
 }
 
-/*input 2 colorpicker*/
 
-.automizy-input2.automizy-input2-has-colorpicker input {
+.automizy-input2.automizy-input2-has-colorpicker input.automizy-input2-input {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
     border-right: none;

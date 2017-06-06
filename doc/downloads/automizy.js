@@ -3871,7 +3871,14 @@ var $A = {};
             $labelTop: $('<label class="automizy-input2-label-top"></label>'),
             $labelBefore: $('<label class="automizy-input2-label-before"></label>'),
             $input: $('<input type="text" class="automizy-input2-input" />'),
-            $colorPickerInput: $('<input type="color" class="automizy-input2-colorpicker-input" />'),
+            $colorPickerInput: $('<input type="color" class="automizy-input2-colorpicker-input" />').change(function(){
+                var value = $(this).val();
+                t.data('colorpickerValue', value);
+                if(t.d.connectColorPickerToInputField){
+                    t.val(value);
+                }
+                t.colorPickerChange();
+            }),
             $loading: $('<div class="automizy-input2-loading"><div class="automizy-spinner"><div class="automizy-bounce1"></div><div class="automizy-bounce2"></div><div class="automizy-bounce3"></div></div></div>'),
             $labelAfter: $('<label class="automizy-input2-label-after"></label>'),
             $helpIcon: $('<span class="automizy-input2-help fa fa-question-circle"></span>'),
@@ -3897,6 +3904,7 @@ var $A = {};
             buttonTop: false,
             buttonBottom: false,
             tabindex: false,
+            activeAutomizyChange:false,
             labelBeforeWidth: '',
             value: '',
             placeholder: '',
@@ -3907,7 +3915,7 @@ var $A = {};
             labelAfter: '',
             labelBottom: '',
             accept: [],
-            attachColorPicker: false,
+            colorPickerEnabled: false,
             enableCustomSpinner: false,
             validate: function () {
             },
@@ -3917,7 +3925,8 @@ var $A = {};
             inlineEditable: false,
             id: 'automizy-input-' + $A.getUniqueString(),
             inputId: 'automizy-input-' + $A.getUniqueString() + '-input',
-            change: function () { //change keyup paste
+            colorPickerChange:function(){},
+            change: function () {
                 if (t.change().returnValue() === false) {
                     return false;
                 }
@@ -3990,6 +3999,12 @@ var $A = {};
             if (typeof obj.type !== 'undefined') {
                 t.type(obj.type);
             }
+            if (typeof obj.min !== 'undefined') {
+                t.min(obj.min);
+            }
+            if (typeof obj.max !== 'undefined') {
+                t.max(obj.max);
+            }
             if (typeof obj.disable !== 'undefined') {
                 if (obj.disable) {
                     t.disable();
@@ -4007,8 +4022,17 @@ var $A = {};
             if (typeof obj.checked !== 'undefined') {
                 t.checked(obj.checked);
             }
-            if (typeof obj.attachColorPicker !== 'undefined') {
-                t.attachColorPicker(obj.attachColorPicker);
+            if (typeof obj.colorPickerEnabled !== 'undefined') {
+                t.colorPickerEnabled(obj.colorPickerEnabled);
+            }
+            if (typeof obj.colorPickerValue !== 'undefined') {
+                t.colorPickerValue(obj.colorPickerValue);
+            }
+            if (typeof obj.colorPickerChange === 'function') {
+                t.colorPickerChange(obj.colorPickerChange);
+            }
+            if (typeof obj.connectColorPickerToInputField !== 'undefined') {
+                t.connectColorPickerToInputField(obj.connectColorPickerToInputField);
             }
             if (typeof obj.enableCustomSpinner !== 'undefined') {
                 t.enableCustomSpinner(obj.enableCustomSpinner);
@@ -4075,6 +4099,9 @@ var $A = {};
             }
             if (typeof obj.blur === 'function') {
                 t.blur(obj.blur);
+            }
+            if (typeof obj.automizyChange === 'function') {
+                t.automizyChange(obj.automizyChange);
             }
             if (typeof obj.disabled === 'boolean') {
                 t.disabled(obj.disabled);
@@ -4182,7 +4209,19 @@ var $A = {};
             if (t.click().returnValue() === false) {
                 return false;
             }
-        });
+        }).on('keyup change click mousewheel', function () {
+            if(t.d.activeAutomizyChange) {
+                (function(input, module){
+                    setTimeout(function () {
+                        var $input = $(input);
+                        if ($input.data('old-value') !== input.value) {
+                            $input.data('old-value', input.value);
+                            module.automizyChange.apply(module, [input]);
+                        }
+                    }, 1)
+                })(this, t);
+            }
+        }).data('old-value', t.d.$input[0].value);
     };
     p.disabled = function (disabled) {
         var t = this;
@@ -4193,6 +4232,22 @@ var $A = {};
             return t;
         }
         return t.d.disabled;
+    };
+    p.max = function (max) {
+        var t = this;
+        if (typeof max !== 'undefined') {
+            t.input().attr('max', max);
+            return t;
+        }
+        return t.input().attr('max');
+    };
+    p.min = function (min) {
+        var t = this;
+        if (typeof min !== 'undefined') {
+            t.input().attr('min', min);
+            return t;
+        }
+        return t.input().attr('min');
     };
     p.enter = function (func, name, life) {
         var t = this;
@@ -4211,6 +4266,9 @@ var $A = {};
         } else {
             var a = t.runFunctions('change');
             t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
+            if(t.d.connectColorPickerToInputField){
+                t.colorPickerInput().val(t.val());
+            }
         }
         return t;
     };
@@ -4250,6 +4308,17 @@ var $A = {};
             t.addFunction('click', func, name, life);
         } else {
             var a = t.runFunctions('click');
+            t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
+        }
+        return t;
+    };
+    p.automizyChange = function(func, name, life){
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('automizyChange', func, name, life);
+            t.d.activeAutomizyChange = true;
+        } else {
+            var a = t.runFunctions('automizyChange');
             t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
         }
         return t;
@@ -4883,12 +4952,11 @@ var $A = {};
         return this.d.inlineEditable;
     };
 
-    //Adding unit or any text in the right side of the input field
     p.measure = function (measure) {
         var t = this;
         if (typeof measure !== 'undefined') {
             t.d.measure = measure;
-            t.d.$inputCell.attr('data-measure', measure);
+            t.d.$inputCell.attr('data-measure', t.d.measure);
             return t;
         }
         return t.d.measure;
@@ -4896,6 +4964,7 @@ var $A = {};
 
     p.showColorPicker = function () {
         var t = this;
+        t.d.colorPickerEnabled = true;
         t.d.$widget.addClass('automizy-input2-has-colorpicker');
         t.d.$colorPickerCell.removeClass('automizy-hide');
         return t;
@@ -4903,6 +4972,7 @@ var $A = {};
 
     p.hideColorPicker = function () {
         var t = this;
+        t.d.colorPickerEnabled = false;
         t.d.$widget.removeClass('automizy-input2-has-colorpicker');
         t.d.$colorPickerCell.addClass('automizy-hide');
         return t;
@@ -4911,46 +4981,49 @@ var $A = {};
     p.colorPickerValue = function (value) {
         var t = this;
         if (typeof value !== 'undefined') {
-            t.d.$colorPickerInput.val(value);
-
+            t.colorPickerInput().val(value);
             return t;
         }
-        return t.d.$colorPickerInput.val();
+        return t.colorPickerInput().val();
     };
-
-    //used to connect the colorpicker input with the main input
-    p.attachColorPicker = function (attach) {
+    p.colorPickerEnabled = function(value){
         var t = this;
-        if (typeof attach !== 'undefined') {
-            attach = $A.parseBoolean(attach);
-            t.d.attachColorPicker = attach;
-
-            if(attach){
+        if(typeof value !== 'undefined') {
+            value = $A.parseBoolean(value);
+            if(value){
                 t.showColorPicker();
-
-                t.d.$colorPickerInput.on('change', colorChangedInPicker);
-                t.d.$input.on('change', colorChangedInInput);
-            } else {
+            }else{
                 t.hideColorPicker();
-
-                t.d.$colorPickerInput.off('change', colorChangedInPicker);
-                t.d.$input.off('change', colorChangedInInput);
             }
-
-            function colorChangedInPicker() {
-                t.value(t.colorPickerValue());
-            }
-
-            function colorChangedInInput() {
-                t.colorPickerValue(t.val());
-            }
-
             return t;
         }
-        return t.d.attachColorPicker;
+        return t.d.colorPickerEnabled;
+    };
+    p.colorPickerChange = function(func){
+        var t = this;
+        if(typeof func === 'function') {
+            t.d.colorPickerChange = func;
+            return t;
+        }
+        return t.d.colorPickerChange.apply(t, []);
+    };
+    p.colorPickerInput = function(){
+        var t = this;
+        return t.d.$colorPickerInput;
+    };
+    p.connectColorPickerToInputField = function(value){
+        var t = this;
+        if(typeof value !== 'undefined') {
+            t.d.connectColorPickerToInputField = $A.parseBoolean(value);
+            return t;
+        }
+        return t.d.connectColorPickerToInputField;
     };
 
-    //show custom spinner on number type inputs
+
+
+
+
     p.enableCustomSpinner = function (enable) {
         var t = this;
         if (typeof enable !== 'undefined') {
@@ -4991,7 +5064,11 @@ var $A = {};
         return t.d.enableCustomSpinner;
     };
 
-    $A.initBasicFunctions(Input2, "Input2", ["change", "keyup", "enter", "focus", "blur", "click"]);
+
+
+
+
+    $A.initBasicFunctions(Input2, "Input2", ["change", "keyup", "enter", "focus", "blur", "click", "automizyChange"]);
 })();
 
 (function(){

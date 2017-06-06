@@ -31,6 +31,9 @@
                 .buttonRight($A.newButton({
                     icon: 'fa-eye'
                 }))
+                .automizyChange(function(){
+                    console.log(this.val())
+                })
                 .validator('notEmpty')
                 .measure('px')
                 .showColorPicker(true)
@@ -64,7 +67,6 @@
                 .labelBefore('Attached color picker')
                 .labelAfter('After label')
                 .iconLeft('fa-users')
-                .attachColorPicker(true);
 
             window.colorInput2 = $A.newInput2()
                 .drawTo('body')
