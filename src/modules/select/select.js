@@ -11,7 +11,7 @@ define([
         var t = this;
         t.d = {
             $widget: $('<div class="automizy-select automizy-has-arrow automizy-empty"></div>'),
-            $loadingBox: $('<div class="automizy-select-loading-box">'+$A.translate('loading...')+'</div>'),
+            $loadingBox: $('<div class="automizy-select-loading-box">' + $A.translate('loading...') + '</div>'),
             $emptyBox: $('<div class="automizy-select-empty-box"></div>'),
             $widgetTable: $('<table border="0" cellpadding="0" cellspacing="0" class="automizy-select-table"></table>'),
             $widgetTr: $('<tr class="automizy-select-tr"></tr>'),
@@ -22,21 +22,21 @@ define([
             $widgetTdArrowIcon: $('<span class="automizy-icon automizy-icon-select-arrow"></span>'),
             $icon: $('<span class="automizy-icon"></span>'),
             originalInput: $('<select></select>').data('automizy-select-remove', true),
-            optionBox:$A.newSelectOptionBox().selectModule(t),
-            options:[],
-            groups:{},
+            optionBox: $A.newSelectOptionBox().selectModule(t),
+            options: [],
+            groups: {},
             tmpValue: null,
             value: null,
-            content:false,
-            multiple:false,
+            content: false,
+            multiple: false,
             disabled: false,
-            loading:false,
-            empty:false,
-            searchable:false,
-            showMessageIfEmpty:false,
-            emptyText:$A.translate('Select an option'),
-            selectedText:$A.translate('# items selected'),
-            maxVisibleItems:2,
+            loading: false,
+            empty: false,
+            searchable: false,
+            showMessageIfEmpty: false,
+            emptyText: $A.translate('Select an option'),
+            selectedText: $A.translate('# items selected'),
+            maxVisibleItems: 2,
             width: 'auto',
             height: 'auto',
             id: 'automizy-select-' + $A.getUniqueString(),
@@ -72,13 +72,13 @@ define([
             t.initParameter(obj);
         }
 
-        t.widget().click(function(){
-            if(t.d.loading === true || t.d.empty){
+        t.widget().click(function () {
+            if (t.d.loading === true || t.d.empty) {
                 return false;
             }
-            if(t.widget().hasClass('automizy-active')){
+            if (t.widget().hasClass('automizy-active')) {
                 $A.closeAllSelectBox();
-            }else {
+            } else {
                 t.open();
             }
         });
@@ -89,7 +89,7 @@ define([
     var p = Select.prototype;
 
 
-    p.setupJQueryEvents = function(){
+    p.setupJQueryEvents = function () {
         var t = this;
         t.originalInput().unbind('change', t.d.change).bind('change', t.d.change);
     };
@@ -97,25 +97,27 @@ define([
     p.originalInput = function (originalInput) {
         var t = this;
         if (typeof originalInput !== 'undefined') {
-            if(t.d.originalInput.data('automizy-select-remove') == true){
+            if (t.d.originalInput.data('automizy-select-remove') == true) {
                 t.d.originalInput.remove();
             }
             t.d.originalInput = originalInput;
             var $elem;
-            if(t.width() === 'auto'){
+            if (t.width() === 'auto') {
                 t.width(t.d.originalInput.width());
             }
             /*if(t.height() === 'auto'){
-                t.height(t.d.originalInput.height());
-            }*/
-            if(typeof t.d.originalInput.input === 'function'){
+             t.height(t.d.originalInput.height());
+             }*/
+            if (typeof t.d.originalInput.input === 'function') {
                 $elem = t.d.originalInput.input();
-            }else{
+            } else {
                 $elem = t.d.originalInput;
             }
-            (function(t){setTimeout(function(){
-                t.widget().insertAfter($elem);
-            }, 10)})(t);
+            (function (t) {
+                setTimeout(function () {
+                    t.widget().insertAfter($elem);
+                }, 10)
+            })(t);
             $elem.hide();
             $elem.data('automizy-select', t);
             t.d.originalInput.data('automizy-select', t);
@@ -127,25 +129,28 @@ define([
     p.optionBox = function () {
         return this.d.optionBox;
     };
-    p.confirmValue = function(){
+    p.confirmValue = function (changeTrigger) {
         var t = this;
+        if (typeof changeTrigger === 'undefined') {
+            changeTrigger = true;
+        }
 
         t.unselectAll();
         var hasValue = false;
 
-        if(typeof t.d.value === 'object' || typeof t.d.value === 'array'){
-            for(var i = 0; i < t.d.options.length; i++){
-                for(var j = 0; j < t.d.value.length; j++){
-                    if(t.d.options[i].val() == t.d.value[j]){
+        if (typeof t.d.value === 'object' || typeof t.d.value === 'array') {
+            for (var i = 0; i < t.d.options.length; i++) {
+                for (var j = 0; j < t.d.value.length; j++) {
+                    if (t.d.options[i].val() == t.d.value[j]) {
                         t.d.options[i].select(false, true);
                         hasValue = true;
                     }
                 }
             }
             t.refreshValue();
-        }else{
-            for(var i = 0; i < t.d.options.length; i++){
-                if(t.d.options[i].val() == t.d.value){
+        } else {
+            for (var i = 0; i < t.d.options.length; i++) {
+                if (t.d.options[i].val() == t.d.value) {
                     t.d.options[i].select();
                     hasValue = true;
                     break;
@@ -153,24 +158,30 @@ define([
             }
         }
 
-        if(!hasValue){
+        if (!hasValue) {
             t.content(t.emptyText());
             t.widget().addClass('automizy-empty');
-        }else{
+        } else {
             t.widget().removeClass('automizy-empty');
         }
-        t.d.originalInput.val(t.d.value).trigger('change');
+        t.d.originalInput.val(t.d.value);
+        if (changeTrigger) {
+            t.d.originalInput.trigger('change');
+        }
 
         return t;
     };
-    p.val = p.value = function (value) {
+    p.val = p.value = function (value, changeTrigger) {
         var t = this;
+        if (typeof changeTrigger === 'undefined') {
+            changeTrigger = true;
+        }
         if (typeof value !== 'undefined') {
             t.d.value = value;
-            if(t.d.loading){
+            if (t.d.loading) {
                 t.d.tmpValue = t.d.value;
-            }else {
-                t.confirmValue();
+            } else {
+                t.confirmValue(changeTrigger);
             }
             return t;
         }
@@ -180,8 +191,8 @@ define([
         var t = this;
 
         var options = [];
-        for(var i = 0; i < t.d.options.length; i++){
-            if(t.d.options[i].selected()){
+        for (var i = 0; i < t.d.options.length; i++) {
+            if (t.d.options[i].selected()) {
                 options.push(t.d.options[i]);
             }
         }
@@ -192,8 +203,8 @@ define([
         var t = this;
 
         var option = false;
-        for(var i = 0; i < t.d.options.length; i++){
-            if(t.d.options[i].selected()){
+        for (var i = 0; i < t.d.options.length; i++) {
+            if (t.d.options[i].selected()) {
                 option = t.d.options[i];
                 break;
             }
@@ -212,14 +223,14 @@ define([
     };
 
 
-    p.icon = function(o){
+    p.icon = function (o) {
         var t = this;
         if (typeof o !== 'undefined') {
-            if(o === false){
+            if (o === false) {
                 t.hasIcon(false);
-            } else if(typeof o === 'string'){
+            } else if (typeof o === 'string') {
                 t.d.icon = o;
-                t.d.$icon.removeClass().addClass('automizy-icon automizy-icon-'+o);
+                t.d.$icon.removeClass().addClass('automizy-icon automizy-icon-' + o);
                 t.hasIcon(true);
             } else {
                 var icon = {
@@ -245,13 +256,13 @@ define([
 
         return t.d.icon;
     };
-    p.hasIcon = function(hasIcon){
+    p.hasIcon = function (hasIcon) {
         var t = this;
         if (typeof hasIcon !== 'undefined') {
             t.d.hasIcon = $A.parseBoolean(hasIcon);
-            if(t.d.hasIcon === true){
+            if (t.d.hasIcon === true) {
                 t.widget().addClass('automizy-has-icon');
-            }else{
+            } else {
                 t.widget().removeClass('automizy-has-icon');
             }
             return t;
@@ -264,15 +275,15 @@ define([
         var t = this;
         if (typeof multiple !== 'undefined') {
             t.d.multiple = $A.parseBoolean(multiple);
-            if(typeof t.d.originalInput.multiple !== 'undefined'){
+            if (typeof t.d.originalInput.multiple !== 'undefined') {
                 t.d.originalInput.multiple(t.d.multiple);
-            }else{
+            } else {
                 t.d.originalInput.attr('multiple', t.d.multiple);
             }
 
-            if(t.d.multiple === true){
+            if (t.d.multiple === true) {
                 t.widget().addClass('automizy-multiple');
-            }else{
+            } else {
                 t.widget().removeClass('automizy-multiple');
             }
 
@@ -284,16 +295,16 @@ define([
         var t = this;
         if (typeof disabled !== 'undefined') {
             disabled = $A.parseBoolean(disabled);
-            if(disabled){
+            if (disabled) {
                 $A.closeAllSelectBox();
                 t.widget().addClass('automizy-disabled');
-            }else{
+            } else {
                 t.widget().removeClass('automizy-disabled');
             }
             t.d.disabled = disabled;
-            if(typeof t.d.originalInput.disabled !== 'undefined'){
+            if (typeof t.d.originalInput.disabled !== 'undefined') {
                 t.d.originalInput.disabled(t.d.disabled);
-            }else{
+            } else {
                 t.d.originalInput.attr('disabled', disabled);
             }
             return t;
@@ -309,10 +320,10 @@ define([
     p.unselectAll = function (triggerChange) {
         var t = this;
         var triggerChange = triggerChange || false;
-        for(var i = 0; i < t.d.options.length; i++){
+        for (var i = 0; i < t.d.options.length; i++) {
             t.d.options[i].unselect(false, true);
         }
-        if(triggerChange === true){
+        if (triggerChange === true) {
             t.originalInput().trigger('change');
         }
         return t;
@@ -322,7 +333,7 @@ define([
         if (typeof width !== 'undefined') {
             t.d.width = width;
             t.widget().css('width', t.d.width);
-            setTimeout(function() {
+            setTimeout(function () {
                 //t.d.$widgetTdContentDiv.css('max-width', t.widget().width() - 12 + 'px');
             }, 10);
             return t;
@@ -330,14 +341,14 @@ define([
         return t.d.width;
     };
     /*p.height = function (height) {
-        var t = this;
-        if (typeof height !== 'undefined') {
-            t.d.height = height;
-            t.d.$widgetTable.css('height', t.d.height);
-            return t;
-        }
-        return t.d.height;
-    };*/
+     var t = this;
+     if (typeof height !== 'undefined') {
+     t.d.height = height;
+     t.d.$widgetTable.css('height', t.d.height);
+     return t;
+     }
+     return t.d.height;
+     };*/
     p.refreshValue = function () {
         var t = this;
         var options = t.d.options;
@@ -346,43 +357,43 @@ define([
         var selectedOptionCount = 0;
         var icon = false;
 
-        for(var i = 0; i < options.length; i++){
-            if(options[i].selected()){
+        for (var i = 0; i < options.length; i++) {
+            if (options[i].selected()) {
                 selectedOptionCount++;
                 textValues.push(options[i].textValue());
                 values.push(options[i].val());
-                if(options[i].hasIcon()){
+                if (options[i].hasIcon()) {
                     icon = options[i].icon();
                 }
             }
         }
 
-        if(selectedOptionCount === 1){
+        if (selectedOptionCount === 1) {
             t.icon(icon);
-        }else {
+        } else {
             t.icon(false);
         }
 
-        if(textValues.length <= 0){
+        if (textValues.length <= 0) {
             t.content(t.emptyText());
             t.widget().addClass('automizy-empty');
-        }else {
-            if(textValues.length > t.maxVisibleItems()){
+        } else {
+            if (textValues.length > t.maxVisibleItems()) {
                 t.content(t.selectedText().replace("#", textValues.length));
-            }else {
+            } else {
                 t.content(textValues.join(', '));
             }
             t.widget().removeClass('automizy-empty');
         }
 
-        if(values.length > 0) {
+        if (values.length > 0) {
             if (t.multiple()) {
                 t.d.value = values;
             } else {
                 t.d.value = values[0];
             }
             t.originalInput().val(t.d.value);
-        }else{
+        } else {
             t.d.value = null;
             t.originalInput().prop("selectedIndex", -1);
         }
@@ -394,14 +405,14 @@ define([
         var groups = t.d.groups;
         var usableGroups = [];
         var options = t.d.options;
-        for(var i = 0; i < options.length; i++){
+        for (var i = 0; i < options.length; i++) {
             var group = options[i].group();
-            if(usableGroups.indexOf(group) < 0){
+            if (usableGroups.indexOf(group) < 0) {
                 usableGroups.push(group);
             }
         }
-        for(var i in groups){
-            if(usableGroups.indexOf(i) < 0){
+        for (var i in groups) {
+            if (usableGroups.indexOf(i) < 0) {
                 groups[i].$titleTd.remove();
                 groups[i].$separatorTd.remove();
                 groups[i].$titleTr.remove();
@@ -411,7 +422,7 @@ define([
         }
         return t;
     };
-    p.emptyText = p.placeholder = function(emptyText){
+    p.emptyText = p.placeholder = function (emptyText) {
         var t = this;
         if (typeof emptyText !== 'undefined') {
             t.d.emptyText = emptyText;
@@ -419,7 +430,7 @@ define([
         }
         return t.d.emptyText;
     };
-    p.selectedText = function(selectedText){
+    p.selectedText = function (selectedText) {
         var t = this;
         if (typeof selectedText !== 'undefined') {
             t.d.selectedText = selectedText;
@@ -427,7 +438,7 @@ define([
         }
         return t.d.selectedText;
     };
-    p.maxVisibleItems = function(maxVisibleItems){
+    p.maxVisibleItems = function (maxVisibleItems) {
         var t = this;
         if (typeof maxVisibleItems !== 'undefined') {
             t.d.maxVisibleItems = parseInt(maxVisibleItems);
@@ -439,7 +450,7 @@ define([
 
     p.removeOptions = function () {
         var t = this;
-        for(var i = 0; i < t.d.options.length; i++){
+        for (var i = 0; i < t.d.options.length; i++) {
             t.d.options[i].remove();
         }
         t.d.options = [];
@@ -448,15 +459,15 @@ define([
     };
     p.removeOption = function (value) {
         var t = this;
-        for(var i = 0; i < t.d.options.length; i++){
-            if(t.d.options[i].val() == value){
+        for (var i = 0; i < t.d.options.length; i++) {
+            if (t.d.options[i].val() == value) {
                 t.d.options[i].remove();
             }
         }
         t.cleanGroups();
         return t;
     };
-    p.addOption = function(option){
+    p.addOption = function (option) {
         return this.addOptions([option]);
     };
     p.options = function (options) {
@@ -464,7 +475,7 @@ define([
         if (typeof options !== 'undefined') {
             t.removeOptions();
             t.addOptions(options);
-            if(t.d.showMessageIfEmpty) {
+            if (t.d.showMessageIfEmpty) {
                 if (options.length <= 0) {
                     t.widget().addClass('automizy-empty-select');
                     t.d.empty = true;
@@ -477,38 +488,38 @@ define([
         }
         return t.d.options;
     };
-    p.addOptions = function(options, before){
+    p.addOptions = function (options, before) {
         var t = this;
         var val = t.val();
         var before = before || false;
         var options = options || [];
-        if(!(options instanceof Array)){
+        if (!(options instanceof Array)) {
             var optionsArray = [];
-            for(var i in options){
+            for (var i in options) {
                 optionsArray.push({
-                    value:i,
-                    html:options[i]
+                    value: i,
+                    html: options[i]
                 })
             }
             options = optionsArray;
         }
-        for(var i = 0; i < options.length; i++){
-            if(options[i] instanceof Array){
+        for (var i = 0; i < options.length; i++) {
+            if (options[i] instanceof Array) {
                 options[i] = {
-                    value:options[i][0] || 0,
-                    html:options[i][1] || options[i][0],
-                    selected:$A.parseBoolean(options[i][2] || false)
+                    value: options[i][0] || 0,
+                    html: options[i][1] || options[i][0],
+                    selected: $A.parseBoolean(options[i][2] || false)
                 };
-            }else if(typeof options[i] === 'string' || typeof options[i] === 'number'){
+            } else if (typeof options[i] === 'string' || typeof options[i] === 'number') {
                 options[i] = {
-                    value:options[i],
-                    html:options[i],
-                    selected:false
+                    value: options[i],
+                    html: options[i],
+                    selected: false
                 };
             }
             options[i].selectModule = t;
             options[i].selectOptionBoxModule = t.optionBox();
-            if(options[i].selected === true){
+            if (options[i].selected === true) {
                 hasSelected = true;
             }
             var option = $A.newSelectOption(options[i], false);
@@ -518,14 +529,14 @@ define([
         t.originalInput().change();
         return t;
     };
-    p.loadingStart = function(){
+    p.loadingStart = function () {
         var t = this;
         t.widget().addClass('automizy-loading');
         t.d.tmpValue = t.val() || false;
         t.d.loading = true;
         return t;
     };
-    p.loadingStop = function(){
+    p.loadingStop = function () {
         var t = this;
         t.widget().removeClass('automizy-loading');
         t.d.loading = false;
@@ -539,7 +550,7 @@ define([
             var a = t.runFunctions('loadingComplete');
             t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
             t.loadingStop();
-            if(t.d.tmpValue !== false){
+            if (t.d.tmpValue !== false) {
                 t.val(t.d.tmpValue);
                 t.d.tmpValue = false;
             }
@@ -547,7 +558,7 @@ define([
         return t;
     };
 
-    p.emptyMessage = function(msg){
+    p.emptyMessage = function (msg) {
         var t = this;
         t.d.showMessageIfEmpty = true;
 
@@ -601,7 +612,7 @@ define([
         delete $A.d["selects"][this.id()];
         this.d.remove.apply(this, [this, this.d.$widget]);
         this.d.optionBox.remove();
-        for(var i = 0; i < this.d.options.length; i++){
+        for (var i = 0; i < this.d.options.length; i++) {
             this.d.options[i].remove();
         }
         this.originalInput().remove();
@@ -630,11 +641,11 @@ define([
     };
     p.searchable = function (value) {
         var t = this;
-        if(typeof value !== 'undefined'){
+        if (typeof value !== 'undefined') {
             t.d.searchable = $A.parseBoolean(value);
-            if(t.d.searchable){
+            if (t.d.searchable) {
                 t.d.optionBox.d.$searchBox.show();
-            }else{
+            } else {
                 t.d.optionBox.d.$searchBox.hide();
             }
             return t;
@@ -645,11 +656,11 @@ define([
         var t = this;
         var text = text || '';
         var options = t.options();
-        if(text.length <= 0){
-            for(var i = 0; i < options.length; i++) {
+        if (text.length <= 0) {
+            for (var i = 0; i < options.length; i++) {
                 options[i].show();
             }
-        }else{
+        } else {
             for (var i = 0; i < options.length; i++) {
                 var str = '';
                 str += options[i].val();
@@ -666,46 +677,45 @@ define([
     };
 
 
-
     $A.initBasicFunctions(Select, "Select", ['change', 'loadingComplete', 'manualChange']);
 
 
     $.fn.automizySelect = function () {
         var lastElement = false;
-        if(typeof this.data('automizy-select') !== 'undefined'){
+        if (typeof this.data('automizy-select') !== 'undefined') {
             return this.data('automizy-select');
         }
 
-        this.each(function(){
+        this.each(function () {
             var selectModule = $A.newSelect();
             var $t = $(this);
 
-            if($t.prop("tagName").toLowerCase() !== 'select'){
+            if ($t.prop("tagName").toLowerCase() !== 'select') {
                 var $newElem = $('<select></select>');
-                $.each(this.attributes, function() {
+                $.each(this.attributes, function () {
                     $newElem.attr(this.name, this.value);
                 });
                 $t.replaceWith($newElem);
                 $t = $newElem;
             }
 
-            if($t.is(':disabled')){
+            if ($t.is(':disabled')) {
                 selectModule.disable();
             }
 
             selectModule.multiple($t.is("[multiple]")).placeholder($t.attr('placeholder') || $A.translate('Select an option')).originalInput($t);
 
             var options = [];
-            $t.find('option').each(function(){
+            $t.find('option').each(function () {
                 var $to = $(this);
                 var option = {
-                    value:$to.attr('value'),
-                    html:$to.html(),
-                    disabled:$to.is(':disabled'),
-                    selected:$to.is(':selected')
+                    value: $to.attr('value'),
+                    html: $to.html(),
+                    disabled: $to.is(':disabled'),
+                    selected: $to.is(':selected')
                 };
                 var optgroup = $to.closest('optgroup');
-                if(optgroup.length >= 0){
+                if (optgroup.length >= 0) {
                     option.group = optgroup.attr('label');
                 }
 
@@ -713,7 +723,7 @@ define([
             });
             selectModule.options(options);
 
-            if($t.hasClass('automizy-input2-input')){
+            if ($t.hasClass('automizy-input2-input')) {
                 //var input2 = $A.getInput2($t.closest('.automizy-input2').attr('id'));
                 //input2.data('automizy-select', selectModule);
                 selectModule.width('100%');
