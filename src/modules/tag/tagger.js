@@ -13,7 +13,7 @@ define([
 
                 tags: [],
                 options: {},
-                newTag: $A.newTag({text: '<input class="automizy-tagger-new-tag-input">'}),
+                newTag: $A.newTag({text: '<input class="automizy-tagger-new-tag-input" onkeydown="if(event.keyCode === 32)return false;">'}),
                 tagWidth: '200px'
             }
             ;
@@ -215,7 +215,7 @@ define([
                 function resetNewTag() {
                     t.hideOptions();
                     tag.widget().ahide();
-                    tag.text('<input type="text" class="automizy-tagger-new-tag-input">');
+                    tag.text('<input type="text" class="automizy-tagger-new-tag-input" onkeydown="if(event.keyCode === 32)return false;">');
 
                     var $input = tag.widget().find('input');
 

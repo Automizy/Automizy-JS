@@ -225,7 +225,7 @@ define([
     p.onInlineEditComplete = function (cell, inlineInput) {
         var t = this;
         t.d.onInlineEditComplete(cell, inlineInput);
-    }
+    };
 
     p.setInlineInputObject = function (cell) {
         var t = this;

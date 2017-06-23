@@ -39,6 +39,9 @@ define([
                 if (typeof t.d.hideFunction === 'undefined') {
                     t.d.hideFunction = function () {};
                 }
+                if (typeof t.d.margin === 'undefined') {
+                    t.d.margin = false;
+                }
                 if (typeof t.d.returnValue === 'undefined') {
                     t.d.returnValue = true;
                 }
@@ -65,6 +68,9 @@ define([
                 }
                 if (typeof obj.buttons === 'array' || typeof obj.buttons === 'object') {
                     t.buttons(obj.buttons);
+                }
+                if (typeof obj.margin !== 'undefined') {
+                    t.margin(obj.margin);
                 }
                 if (typeof obj.target !== 'undefined') {
                     t.drawTo(obj.target);
@@ -160,6 +166,15 @@ define([
                 t.d.$widget.ashow();
                 t.d.showFunction.apply(t, [t, t.d.$widget]);
                 return t;
+            };
+        p.margin = p.margin || function (margin) {
+                var t = this;
+                if (typeof margin !== 'undefined') {
+                    t.d.margin = margin;
+                    t.d.$widget.css('margin', t.d.margin);
+                    return t;
+                }
+                return t.d.margin;
             };
         p.hide = p.hide || function (func) {
                 var t = this;

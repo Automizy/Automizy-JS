@@ -1904,6 +1904,7 @@ textarea.automizy-input2-input {
     vertical-align: middle;
     color: #555a60;
     font-weight: 400;
+    box-sizing: border-box;
 }
 .automizy-table-box.automizy-skin-light .automizy-table > tbody > tr > td {
     border: none;
@@ -3162,26 +3163,27 @@ label.iPhoneCheckLabelOff span {
 .automizy-panel.automizy-skin-bg-blue .automizy-panel-title{
     border: none;
     color: #ffffff;
-    background: #1e8ae0;
+    background: rgba(255,255,255,.2);
 }
-.automizy-panel ::-webkit-scrollbar {
-    width: 8px;
+.automizy-panel.automizy-skin-bg-green{
+    color: #ffffff;
+    border-color: #3fa243;
+    background-color: #4CAF50;
 }
-.automizy-panel ::-webkit-scrollbar-track {
-    -webkit-box-shadow:inset 0px 0px 0px 1px #f8f8f8;
-    border: 1px solid #dadada;
-    -webkit-border-radius: 4px;
-    border-radius: 4px;
-    background-color: #f8f8f8;
+.automizy-panel.automizy-skin-bg-green .automizy-panel-title{
+    border: none;
+    color: #ffffff;
+    background: rgba(255,255,255,.2);
 }
-.automizy-panel ::-webkit-scrollbar-thumb {
-    -webkit-border-radius: 4px;
-    border: 1px solid #dadada;
-    background: #c7c7c7;
-    width: 8px;
+.automizy-panel.automizy-skin-bg-red{
+    color: #ffffff;
+    border-color: #e73629;
+    background-color: #F44336;
 }
-.automizy-panel ::-webkit-scrollbar-thumb:window-inactive {
-    background: #e2e2e2;
+.automizy-panel.automizy-skin-bg-red .automizy-panel-title{
+    border: none;
+    color: #ffffff;
+    background: rgba(255,255,255,.2);
 }
 .automizy-progress {
     width: 100%;
@@ -3373,7 +3375,7 @@ label.iPhoneCheckLabelOff span {
     background-color:rgba(0,0,0,0.5);
     z-index:11001;
 }
-#automizy-instructions-notification-content {
+#automizy-instructions-notification-content-box {
     display:inline-block;
     width:450px;
     min-height:100px;
@@ -3382,13 +3384,37 @@ label.iPhoneCheckLabelOff span {
     left:calc(50% - 275px);
     top:calc(50% - 150px);
     z-index:11002;
-    padding:32px 32px 32px 32px;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    border-radius: 2px;
+}
+#automizy-instructions-notification-content{
+    position: relative;
+    width:100%;
+}
+#automizy-instructions-notification-arrow{
+    width:50px;
+    height:50px;
+    background-color:#ffffff;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=5);
+    content: " ";
+    position: absolute;
+    box-shadow: 1px 2px 4px rgba(0,0,0,0.23);
+    z-index:1;
+}
+#automizy-instructions-notification-text-box{
+    position:relative;
+    background-color: #ffffff;
+    padding:32px 32px 100px 32px;
+    z-index:2;
+    height: 100%;
+    box-sizing: border-box;
 }
 #automizy-instructions-notification-content-table{
     width:100%;
     
-    padding: 32px;
     box-sizing: border-box;
 }
 #automizy-instructions-notification-content-table-td1{
@@ -3403,18 +3429,24 @@ label.iPhoneCheckLabelOff span {
 #automizy-instructions-notification-content-image {
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
-#automizy-instructions-notification-content-text {
+#automizy-instructions-notification-content-title {
     display:inline-block;
+    font-weight: bold;
+    padding:0 0 6px 0;
+}
+#automizy-instructions-notification-content-text {
+    display:block;
 }
 #automizy-instructions-notification-content-buttons {
     display:block;
     box-sizing: border-box;
-    text-align: center;
-    width:100%;
+    text-align: right;
+    width:calc(100% - 152px);
     clear:both;
-}
-#automizy-instructions-notification-content-buttons .automizy-button {
-    margin-top:32px;
+    position: absolute;
+    bottom: 32px;
+    right: 32px;
+    z-index: 3;
 }
 .automizy-spinner {
     margin: 0 auto;

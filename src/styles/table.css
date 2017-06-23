@@ -257,6 +257,7 @@
     vertical-align: middle;
     color: #555a60;
     font-weight: 400;
+    box-sizing: border-box;
 }
 .automizy-table-box.automizy-skin-light .automizy-table > tbody > tr > td {
     border: none;

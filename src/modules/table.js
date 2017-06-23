@@ -908,6 +908,12 @@ define([
                                 $th.append(obj.html);
                             }
                         }
+                        if (typeof obj.width !== 'undefined') {
+                            $th[0].style.width = obj.width;
+                        }
+                        if (typeof obj.maxWidth !== 'undefined') {
+                            $th[0].style.maxWidth = obj.maxWidth;
+                        }
                         if (obj.sortable !== false) {
                             var $sort = $('<span class="automizy-table-sort-arrow automizy-noselect"></span>');
 
@@ -1191,6 +1197,15 @@ define([
                             cell.className = 'automizy-main-cell';
                         }
                     }
+                    if (typeof t.d.settings.cols[jMod].width !== 'undefined') {
+                        cell.style.width = t.d.settings.cols[jMod].width;
+                    }
+                    if (typeof t.d.settings.cols[jMod].maxWidth !== 'undefined') {
+                        cell.style.maxWidth = t.d.settings.cols[jMod].maxWidth;
+                    }
+                    if (typeof t.d.settings.cols[jMod].align !== 'undefined') {
+                        cell.style.textAlign = t.d.settings.cols[jMod].align;
+                    }
                 }
 
                 if (table.rows[0].cells[j].style.display === 'none') {
@@ -1316,16 +1331,16 @@ define([
         if (typeof inlineButtons !== 'undefined') {
             t.d.inlineButtons = inlineButtons;
             t.openableInlineBox(true);
-            for (var i = 0; i < inlineButtons.length; i++) {
-                var inlineButton = inlineButtons[i];
+            for (var i = 0; i < t.d.inlineButtons.length; i++) {
+                var inlineButton = t.d.inlineButtons[i];
 
-                if(typeof inlineButton.drawTo === 'function'){
-                    inlineButton.drawTo(t.d.$inlineButtons);
+                if(typeof t.d.inlineButtons[i].drawTo === 'function'){
+                    t.d.inlineButtons[i].drawTo(t.d.$inlineButtons);
                 }else {
-                    var title = inlineButton.title || '';
-                    var content = inlineButton.text || inlineButton.html || '';
-                    var icon = (typeof inlineButton.icon !== 'undefined' ? '<span class="fa ' + inlineButton.icon + '"></span>' : '');
-                    var $button = $('<a title="' + title + '">' + content + icon + '</a>').data('click', inlineButton.click || function () {
+                    var title = t.d.inlineButtons[i].title || '';
+                    var content = t.d.inlineButtons[i].text || t.d.inlineButtons[i].html || '';
+                    var icon = (typeof t.d.inlineButtons[i].icon !== 'undefined' ? '<span class="fa ' + t.d.inlineButtons[i].icon + '"></span>' : '');
+                    var $button = $('<a title="' + title + '">' + content + icon + '</a>').data('click', t.d.inlineButtons[i].click || function () {
                         }).click(function () {
                         var $t = $(this);
                         var $row = $t.closest('tr').prev();
@@ -1338,7 +1353,8 @@ define([
                             delay: 1
                         });
                     }
-                    if (!inlineButton.permission) {
+                    t.d.inlineButtons[i].$widget = $button;
+                    if (!t.d.inlineButtons[i].permission) {
                         $button.wrap('<span class="automizy-permission-trap"></span>');
                     }
                 }

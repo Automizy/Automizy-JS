@@ -273,6 +273,9 @@ var $A = {};
                 if (typeof t.d.hideFunction === 'undefined') {
                     t.d.hideFunction = function () {};
                 }
+                if (typeof t.d.margin === 'undefined') {
+                    t.d.margin = false;
+                }
                 if (typeof t.d.returnValue === 'undefined') {
                     t.d.returnValue = true;
                 }
@@ -299,6 +302,9 @@ var $A = {};
                 }
                 if (typeof obj.buttons === 'array' || typeof obj.buttons === 'object') {
                     t.buttons(obj.buttons);
+                }
+                if (typeof obj.margin !== 'undefined') {
+                    t.margin(obj.margin);
                 }
                 if (typeof obj.target !== 'undefined') {
                     t.drawTo(obj.target);
@@ -394,6 +400,15 @@ var $A = {};
                 t.d.$widget.ashow();
                 t.d.showFunction.apply(t, [t, t.d.$widget]);
                 return t;
+            };
+        p.margin = p.margin || function (margin) {
+                var t = this;
+                if (typeof margin !== 'undefined') {
+                    t.d.margin = margin;
+                    t.d.$widget.css('margin', t.d.margin);
+                    return t;
+                }
+                return t.d.margin;
             };
         p.hide = p.hide || function (func) {
                 var t = this;
@@ -7270,6 +7285,12 @@ var $A = {};
                                 $th.append(obj.html);
                             }
                         }
+                        if (typeof obj.width !== 'undefined') {
+                            $th[0].style.width = obj.width;
+                        }
+                        if (typeof obj.maxWidth !== 'undefined') {
+                            $th[0].style.maxWidth = obj.maxWidth;
+                        }
                         if (obj.sortable !== false) {
                             var $sort = $('<span class="automizy-table-sort-arrow automizy-noselect"></span>');
 
@@ -7553,6 +7574,15 @@ var $A = {};
                             cell.className = 'automizy-main-cell';
                         }
                     }
+                    if (typeof t.d.settings.cols[jMod].width !== 'undefined') {
+                        cell.style.width = t.d.settings.cols[jMod].width;
+                    }
+                    if (typeof t.d.settings.cols[jMod].maxWidth !== 'undefined') {
+                        cell.style.maxWidth = t.d.settings.cols[jMod].maxWidth;
+                    }
+                    if (typeof t.d.settings.cols[jMod].align !== 'undefined') {
+                        cell.style.textAlign = t.d.settings.cols[jMod].align;
+                    }
                 }
 
                 if (table.rows[0].cells[j].style.display === 'none') {
@@ -7678,16 +7708,16 @@ var $A = {};
         if (typeof inlineButtons !== 'undefined') {
             t.d.inlineButtons = inlineButtons;
             t.openableInlineBox(true);
-            for (var i = 0; i < inlineButtons.length; i++) {
-                var inlineButton = inlineButtons[i];
+            for (var i = 0; i < t.d.inlineButtons.length; i++) {
+                var inlineButton = t.d.inlineButtons[i];
 
-                if(typeof inlineButton.drawTo === 'function'){
-                    inlineButton.drawTo(t.d.$inlineButtons);
+                if(typeof t.d.inlineButtons[i].drawTo === 'function'){
+                    t.d.inlineButtons[i].drawTo(t.d.$inlineButtons);
                 }else {
-                    var title = inlineButton.title || '';
-                    var content = inlineButton.text || inlineButton.html || '';
-                    var icon = (typeof inlineButton.icon !== 'undefined' ? '<span class="fa ' + inlineButton.icon + '"></span>' : '');
-                    var $button = $('<a title="' + title + '">' + content + icon + '</a>').data('click', inlineButton.click || function () {
+                    var title = t.d.inlineButtons[i].title || '';
+                    var content = t.d.inlineButtons[i].text || t.d.inlineButtons[i].html || '';
+                    var icon = (typeof t.d.inlineButtons[i].icon !== 'undefined' ? '<span class="fa ' + t.d.inlineButtons[i].icon + '"></span>' : '');
+                    var $button = $('<a title="' + title + '">' + content + icon + '</a>').data('click', t.d.inlineButtons[i].click || function () {
                         }).click(function () {
                         var $t = $(this);
                         var $row = $t.closest('tr').prev();
@@ -7700,7 +7730,8 @@ var $A = {};
                             delay: 1
                         });
                     }
-                    if (!inlineButton.permission) {
+                    t.d.inlineButtons[i].$widget = $button;
+                    if (!t.d.inlineButtons[i].permission) {
                         $button.wrap('<span class="automizy-permission-trap"></span>');
                     }
                 }
@@ -8116,7 +8147,7 @@ var $A = {};
     p.onInlineEditComplete = function (cell, inlineInput) {
         var t = this;
         t.d.onInlineEditComplete(cell, inlineInput);
-    }
+    };
 
     p.setInlineInputObject = function (cell) {
         var t = this;
@@ -10165,7 +10196,7 @@ var $A = {};
 
                 tags: [],
                 options: {},
-                newTag: $A.newTag({text: '<input class="automizy-tagger-new-tag-input">'}),
+                newTag: $A.newTag({text: '<input class="automizy-tagger-new-tag-input" onkeydown="if(event.keyCode === 32)return false;">'}),
                 tagWidth: '200px'
             }
             ;
@@ -10367,7 +10398,7 @@ var $A = {};
                 function resetNewTag() {
                     t.hideOptions();
                     tag.widget().ahide();
-                    tag.text('<input type="text" class="automizy-tagger-new-tag-input">');
+                    tag.text('<input type="text" class="automizy-tagger-new-tag-input" onkeydown="if(event.keyCode === 32)return false;">');
 
                     var $input = tag.widget().find('input');
 
@@ -12220,16 +12251,27 @@ var $A = {};
 
     var $widget = $('<div id="automizy-instructions-notification"></div>');
     var $cover = $('<div id="automizy-instructions-notification-cover"></div>').appendTo($widget);
-    var $content = $('<div id="automizy-instructions-notification-content"></div>').appendTo($widget);
-    var $table = $('<table cellpadding="0" cellspacing="0" border="0" id="automizy-instructions-notification-content-table"></table>').appendTo($content);
+    var $contentBox = $('<div id="automizy-instructions-notification-content-box"></div>').appendTo($widget);
+    var $content = $('<div id="automizy-instructions-notification-content"></div>').appendTo($contentBox);
+    var $arrow = $('<div id="automizy-instructions-notification-arrow"></div>').appendTo($content);
+    var $textBox = $('<div id="automizy-instructions-notification-text-box"></div>').appendTo($content);
+    var $table = $('<table cellpadding="0" cellspacing="0" border="0" id="automizy-instructions-notification-content-table"></table>').appendTo($textBox);
     var $tr = $('<tr></tr>').appendTo($table);
     var $td1 = $('<td id="automizy-instructions-notification-content-table-td1"></td>').appendTo($tr);
     var $td2 = $('<td id="automizy-instructions-notification-content-table-td2"></td>').appendTo($tr);
     var $img = $('<img id="automizy-instructions-notification-content-image" />').appendTo($td1);
+    var $title = $('<div id="automizy-instructions-notification-content-title"></div>').appendTo($td2);
     var $text = $('<div id="automizy-instructions-notification-content-text"></div>').appendTo($td2);
     var $buttons = $('<div id="automizy-instructions-notification-content-buttons"></div>').appendTo($content);
+    var $style = $('<style></style>').appendTo($widget);
+    var cancel = $A.newButton({
+        target:$buttons,
+        width:'100px',
+        margin:'0 12px 0 0'
+    });
     var ok = $A.newButton({
         skin:'simple-orange',
+        width:'100px',
         target:$buttons
     });
 
@@ -12242,8 +12284,10 @@ var $A = {};
         $td1:$td1,
         $td2:$td2,
         $img:$img,
+        $title:$title,
         $text:$text,
         $buttons:$buttons,
+        cancelButton:cancel,
         okButton:ok
     };
 
@@ -12259,24 +12303,43 @@ var $A = {};
 
         $widget.appendTo('body:eq(0)');
         $cover.hide();
+        $arrow.hide();
         ok.hide();
+        cancel.hide();
+        $title.removeAttr('style');
         $content.removeAttr('style');
+        $content.removeClass('automizy-position');
 
         var data = {
+            cancel:false,
+            cancelText:$A.translate('Cancel'),
             ok:false,
             okText:$A.translate('OK'),
+            title:'',
             content:'',
             img:false,
             cover:false,
             position:false,
             positionTop:false,
-            positionLeft:false
+            positionLeft:false,
+            arrowPosition:false,
+            arrowOffset:false,
+            contentAnimate:false
         };
+        if (typeof obj.cancel === 'function') {
+            data.cancel = obj.cancel;
+        }
+        if (typeof obj.cancelText !== 'undefined') {
+            data.cancelText = obj.cancelText;
+        }
         if (typeof obj.ok === 'function') {
             data.ok = obj.ok;
         }
         if (typeof obj.okText !== 'undefined') {
             data.okText = obj.okText;
+        }
+        if (typeof obj.title !== 'undefined') {
+            data.title = obj.title;
         }
         if (typeof obj.content !== 'undefined') {
             data.content = obj.content;
@@ -12289,6 +12352,15 @@ var $A = {};
         }
         if (typeof obj.width !== 'undefined') {
             data.width = obj.width;
+        }
+        if (typeof obj.height !== 'undefined') {
+            data.height = obj.height;
+        }
+        if (typeof obj.arrowPosition !== 'undefined') {
+            data.arrowPosition = obj.arrowPosition
+        }
+        if (typeof obj.arrowOffset !== 'undefined') {
+            data.arrowOffset = obj.arrowOffset
         }
         if (typeof obj.position !== 'undefined') {
             data.position = obj.position
@@ -12305,29 +12377,40 @@ var $A = {};
         if (typeof obj.positionBottom !== 'undefined') {
             data.positionBottom = obj.positionBottom
         }
+        if (typeof obj.contentAnimate !== 'undefined') {
+            data.contentAnimate = obj.contentAnimate
+        }
 
         if(data.cover){
             $cover.show();
         }
+        if(data.cancel !== false){
+            cancel.off().click(data.cancel);
+            cancel.text(data.cancelText);
+            cancel.show();
+        }
         if(data.ok !== false){
-            ok.click(data.ok);
+            ok.off().click(data.ok);
             ok.text(data.okText);
             ok.show();
         }
-        if(data.src !== false){
+        if(data.img !== false){
             $img.attr({
                 src:data.img
             });
-        }else if(!$img.attr('src')){
+        }else{
             $img.attr({
                 src:'images/mizy-head-55x55.gif'
             });
         }
         if(data.width !== false){
-            $content.width(data.width);
+            $contentBox.width(data.width);
+        }
+        if(data.height !== false){
+            $content.height(data.height);
         }
         if(data.position !== false){
-            $content.css({
+            $contentBox.css({
                 top:data.position.top,
                 left:data.position.left,
                 right:data.position.right,
@@ -12335,26 +12418,48 @@ var $A = {};
             });
         }
         if(data.positionTop !== false){
-            $content.css({
+            $contentBox.css({
                 top:data.positionTop
             });
         }
         if(data.positionLeft !== false){
-            $content.css({
+            $contentBox.css({
                 left:data.positionLeft
             });
         }
         if(data.positionRight !== false){
-            $content.css({
+            $contentBox.css({
                 right:data.positionRight
             });
         }
         if(data.positionBottom !== false){
-            $content.css({
+            $contentBox.css({
                 bottom:data.positionBottom
             });
         }
+        if(data.arrowPosition !== false){
+            $arrow.show();
+        }
+        if(data.arrowOffset !== false){
+            var styleHtml = '#automizy-instructions-notification-arrow{';
+            if(data.arrowPosition === 'top') {
+                styleHtml += 'top: -25px; left: '+data.arrowOffset;
+            }else if(data.arrowPosition === 'right') {
+                styleHtml += 'right: -25px; top: '+data.arrowOffset;
+            }else if(data.arrowPosition === 'bottom') {
+                styleHtml += 'bottom: -25px; left: '+data.arrowOffset;
+            }else if(data.arrowPosition === 'left') {
+                styleHtml += 'left: -25px; top: '+data.arrowOffset;
+            }
+            styleHtml += '}';
+            $style.html(styleHtml);
+        }
+        $title.html(data.title);
         $text.html(data.content);
+        if(data.contentAnimate !== false){
+            $A.convertElementLetterToLetter($text);
+            $A.animateElementLetterToLetter($text, data.contentAnimate);
+        }
 
         $widget.show();
 
@@ -12440,6 +12545,48 @@ var $A = {};
         return String(str).replace(/[&<>"'\/]/g, function (s) {
             return entityMap[s];
         });
+    };
+
+})();
+
+(function(){
+
+    $A.convertElementLetterToLetter = function ($el) {
+        var html = $el.html();
+        var convertedHtml = '';
+        var char;
+        var convertActive = true;
+        for(var i = 0; i < html.length; i++){
+            char = html[i];
+            if(char === '<'){
+                convertActive = false;
+            }
+            if(convertActive){
+                convertedHtml += '<span class="automizy-letter-to-letter">' + char + '</span>';
+            }else{
+                convertedHtml += char;
+            }
+            if(char === '>'){
+                convertActive = true;
+            }
+        }
+        $el.html(convertedHtml);
+    };
+
+})();
+
+(function(){
+
+    $A.animateElementLetterToLetter = function ($el, speed) {
+        speed = speed || 10;
+        $el.find('.automizy-letter-to-letter').each(function(index ){
+            (function($item){
+                $item[0].style.visibility = 'hidden';
+                setTimeout(function(){
+                    $item[0].style.visibility = 'visible';
+                }, index * speed);
+            })($(this));
+        })
     };
 
 })();
