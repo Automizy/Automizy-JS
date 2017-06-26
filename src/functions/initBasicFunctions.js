@@ -368,7 +368,8 @@ define([
         };
         p.off = function (events, name) {
             var t = this;
-            var events = events || [];
+            events = events || [];
+            name = name || false;
             if (typeof events === 'string') {
                 events = events.split(' ');
             }
@@ -376,6 +377,14 @@ define([
                 for (var i in t.f) {
                     for (var j in t.f[i]) {
                         delete t.f[i][j];
+                    }
+                }
+            }else if(name === false){
+                for (var i = 0; i < events.length; i++) {
+                    if(typeof t.f !== 'undefined' && typeof t.f[events[i]] !== 'undefined') {
+                        for (var j in t.f[events[i]]) {
+                            delete t.f[events[i]][j];
+                        }
                     }
                 }
             } else {

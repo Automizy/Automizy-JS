@@ -620,7 +620,8 @@ var $A = {};
         };
         p.off = function (events, name) {
             var t = this;
-            var events = events || [];
+            events = events || [];
+            name = name || false;
             if (typeof events === 'string') {
                 events = events.split(' ');
             }
@@ -628,6 +629,14 @@ var $A = {};
                 for (var i in t.f) {
                     for (var j in t.f[i]) {
                         delete t.f[i][j];
+                    }
+                }
+            }else if(name === false){
+                for (var i = 0; i < events.length; i++) {
+                    if(typeof t.f !== 'undefined' && typeof t.f[events[i]] !== 'undefined') {
+                        for (var j in t.f[events[i]]) {
+                            delete t.f[events[i]][j];
+                        }
                     }
                 }
             } else {
@@ -10893,6 +10902,9 @@ var $A = {};
             if (typeof obj.position !== 'undefined') {
                 t.position(obj.position);
             }
+            if (typeof obj.open === 'function') {
+                t.open(obj.open);
+            }
             t.initParameter(obj);
         }
 
@@ -10976,8 +10988,12 @@ var $A = {};
         return t.d.content;
     };
 
-    p.open = function () {
+    p.open = function (func, name, life) {
         var t = this;
+        if (typeof func === 'function') {
+            t.addFunction.apply(t, ['open', func, name, life]);
+            return t;
+        }
         var position = t.position();
         var targetOffset = t.target().offset();
         var targetOffsetTop = targetOffset.top;
@@ -11010,6 +11026,7 @@ var $A = {};
         }
 
         t.widget().ashow();
+        t.runFunctions('open');
         return t;
     };
     p.close = function () {
@@ -11067,6 +11084,11 @@ var $A = {};
             obj.popover.appendTo(obj.appendTo);
         }else{
             obj.popover.appendTo('body');
+        }
+
+        obj.popover.off('open');
+        if (typeof obj.open === 'function') {
+            obj.popover.on('open', obj.open);
         }
 
 

@@ -40,6 +40,9 @@ define([
             if (typeof obj.position !== 'undefined') {
                 t.position(obj.position);
             }
+            if (typeof obj.open === 'function') {
+                t.open(obj.open);
+            }
             t.initParameter(obj);
         }
 
@@ -123,8 +126,12 @@ define([
         return t.d.content;
     };
 
-    p.open = function () {
+    p.open = function (func, name, life) {
         var t = this;
+        if (typeof func === 'function') {
+            t.addFunction.apply(t, ['open', func, name, life]);
+            return t;
+        }
         var position = t.position();
         var targetOffset = t.target().offset();
         var targetOffsetTop = targetOffset.top;
@@ -157,6 +164,7 @@ define([
         }
 
         t.widget().ashow();
+        t.runFunctions('open');
         return t;
     };
     p.close = function () {
@@ -214,6 +222,11 @@ define([
             obj.popover.appendTo(obj.appendTo);
         }else{
             obj.popover.appendTo('body');
+        }
+
+        obj.popover.off('open');
+        if (typeof obj.open === 'function') {
+            obj.popover.on('open', obj.open);
         }
 
 

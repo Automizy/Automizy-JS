@@ -38,7 +38,10 @@
                 buttons: [
                     window.popover1CancelButton,
                     window.popover1SaveButton
-                ]
+                ],
+                open:function(){
+                    alert('open');
+                }
             });
 
             window.$popover2 = $('<div>POPOVER #2</div>');
