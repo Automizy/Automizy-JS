@@ -265,6 +265,8 @@ define([
                 if (typeof obj !== 'undefined') {
                     if (obj instanceof $A.m.Button || obj instanceof $A.m.Input) {
                         obj.drawTo(t.d.$buttons || t.d.$widget);
+                        obj.d.thisIsVariable = true;
+                        t.d.buttons.push(obj);
                     } else {
                         obj.target = obj.target || t.d.$buttons || t.d.$widget;
                         var button = $A.newButton(obj);
@@ -301,8 +303,13 @@ define([
                 }
                 if (typeof buttons !== 'undefined') {
                     for (var i = 0; i < t.d.buttons.length; i++) {
-                        t.d.buttons[i].remove();
+                        if(t.d.buttons[i].d.thisIsVariable !== true) {
+                            t.d.buttons[i].remove();
+                        }else{
+                            t.d.buttons[i].drawTo($A.$tmp);
+                        }
                     }
+                    t.d.buttons = [];
                     for (var i in buttons) {
                         t.addButton(buttons[i]);
                     }
@@ -430,7 +437,7 @@ define([
             }
             return true;
         };
-        $A[moduleNameLowerFirst] = function (obj) {
+        $A[moduleNameLowerFirst] = $A[moduleNameLowerFirst] || function (obj) {
             if (typeof obj === 'undefined') {
                 return $A["new" + moduleName]();
             } else if (typeof obj === 'string' || typeof obj === 'number') {

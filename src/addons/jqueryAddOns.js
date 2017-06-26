@@ -36,6 +36,24 @@ define([], function () {
         this.addClass('automizy-hide');
         return this;
     };
+    $.fn.automizyPopover = function (data) {
+        if(typeof data === 'undefined'){
+            if(this.hasClass('automizy-popovered')){
+                return this.data('automizy-popover-data').popover;
+            }
+            this.addClass('automizy-popovered');
+            this.data('automizy-popover-data', {target:this});
+        }else{
+            data.target = this;
+            this.data('automizy-popover-data', data);
+        }
+        return this.click(function(){
+            var $t = $(this);
+            var data = $t.data('automizy-popover-data');
+            data.target = $t;
+            $A.popover(data).open();
+        });
+    };
     $.fn.serializeObject = function(addUnchecked){
         var result = {};
         var addUnchecked = addUnchecked || false;
