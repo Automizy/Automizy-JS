@@ -239,6 +239,7 @@ define([
     $A.initBasicFunctions(Popover, "Popover", ['open', 'close']);
 
     $A.globalPopoverModule = $A.newPopover();
+    $A.globalPopoverModule.close();
 
     $A.closeAllPopover = function(){
         var popovers = $A.getAllPopover();

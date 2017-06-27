@@ -267,9 +267,6 @@ define([
             if (typeof obj.enter === 'function') {
                 t.enter(obj.enter);
             }
-            if (typeof obj.focus === 'function') {
-                t.focus(obj.focus);
-            }
             if (typeof obj.blur === 'function') {
                 t.blur(obj.blur);
             }
@@ -463,6 +460,11 @@ define([
             var a = t.runFunctions('focus');
             t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
         }
+        return t;
+    };
+    p.select = function () {
+        var t = this;
+        t.input().select();
         return t;
     };
     p.blur = function (func, name, life) {

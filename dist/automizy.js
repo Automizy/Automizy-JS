@@ -4143,9 +4143,6 @@ var $A = {};
             if (typeof obj.enter === 'function') {
                 t.enter(obj.enter);
             }
-            if (typeof obj.focus === 'function') {
-                t.focus(obj.focus);
-            }
             if (typeof obj.blur === 'function') {
                 t.blur(obj.blur);
             }
@@ -4339,6 +4336,11 @@ var $A = {};
             var a = t.runFunctions('focus');
             t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
         }
+        return t;
+    };
+    p.select = function () {
+        var t = this;
+        t.input().select();
         return t;
     };
     p.blur = function (func, name, life) {
@@ -11101,6 +11103,7 @@ var $A = {};
     $A.initBasicFunctions(Popover, "Popover", ['open', 'close']);
 
     $A.globalPopoverModule = $A.newPopover();
+    $A.globalPopoverModule.close();
 
     $A.closeAllPopover = function(){
         var popovers = $A.getAllPopover();
