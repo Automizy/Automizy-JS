@@ -26,6 +26,7 @@ define([
             type: 'info',
             target: 'body',
             closable: true,
+            delay:350,
             id: 'automizy-message-' + $A.getUniqueString()
         };
         t.f = {};
@@ -73,6 +74,9 @@ define([
             if (typeof obj.name !== 'undefined') {
                 t.name(obj.name);
             }
+            if (typeof obj.delay !== 'undefined') {
+                t.delay(obj.delay);
+            }
             t.initParameter(obj);
         }
 
@@ -94,6 +98,15 @@ define([
             $A.messagesByName[t.d.name] = t;
         }
         return t.d.name;
+    };
+
+    p.delay = function (delay) {
+        var t = this;
+        if (typeof delay !== 'undefined') {
+            t.d.delay = delay;
+            return t;
+        }
+        return t.d.delay;
     };
 
     p.title = function (title) {
@@ -152,7 +165,7 @@ define([
         if (typeof param1 === 'function') {
             t.addFunction.apply(t, ['open', param1, name, life]);
         } else {
-            var delay = 350;
+            var delay = t.delay();
             if (typeof param1 !== 'undefined') {
                 delay = param1;
             }
@@ -171,7 +184,7 @@ define([
         if (typeof param1 === 'function') {
             t.addFunction.apply(t, ['close', param1, name, life]);
         } else {
-            var delay = 350;
+            var delay = t.delay();
             if (typeof param1 !== 'undefined') {
                 delay = param1;
             }

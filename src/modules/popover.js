@@ -248,8 +248,8 @@ define([
         }
     };
 
-    $(document).on('click', function(event) {
-        if(!$(event.target).closest('.automizy-popover, .automizy-popovered').length) {
+    $(document).on('mouseup', function(event) {
+        if(!$(event.target).closest('.automizy-popover, .automizy-popovered, .ui-datepicker').length) {
             $A.closeAllPopover();
         }
     });
