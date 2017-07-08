@@ -10941,6 +10941,7 @@ var $A = {};
         var t = this;
         if (typeof appendTo !== 'undefined') {
             t.d.appendTo = appendTo;
+            t.d.$widget.appendTo(t.d.appendTo);
             return t;
         }
         return t.d.appendTo;
