@@ -7,6 +7,7 @@
     font-size: 12px;
     cursor: pointer;
     box-sizing: border-box;
+    font-family: Segoe UI;
 }
 
 .automizy-button.new-row {
@@ -172,7 +173,7 @@
 .automizy-button.automizy-skin-simple-orange.automizy-button-semithick a,
 .automizy-button.automizy-skin-simple-blue.automizy-button-semithick a,
 .automizy-button.automizy-skin-simple-green.automizy-button-semithick a {
-    padding: 10px 18px 10px 18px;
+    padding: 8px 18px 8px 18px;
     font-size: 14px;
     height: auto;
     line-height: normal;
