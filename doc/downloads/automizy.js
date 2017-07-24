@@ -813,6 +813,9 @@ var $A = {};
             if (typeof obj.thick !== 'undefined') {
                 t.thick(obj.thick);
             }
+            if (typeof obj.semiThick !== 'undefined') {
+                t.semiThick(obj.semiThick);
+            }
             if (typeof obj.icon !== 'undefined') {
                 t.icon(obj.icon);
             }
