@@ -546,6 +546,12 @@
     background: #dddddd;
     height: 1px;
 }
+.automizy-custom-width .automizy-button-a{
+    width:100%;
+}
+.automizy-custom-width.automizy-has-dropdown .automizy-button-a{
+    width: calc(100% - 20px);
+}
 .automizy-input {
     display: inline-block;
     position: relative;

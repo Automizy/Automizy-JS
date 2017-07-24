@@ -731,7 +731,8 @@ var $A = {};
         var t = this;
         t.d = {
             $widget: $('<span class="automizy-button"></span>'),
-            $widgetButton: $('<a href="javascript:;"></a>'),
+            $buttonBox: $('<span class="automizy-button-box"></span>'),
+            $widgetButton: $('<a href="javascript:;" class="automizy-button-a"></a>'),
             $text: $('<span class="automizy-button-text"></span>'),
             $icon: $('<span class="automizy-button-icon"></span>'),
             $badge: $('<span class="automizy-button-badge"></span>'),
@@ -764,7 +765,8 @@ var $A = {};
         t.f = {};
         t.init();
 
-        t.d.$widgetButton.appendTo(t.d.$widget);
+        t.d.$buttonBox.appendTo(t.d.$widget);
+        t.d.$widgetButton.appendTo(t.d.$buttonBox);
         t.d.$dropDownMenu.appendTo('body');
         t.d.$badge.appendTo(t.d.$widgetButton).hide();
         t.d.$icon.appendTo(t.d.$widgetButton);
@@ -922,8 +924,7 @@ var $A = {};
         if (typeof width !== 'undefined') {
             t.d.width = width;
             t.d.$widget.width(width);
-            t.d.$widgetButton.width('100%');
-            t.d.$widgetButton.css('width', '100%');
+            t.widget().addClass('automizy-custom-width');
             return t;
         }
         return t.d.width;
@@ -1218,7 +1219,8 @@ var $A = {};
     p.dropdown = function (dropdownList) {
         var t = this;
         if (typeof dropdownList !== "undefined") {
-            t.d.$dropDownButton.appendTo(t.d.$widget).css('display', 'inline-block');
+            t.widget().addClass('automizy-has-dropdown');
+            t.d.$dropDownButton.appendTo(t.d.$buttonBox);
             for(var i = 0; i < dropdownList.length; i++){
                 if(dropdownList[i] === 'divider'){
                     t.d.$dropDownMenu.append('<div class="automizy-button-dropdown-menu-divider"></div>');
