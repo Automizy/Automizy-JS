@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="automizy.js"></script>
+    <link rel="stylesheet" href="fontawesome/css/font-awesome.css">
+    <link rel="stylesheet" href="automizy.css">
+    <script>
+        $(function () {
+            $A.newButton({
+                target:'body'
+            });
+            $A.newButton({
+                skin:'simple-orange',
+                target:'body'
+            });
+            $A.newButton({
+                skin:'bordered-orange',
+                target:'body'
+            });
+            $A.newButton({
+                skin:'bordered-orange',
+                click:function(){
+                    alert('Do Nothing');
+                },
+                dropdown:[
+                    {
+                        text:$A.translate('Save'),
+                        bold:true,
+                        click:function(){
+                            alert('Save');
+                        }
+                    },
+                    'divider',
+                    {
+                        text:$A.translate('Save and close'),
+                        click:function(){
+                            alert('Save and close');
+                        }
+                    },
+                    {
+                        text:$A.translate('Save as template'),
+                        click:function(){
+                            alert('Save as template');
+                        }
+                    }
+                ],
+                target:'body'
+            });
+            $A.newButton({
+                skin:'bordered-orange',
+                semiThick:true,
+                click:function(){
+                    alert('Do Nothing #2');
+                },
+                dropdown:[
+                    {
+                        text:$A.translate('Save'),
+                        bold:true,
+                        click:function(){
+                            alert('Save');
+                        }
+                    },
+                    {
+                        text:$A.translate('Save as template'),
+                        click:function(){
+                            alert('Save as template');
+                        }
+                    }
+                ],
+                target:'body'
+            });
+            $A.newButton({
+                skin:'bordered-orange',
+                thick:true,
+                click:function(){
+                    alert('Do Nothing #2');
+                },
+                dropdown:[
+                    {
+                        text:$A.translate('Save'),
+                        bold:true,
+                        click:function(){
+                            alert('Save');
+                        }
+                    },
+                    {
+                        text:$A.translate('Save as template'),
+                        click:function(){
+                            alert('Save as template');
+                        }
+                    }
+                ],
+                target:'body'
+            });
+        });
+    </script>
+</head>
+<body>
+</body>
+</html>
+

@@ -735,6 +735,9 @@ var $A = {};
             $text: $('<span class="automizy-button-text"></span>'),
             $icon: $('<span class="automizy-button-icon"></span>'),
             $badge: $('<span class="automizy-button-badge"></span>'),
+            $dropDownButton:$('<a href="javascript:;" class="automizy-button-dropdown-button"></a>'),
+            $dropDownButtonIcon:$('<span class="fa fa-caret-down"></span>'),
+            $dropDownMenu:$('<span class="automizy-button-dropdown-menu"></span>'),
             iconPosition: 'left',
             text: 'My Button',
             title: '',
@@ -752,6 +755,8 @@ var $A = {};
             triggers: {
                 click: 0
             },
+            dropDornMenuOpened:false,
+            dropDownMenuList:[],
             create: function () {
             },
             id: 'automizy-button-' + $A.getUniqueString()
@@ -760,10 +765,33 @@ var $A = {};
         t.init();
 
         t.d.$widgetButton.appendTo(t.d.$widget);
+        t.d.$dropDownMenu.appendTo('body');
         t.d.$badge.appendTo(t.d.$widgetButton).hide();
         t.d.$icon.appendTo(t.d.$widgetButton);
         t.d.$text.appendTo(t.d.$widgetButton);
         t.d.$text.text(t.d.text);
+        t.d.$dropDownButton.click(function(event){
+            if(t.d.dropDornMenuOpened){
+                $A.closeAllButtonMenu();
+            }else {
+                $A.closeAllButtonMenu();
+                t.d.dropDornMenuOpened = true;
+                var $target = t.widget();
+                var targetOffset = $target.offset();
+                var targetOffsetTop = targetOffset.top;
+                var targetOffsetLeft = targetOffset.left;
+                var targetHeight = $target.height();
+                var targetWidth = $target.outerWidth();
+                t.d.$dropDownMenu.css({
+                    bottom: 'auto',
+                    left: targetOffsetLeft + 'px',
+                    top: (targetOffsetTop + targetHeight) + 'px',
+                    width: targetWidth + 'px',
+                    display: 'block'
+                })
+            }
+        });
+        t.d.$dropDownButtonIcon.appendTo(t.d.$dropDownButton);
         t.d.$widget.addClass('automizy-skin-' + t.d.skin).attr('id', t.id());
         t.d.$widgetButton.click(function () {
             if (t.click().returnValue() === false) {
@@ -833,6 +861,9 @@ var $A = {};
             }
             if (typeof obj.filePicker !== 'undefined') {
                 t.filePicker(obj.filePicker);
+            }
+            if (typeof obj.dropdown !== 'undefined') {
+                t.dropdown(obj.dropdown);
             }
             t.initParameter(obj);
         }
@@ -1184,9 +1215,56 @@ var $A = {};
         return t.d.filePicker;
     };
 
+    p.dropdown = function (dropdownList) {
+        var t = this;
+        if (typeof dropdownList !== "undefined") {
+            t.d.$dropDownButton.appendTo(t.d.$widget).css('display', 'inline-block');
+            for(var i = 0; i < dropdownList.length; i++){
+                if(dropdownList[i] === 'divider'){
+                    t.d.$dropDownMenu.append('<div class="automizy-button-dropdown-menu-divider"></div>');
+                }else {
+                    dropdownList[i].bold = dropdownList[i].bold || false;
+                    dropdownList[i].click = dropdownList[i].click || function () {};
+                    dropdownList[i].$item = $('<div class="automizy-button-dropdown-menu-item"></div>').html(dropdownList[i].text).appendTo(t.d.$dropDownMenu).data('automizy-click', dropdownList[i].click).click(function(){
+                        $(this).data('automizy-click')();
+                        $A.closeAllButtonMenu();
+                    });
+                    if (dropdownList[i].bold) {
+                        dropdownList[i].$item.css('font-weight', 'bold');
+                    }
+                }
+            }
+            t.d.dropdown = dropdownList;
+            return t;
+        }
+        return t.d.dropdown;
+    };
+
 
     $A.initBasicFunctions(Button, "Button", ['click']);
 
+
+
+    $A.closeAllButtonMenu = function(){
+        var buttons = $A.getAllButton();
+        for(var i in buttons){
+            buttons[i].d.$dropDownMenu.css('display', 'none');
+            buttons[i].d.dropDornMenuOpened = false;
+        }
+    };
+    $(window).on('resize', function(){
+        $A.closeAllButtonMenu();
+    });
+    $(document).on('click', function(event) {
+        if(!$(event.target).closest('.automizy-button-dropdown-menu, .automizy-button-dropdown-button').length) {
+            $A.closeAllButtonMenu();
+        }
+    });
+    $(document).on('mousewheel DOMMouseScroll', function(event) {
+        if(!$(event.target).closest('.automizy-button-dropdown-menu').length) {
+            $A.closeAllButtonMenu();
+        }
+    });
 
 })();
 

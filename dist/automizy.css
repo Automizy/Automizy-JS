@@ -243,7 +243,7 @@
 .automizy-button.automizy-skin-simple-orange.automizy-button-semithick a,
 .automizy-button.automizy-skin-simple-blue.automizy-button-semithick a,
 .automizy-button.automizy-skin-simple-green.automizy-button-semithick a {
-    padding: 8px 18px 8px 18px;
+    padding: 10px 18px 10px 18px;
     font-size: 14px;
     height: auto;
     line-height: normal;
@@ -376,7 +376,6 @@
     color:#f46a1f;
     border: 1px solid #f46a1f;
     background: #ffffff;
-    padding: 4px 8px 4px 8px;
 }
 .automizy-button.automizy-skin-bordered-orange a:hover,
 .automizy-input-box input[type="file"]:hover + span .automizy-skin-bordered-orange a {
@@ -504,6 +503,48 @@
 }
 .automizy-button-badge:empty{
     display: none !important;
+}
+.automizy-button-dropdown-button{
+    margin: 0 0 0 -3px !important;
+    min-width: 23px !important;
+    width: 23px !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    -webkit-border-top-left-radius: 0 !important;
+    -webkit-border-bottom-left-radius: 0 !important;
+    -moz-border-radius-topleft: 0 !important;
+    -moz-border-radius-bottomleft: 0 !important;
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+}
+.automizy-button-dropdown-menu{
+    position:absolute;
+    z-index:16777270;
+    display:none;
+    border:1px solid rgba(0,0,0,0.15);
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    background-color:#ffffff;
+    margin:1px 0 0 0;
+    box-sizing: border-box;
+    padding: 0;
+    overflow: hidden;
+}
+.automizy-button-dropdown-menu-item{
+    color:#555555;
+    cursor:pointer;
+    padding: 8px;
+    font-size: 14px;
+}
+.automizy-button-dropdown-menu-item:hover{
+    background-color:#F46A1F;
+    color:#FFFFFF;
+}
+.automizy-button-dropdown-menu-divider{
+    background: #dddddd;
+    height: 1px;
 }
 .automizy-input {
     display: inline-block;
@@ -2853,7 +2894,7 @@ label.iPhoneCheckLabelOff span {
     color:#555;
 }
 .automizy-select-option-table .automizy-select-option-tr:hover{
-    background-color: rgb( 244, 106, 31 );
+    background-color: #F46A1F;
     color:#FFFFFF;
     cursor:pointer;
 }
