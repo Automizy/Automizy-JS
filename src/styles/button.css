@@ -163,6 +163,21 @@
     line-height: normal;
 }
 
+.automizy-button.automizy-skin-bordered-green.automizy-button-semithick a,
+.automizy-button.automizy-skin-bordered-black.automizy-button-semithick a,
+.automizy-button.automizy-skin-bordered-orange.automizy-button-semithick a,
+.automizy-button.automizy-skin-simple-likemenu.automizy-button-semithick a,
+.automizy-button.automizy-skin-simple-white.automizy-button-semithick a,
+.automizy-button.automizy-skin-image-white.automizy-button-semithick a,
+.automizy-button.automizy-skin-simple-orange.automizy-button-semithick a,
+.automizy-button.automizy-skin-simple-blue.automizy-button-semithick a,
+.automizy-button.automizy-skin-simple-green.automizy-button-semithick a {
+    padding: 8px 18px 8px 18px;
+    font-size: 14px;
+    height: auto;
+    line-height: normal;
+}
+
 .automizy-button.disabled a {
     cursor: default !important;
     outline: 0 !important;;

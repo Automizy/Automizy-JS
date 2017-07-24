@@ -1038,6 +1038,18 @@ var $A = {};
         t.widget().addClass('automizy-button-thick');
         return t;
     };
+    p.semiThick = function (value) {
+        var t = this;
+        if (typeof value !== 'undefined') {
+            value = $A.parseBoolean(value);
+            if (!value) {
+                t.widget().removeClass('automizy-button-semithick');
+                return t;
+            }
+        }
+        t.widget().addClass('automizy-button-semithick');
+        return t;
+    };
 
     p.badge = function (badge) {
         var t = this;

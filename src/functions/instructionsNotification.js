@@ -1,5 +1,6 @@
 define([
-    'automizy/core'
+    'automizy/core',
+    'automizy/modules/button'
 ], function () {
 
     var $widget = $('<div id="automizy-instructions-notification"></div>');
