@@ -1,0 +1,23 @@
+.automizy-radio{
+    font-size: 14px;
+}
+.automizy-radio-option-box{
+
+}
+.automizy-radio-option-box .automizy-radio-option-label-before{
+    vertical-align:middle;
+    margin: 0 8px 0 38px;
+}
+.automizy-radio-option-box .automizy-radio-option{
+    vertical-align:middle;
+}
+.automizy-radio-option-box .automizy-radio-option-label-after{
+    vertical-align:middle;
+    margin: 0 38px 0 0;
+}
+.automizy-radio-option-box:last-of-type .automizy-radio-option-label-after{
+    margin: 0;
+}
+.automizy-radio-option-box:first-of-type .automizy-radio-option-label-before{
+    margin: 0 8px 0 0;
+}

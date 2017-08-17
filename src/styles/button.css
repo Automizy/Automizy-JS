@@ -149,6 +149,23 @@
     line-height: normal;
 }
 
+.automizy-button.automizy-skin-bordered-green.automizy-button-semithick a,
+.automizy-button.automizy-skin-bordered-black.automizy-button-semithick a,
+.automizy-button.automizy-skin-bordered-orange.automizy-button-semithick a,
+.automizy-button.automizy-skin-simple-likemenu.automizy-button-semithick a,
+.automizy-button.automizy-skin-simple-white.automizy-button-semithick a,
+.automizy-button.automizy-skin-image-white.automizy-button-semithick a,
+.automizy-button.automizy-skin-simple-orange.automizy-button-semithick a,
+.automizy-button.automizy-skin-simple-blue.automizy-button-semithick a,
+.automizy-button.automizy-skin-simple-green.automizy-button-semithick a {
+    padding: 8px 18px 8px 18px;
+    height: auto;
+    line-height: normal;
+}
+.automizy-button.automizy-button-semithick a{
+    font-size: 14px;
+}
+
 .automizy-button.automizy-skin-bordered-green.automizy-button-thick a,
 .automizy-button.automizy-skin-bordered-black.automizy-button-thick a,
 .automizy-button.automizy-skin-bordered-orange.automizy-button-thick a,
@@ -163,20 +180,8 @@
     height: auto;
     line-height: normal;
 }
-
-.automizy-button.automizy-skin-bordered-green.automizy-button-semithick a,
-.automizy-button.automizy-skin-bordered-black.automizy-button-semithick a,
-.automizy-button.automizy-skin-bordered-orange.automizy-button-semithick a,
-.automizy-button.automizy-skin-simple-likemenu.automizy-button-semithick a,
-.automizy-button.automizy-skin-simple-white.automizy-button-semithick a,
-.automizy-button.automizy-skin-image-white.automizy-button-semithick a,
-.automizy-button.automizy-skin-simple-orange.automizy-button-semithick a,
-.automizy-button.automizy-skin-simple-blue.automizy-button-semithick a,
-.automizy-button.automizy-skin-simple-green.automizy-button-semithick a {
-    padding: 8px 18px 8px 18px;
-    font-size: 14px;
-    height: auto;
-    line-height: normal;
+.automizy-button.automizy-button-thick a{
+    font-size: 15px;
 }
 
 .automizy-button.disabled a {

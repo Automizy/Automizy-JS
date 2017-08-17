@@ -44,6 +44,7 @@ define([
             $labelTop: $('<label class="automizy-input2-label-top"></label>'),
             $labelBefore: $('<label class="automizy-input2-label-before"></label>'),
             $input: $('<input type="text" class="automizy-input2-input" />'),
+            $inputInnerIconRight: $('<span class="automizy-input2-input-inner-icon-right"></span>'),
             $colorPickerInput: $('<input type="color" class="automizy-input2-colorpicker-input" />').change(function(){
                 var value = $(this).val();
                 t.data('colorpickerValue', value);
@@ -95,6 +96,7 @@ define([
             validationEvents: '',
             createFunctions: [],
             automizySelect: false,
+            automizyRadio: false,
             inlineEditable: false,
             id: 'automizy-input-' + $A.getUniqueString(),
             inputId: 'automizy-input-' + $A.getUniqueString() + '-input',
@@ -148,6 +150,7 @@ define([
         t.d.$labelTop.appendTo(t.d.$labelTopBox).attr('for', t.d.inputId);
         t.d.$labelBefore.appendTo(t.d.$labelBeforeBox).attr('for', t.d.inputId);
         t.d.$input.appendTo(t.d.$inputCell).attr('id', t.d.inputId);
+        t.d.$inputInnerIconRight.appendTo(t.d.$inputCell);
         t.d.$loading.appendTo(t.d.$loadingCell);
         t.d.$labelAfter.appendTo(t.d.$labelAfterCell).attr('for', t.d.inputId);
         t.d.$helpIcon.appendTo(t.d.$helpIconCell);
@@ -318,8 +321,17 @@ define([
             if (typeof obj.iconRightClick === 'function') {
                 t.iconRightClick(obj.iconRightClick);
             }
+            if (typeof obj.innerIconRight !== 'undefined') {
+                t.innerIconRight(obj.innerIconRight);
+            }
+            if (typeof obj.innerIconRightClick === 'function') {
+                t.innerIconRightClick(obj.innerIconRightClick);
+            }
             if (typeof obj.automizySelect !== 'undefined') {
                 t.d.automizySelect = obj.automizySelect;
+            }
+            if (typeof obj.automizyRadio !== 'undefined') {
+                t.d.automizyRadio = obj.automizyRadio;
             }
             if (typeof obj.labelAfter !== 'undefined') {
                 t.labelAfter(obj.labelAfter);
@@ -350,6 +362,10 @@ define([
         //initializing automizySelect if necessary
         if (t.d.automizySelect) {
             t.automizySelect();
+        }
+        //initializing automizyRadio if necessary
+        if (t.d.automizyRadio) {
+            t.automizyRadio();
         }
 
 
@@ -612,17 +628,22 @@ define([
                 value = value.call(t, [t]);
             }
             t.d.value = value;
-            if (t.d.type === 'file') {
+            if (t.type() === 'file') {
                 t.input().data('value', value);
-            } else if (t.d.type === 'html') {
+            } else if (t.type() === 'html') {
                 t.input().html(value);
+            } else if (t.type() === 'radio') {
+                t.automizyRadio().val(value);
             } else {
                 t.input().val(value);
             }
             return t;
         }
-        if (t.d.type === 'html') {
+
+        if (t.type() === 'html') {
             return t.input().html();
+        }else if (t.type() === 'radio') {
+            return t.automizyRadio().val();
         }
         return t.input().val();
     };
@@ -630,8 +651,16 @@ define([
         var t = this;
         if (typeof name !== 'undefined') {
             t.d.name = name;
-            t.input().attr('name', name);
+            if (t.type() === 'radio') {
+                t.automizyRadio().name(t.d.name);
+            }else {
+                t.input().attr('name', t.d.name);
+            }
             return t;
+        }
+
+        if (t.type() === 'radio') {
+            return t.automizyRadio().name();
         }
         return t.d.$input.attr('name');
     };
@@ -1088,20 +1117,69 @@ define([
         t.d.$inputIconRightCell.click();
         return t;
     };
+    p.innerIconRight = function (icon, iconType) {
+        var t = this;
+        if (typeof icon !== 'undefined') {
+            t.d.innerIconRight = icon;
+            if (t.d.innerIconRight === false) {
+                t.d.$widget.removeClass('automizy-input2-has-inner-right-icon');
+            } else {
+                t.d.$widget.addClass('automizy-input2-has-inner-right-icon');
+                if (t.d.innerIconRight !== true) {
+                    t.d.$inputInnerIconRight.ashow();
+                    iconType = iconType || 'fa';
+                    if (iconType === 'fa') {
+                        t.d.$inputInnerIconRight.removeClassPrefix('fa').addClass(t.d.innerIconRight);
+                    }
+                }
+            }
+            return t;
+        }
+        return t.d.icon || false;
+    };
+    p.innerIconRightClick = function (func) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.d.$inputInnerIconRight.addClass('automizy-clickable').click(function () {
+                func.call(t, [t]);
+            });
+            return t;
+        }
+        t.d.$inputInnerIconRight.click();
+        return t;
+    };
     p.options = function () {
-        var select = this.automizySelect();
-        select.options.apply(select, arguments || []);
-        return this;
+        var t = this;
+        if(t.type() === 'radio'){
+            var radio = t.automizyRadio();
+            radio.options.apply(radio, arguments || []);
+        }else {
+            var select = t.automizySelect();
+            select.options.apply(select, arguments || []);
+        }
+        return t;
     };
     p.addOption = function () {
-        var select = this.automizySelect();
-        select.addOption.apply(select, arguments || []);
-        return this;
+        var t = this;
+        if(t.type() === 'radio'){
+            var radio = t.automizyRadio();
+            radio.addOption.apply(radio, arguments || []);
+        }else {
+            var select = t.automizySelect();
+            select.addOption.apply(select, arguments || []);
+        }
+        return t;
     };
     p.addOptions = function () {
-        var select = this.automizySelect();
-        select.addOptions.apply(select, arguments || []);
-        return this;
+        var t = this;
+        if(t.type() === 'radio'){
+            var radio = t.automizyRadio();
+            radio.addOptions.apply(radio, arguments || []);
+        }else {
+            var select = t.automizySelect();
+            select.addOptions.apply(select, arguments || []);
+        }
+        return t;
     };
     p.removeOption = function () {
         var select = this.automizySelect();
@@ -1121,6 +1199,14 @@ define([
     p.automizySelect = function () {
         this.d.automizySelect = this.input().automizySelect();
         return this.d.automizySelect;
+    };
+    p.automizyRadio = function () {
+        var t = this;
+        if(t.d.automizyRadio === false) {
+            t.input().remove();
+            t.d.automizyRadio = $A.newRadio().name(t.d.name).drawTo(t.d.$inputCell);
+        }
+        return t.d.automizyRadio;
     };
     p.inlineEditable = function () {
         this.d.inlineEditable = $A.newInlineEditable(this);

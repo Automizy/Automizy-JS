@@ -339,11 +339,32 @@ textarea.automizy-input2-input {
     color: rgba(0, 0, 0, 0.4);
 
 }
-
 .automizy-input2 .automizy-input2-input-cell[data-measure] input.automizy-input2-input {
     padding-right: 38px;
 }
 
+/*Inner right icon*/
+.automizy-input2 .automizy-input2-input-inner-icon-right{
+    display:none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 8px 10px;
+    color:#f46a1f;
+    opacity: 0.9;
+}
+.automizy-input2.automizy-input2-has-inner-right-icon .automizy-input2-input-inner-icon-right{
+    display:inline-block;
+}
+.automizy-input2.automizy-input2-has-inner-right-icon .automizy-input2-input{
+    padding: 6px 38px 6px 12px;
+}
+.automizy-input2.automizy-input2-has-inner-right-icon .automizy-input2-input-inner-icon-right.automizy-clickable{
+    cursor:pointer;
+}
+.automizy-input2.automizy-input2-has-inner-right-icon .automizy-input2-input-inner-icon-right.automizy-clickable:hover{
+    opacity: 1;
+}
 
 .automizy-input2.automizy-input2-has-colorpicker input.automizy-input2-input {
     border-top-right-radius: 0;

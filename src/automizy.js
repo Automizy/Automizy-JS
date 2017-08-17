@@ -24,6 +24,7 @@ define([
     "automizy/modules/tableCell",
     "automizy/modules/i18n",
     "automizy/modules/select/select",
+    "automizy/modules/radio/radio",
     "automizy/modules/message",
     "automizy/modules/panel",
     "automizy/modules/tag/tagger",

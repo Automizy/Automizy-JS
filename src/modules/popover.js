@@ -10,15 +10,17 @@ define([
         var t = this;
         t.d = {
             $widget: $('<div class="automizy-popover"></div>'),
-            $title:$('<div class="automizy-popover-title"></div>'),
-            $content:$('<div class="automizy-popover-content"></div>'),
-            $buttons:$('<div class="automizy-popover-buttons"></div>'),
+            $title: $('<div class="automizy-popover-title"></div>'),
+            $content: $('<div class="automizy-popover-content"></div>'),
+            $buttons: $('<div class="automizy-popover-buttons"></div>'),
 
-            target:false,
+            target: false,
 
-            position:'auto',
-            width:'auto',
-            maxHeight:'800px',
+            position: 'auto',
+            width: 'auto',
+            maxHeight: '800px',
+            offsetTop: 0,
+            offsetLeft: 0,
 
             id: 'automizy-popover-' + $A.getUniqueString()
         };
@@ -39,6 +41,9 @@ define([
             }
             if (typeof obj.position !== 'undefined') {
                 t.position(obj.position);
+            }
+            if (typeof obj.offset !== 'undefined') {
+                t.offset(obj.offset);
             }
             if (typeof obj.open === 'function') {
                 t.open(obj.open);
@@ -95,6 +100,22 @@ define([
         }
         return t.d.position;
     };
+    p.offsetTop = function (offsetTop) {
+        var t = this;
+        if (typeof offsetTop !== 'undefined') {
+            t.d.offsetTop = parseInt(offsetTop) || 0;
+            return t;
+        }
+        return t.d.offsetTop;
+    };
+    p.offsetLeft = function (offsetLeft) {
+        var t = this;
+        if (typeof offsetLeft !== 'undefined') {
+            t.d.offsetLeft = parseInt(offsetLeft) || 0;
+            return t;
+        }
+        return t.d.offsetLeft;
+    };
 
     p.title = function (title) {
         var t = this;
@@ -117,7 +138,7 @@ define([
             t.d.content = content;
             if (t.d.content instanceof jQuery) {
                 t.d.content.appendTo(t.d.$content);
-            } else if(typeof t.d.content.drawTo === 'function') {
+            } else if (typeof t.d.content.drawTo === 'function') {
                 t.d.content.drawTo(t.d.$content);
             } else {
                 t.d.$content.html(t.d.content);
@@ -135,32 +156,32 @@ define([
         }
         var position = t.position();
         var targetOffset = t.target().offset();
-        var targetOffsetTop = targetOffset.top;
-        var targetOffsetLeft = targetOffset.left;
+        var targetOffsetTop = targetOffset.top + t.offsetTop();
+        var targetOffsetLeft = targetOffset.left + t.offsetLeft();
         var targetHeight = t.target().height();
         var targetWidth = t.target().outerWidth();
         var windowHeight = window.innerHeight;
         var popoverHeight = t.widget().height();
 
-        if(position === 'auto'){
-            if(targetOffsetTop + targetHeight + popoverHeight >= windowHeight){
+        if (position === 'auto') {
+            if (targetOffsetTop + targetHeight + popoverHeight >= windowHeight) {
                 position = 'top';
-            }else{
+            } else {
                 position = 'bottom';
             }
         }
 
-        if(position === 'top'){
+        if (position === 'top') {
             t.widget().css({
-                bottom:(windowHeight - targetOffsetTop) + 'px',
-                left:targetOffsetLeft + 'px',
-                top:'auto'
+                bottom: (windowHeight - targetOffsetTop) + 'px',
+                left: targetOffsetLeft + 'px',
+                top: 'auto'
             })
-        }else{
+        } else {
             t.widget().css({
-                bottom:'auto',
-                left:targetOffsetLeft + 'px',
-                top:(targetOffsetTop + targetHeight) + 'px'
+                bottom: 'auto',
+                left: targetOffsetLeft + 'px',
+                top: (targetOffsetTop + targetHeight) + 'px'
             })
         }
 
@@ -180,48 +201,60 @@ define([
         }
         if (obj.target instanceof HTMLElement) {
             obj.target = $(obj.target);
-        }else if(typeof obj.target.widget === 'function'){
+        } else if (typeof obj.target.widget === 'function') {
             obj.target = obj.target.widget();
         }
 
-        if(typeof obj.popover === 'undefined'){
+        if (typeof obj.popover === 'undefined') {
             obj.popover = $A.globalPopoverModule;
         }
         obj.popover.target(obj.target);
 
         if (typeof obj.title !== 'undefined') {
             obj.popover.title(obj.title);
-        }else{
+        } else {
             obj.popover.title('');
         }
 
         if (typeof obj.content !== 'undefined') {
             obj.popover.content(obj.content);
-        }else{
+        } else {
             obj.popover.content('');
         }
 
         if (typeof obj.buttons !== 'undefined') {
             obj.popover.buttons(obj.buttons);
-        }else{
+        } else {
             obj.popover.buttons([]);
         }
 
         if (typeof obj.width !== 'undefined') {
             obj.popover.width(obj.width);
-        }else{
+        } else {
             obj.popover.width('auto');
         }
 
         if (typeof obj.position !== 'undefined') {
             obj.popover.position(obj.position);
-        }else{
+        } else {
             obj.popover.position('auto');
+        }
+
+        if (typeof obj.offsetTop !== 'undefined') {
+            obj.popover.offsetTop(obj.offsetTop);
+        } else {
+            obj.popover.offsetTop(0);
+        }
+
+        if (typeof obj.offsetLeft !== 'undefined') {
+            obj.popover.offsetLeft(obj.offsetLeft);
+        } else {
+            obj.popover.offsetLeft(0);
         }
 
         if (typeof obj.appendTo !== 'undefined') {
             obj.popover.appendTo(obj.appendTo);
-        }else{
+        } else {
             obj.popover.appendTo('body');
         }
 
@@ -229,7 +262,6 @@ define([
         if (typeof obj.open === 'function') {
             obj.popover.on('open', obj.open);
         }
-
 
 
         return obj.popover;
@@ -242,15 +274,15 @@ define([
     $A.globalPopoverModule = $A.newPopover();
     $A.globalPopoverModule.close();
 
-    $A.closeAllPopover = function(){
+    $A.closeAllPopover = function () {
         var popovers = $A.getAllPopover();
-        for(var i in popovers){
+        for (var i in popovers) {
             popovers[i].close();
         }
     };
 
-    $(document).on('mouseup', function(event) {
-        if(!$(event.target).closest('.automizy-popover, .automizy-popovered, .ui-datepicker').length) {
+    $(document).on('mouseup', function (event) {
+        if (!$(event.target).closest('.automizy-popover, .automizy-popovered, .ui-datepicker').length) {
             $A.closeAllPopover();
         }
     });

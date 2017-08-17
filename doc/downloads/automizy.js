@@ -4015,6 +4015,7 @@ var $A = {};
             $labelTop: $('<label class="automizy-input2-label-top"></label>'),
             $labelBefore: $('<label class="automizy-input2-label-before"></label>'),
             $input: $('<input type="text" class="automizy-input2-input" />'),
+            $inputInnerIconRight: $('<span class="automizy-input2-input-inner-icon-right"></span>'),
             $colorPickerInput: $('<input type="color" class="automizy-input2-colorpicker-input" />').change(function(){
                 var value = $(this).val();
                 t.data('colorpickerValue', value);
@@ -4066,6 +4067,7 @@ var $A = {};
             validationEvents: '',
             createFunctions: [],
             automizySelect: false,
+            automizyRadio: false,
             inlineEditable: false,
             id: 'automizy-input-' + $A.getUniqueString(),
             inputId: 'automizy-input-' + $A.getUniqueString() + '-input',
@@ -4119,6 +4121,7 @@ var $A = {};
         t.d.$labelTop.appendTo(t.d.$labelTopBox).attr('for', t.d.inputId);
         t.d.$labelBefore.appendTo(t.d.$labelBeforeBox).attr('for', t.d.inputId);
         t.d.$input.appendTo(t.d.$inputCell).attr('id', t.d.inputId);
+        t.d.$inputInnerIconRight.appendTo(t.d.$inputCell);
         t.d.$loading.appendTo(t.d.$loadingCell);
         t.d.$labelAfter.appendTo(t.d.$labelAfterCell).attr('for', t.d.inputId);
         t.d.$helpIcon.appendTo(t.d.$helpIconCell);
@@ -4289,8 +4292,17 @@ var $A = {};
             if (typeof obj.iconRightClick === 'function') {
                 t.iconRightClick(obj.iconRightClick);
             }
+            if (typeof obj.innerIconRight !== 'undefined') {
+                t.innerIconRight(obj.innerIconRight);
+            }
+            if (typeof obj.innerIconRightClick === 'function') {
+                t.innerIconRightClick(obj.innerIconRightClick);
+            }
             if (typeof obj.automizySelect !== 'undefined') {
                 t.d.automizySelect = obj.automizySelect;
+            }
+            if (typeof obj.automizyRadio !== 'undefined') {
+                t.d.automizyRadio = obj.automizyRadio;
             }
             if (typeof obj.labelAfter !== 'undefined') {
                 t.labelAfter(obj.labelAfter);
@@ -4321,6 +4333,10 @@ var $A = {};
         //initializing automizySelect if necessary
         if (t.d.automizySelect) {
             t.automizySelect();
+        }
+        //initializing automizyRadio if necessary
+        if (t.d.automizyRadio) {
+            t.automizyRadio();
         }
 
 
@@ -4583,17 +4599,22 @@ var $A = {};
                 value = value.call(t, [t]);
             }
             t.d.value = value;
-            if (t.d.type === 'file') {
+            if (t.type() === 'file') {
                 t.input().data('value', value);
-            } else if (t.d.type === 'html') {
+            } else if (t.type() === 'html') {
                 t.input().html(value);
+            } else if (t.type() === 'radio') {
+                t.automizyRadio().val(value);
             } else {
                 t.input().val(value);
             }
             return t;
         }
-        if (t.d.type === 'html') {
+
+        if (t.type() === 'html') {
             return t.input().html();
+        }else if (t.type() === 'radio') {
+            return t.automizyRadio().val();
         }
         return t.input().val();
     };
@@ -4601,8 +4622,16 @@ var $A = {};
         var t = this;
         if (typeof name !== 'undefined') {
             t.d.name = name;
-            t.input().attr('name', name);
+            if (t.type() === 'radio') {
+                t.automizyRadio().name(t.d.name);
+            }else {
+                t.input().attr('name', t.d.name);
+            }
             return t;
+        }
+
+        if (t.type() === 'radio') {
+            return t.automizyRadio().name();
         }
         return t.d.$input.attr('name');
     };
@@ -5059,20 +5088,69 @@ var $A = {};
         t.d.$inputIconRightCell.click();
         return t;
     };
+    p.innerIconRight = function (icon, iconType) {
+        var t = this;
+        if (typeof icon !== 'undefined') {
+            t.d.innerIconRight = icon;
+            if (t.d.innerIconRight === false) {
+                t.d.$widget.removeClass('automizy-input2-has-inner-right-icon');
+            } else {
+                t.d.$widget.addClass('automizy-input2-has-inner-right-icon');
+                if (t.d.innerIconRight !== true) {
+                    t.d.$inputInnerIconRight.ashow();
+                    iconType = iconType || 'fa';
+                    if (iconType === 'fa') {
+                        t.d.$inputInnerIconRight.removeClassPrefix('fa').addClass(t.d.innerIconRight);
+                    }
+                }
+            }
+            return t;
+        }
+        return t.d.icon || false;
+    };
+    p.innerIconRightClick = function (func) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.d.$inputInnerIconRight.addClass('automizy-clickable').click(function () {
+                func.call(t, [t]);
+            });
+            return t;
+        }
+        t.d.$inputInnerIconRight.click();
+        return t;
+    };
     p.options = function () {
-        var select = this.automizySelect();
-        select.options.apply(select, arguments || []);
-        return this;
+        var t = this;
+        if(t.type() === 'radio'){
+            var radio = t.automizyRadio();
+            radio.options.apply(radio, arguments || []);
+        }else {
+            var select = t.automizySelect();
+            select.options.apply(select, arguments || []);
+        }
+        return t;
     };
     p.addOption = function () {
-        var select = this.automizySelect();
-        select.addOption.apply(select, arguments || []);
-        return this;
+        var t = this;
+        if(t.type() === 'radio'){
+            var radio = t.automizyRadio();
+            radio.addOption.apply(radio, arguments || []);
+        }else {
+            var select = t.automizySelect();
+            select.addOption.apply(select, arguments || []);
+        }
+        return t;
     };
     p.addOptions = function () {
-        var select = this.automizySelect();
-        select.addOptions.apply(select, arguments || []);
-        return this;
+        var t = this;
+        if(t.type() === 'radio'){
+            var radio = t.automizyRadio();
+            radio.addOptions.apply(radio, arguments || []);
+        }else {
+            var select = t.automizySelect();
+            select.addOptions.apply(select, arguments || []);
+        }
+        return t;
     };
     p.removeOption = function () {
         var select = this.automizySelect();
@@ -5092,6 +5170,14 @@ var $A = {};
     p.automizySelect = function () {
         this.d.automizySelect = this.input().automizySelect();
         return this.d.automizySelect;
+    };
+    p.automizyRadio = function () {
+        var t = this;
+        if(t.d.automizyRadio === false) {
+            t.input().remove();
+            t.d.automizyRadio = $A.newRadio().name(t.d.name).drawTo(t.d.$inputCell);
+        }
+        return t.d.automizyRadio;
     };
     p.inlineEditable = function () {
         this.d.inlineEditable = $A.newInlineEditable(this);
@@ -9831,6 +9917,149 @@ var $A = {};
 })();
 
 (function(){
+    var Radio = function (obj) {
+        var t = this;
+        t.d = {
+            $widget: $('<div class="automizy-radio"></div>'),
+            options: [],
+            id: 'automizy-radio-' + $A.getUniqueString(),
+            name: 'automizy-radio-' + $A.getUniqueString(),
+
+            change: function () {
+                if (t.change().returnValue() === false) {
+                    return false;
+                }
+            },
+            manualChange: function () {
+                if (t.manualChange().returnValue() === false) {
+                    return false;
+                }
+            }
+        };
+        t.f = {};
+        t.init();
+
+
+        if (typeof obj !== 'undefined') {
+            t.initParameter(obj);
+        }
+    };
+
+    var p = Radio.prototype;
+
+    p.val = p.value = function (value) {
+        var t = this;
+        if (typeof value !== 'undefined') {
+            t.d.value = value;
+            for(var i = 0; i < t.d.options.length; i++){
+                if(t.d.options[i].value == t.d.value){
+                    t.d.options[i].$input.prop('checked', true);
+                }
+            }
+            return t;
+        }
+        return t.d.$widget.find('input:checked').val();
+    };
+    p.name = function (name) {
+        var t = this;
+        if (typeof name !== 'undefined') {
+            t.d.name = name;
+            for(var i = 0; i < t.d.options.length; i++){
+                t.d.options[i].$input.attr('name', t.d.name);
+            }
+            return t;
+        }
+        return t.d.name;
+    };
+    p.addOption = function (option) {
+        return this.addOptions([option]);
+    };
+    p.options = function (options) {
+        var t = this;
+        if (typeof options !== 'undefined') {
+            //t.removeOptions();
+            t.addOptions(options);
+            return t;
+        }
+        return t.d.options;
+    };
+    p.addOptions = function (options) {
+        var t = this;
+        options = options || [];
+
+        for (var i = 0; i < options.length; i++) {
+            options[i].radio = t;
+            options[i].$box = $('<label class="automizy-radio-option-box"></label>').appendTo(t.widget());
+            options[i].$labelBefore = $('<span class="automizy-radio-option-label-before"></span>').appendTo(options[i].$box).ahide();
+            options[i].$input = $('<input type="radio" class="automizy-radio-option" />').data('automizy-radio-option', options[i]).attr({
+                name: t.name(),
+                value: options[i].value
+            }).appendTo(options[i].$box).change(function(){
+                t.change.apply(t, []);
+            });
+            options[i].$labelAfter = $('<span class="automizy-radio-option-label-after"></span>').appendTo(options[i].$box).ahide();
+
+            if(typeof options[i].labelBefore !== 'undefined'){
+                options[i].$labelBefore.html(options[i].labelBefore).ashow();
+            }
+            if(typeof options[i].labelAfter !== 'undefined'){
+                options[i].$labelAfter.html(options[i].labelAfter).ashow();
+            }
+
+            t.d.options.push(options[i]);
+        }
+
+        return t;
+    };
+
+    p.change = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('change', func, name, life);
+        } else {
+            var a = t.runFunctions('change');
+            t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
+        }
+        return t;
+    };
+    p.manualChange = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('manualChange', func, name, life);
+        } else {
+            var a = t.runFunctions('manualChange');
+            t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
+        }
+        return t;
+    };
+
+    p.drawTo = p.draw = p.appendTo = function ($target) {
+        var t = this;
+        $target = $target || $('body');
+        t.d.$widget.appendTo($target);
+        return t;
+    };
+    p.show = function () {
+        var t = this;
+        this.d.$widget.ashow();
+        return t;
+    };
+    p.hide = function () {
+        var t = this;
+        this.d.$widget.ahide();
+        return t;
+    };
+    p.disabled = function(){
+        return false;
+    };
+
+
+    $A.initBasicFunctions(Radio, "Radio", ['change', 'manualChange']);
+
+
+})();
+
+(function(){
     var Message = function (obj) {
         var t = this;
         t.d = {
@@ -10982,15 +11211,17 @@ var $A = {};
         var t = this;
         t.d = {
             $widget: $('<div class="automizy-popover"></div>'),
-            $title:$('<div class="automizy-popover-title"></div>'),
-            $content:$('<div class="automizy-popover-content"></div>'),
-            $buttons:$('<div class="automizy-popover-buttons"></div>'),
+            $title: $('<div class="automizy-popover-title"></div>'),
+            $content: $('<div class="automizy-popover-content"></div>'),
+            $buttons: $('<div class="automizy-popover-buttons"></div>'),
 
-            target:false,
+            target: false,
 
-            position:'auto',
-            width:'auto',
-            maxHeight:'800px',
+            position: 'auto',
+            width: 'auto',
+            maxHeight: '800px',
+            offsetTop: 0,
+            offsetLeft: 0,
 
             id: 'automizy-popover-' + $A.getUniqueString()
         };
@@ -11011,6 +11242,9 @@ var $A = {};
             }
             if (typeof obj.position !== 'undefined') {
                 t.position(obj.position);
+            }
+            if (typeof obj.offset !== 'undefined') {
+                t.offset(obj.offset);
             }
             if (typeof obj.open === 'function') {
                 t.open(obj.open);
@@ -11067,6 +11301,22 @@ var $A = {};
         }
         return t.d.position;
     };
+    p.offsetTop = function (offsetTop) {
+        var t = this;
+        if (typeof offsetTop !== 'undefined') {
+            t.d.offsetTop = parseInt(offsetTop) || 0;
+            return t;
+        }
+        return t.d.offsetTop;
+    };
+    p.offsetLeft = function (offsetLeft) {
+        var t = this;
+        if (typeof offsetLeft !== 'undefined') {
+            t.d.offsetLeft = parseInt(offsetLeft) || 0;
+            return t;
+        }
+        return t.d.offsetLeft;
+    };
 
     p.title = function (title) {
         var t = this;
@@ -11089,7 +11339,7 @@ var $A = {};
             t.d.content = content;
             if (t.d.content instanceof jQuery) {
                 t.d.content.appendTo(t.d.$content);
-            } else if(typeof t.d.content.drawTo === 'function') {
+            } else if (typeof t.d.content.drawTo === 'function') {
                 t.d.content.drawTo(t.d.$content);
             } else {
                 t.d.$content.html(t.d.content);
@@ -11107,32 +11357,32 @@ var $A = {};
         }
         var position = t.position();
         var targetOffset = t.target().offset();
-        var targetOffsetTop = targetOffset.top;
-        var targetOffsetLeft = targetOffset.left;
+        var targetOffsetTop = targetOffset.top + t.offsetTop();
+        var targetOffsetLeft = targetOffset.left + t.offsetLeft();
         var targetHeight = t.target().height();
         var targetWidth = t.target().outerWidth();
         var windowHeight = window.innerHeight;
         var popoverHeight = t.widget().height();
 
-        if(position === 'auto'){
-            if(targetOffsetTop + targetHeight + popoverHeight >= windowHeight){
+        if (position === 'auto') {
+            if (targetOffsetTop + targetHeight + popoverHeight >= windowHeight) {
                 position = 'top';
-            }else{
+            } else {
                 position = 'bottom';
             }
         }
 
-        if(position === 'top'){
+        if (position === 'top') {
             t.widget().css({
-                bottom:(windowHeight - targetOffsetTop) + 'px',
-                left:targetOffsetLeft + 'px',
-                top:'auto'
+                bottom: (windowHeight - targetOffsetTop) + 'px',
+                left: targetOffsetLeft + 'px',
+                top: 'auto'
             })
-        }else{
+        } else {
             t.widget().css({
-                bottom:'auto',
-                left:targetOffsetLeft + 'px',
-                top:(targetOffsetTop + targetHeight) + 'px'
+                bottom: 'auto',
+                left: targetOffsetLeft + 'px',
+                top: (targetOffsetTop + targetHeight) + 'px'
             })
         }
 
@@ -11152,48 +11402,60 @@ var $A = {};
         }
         if (obj.target instanceof HTMLElement) {
             obj.target = $(obj.target);
-        }else if(typeof obj.target.widget === 'function'){
+        } else if (typeof obj.target.widget === 'function') {
             obj.target = obj.target.widget();
         }
 
-        if(typeof obj.popover === 'undefined'){
+        if (typeof obj.popover === 'undefined') {
             obj.popover = $A.globalPopoverModule;
         }
         obj.popover.target(obj.target);
 
         if (typeof obj.title !== 'undefined') {
             obj.popover.title(obj.title);
-        }else{
+        } else {
             obj.popover.title('');
         }
 
         if (typeof obj.content !== 'undefined') {
             obj.popover.content(obj.content);
-        }else{
+        } else {
             obj.popover.content('');
         }
 
         if (typeof obj.buttons !== 'undefined') {
             obj.popover.buttons(obj.buttons);
-        }else{
+        } else {
             obj.popover.buttons([]);
         }
 
         if (typeof obj.width !== 'undefined') {
             obj.popover.width(obj.width);
-        }else{
+        } else {
             obj.popover.width('auto');
         }
 
         if (typeof obj.position !== 'undefined') {
             obj.popover.position(obj.position);
-        }else{
+        } else {
             obj.popover.position('auto');
+        }
+
+        if (typeof obj.offsetTop !== 'undefined') {
+            obj.popover.offsetTop(obj.offsetTop);
+        } else {
+            obj.popover.offsetTop(0);
+        }
+
+        if (typeof obj.offsetLeft !== 'undefined') {
+            obj.popover.offsetLeft(obj.offsetLeft);
+        } else {
+            obj.popover.offsetLeft(0);
         }
 
         if (typeof obj.appendTo !== 'undefined') {
             obj.popover.appendTo(obj.appendTo);
-        }else{
+        } else {
             obj.popover.appendTo('body');
         }
 
@@ -11201,7 +11463,6 @@ var $A = {};
         if (typeof obj.open === 'function') {
             obj.popover.on('open', obj.open);
         }
-
 
 
         return obj.popover;
@@ -11214,15 +11475,15 @@ var $A = {};
     $A.globalPopoverModule = $A.newPopover();
     $A.globalPopoverModule.close();
 
-    $A.closeAllPopover = function(){
+    $A.closeAllPopover = function () {
         var popovers = $A.getAllPopover();
-        for(var i in popovers){
+        for (var i in popovers) {
             popovers[i].close();
         }
     };
 
-    $(document).on('mouseup', function(event) {
-        if(!$(event.target).closest('.automizy-popover, .automizy-popovered, .ui-datepicker').length) {
+    $(document).on('mouseup', function (event) {
+        if (!$(event.target).closest('.automizy-popover, .automizy-popovered, .ui-datepicker').length) {
             $A.closeAllPopover();
         }
     });
@@ -11309,8 +11570,9 @@ var $A = {};
 (function(){
     $A.insertAtCaret = function(input,text) {
         var txtarea = input;
-        if(txtarea instanceof jQuery)txtarea = txtarea[0];
         if(txtarea instanceof $A.m.Input)txtarea = txtarea.input();
+        if(txtarea instanceof $A.m.Input2)txtarea = txtarea.input();
+        if(txtarea instanceof jQuery)txtarea = txtarea[0];
         var scrollPos = txtarea.scrollTop;
         var strPos = 0;
         var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ? "ff" : (document.selection ? "ie" : false ) );

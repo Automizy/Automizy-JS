@@ -3,8 +3,9 @@ define([
 ], function () {
     $A.insertAtCaret = function(input,text) {
         var txtarea = input;
-        if(txtarea instanceof jQuery)txtarea = txtarea[0];
         if(txtarea instanceof $A.m.Input)txtarea = txtarea.input();
+        if(txtarea instanceof $A.m.Input2)txtarea = txtarea.input();
+        if(txtarea instanceof jQuery)txtarea = txtarea[0];
         var scrollPos = txtarea.scrollTop;
         var strPos = 0;
         var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ? "ff" : (document.selection ? "ie" : false ) );

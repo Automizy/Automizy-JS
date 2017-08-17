@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="automizy.js"></script>
+    <link rel="stylesheet" href="fontawesome/css/font-awesome.css">
+    <link rel="stylesheet" href="automizy.css">
+    <script>
+        $(function () {
+            $A.newInput2({
+                target:'body',
+                type:'radio',
+                name:'automizy-campaign-manager-send-time-1',
+                labelBefore:'Send time',
+                options:[
+                    {
+                        value:'now',
+                        labelAfter:$A.translate('Now')
+                    },
+                    {
+                        value:'later',
+                        labelAfter:$A.translate('Later')
+                    }
+                ]
+            });
+            $A.newInput2({
+                target:'body',
+                type:'radio',
+                name:'automizy-campaign-manager-send-time-2',
+                options:[
+                    {
+                        value:'now',
+                        labelBefore:$A.translate('Now')
+                    },
+                    {
+                        value:'later',
+                        labelBefore:$A.translate('Later')
+                    }
+                ]
+            });
+            $A.newInput2({
+                target:'body',
+                type:'radio',
+                name:'automizy-campaign-manager-send-time-3',
+                options:[
+                    {
+                        value:'now',
+                        labelBefore:$A.translate('Now'),
+                        labelAfter:$A.translate('Now')
+                    },
+                    {
+                        value:'later',
+                        labelBefore:$A.translate('Later'),
+                        labelAfter:$A.translate('Later')
+                    }
+                ]
+            });
+        });
+    </script>
+</head>
+<body style="font-family:Roboto">
+</body>
+</html>
+
