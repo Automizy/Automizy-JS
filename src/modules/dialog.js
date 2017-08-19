@@ -28,13 +28,15 @@ define([
             maxWidth: '100%',
             minWidth: '250px',
             minHeight: '0px',
+            contentPadding:'15px',
             zIndex: 2501,
             isClose: true,
             hasObject: false,
             hash: false,
             openable: true,
             closable: true,
-            buttonsBox: true,
+            displayButtons: true,
+            displayHeader: true,
             clickOutClose: false,
             id: 'automizy-dialog-' + $A.getUniqueString(),
             openFunctions: [],
@@ -76,6 +78,9 @@ define([
             if (typeof obj.displayHeader !== 'undefined') {
                 t.displayHeader(obj.displayHeader);
             }
+            if (typeof obj.displayButtons !== 'undefined') {
+                t.displayButtons(obj.displayButtons);
+            }
             if (typeof obj.positionX !== 'undefined') {
                 t.positionX(obj.positionX);
             }
@@ -88,9 +93,6 @@ define([
             if (typeof obj.width !== 'undefined') {
                 t.width(obj.width);
             }
-            if (typeof obj.maxWidth !== 'undefined') {
-                t.maxWidth(obj.maxWidth);
-            }
             if (typeof obj.minWidth !== 'undefined') {
                 t.minWidth(obj.minWidth);
             }
@@ -99,6 +101,9 @@ define([
             }
             if (typeof obj.minHeight !== 'undefined') {
                 t.minHeight(obj.minHeight);
+            }
+            if (typeof obj.contentPadding !== 'undefined') {
+                t.contentPadding(obj.contentPadding);
             }
             if (typeof obj.zIndex !== 'undefined') {
                 t.zIndex(obj.zIndex);
@@ -149,13 +154,28 @@ define([
         if (typeof displayHeader !== 'undefined') {
             t.d.displayHeader = $A.parseBoolean(displayHeader);
             if (t.d.displayHeader) {
-                t.d.$head.hide();
+                t.d.$head.ashow();
+                t.d.$close.ashow();
             } else {
-                t.d.$head.hide();
+                t.d.$head.ahide();
+                t.d.$close.ahide();
             }
             return t;
         }
         return t.d.displayHeader;
+    };
+    p.displayButtons = p.buttonsBox = function (displayButtons) {
+        var t = this;
+        if (typeof displayButtons !== 'undefined') {
+            t.d.displayButtons = $A.parseBoolean(displayButtons);
+            if (t.d.displayButtons) {
+                t.d.$buttons.ashow();
+            } else {
+                t.d.$buttons.ahide();
+            }
+            return t;
+        }
+        return t.d.displayButtons;
     };
     p.hash = function (hash) {
         var t = this;
@@ -164,17 +184,6 @@ define([
             return t;
         }
         return t.d.hash;
-    };
-    p.buttonsBox = function (buttonsBox) {
-        var t = this;
-        if (typeof buttonsBox !== 'undefined') {
-            t.d.buttonsBox = $A.parseBoolean(buttonsBox);
-            if (!t.d.buttonsBox) {
-                t.d.$buttons.hide();
-            }
-            return t;
-        }
-        return t.d.buttonsBox;
     };
     p.content = function (content) {
         var t = this;
@@ -289,6 +298,15 @@ define([
         }
         return t.d.minHeight;
     };
+    p.contentPadding = function (contentPadding) {
+        var t = this;
+        if (typeof contentPadding !== 'undefined') {
+            t.d.contentPadding = contentPadding;
+            t.d.$content.css('padding', contentPadding);
+            return t;
+        }
+        return t.d.contentPadding;
+    };
     p.zIndex = function (zIndex) {
         var t = this;
         if (typeof zIndex !== 'undefined' && Number(zIndex) === zIndex && zIndex % 1 === 0) {
@@ -311,7 +329,7 @@ define([
     p.setMaxHeight = function () {
         var t = this;
         var buttonBoxHeight = 0;
-        if (t.buttonsBox()) {
+        if (t.displayButtons()) {
             buttonBoxHeight = t.d.$buttons.outerHeight();
         }
         var maxHeight = $(window).height() - buttonBoxHeight - t.d.$head.outerHeight();
