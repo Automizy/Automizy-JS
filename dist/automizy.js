@@ -730,7 +730,7 @@ var $A = {};
     var Button = function (obj) {
         var t = this;
         t.d = {
-            $widget: $('<span class="automizy-button"></span>'),
+            $widget: $('<span class="automizy-button automizy-button-uppercase"></span>'),
             $buttonBox: $('<span class="automizy-button-box"></span>'),
             $widgetButton: $('<a href="javascript:;" class="automizy-button-a"></a>'),
             $text: $('<span class="automizy-button-text"></span>'),
@@ -750,6 +750,7 @@ var $A = {};
             newRow: false,
             disabled: false,
             filePicker: false,
+            uppercase:true,
             badge: {
                 active: false
             },
@@ -845,6 +846,9 @@ var $A = {};
             }
             if (typeof obj.semiThick !== 'undefined') {
                 t.semiThick(obj.semiThick);
+            }
+            if (typeof obj.uppercase !== 'undefined') {
+                t.uppercase(obj.uppercase);
             }
             if (typeof obj.icon !== 'undefined') {
                 t.icon(obj.icon);
@@ -1083,6 +1087,18 @@ var $A = {};
             }
         }
         t.widget().addClass('automizy-button-semithick');
+        return t;
+    };
+    p.uppercase = function (value) {
+        var t = this;
+        if (typeof value !== 'undefined') {
+            value = $A.parseBoolean(value);
+            if (!value) {
+                t.widget().removeClass('automizy-button-uppercase');
+                return t;
+            }
+        }
+        t.widget().addClass('automizy-button-uppercase');
         return t;
     };
 
@@ -1408,6 +1424,18 @@ var $A = {};
                     }
                 }
                 return removeCounter;
+            },
+            enumerable: false
+        });
+    }
+    if(typeof Array.prototype.pushUnique === 'undefined') {
+        Object.defineProperty(Array.prototype, "pushUnique", {
+            value: function (item) {
+                if(this.indexOf(item) === -1) {
+                    this.push(item);
+                    return true;
+                }
+                return false;
             },
             enumerable: false
         });
@@ -4418,6 +4446,11 @@ var $A = {};
     };
     p.change = function (func, name, life) {
         var t = this;
+        if (t.type() === 'radio') {
+            var radio = t.automizyRadio();
+            radio.change.apply(radio, arguments || []);
+            return t;
+        }
         if (typeof func === 'function') {
             t.addFunction('change', func, name, life);
         } else {
@@ -9363,6 +9396,18 @@ var $A = {};
             return t;
         }
         return t.d.value;
+    };
+    p.textValue = function () {
+        var t = this;
+        if(t.multiple()){
+            var values = [];
+            var options = t.selectedOptions();
+            for(var i = 0; i < options.length; i++){
+                values.push(options[i].textValue());
+            }
+            return values;
+        }
+        return t.selectedOption().textValue();
     };
     p.selectedOptions = function () {
         var t = this;

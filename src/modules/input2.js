@@ -447,6 +447,11 @@ define([
     };
     p.change = function (func, name, life) {
         var t = this;
+        if (t.type() === 'radio') {
+            var radio = t.automizyRadio();
+            radio.change.apply(radio, arguments || []);
+            return t;
+        }
         if (typeof func === 'function') {
             t.addFunction('change', func, name, life);
         } else {

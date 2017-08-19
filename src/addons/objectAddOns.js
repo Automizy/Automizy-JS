@@ -28,4 +28,16 @@ define([], function () {
             enumerable: false
         });
     }
+    if(typeof Array.prototype.pushUnique === 'undefined') {
+        Object.defineProperty(Array.prototype, "pushUnique", {
+            value: function (item) {
+                if(this.indexOf(item) === -1) {
+                    this.push(item);
+                    return true;
+                }
+                return false;
+            },
+            enumerable: false
+        });
+    }
 });

@@ -2,12 +2,14 @@
 .automizy-button {
     display: inline-block;
     position: relative;
-    text-transform: uppercase;
     font-weight: 700;
     font-size: 12px;
     cursor: pointer;
     box-sizing: border-box;
     font-family: Segoe UI;
+}
+.automizy-button.automizy-button-uppercase {
+    text-transform: uppercase;
 }
 
 .automizy-button.new-row {

@@ -187,6 +187,18 @@ define([
         }
         return t.d.value;
     };
+    p.textValue = function () {
+        var t = this;
+        if(t.multiple()){
+            var values = [];
+            var options = t.selectedOptions();
+            for(var i = 0; i < options.length; i++){
+                values.push(options[i].textValue());
+            }
+            return values;
+        }
+        return t.selectedOption().textValue();
+    };
     p.selectedOptions = function () {
         var t = this;
 

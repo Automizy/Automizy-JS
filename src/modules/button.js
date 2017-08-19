@@ -8,7 +8,7 @@ define([
     var Button = function (obj) {
         var t = this;
         t.d = {
-            $widget: $('<span class="automizy-button"></span>'),
+            $widget: $('<span class="automizy-button automizy-button-uppercase"></span>'),
             $buttonBox: $('<span class="automizy-button-box"></span>'),
             $widgetButton: $('<a href="javascript:;" class="automizy-button-a"></a>'),
             $text: $('<span class="automizy-button-text"></span>'),
@@ -28,6 +28,7 @@ define([
             newRow: false,
             disabled: false,
             filePicker: false,
+            uppercase:true,
             badge: {
                 active: false
             },
@@ -123,6 +124,9 @@ define([
             }
             if (typeof obj.semiThick !== 'undefined') {
                 t.semiThick(obj.semiThick);
+            }
+            if (typeof obj.uppercase !== 'undefined') {
+                t.uppercase(obj.uppercase);
             }
             if (typeof obj.icon !== 'undefined') {
                 t.icon(obj.icon);
@@ -361,6 +365,18 @@ define([
             }
         }
         t.widget().addClass('automizy-button-semithick');
+        return t;
+    };
+    p.uppercase = function (value) {
+        var t = this;
+        if (typeof value !== 'undefined') {
+            value = $A.parseBoolean(value);
+            if (!value) {
+                t.widget().removeClass('automizy-button-uppercase');
+                return t;
+            }
+        }
+        t.widget().addClass('automizy-button-uppercase');
         return t;
     };
 
