@@ -1,4 +1,7 @@
 .automizy-input2 {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
     display: inline-block;
     width: 100%;
     margin-bottom: 14px;
@@ -343,6 +346,29 @@ textarea.automizy-input2-input {
     padding-right: 38px;
 }
 
+/*Inner left icon*/
+.automizy-input2 .automizy-input2-input-inner-icon-left{
+    display:none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 8px 10px;
+    color:#f46a1f;
+    opacity: 0.9;
+}
+.automizy-input2.automizy-input2-has-inner-left-icon .automizy-input2-input-inner-icon-left{
+    display:inline-block;
+}
+.automizy-input2.automizy-input2-has-inner-left-icon .automizy-input2-input{
+    padding-left: 38px;
+}
+.automizy-input2.automizy-input2-has-inner-left-icon .automizy-input2-input-inner-icon-left.automizy-clickable{
+    cursor:pointer;
+}
+.automizy-input2.automizy-input2-has-inner-left-icon .automizy-input2-input-inner-icon-left.automizy-clickable:hover{
+    opacity: 1;
+}
+
 /*Inner right icon*/
 .automizy-input2 .automizy-input2-input-inner-icon-right{
     display:none;
@@ -357,7 +383,7 @@ textarea.automizy-input2-input {
     display:inline-block;
 }
 .automizy-input2.automizy-input2-has-inner-right-icon .automizy-input2-input{
-    padding: 6px 38px 6px 12px;
+    padding-right: 38px;
 }
 .automizy-input2.automizy-input2-has-inner-right-icon .automizy-input2-input-inner-icon-right.automizy-clickable{
     cursor:pointer;

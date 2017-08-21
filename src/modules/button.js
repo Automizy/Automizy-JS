@@ -98,6 +98,15 @@ define([
             if (typeof obj.margin !== 'undefined') {
                 t.margin(obj.margin);
             }
+            if (typeof obj.padding !== 'undefined') {
+                t.padding(obj.padding);
+            }
+            if (typeof obj.fontSize !== 'undefined') {
+                t.fontSize(obj.fontSize);
+            }
+            if (typeof obj.background !== 'undefined') {
+                t.background(obj.background);
+            }
             if (typeof obj.href !== 'undefined') {
                 t.href(obj.href);
             }
@@ -219,6 +228,33 @@ define([
             return t;
         }
         return t.d.margin;
+    };
+    p.padding = function (padding) {
+        var t = this;
+        if (typeof padding !== 'undefined') {
+            t.d.padding = padding;
+            t.d.$widgetButton.css('padding', t.d.padding);
+            return t;
+        }
+        return t.d.padding;
+    };
+    p.fontSize = function (fontSize) {
+        var t = this;
+        if (typeof fontSize !== 'undefined') {
+            t.d.fontSize = fontSize;
+            t.d.$widgetButton.css('fontSize', t.d.fontSize);
+            return t;
+        }
+        return t.d.fontSize;
+    };
+    p.background = function (background) {
+        var t = this;
+        if (typeof background !== 'undefined') {
+            t.d.background = background;
+            t.d.$widgetButton.css('background', t.d.background);
+            return t;
+        }
+        return t.d.background;
     };
     p.href = function (href) {
         var t = this;

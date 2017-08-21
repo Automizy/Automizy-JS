@@ -44,6 +44,7 @@ define([
             $labelTop: $('<label class="automizy-input2-label-top"></label>'),
             $labelBefore: $('<label class="automizy-input2-label-before"></label>'),
             $input: $('<input type="text" class="automizy-input2-input" />'),
+            $inputInnerIconLeft: $('<span class="automizy-input2-input-inner-icon-left"></span>'),
             $inputInnerIconRight: $('<span class="automizy-input2-input-inner-icon-right"></span>'),
             $colorPickerInput: $('<input type="color" class="automizy-input2-colorpicker-input" />').change(function(){
                 var value = $(this).val();
@@ -150,6 +151,7 @@ define([
         t.d.$labelTop.appendTo(t.d.$labelTopBox).attr('for', t.d.inputId);
         t.d.$labelBefore.appendTo(t.d.$labelBeforeBox).attr('for', t.d.inputId);
         t.d.$input.appendTo(t.d.$inputCell).attr('id', t.d.inputId);
+        t.d.$inputInnerIconLeft.appendTo(t.d.$inputCell);
         t.d.$inputInnerIconRight.appendTo(t.d.$inputCell);
         t.d.$loading.appendTo(t.d.$loadingCell);
         t.d.$labelAfter.appendTo(t.d.$labelAfterCell).attr('for', t.d.inputId);
@@ -224,6 +226,9 @@ define([
             }
             if (typeof obj.margin !== 'undefined') {
                 t.margin(obj.margin);
+            }
+            if (typeof obj.padding !== 'undefined') {
+                t.padding(obj.padding);
             }
             if (typeof obj.name !== 'undefined') {
                 t.name(obj.name);
@@ -320,6 +325,12 @@ define([
             }
             if (typeof obj.iconRightClick === 'function') {
                 t.iconRightClick(obj.iconRightClick);
+            }
+            if (typeof obj.innerIconLeft !== 'undefined') {
+                t.innerIconLeft(obj.innerIconLeft);
+            }
+            if (typeof obj.innerIconLeftClick === 'function') {
+                t.innerIconLeftClick(obj.innerIconLeftClick);
             }
             if (typeof obj.innerIconRight !== 'undefined') {
                 t.innerIconRight(obj.innerIconRight);
@@ -759,6 +770,15 @@ define([
         }
         return t.d.margin;
     };
+    p.padding = function (padding) {
+        var t = this;
+        if (typeof padding !== 'undefined') {
+            t.d.padding = padding;
+            t.widget().css('padding', t.d.padding);
+            return t;
+        }
+        return t.d.padding;
+    };
     p.type = function (type) {
         var t = this;
         if (typeof type !== 'undefined') {
@@ -1120,6 +1140,37 @@ define([
             return t;
         }
         t.d.$inputIconRightCell.click();
+        return t;
+    };
+    p.innerIconLeft = function (icon, iconType) {
+        var t = this;
+        if (typeof icon !== 'undefined') {
+            t.d.innerIconLeft = icon;
+            if (t.d.innerIconLeft === false) {
+                t.d.$widget.removeClass('automizy-input2-has-inner-left-icon');
+            } else {
+                t.d.$widget.addClass('automizy-input2-has-inner-left-icon');
+                if (t.d.innerIconLeft !== true) {
+                    t.d.$inputInnerIconLeft.ashow();
+                    iconType = iconType || 'fa';
+                    if (iconType === 'fa') {
+                        t.d.$inputInnerIconLeft.removeClassPrefix('fa').addClass(t.d.innerIconLeft);
+                    }
+                }
+            }
+            return t;
+        }
+        return t.d.icon || false;
+    };
+    p.innerIconLeftClick = function (func) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.d.$inputInnerIconLeft.addClass('automizy-clickable').click(function () {
+                func.call(t, [t]);
+            });
+            return t;
+        }
+        t.d.$inputInnerIconLeft.click();
         return t;
     };
     p.innerIconRight = function (icon, iconType) {
