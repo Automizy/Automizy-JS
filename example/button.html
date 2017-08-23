@@ -36,7 +36,10 @@
             //file upload button
             file = $A.newButton({
                 text: 'click here to upload file!',
-                filePicker: true
+                filePicker: true,
+                filePickerChange:function(){
+                    console.log('ok')
+                }
             }).draw();
 
             //Creating Button module with method chaining

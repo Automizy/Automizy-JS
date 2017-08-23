@@ -96,6 +96,15 @@
                 ],
                 target:'body'
             });
+
+            $A.newButton({
+                text: 'click here to upload file!',
+                filePicker: true,
+                filePickerChange:function(module, $input){
+                    console.log($input.val());
+                },
+                target:'body'
+            });
         });
     </script>
 </head>

@@ -877,6 +877,9 @@ var $A = {};
             if (typeof obj.filePicker !== 'undefined') {
                 t.filePicker(obj.filePicker);
             }
+            if (typeof obj.filePickerChange !== 'undefined') {
+                t.filePickerChange(obj.filePickerChange);
+            }
             if (typeof obj.dropdown !== 'undefined') {
                 t.dropdown(obj.dropdown);
             }
@@ -1252,7 +1255,11 @@ var $A = {};
 
                 if(filePicker){
                     var $input = $('<input class="automizy-button-fileupload-input" type="file">');
-                    $input.appendTo(t.d.$widgetButton);
+                    $input.appendTo(t.d.$widgetButton).change(function () {
+                        if (t.filePickerChange().returnValue() === false) {
+                            return false;
+                        }
+                    });
                     t.data('input',$input);
                 }
                 else {
@@ -1266,6 +1273,25 @@ var $A = {};
             }
         }
         return t.d.filePicker;
+    };
+    p.filePickerChange = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('filePickerChange', func, name, life);
+        } else {
+            if (t.disabled()) {
+                return t;
+            }
+            var $input;
+            if(typeof t.data('input') !== "undefined"){
+                $input = t.data('input');
+            }else{
+                $input = $();
+            }
+            var a = t.runFunctions('filePickerChange', t, [t, $input]);
+            t.returnValue(!(a[0] === false || a[1] === false));
+        }
+        return t;
     };
 
     p.dropdown = function (dropdownList) {
@@ -1295,7 +1321,7 @@ var $A = {};
     };
 
 
-    $A.initBasicFunctions(Button, "Button", ['click']);
+    $A.initBasicFunctions(Button, "Button", ['click', 'filePickerChange']);
 
 
 
@@ -4092,6 +4118,7 @@ var $A = {};
 
             $errorBox: $('<div class="automizy-input2-error-box"></div>'),
             $buttonBottomBox: $('<div class="automizy-input2-bottom-button-box automizy-hide"></div>'),
+            $contentBottomBox: $('<div class="automizy-input2-bottom-content-box automizy-hide"></div>'),
             $labelBottomBox: $('<div class="automizy-input2-bottom-label-box automizy-hide"></div>'),
 
             $labelTop: $('<label class="automizy-input2-label-top"></label>'),
@@ -4131,6 +4158,7 @@ var $A = {};
             buttonRight: false,
             buttonTop: false,
             buttonBottom: false,
+            contentBottom: false,
             tabindex: false,
             activeAutomizyChange:false,
             labelBeforeWidth: '',
@@ -4197,6 +4225,7 @@ var $A = {};
         t.d.$inputCellShadow.appendTo(t.d.$bottomRow);
         t.d.$errorBox.appendTo(t.d.$inputCellShadow);
         t.d.$buttonBottomBox.appendTo(t.d.$inputCellShadow);
+        t.d.$contentBottomBox.appendTo(t.d.$inputCellShadow);
 
         t.d.$labelBottomBox.appendTo(t.d.$widget);
 
@@ -4366,6 +4395,9 @@ var $A = {};
             }
             if (typeof obj.buttonBottom !== 'undefined') {
                 t.buttonBottom(obj.buttonBottom);
+            }
+            if (typeof obj.contentBottom !== 'undefined') {
+                t.contentBottom(obj.contentBottom);
             }
             if (typeof obj.iconLeft !== 'undefined') {
                 t.iconLeft(obj.iconLeft);
@@ -4702,7 +4734,9 @@ var $A = {};
             } else if (t.type() === 'html') {
                 t.input().html(value);
             } else if (t.type() === 'radio') {
-                t.automizyRadio().val(value);
+                var radio = t.automizyRadio();
+                radio.val.apply(radio, arguments || []);
+                return t;
             } else {
                 t.input().val(value);
             }
@@ -5114,6 +5148,29 @@ var $A = {};
         }
         return t.d.buttonBottom;
     };
+    p.contentBottom = function (contentBottom) {
+        var t = this;
+        if (typeof contentBottom !== 'undefined') {
+            if (contentBottom === false) {
+                t.d.$widget.removeClass('automizy-input2-has-bottom-content');
+                t.d.$contentBottomBox.ahide();
+                return t;
+            }else{
+                t.d.$widget.addClass('automizy-input2-has-bottom-content');
+                t.d.$contentBottomBox.ashow();
+            }
+            t.d.$contentBottomBox.empty();
+            if (contentBottom instanceof jQuery) {
+                contentBottom.appendTo(t.d.$contentBottomBox);
+            } else if (typeof contentBottom === "object" && typeof contentBottom.draw === "function") {
+                contentBottom.draw(t.d.$contentBottomBox);
+            } else {
+                t.d.$contentBottomBox.html(contentBottom);
+            }
+            return t;
+        }
+        return t.d.$contentBottomBox;
+    };
     p.iconLeft = function (icon, iconType) {
         var t = this;
         if (typeof icon !== 'undefined') {
@@ -5313,7 +5370,10 @@ var $A = {};
         var t = this;
         if(t.d.automizyRadio === false) {
             t.input().remove();
-            t.d.automizyRadio = $A.newRadio().name(t.d.name).drawTo(t.d.$inputCell);
+            t.d.automizyRadio = $A.newRadio().drawTo(t.d.$inputCell);
+            if(!!t.d.name){
+                t.d.automizyRadio.name(t.d.name);
+            }
         }
         return t.d.automizyRadio;
     };

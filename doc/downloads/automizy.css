@@ -1083,6 +1083,7 @@ input.automizy-table-rowcheck:focus:disabled:checked { background-position: -15p
     display: inline-block;
 }
 .automizy-input2-has-bottom-button .automizy-input2-label-before-box,
+.automizy-input2-has-bottom-content .automizy-input2-label-before-box,
 .automizy-input2[type="textarea"] .automizy-input2-label-before-box {
     vertical-align: top;
     padding: 8px 20px 8px 0;
@@ -1322,7 +1323,6 @@ textarea.automizy-input2-input {
     top: 0;
     left: 0;
     padding: 8px 10px;
-    color:#f46a1f;
     opacity: 0.9;
 }
 .automizy-input2.automizy-input2-has-inner-left-icon .automizy-input2-input-inner-icon-left{

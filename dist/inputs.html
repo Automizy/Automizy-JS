@@ -154,7 +154,8 @@
                     click: function () {
                         alert('Send')
                     }
-                }
+                },
+                contentBottom: $('<a href="#">Content bottom</a>')
             })
                 .validator('notEmpty')
                 .enter(function () {
@@ -165,8 +166,8 @@
                 labelBefore: 'Subject',
                 target: 'body',
                 validator: 'notEmpty',
-                innerIconRight:'fa fa-user-plus',
-                innerIconRightClick:function(){
+                innerIconRight: 'fa fa-user-plus',
+                innerIconRightClick: function () {
                     alert('OK');
                 },
                 buttonBottom: {

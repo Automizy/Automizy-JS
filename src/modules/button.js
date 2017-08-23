@@ -155,6 +155,9 @@ define([
             if (typeof obj.filePicker !== 'undefined') {
                 t.filePicker(obj.filePicker);
             }
+            if (typeof obj.filePickerChange !== 'undefined') {
+                t.filePickerChange(obj.filePickerChange);
+            }
             if (typeof obj.dropdown !== 'undefined') {
                 t.dropdown(obj.dropdown);
             }
@@ -530,7 +533,11 @@ define([
 
                 if(filePicker){
                     var $input = $('<input class="automizy-button-fileupload-input" type="file">');
-                    $input.appendTo(t.d.$widgetButton);
+                    $input.appendTo(t.d.$widgetButton).change(function () {
+                        if (t.filePickerChange().returnValue() === false) {
+                            return false;
+                        }
+                    });
                     t.data('input',$input);
                 }
                 else {
@@ -544,6 +551,25 @@ define([
             }
         }
         return t.d.filePicker;
+    };
+    p.filePickerChange = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('filePickerChange', func, name, life);
+        } else {
+            if (t.disabled()) {
+                return t;
+            }
+            var $input;
+            if(typeof t.data('input') !== "undefined"){
+                $input = t.data('input');
+            }else{
+                $input = $();
+            }
+            var a = t.runFunctions('filePickerChange', t, [t, $input]);
+            t.returnValue(!(a[0] === false || a[1] === false));
+        }
+        return t;
     };
 
     p.dropdown = function (dropdownList) {
@@ -573,7 +599,7 @@ define([
     };
 
 
-    $A.initBasicFunctions(Button, "Button", ['click']);
+    $A.initBasicFunctions(Button, "Button", ['click', 'filePickerChange']);
 
 
 
