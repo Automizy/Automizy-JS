@@ -8062,35 +8062,47 @@ var $A = {};
             if (button.data('condition') !== 'undefined') {
                 var condition = button.data('condition');
                 var autoHide = button.data('autoHide') || false;
-                if (condition === 'select-one') {
-                    if (t.selectedIds().length === 1) {
-                        button.show();
-                        button.enable();
-                    } else {
+                if(typeof condition === 'function'){
+                    if(!condition.apply(t, [button])){
                         if (autoHide) {
                             button.hide();
                         }
                         button.disable();
+                    }else{
+                        button.show();
+                        button.enable();
                     }
-                } else if (condition === 'select-more-than-zero') {
-                    if (t.selectedIds().length >= 1) {
-                        button.show();
-                        button.enable();
-                    } else {
-                        if (autoHide) {
-                            button.hide();
+                }else {
+                    if (condition === 'select-one') {
+                        if (t.selectedIds().length === 1) {
+                            button.show();
+                            button.enable();
+                        } else {
+                            if (autoHide) {
+                                button.hide();
+                            }
+                            button.disable();
                         }
-                        button.disable();
-                    }
-                } else if (condition === 'select-between-two-and-four') {
-                    if (t.selectedIds().length >= 2 && t.selectedIds().length <= 4) {
-                        button.show();
-                        button.enable();
-                    } else {
-                        if (autoHide) {
-                            button.hide();
+                    } else if (condition === 'select-more-than-zero') {
+                        if (t.selectedIds().length >= 1) {
+                            button.show();
+                            button.enable();
+                        } else {
+                            if (autoHide) {
+                                button.hide();
+                            }
+                            button.disable();
                         }
-                        button.disable();
+                    } else if (condition === 'select-between-two-and-four') {
+                        if (t.selectedIds().length >= 2 && t.selectedIds().length <= 4) {
+                            button.show();
+                            button.enable();
+                        } else {
+                            if (autoHide) {
+                                button.hide();
+                            }
+                            button.disable();
+                        }
                     }
                 }
             }
