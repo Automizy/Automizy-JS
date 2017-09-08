@@ -86,6 +86,7 @@ define([
             value: '',
             placeholder: '',
             name: '',
+            inputWidth:'auto',
             width: '100%',
             labelTop: '',
             labelBefore: '',
@@ -256,6 +257,9 @@ define([
             }
             if (typeof obj.width !== 'undefined') {
                 t.width(obj.width);
+            }
+            if (typeof obj.inputWidth !== 'undefined') {
+                t.inputWidth(obj.inputWidth);
             }
             if (typeof obj.breakInput !== 'undefined') {
                 t.breakInput(obj.breakInput);
@@ -768,6 +772,15 @@ define([
             return t;
         }
         return t.d.width;
+    };
+    p.inputWidth = function (inputWidth) {
+        var t = this;
+        if (typeof inputWidth !== 'undefined') {
+            t.d.inputWidth = inputWidth;
+            t.d.$inputCell.css('width', t.d.inputWidth);
+            return t;
+        }
+        return t.d.inputWidth;
     };
     p.margin = function (margin) {
         var t = this;

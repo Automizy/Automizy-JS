@@ -26,6 +26,8 @@ define([
             type: 'info',
             target: 'body',
             closable: true,
+            autoClose:false,
+            autoCloseTimeout:0,
             delay:350,
             id: 'automizy-message-' + $A.getUniqueString()
         };
@@ -77,6 +79,9 @@ define([
             if (typeof obj.delay !== 'undefined') {
                 t.delay(obj.delay);
             }
+            if (typeof obj.autoClose !== 'undefined') {
+                t.autoClose(obj.autoClose);
+            }
             t.initParameter(obj);
         }
 
@@ -107,6 +112,15 @@ define([
             return t;
         }
         return t.d.delay;
+    };
+
+    p.autoClose = function (autoClose) {
+        var t = this;
+        if (typeof autoClose !== 'undefined') {
+            t.d.autoClose = autoClose || false;
+            return t;
+        }
+        return t.d.autoClose;
     };
 
     p.title = function (title) {
@@ -172,6 +186,12 @@ define([
             t.widget().fadeIn(delay, function () {
                 t.runFunctions('open');
             });
+            clearTimeout(t.d.autoCloseTimeout);
+            if(t.autoClose() !== false){
+                t.d.autoCloseTimeout = setTimeout(function(){
+                    t.close();
+                }, t.autoClose());
+            }
         }
         return t;
     };

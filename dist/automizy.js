@@ -4165,6 +4165,7 @@ var $A = {};
             value: '',
             placeholder: '',
             name: '',
+            inputWidth:'auto',
             width: '100%',
             labelTop: '',
             labelBefore: '',
@@ -4335,6 +4336,9 @@ var $A = {};
             }
             if (typeof obj.width !== 'undefined') {
                 t.width(obj.width);
+            }
+            if (typeof obj.inputWidth !== 'undefined') {
+                t.inputWidth(obj.inputWidth);
             }
             if (typeof obj.breakInput !== 'undefined') {
                 t.breakInput(obj.breakInput);
@@ -4847,6 +4851,15 @@ var $A = {};
             return t;
         }
         return t.d.width;
+    };
+    p.inputWidth = function (inputWidth) {
+        var t = this;
+        if (typeof inputWidth !== 'undefined') {
+            t.d.inputWidth = inputWidth;
+            t.d.$inputCell.css('width', t.d.inputWidth);
+            return t;
+        }
+        return t.d.inputWidth;
     };
     p.margin = function (margin) {
         var t = this;
@@ -10303,6 +10316,8 @@ var $A = {};
             type: 'info',
             target: 'body',
             closable: true,
+            autoClose:false,
+            autoCloseTimeout:0,
             delay:350,
             id: 'automizy-message-' + $A.getUniqueString()
         };
@@ -10354,6 +10369,9 @@ var $A = {};
             if (typeof obj.delay !== 'undefined') {
                 t.delay(obj.delay);
             }
+            if (typeof obj.autoClose !== 'undefined') {
+                t.autoClose(obj.autoClose);
+            }
             t.initParameter(obj);
         }
 
@@ -10384,6 +10402,15 @@ var $A = {};
             return t;
         }
         return t.d.delay;
+    };
+
+    p.autoClose = function (autoClose) {
+        var t = this;
+        if (typeof autoClose !== 'undefined') {
+            t.d.autoClose = autoClose || false;
+            return t;
+        }
+        return t.d.autoClose;
     };
 
     p.title = function (title) {
@@ -10449,6 +10476,12 @@ var $A = {};
             t.widget().fadeIn(delay, function () {
                 t.runFunctions('open');
             });
+            clearTimeout(t.d.autoCloseTimeout);
+            if(t.autoClose() !== false){
+                t.d.autoCloseTimeout = setTimeout(function(){
+                    t.close();
+                }, t.autoClose());
+            }
         }
         return t;
     };
