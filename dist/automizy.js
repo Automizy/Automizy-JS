@@ -12085,12 +12085,16 @@ var $A = {};
 
 (function(){
 
-    $A.ajaxDocumentCover = function (a, b) {
+    $A.d.ajaxDocumentCoverForceStop = false;
+    $A.ajaxDocumentCover = function (a, b, c) {
         if(typeof a === 'undefined'){
             var a = false;
         }
         if(typeof b === 'undefined'){
             var b = ['auto', 'auto', 'auto'];
+        }
+        if(typeof c !== 'undefined' && c === true){
+            $A.d.ajaxDocumentCoverForceStop = true;
         }
 
         if(typeof b[0] === 'undefined'){
@@ -12148,6 +12152,12 @@ var $A = {};
             }, b[0].time);
 
         }else{
+            if(a === 'FORCE_STOP'){
+                $A.d.ajaxDocumentCoverForceStop = false;
+            }
+            if($A.d.ajaxDocumentCoverForceStop){
+                return;
+            }
             $A.d.ajaxDocumentCoverFalseTimeout = setTimeout(function(){
                 clearTimeout($A.d.ajaxDocumentCoverTimeout);
                 $("#automizy-document-cover").remove();
