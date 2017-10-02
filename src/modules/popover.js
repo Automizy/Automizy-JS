@@ -154,6 +154,7 @@ define([
             t.addFunction.apply(t, ['open', func, name, life]);
             return t;
         }
+        t.widget().ashow();
         var position = t.position();
         var targetOffset = t.target().offset();
         var targetOffsetTop = targetOffset.top + t.offsetTop();
@@ -162,6 +163,7 @@ define([
         var targetWidth = t.target().outerWidth();
         var windowHeight = window.innerHeight;
         var popoverHeight = t.widget().height();
+        var popoverWidth = t.widget().outerWidth();
 
         if (position === 'auto') {
             if (targetOffsetTop + targetHeight + popoverHeight >= windowHeight) {
@@ -175,17 +177,26 @@ define([
             t.widget().css({
                 bottom: (windowHeight - targetOffsetTop) + 'px',
                 left: targetOffsetLeft + 'px',
+                right:'auto',
                 top: 'auto'
+            })
+        }else if (position === 'left') {
+            t.widget().css({
+                bottom: 'auto',
+                left: 'auto',
+                right:
+                - targetWidth + 'px',
+                top: targetOffsetTop + 'px'
             })
         } else {
             t.widget().css({
                 bottom: 'auto',
                 left: targetOffsetLeft + 'px',
+                right:'auto',
                 top: (targetOffsetTop + targetHeight) + 'px'
             })
         }
 
-        t.widget().ashow();
         t.runFunctions('open');
         return t;
     };

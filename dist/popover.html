@@ -60,6 +60,22 @@
                 ]
             });
 
+            window.$popover4 = $('<div style="position:absolute;top:10px;right:10px">POPOVER #4</div>');
+            window.$popover4.appendTo('body').automizyPopover({
+                position:'left',
+                content: $A.newInput2({
+                    placeholder: $A.translate('Email address'),
+                    margin: 0,
+                    enter: function () {
+                        alert('Save');
+                    }
+                }),
+                buttons: [
+                    window.popover1CancelButton,
+                    window.popover1SaveButton
+                ]
+            });
+
         });
     </script>
 </head>

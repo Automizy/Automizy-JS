@@ -35,7 +35,7 @@ define([
             triggers: {
                 click: 0
             },
-            dropDornMenuOpened:false,
+            dropDownMenuOpened:false,
             dropDownMenuList:[],
             create: function () {
             },
@@ -52,24 +52,11 @@ define([
         t.d.$text.appendTo(t.d.$widgetButton);
         t.d.$text.text(t.d.text);
         t.d.$dropDownButton.click(function(event){
-            if(t.d.dropDornMenuOpened){
+            if(t.d.dropDownMenuOpened){
                 $A.closeAllButtonMenu();
             }else {
                 $A.closeAllButtonMenu();
-                t.d.dropDornMenuOpened = true;
-                var $target = t.widget();
-                var targetOffset = $target.offset();
-                var targetOffsetTop = targetOffset.top;
-                var targetOffsetLeft = targetOffset.left;
-                var targetHeight = $target.height();
-                var targetWidth = $target.outerWidth();
-                t.d.$dropDownMenu.css({
-                    bottom: 'auto',
-                    left: targetOffsetLeft + 'px',
-                    top: (targetOffsetTop + targetHeight) + 'px',
-                    width: targetWidth + 'px',
-                    display: 'block'
-                })
+                t.openDropDownMenu();
             }
         });
         t.d.$dropDownButtonIcon.appendTo(t.d.$dropDownButton);
@@ -583,9 +570,11 @@ define([
                 }else {
                     dropdownList[i].bold = dropdownList[i].bold || false;
                     dropdownList[i].click = dropdownList[i].click || function () {};
-                    dropdownList[i].$item = $('<div class="automizy-button-dropdown-menu-item"></div>').html(dropdownList[i].text).appendTo(t.d.$dropDownMenu).data('automizy-click', dropdownList[i].click).click(function(){
-                        $(this).data('automizy-click')();
+                    dropdownList[i].$item = $('<div class="automizy-button-dropdown-menu-item"></div>').html(dropdownList[i].text).appendTo(t.d.$dropDownMenu).data('automizy-dropdown-list-element', dropdownList[i]).click(function(){
+                        var $item = $(this);
+                        var listElement = $item.data('automizy-dropdown-list-element');
                         $A.closeAllButtonMenu();
+                        listElement.click.apply(t, [listElement]);
                     });
                     if (dropdownList[i].bold) {
                         dropdownList[i].$item.css('font-weight', 'bold');
@@ -597,6 +586,24 @@ define([
         }
         return t.d.dropdown;
     };
+    p.openDropDownMenu = function(){
+        var t = this;
+        t.d.dropDownMenuOpened = true;
+        var $target = t.widget();
+        var targetOffset = $target.offset();
+        var targetOffsetTop = targetOffset.top;
+        var targetOffsetLeft = targetOffset.left;
+        var targetHeight = $target.height();
+        var targetWidth = $target.outerWidth();
+        t.d.$dropDownMenu.css({
+            bottom: 'auto',
+            left: targetOffsetLeft + 'px',
+            top: (targetOffsetTop + targetHeight) + 'px',
+            width: targetWidth + 'px',
+            display: 'block'
+        });
+        return t;
+    };
 
 
     $A.initBasicFunctions(Button, "Button", ['click', 'filePickerChange']);
@@ -607,7 +614,7 @@ define([
         var buttons = $A.getAllButton();
         for(var i in buttons){
             buttons[i].d.$dropDownMenu.css('display', 'none');
-            buttons[i].d.dropDornMenuOpened = false;
+            buttons[i].d.dropDownMenuOpened = false;
         }
     };
     $(window).on('resize', function(){

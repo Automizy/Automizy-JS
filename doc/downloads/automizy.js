@@ -757,7 +757,7 @@ var $A = {};
             triggers: {
                 click: 0
             },
-            dropDornMenuOpened:false,
+            dropDownMenuOpened:false,
             dropDownMenuList:[],
             create: function () {
             },
@@ -774,24 +774,11 @@ var $A = {};
         t.d.$text.appendTo(t.d.$widgetButton);
         t.d.$text.text(t.d.text);
         t.d.$dropDownButton.click(function(event){
-            if(t.d.dropDornMenuOpened){
+            if(t.d.dropDownMenuOpened){
                 $A.closeAllButtonMenu();
             }else {
                 $A.closeAllButtonMenu();
-                t.d.dropDornMenuOpened = true;
-                var $target = t.widget();
-                var targetOffset = $target.offset();
-                var targetOffsetTop = targetOffset.top;
-                var targetOffsetLeft = targetOffset.left;
-                var targetHeight = $target.height();
-                var targetWidth = $target.outerWidth();
-                t.d.$dropDownMenu.css({
-                    bottom: 'auto',
-                    left: targetOffsetLeft + 'px',
-                    top: (targetOffsetTop + targetHeight) + 'px',
-                    width: targetWidth + 'px',
-                    display: 'block'
-                })
+                t.openDropDownMenu();
             }
         });
         t.d.$dropDownButtonIcon.appendTo(t.d.$dropDownButton);
@@ -1305,9 +1292,11 @@ var $A = {};
                 }else {
                     dropdownList[i].bold = dropdownList[i].bold || false;
                     dropdownList[i].click = dropdownList[i].click || function () {};
-                    dropdownList[i].$item = $('<div class="automizy-button-dropdown-menu-item"></div>').html(dropdownList[i].text).appendTo(t.d.$dropDownMenu).data('automizy-click', dropdownList[i].click).click(function(){
-                        $(this).data('automizy-click')();
+                    dropdownList[i].$item = $('<div class="automizy-button-dropdown-menu-item"></div>').html(dropdownList[i].text).appendTo(t.d.$dropDownMenu).data('automizy-dropdown-list-element', dropdownList[i]).click(function(){
+                        var $item = $(this);
+                        var listElement = $item.data('automizy-dropdown-list-element');
                         $A.closeAllButtonMenu();
+                        listElement.click.apply(t, [listElement]);
                     });
                     if (dropdownList[i].bold) {
                         dropdownList[i].$item.css('font-weight', 'bold');
@@ -1319,6 +1308,24 @@ var $A = {};
         }
         return t.d.dropdown;
     };
+    p.openDropDownMenu = function(){
+        var t = this;
+        t.d.dropDownMenuOpened = true;
+        var $target = t.widget();
+        var targetOffset = $target.offset();
+        var targetOffsetTop = targetOffset.top;
+        var targetOffsetLeft = targetOffset.left;
+        var targetHeight = $target.height();
+        var targetWidth = $target.outerWidth();
+        t.d.$dropDownMenu.css({
+            bottom: 'auto',
+            left: targetOffsetLeft + 'px',
+            top: (targetOffsetTop + targetHeight) + 'px',
+            width: targetWidth + 'px',
+            display: 'block'
+        });
+        return t;
+    };
 
 
     $A.initBasicFunctions(Button, "Button", ['click', 'filePickerChange']);
@@ -1329,7 +1336,7 @@ var $A = {};
         var buttons = $A.getAllButton();
         for(var i in buttons){
             buttons[i].d.$dropDownMenu.css('display', 'none');
-            buttons[i].d.dropDornMenuOpened = false;
+            buttons[i].d.dropDownMenuOpened = false;
         }
     };
     $(window).on('resize', function(){
@@ -11610,6 +11617,7 @@ var $A = {};
             t.addFunction.apply(t, ['open', func, name, life]);
             return t;
         }
+        t.widget().ashow();
         var position = t.position();
         var targetOffset = t.target().offset();
         var targetOffsetTop = targetOffset.top + t.offsetTop();
@@ -11618,6 +11626,7 @@ var $A = {};
         var targetWidth = t.target().outerWidth();
         var windowHeight = window.innerHeight;
         var popoverHeight = t.widget().height();
+        var popoverWidth = t.widget().outerWidth();
 
         if (position === 'auto') {
             if (targetOffsetTop + targetHeight + popoverHeight >= windowHeight) {
@@ -11631,17 +11640,26 @@ var $A = {};
             t.widget().css({
                 bottom: (windowHeight - targetOffsetTop) + 'px',
                 left: targetOffsetLeft + 'px',
+                right:'auto',
                 top: 'auto'
+            })
+        }else if (position === 'left') {
+            t.widget().css({
+                bottom: 'auto',
+                left: 'auto',
+                right:
+                - targetWidth + 'px',
+                top: targetOffsetTop + 'px'
             })
         } else {
             t.widget().css({
                 bottom: 'auto',
                 left: targetOffsetLeft + 'px',
+                right:'auto',
                 top: (targetOffsetTop + targetHeight) + 'px'
             })
         }
 
-        t.widget().ashow();
         t.runFunctions('open');
         return t;
     };
