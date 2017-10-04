@@ -97,6 +97,14 @@ var $A = {};
         this.addClass('automizy-hide');
         return this;
     };
+    $.fn.forceShow = function () {
+        this.removeClass('automizy-force-hide');
+        return this;
+    };
+    $.fn.forceHide = function () {
+        this.addClass('automizy-force-hide');
+        return this;
+    };
     $.fn.automizyPopover = function (data) {
         if(typeof data === 'undefined'){
             if(this.hasClass('automizy-popovered')){

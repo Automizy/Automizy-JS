@@ -125,6 +125,7 @@
     color:inherit;
 }
 .automizy-button.automizy-skin-nobox-green a,
+.automizy-button.automizy-skin-nobox-blue a,
 .automizy-button.automizy-skin-nobox-orange a {
     text-align: left;
     text-decoration: none;
@@ -136,11 +137,15 @@
 .automizy-button.automizy-skin-nobox-orange a {
     color: rgb(244, 106, 31);
 }
+.automizy-button.automizy-skin-nobox-blue a {
+    color: #2094f9;
+}
 .automizy-button.automizy-skin-nobox-green a {
     color: #4CAF50;
 }
 .automizy-button.automizy-skin-nobox a:hover,
 .automizy-button.automizy-skin-nobox-green a:hover,
+.automizy-button.automizy-skin-nobox-blue a:hover,
 .automizy-button.automizy-skin-nobox-orange a:hover {
     text-decoration: underline;
 }
@@ -341,13 +346,13 @@
 }
 .automizy-button.automizy-skin-simple-blue a {
     color: rgb(255, 255, 255);
-    border-color: rgb(20, 137, 230);
-    background: rgb(33, 150, 243);
+    border-color: #1489E6;
+    background: #2094f9;
 }
 .automizy-button.automizy-skin-simple-blue a:hover,
 .automizy-input-box input[type="file"]:hover + span .automizy-skin-simple-blue a {
-    border-color: rgb(21, 153, 255);
-    background: rgb(34, 157, 255);
+    border-color: #1599FF;
+    background: #229DFF;
 }
 .automizy-button.disabled.automizy-skin-simple-blue a {
     color: #555a60;
