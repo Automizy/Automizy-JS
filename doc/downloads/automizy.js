@@ -11633,6 +11633,7 @@ var $A = {};
         var targetHeight = t.target().height();
         var targetWidth = t.target().outerWidth();
         var windowHeight = window.innerHeight;
+        var windowWidth = window.innerWidth;
         var popoverHeight = t.widget().height();
         var popoverWidth = t.widget().outerWidth();
 
@@ -11655,9 +11656,8 @@ var $A = {};
             t.widget().css({
                 bottom: 'auto',
                 left: 'auto',
-                right:
-                - targetWidth + 'px',
-                top: targetOffsetTop + 'px'
+                right: windowWidth - targetOffsetLeft + 10 + 'px',
+                top: targetOffsetTop - 17 + 'px'
             })
         } else {
             t.widget().css({
@@ -11667,6 +11667,8 @@ var $A = {};
                 top: (targetOffsetTop + targetHeight) + 'px'
             })
         }
+
+        t.widget().attr('automizy-position', position);
 
         t.runFunctions('open');
         return t;

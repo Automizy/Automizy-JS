@@ -3642,6 +3642,8 @@ label.iPhoneCheckLabelOff span {
     position: absolute;
     top: -11px;
     left: 32px;
+    right:auto;
+    margin:0;
     content: '';
     width: 0;
     height: 0;
@@ -3653,6 +3655,16 @@ label.iPhoneCheckLabelOff span {
 .automizy-popover:after {
     top: -10px;
     border-color: transparent #fff transparent transparent;
+}
+.automizy-popover[automizy-position='left']:after, .automizy-popover[automizy-position='left']:before {
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg);
+    top: -9px;
+    left: auto;
+    right: -7px;
+    margin: 16px 0 0 0;
 }
 .automizy-popover-title{
     text-align:left;
