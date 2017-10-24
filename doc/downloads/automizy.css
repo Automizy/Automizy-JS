@@ -3713,3 +3713,48 @@ label.iPhoneCheckLabelOff span {
 .automizy-radio-option-box:first-of-type .automizy-radio-option-label-before{
     margin: 0 8px 0 0;
 }
+.automizy-special-tagger {
+    display: inline-block;
+    box-sizing: border-box;
+    position: relative;
+    cursor: default;
+}
+.automizy-special-tagger .automizy-special-tagger-td2 {
+    padding: 12px 0 12px 0;
+    vertical-align:top;
+    height:140px;
+    max-height:140px;
+    width: 300px;
+}
+.automizy-special-tagger .automizy-special-tagger-options-box {
+    overflow:hidden;
+    overflow-y:auto;
+    box-sizing: border-box;
+    max-height:100%;
+}
+.automizy-special-tagger .automizy-special-tagger-tag{
+    display:block;
+    width:100%;
+    box-sizing: border-box;
+    margin:12px 0 12px 0;
+    height:26px;
+}
+.automizy-special-tagger .automizy-special-tagger-tag-checkbox{
+    box-sizing: border-box;
+    margin:0 12px 0 0;
+    vertical-align: middle;
+}
+.automizy-special-tagger .automizy-special-tagger-tag-label{
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 2px 16px;
+    color: #4a4a4a;
+    border: 1px solid #4a4a4a;
+    font-size: 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+    max-width: 258px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+}

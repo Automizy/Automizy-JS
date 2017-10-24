@@ -30,6 +30,7 @@ define([
     "automizy/modules/tag/tagger",
     "automizy/modules/progressBar",
     "automizy/modules/popover",
+    "automizy/modules/specialTagger",
 
     "automizy/defines/input",
     
