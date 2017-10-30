@@ -3714,7 +3714,6 @@ label.iPhoneCheckLabelOff span {
     margin: 0 8px 0 0;
 }
 .automizy-special-tagger {
-    display: inline-block;
     box-sizing: border-box;
     position: relative;
     cursor: default;
@@ -3722,15 +3721,13 @@ label.iPhoneCheckLabelOff span {
 .automizy-special-tagger .automizy-special-tagger-td2 {
     padding: 12px 0 12px 0;
     vertical-align:top;
-    height:140px;
-    max-height:140px;
     width: 300px;
 }
 .automizy-special-tagger .automizy-special-tagger-options-box {
     overflow:hidden;
     overflow-y:auto;
     box-sizing: border-box;
-    max-height:100%;
+    max-height:140px;
 }
 .automizy-special-tagger .automizy-special-tagger-tag{
     display:block;
@@ -3739,9 +3736,10 @@ label.iPhoneCheckLabelOff span {
     margin:12px 0 12px 0;
     height:26px;
 }
-.automizy-special-tagger .automizy-special-tagger-tag-checkbox{
+.automizy-special-tagger .automizy-special-tagger-tag-checkbox,
+.automizy-special-tagger .automizy-special-tagger-tag-radio{
     box-sizing: border-box;
-    margin:0 12px 0 0;
+    margin:0 12px 0 6px;
     vertical-align: middle;
 }
 .automizy-special-tagger .automizy-special-tagger-tag-label{
@@ -3753,8 +3751,27 @@ label.iPhoneCheckLabelOff span {
     font-size: 12px;
     border-radius: 20px;
     white-space: nowrap;
-    max-width: 258px;
+    max-width: 252px;
     overflow: hidden;
     text-overflow: ellipsis;
     vertical-align: middle;
+}
+.automizy-special-tagger .automizy-special-tagger-options-text{
+    box-sizing: border-box;
+    padding: 0 12px 0 12px;
+    color: #4a4a4a;
+    font-size: 14px;
+}
+.automizy-special-tagger .automizy-special-tagger-options-loading{
+    display:none;
+    width:100%;
+    height:30px;
+    background:url(images/loading.gif) no-repeat center center;
+}
+.automizy-special-tagger.automizy-line-loading .automizy-special-tagger-options-loading{
+    display:block;
+}
+.automizy-special-tagger.automizy-line-loading .automizy-special-tagger-options-text,
+.automizy-special-tagger.automizy-line-loading .automizy-special-tagger-options{
+    display:none;
 }
