@@ -4,6 +4,7 @@ requirejs.config({
         automizy: requirejs.s.contexts._.config.paths.automizy || requirejs.s.contexts._.config.paths.automizyJsDir || '../src'
     }
 });
+//require([
 define([
     "automizy/core",
 
@@ -25,6 +26,7 @@ define([
     "automizy/modules/i18n",
     "automizy/modules/select/select",
     "automizy/modules/radio/radio",
+    "automizy/modules/customFieldFilter/customFieldFilter",
     "automizy/modules/message",
     "automizy/modules/panel",
     "automizy/modules/tag/tagger",

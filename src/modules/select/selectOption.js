@@ -23,7 +23,6 @@ define([
             disabled: false,
             selected:false,
             hasSelect:false,
-            hasIcon:false,
             id: 'automizy-select-option-' + $A.getUniqueString()
         };
         t.f = {};

@@ -8,7 +8,7 @@ define([
     var SelectOptionBox = function (obj) {
         var t = this;
         t.d = {
-            $widget: $('<span class="automizy-select-option-box-widget"></span>'),
+            $widget: $('<span class="automizy-select-option-box-widget automizy-has-check"></span>'),
             $searchBox: $('<div class="automizy-select-search-box"></div>'),
             searchInput: $A.newInput({
                 type:'text',
@@ -23,6 +23,7 @@ define([
             $optionBox: $('<div class="automizy-select-option-box"></div>'),
             $options:$('<table border="0" cellpadding="0" cellspacing="0" class="automizy-select-option-table"></table>'),
             selectModule:false,
+            hasCheck:true,
             maxHeight: '250px',
             position:'auto',
             id: 'automizy-select-option-box-' + $A.getUniqueString()
@@ -150,6 +151,7 @@ define([
                 if(t.selectModule().searchable()){
                     t.d.searchInput.input().focus();
                 }
+                t.widget().toggleClass('automizy-has-check', t.selectModule().hasCheck());
             }
         }
         return t;

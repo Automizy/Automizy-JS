@@ -1,0 +1,62 @@
+.automizy-custom-field-filter {
+    display: block;
+    width: 100%;
+}
+.automizy-custom-field-filter-custom-field-select-box {
+    display: -webkit-flex;
+    display: flex;
+    width: 100%;
+}
+
+
+.automizy-custom-field-filter-custom-field-select-box {
+    display: -webkit-flex;
+    display: flex;
+    width: 100%;
+}
+.automizy-custom-field-filter-custom-field-select-input-box {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 1 auto;
+    -moz-box-flex: 1;
+    -moz-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+}
+.automizy-custom-field-filter-custom-field-select-label {
+    white-space: nowrap;
+    text-align: right;
+    box-sizing: border-box;
+    padding:4px 0 0 24px;
+    color:#4a4a4a;
+    font-size:16px;
+    min-width: 126px;
+    display: inline-block;
+}
+
+
+
+.automizy-custom-field-filter-relation-and-value {
+    display: -webkit-flex;
+    display: flex;
+    padding-top:12px;
+    width: 100%;
+}
+.automizy-custom-field-filter-relation {
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 100px;
+    -moz-box-flex: 0;
+    -moz-flex: 0 0 100px;
+    -ms-flex: 0 0 100px;
+    flex: 0 0 100px;
+    display: inline-block;
+    box-sizing: border-box;
+    padding:0 12px 0 0;
+}
+.automizy-custom-field-filter-value {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 1 auto;
+    -moz-box-flex: 1;
+    -moz-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+}

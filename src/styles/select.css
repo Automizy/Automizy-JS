@@ -261,3 +261,16 @@
     background-color: #e5e5e5;
 }
 
+
+
+
+.automizy-select-option-box-widget:not(.automizy-has-check) .automizy-select-option-td-check{
+    width:21px !important;
+    min-width:21px !important;
+    background:none !important;
+}
+
+.automizy-select-option-box-widget:not(.automizy-has-check) .automizy-select-option-tr.automizy-selected{
+    background-color:#F46A1F;
+    color:#ffffff;
+}

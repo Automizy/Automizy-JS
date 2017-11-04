@@ -34,6 +34,7 @@ define([
             empty: false,
             searchable: false,
             showMessageIfEmpty: false,
+            hasCheck: true,
             emptyText: $A.translate('Select an option'),
             selectedText: $A.translate('# items selected'),
             maxVisibleItems: 2,
@@ -232,6 +233,20 @@ define([
             return t;
         }
         return t.d.content;
+    };
+
+    p.hasCheck = function(hasCheck){
+        var t = this;
+        if (typeof hasCheck !== 'undefined') {
+            t.d.hasCheck = $A.parseBoolean(hasCheck);
+            if(t.d.hasCheck === true){
+                t.optionBox().widget().addClass('automizy-has-check');
+            }else{
+                t.optionBox().widget().removeClass('automizy-has-check');
+            }
+            return t;
+        }
+        return t.d.hasCheck;
     };
 
 
