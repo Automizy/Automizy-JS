@@ -3875,6 +3875,7 @@ label.iPhoneCheckLabelOff span {
 }
 .automizy-column-content-column-table{
     width:100%;
+    height: 100%;
 }
 .automizy-column-content-column-tr{
 }
@@ -3889,6 +3890,7 @@ label.iPhoneCheckLabelOff span {
 .automizy-column-content-column .automizy-column-content-column-td-top{
     text-align: left;
     vertical-align: top;
+    height:1px;
 }
 .automizy-column-content-column.automizy-has-title .automizy-column-content-column-tr-top,
 .automizy-column-content-column.automizy-has-subtitle .automizy-column-content-column-tr-top{
@@ -3911,6 +3913,7 @@ label.iPhoneCheckLabelOff span {
 .automizy-column-content-column .automizy-column-content-column-td-bottom{
     text-align: left;
     vertical-align: top;
+    height:1px;
 }
 .automizy-column-content-column.automizy-has-footer .automizy-column-content-column-tr-bottom{
     display:table-row;
@@ -3919,8 +3922,15 @@ label.iPhoneCheckLabelOff span {
     display:table-cell;
 }
 .automizy-column-content-column .automizy-column-content-column-title{
+    font-size: 18px;
+    font-weight: bold;
+    color: #4a4a4a;
 }
 .automizy-column-content-column .automizy-column-content-column-subtitle{
+    font-size: 14px;
+    font-weight: bold;
+    color: #4a4a4a;
+    padding: 4px 0 4px 0;
 }
 .automizy-column-content-column .automizy-column-content-column-content{
 }
