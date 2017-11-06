@@ -42,6 +42,12 @@ define([
                 if (typeof t.d.margin === 'undefined') {
                     t.d.margin = false;
                 }
+                if (typeof t.d.padding === 'undefined') {
+                    t.d.padding = false;
+                }
+                if (typeof t.d.background === 'undefined') {
+                    t.d.background = false;
+                }
                 if (typeof t.d.returnValue === 'undefined') {
                     t.d.returnValue = true;
                 }
@@ -71,6 +77,12 @@ define([
                 }
                 if (typeof obj.margin !== 'undefined') {
                     t.margin(obj.margin);
+                }
+                if (typeof obj.padding !== 'undefined') {
+                    t.padding(obj.padding);
+                }
+                if (typeof obj.background !== 'undefined') {
+                    t.background(obj.background);
                 }
                 if (typeof obj.target !== 'undefined') {
                     t.drawTo(obj.target);
@@ -175,6 +187,24 @@ define([
                     return t;
                 }
                 return t.d.margin;
+            };
+        p.padding = p.padding || function (padding) {
+                var t = this;
+                if (typeof padding !== 'undefined') {
+                    t.d.padding = padding;
+                    t.d.$widget.css('padding', t.d.padding);
+                    return t;
+                }
+                return t.d.padding;
+            };
+        p.background = p.background || function (background) {
+                var t = this;
+                if (typeof background !== 'undefined') {
+                    t.d.background = background;
+                    t.d.$widget.css('background', t.d.background);
+                    return t;
+                }
+                return t.d.background;
             };
         p.hide = p.hide || function (func) {
                 var t = this;

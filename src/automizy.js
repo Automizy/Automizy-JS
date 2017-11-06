@@ -33,6 +33,8 @@ define([
     "automizy/modules/progressBar",
     "automizy/modules/popover",
     "automizy/modules/specialTagger",
+    "automizy/modules/columnContent/columnContent",
+    "automizy/modules/columnContent/columnContentColumn",
 
     "automizy/defines/input",
     
