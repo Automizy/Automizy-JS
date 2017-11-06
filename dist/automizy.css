@@ -3861,6 +3861,8 @@ label.iPhoneCheckLabelOff span {
     transition-property: width, padding-left, padding-right;
     text-align: left;
     overflow: hidden;
+    box-sizing: border-box;
+    height: 100%;
 }
 .automizy-column-content-column.automizy-disable-animate{
     -webkit-transition-property: none !important;
