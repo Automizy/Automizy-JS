@@ -52,10 +52,16 @@
     color: #3e4855;
     text-align: left;
 }
+.automizy-dialog-head:empty{
+    border-bottom-style: none;
+}
 .automizy-dialog-buttons{
     padding:15px;
     text-align: right;
     border-top: 1px solid #dfe8f1;
+}
+.automizy-dialog-buttons:empty{
+    border-top-style: none;
 }
 
 .automizy-dialog-buttons .automizy-button{

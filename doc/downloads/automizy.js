@@ -12521,6 +12521,9 @@ var $A = {};
             if (typeof obj.columnContentModule !== 'undefined') {
                 t.columnContentModule(obj.columnContentModule);
             }
+            if (typeof obj.autoOpen !== 'undefined' && obj.autoOpen === true) {
+                t.open(true);
+            }
             t.initParameter(obj);
         }
 
