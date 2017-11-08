@@ -35,6 +35,11 @@ define([
     "automizy/modules/specialTagger",
     "automizy/modules/columnContent/columnContent",
     "automizy/modules/columnContent/columnContentColumn",
+    "automizy/modules/mockup",
+    "automizy/modules/list/list",
+    "automizy/modules/list/listElement",
+    "automizy/modules/list/listElements/simple",
+    "automizy/modules/list/listElements/titleAndSubTitle",
 
     "automizy/defines/input",
     

@@ -12679,6 +12679,439 @@ var $A = {};
 })();
 
 (function(){
+    var Mockup = function (obj) {
+        var t = this;
+        t.d = {
+            $widget: $('<div class="automizy-mockup"></div>'),
+            $device: $('<div class="automizy-mockup-device"></div>'),
+            $deviceImage: $('<img src="" class="automizy-mockup-device-image" />'),
+            $loading:$('<div class="automizy-mockup-loading"></div>'),
+            $iframe: $('<iframe class="automizy-mockup-iframe" scrolling="no"></iframe>'),
+
+            deviceType: 'default-tablet-portrait',
+            scrolling:false,
+            content:'',
+            id: 'automizy-mockup-' + $A.getUniqueString()
+        };
+        t.f = {};
+        t.init();
+
+        t.d.$device.appendTo(t.d.$widget);
+        t.d.$deviceImage.appendTo(t.d.$device);
+        t.d.$iframe.appendTo(t.d.$device);
+        t.d.$loading.appendTo(t.d.$device);
+        t.loadingOff();
+        if (typeof obj !== 'undefined') {
+            if (typeof obj.deviceType !== 'undefined') {
+                t.deviceType(obj.deviceType);
+            }
+            if (typeof obj.content !== 'undefined') {
+                t.content(obj.content);
+            }
+            if (typeof obj.ratioForWidth !== 'undefined') {
+                if(obj.ratioForWidth){
+                    t.ratioForWidth();
+                }else{
+                    t.ratioForHeight();
+                }
+            }
+            t.initParameter(obj);
+        }
+
+    };
+
+    var p = Mockup.prototype;
+    p.deviceType = function (deviceType) {
+        var t = this;
+        if (typeof deviceType !== 'undefined') {
+            t.d.deviceType = deviceType;
+            t.widget().removeClassPrefix('automizy-mockup-device-type-').addClass('automizy-mockup-device-type-' + deviceType);
+            t.d.$deviceImage.attr('src', 'images/mockup/default-tablet-portrait.svg');
+            return t;
+        }
+        return t.d.deviceType;
+    };
+    p.content = function (content) {
+        var t = this;
+        if (typeof content !== 'undefined') {
+            t.d.content = content;
+            setTimeout(function(){
+                t.iframeDocument().html(t.d.content);
+            }, 10);
+            return t;
+        }
+        return t.d.content;
+    };
+    p.iframeDocument = function () {
+        var t = this;
+        return $('body', t.d.$iframe[0].contentWindow.document);
+    };
+    p.scrolling = function (scrolling) {
+        var t = this;
+        if(typeof scrolling !== 'undefined'){
+            t.d.scrolling = $A.parseBoolean(scrolling);
+            if(t.d.scrolling){
+                t.d.$iframe.attr('scrolling', 'yes');
+            }else{
+                t.d.$iframe.attr('scrolling', 'no');
+            }
+            return t;
+        }
+        return t.d.scrolling;
+    };
+    p.loadingOn = function () {
+        var t = this;
+        t.d.$loading.ashow();
+        t.d.$iframe.ahide();
+        return t;
+    };
+    p.loadingOff = function () {
+        var t = this;
+        t.d.$loading.ahide();
+        t.d.$iframe.ashow();
+        return t;
+    };
+    p.ratioForWidth = function () {
+        var t = this;
+        t.widget().addClass('ratio-for-width');
+        return t;
+    };
+    p.ratioForHeight = function () {
+        var t = this;
+        t.widget().removeClass('ratio-for-width');
+        return t;
+    };
+
+
+    $A.initBasicFunctions(Mockup, "Mockup", []);
+
+
+    $(document).on('mousewheel DOMMouseScroll', function(event) {
+        if(!$(event.target).closest('.automizy-button-dropdown-menu').length) {
+            $A.closeAllButtonMenu();
+        }
+    });
+
+})();
+
+(function(){
+    var List = function (obj) {
+        var t = this;
+        t.d = {
+            $widget: $('<div class="automizy-list"></div>'),
+            $title: $('<div class="automizy-list-title"></div>'),
+            $elements: $('<div class="automizy-list-elements"></div>'),
+            $loading:$('<div class="automizy-list-loading"></div>'),
+
+            title: false,
+            type: 'simple',
+            maxHeight:'100%',
+
+            elements: []
+        };
+        t.f = {};
+        t.init();
+
+        t.d.$title.appendTo(t.d.$widget);
+        t.d.$elements.appendTo(t.d.$widget);
+        t.d.$loading.appendTo(t.d.$widget);
+        t.loadingOff();
+
+        if (typeof obj !== 'undefined') {
+            if (typeof obj.title !== 'undefined') {
+                t.title(obj.title);
+            }
+            if (typeof obj.maxHeight !== 'undefined') {
+                t.maxHeight(obj.maxHeight);
+            }
+            if (typeof obj.type !== 'undefined') {
+                t.type(obj.type);
+            }
+            if (typeof obj.elements !== 'undefined') {
+                t.elements(obj.elements);
+            }
+            t.initParameter(obj);
+        }
+
+    };
+
+    var p = List.prototype;
+
+    p.maxHeight = function (maxHeight) {
+        var t = this;
+        if (typeof maxHeight !== 'undefined') {
+            t.d.maxHeight = maxHeight;
+            t.widget().css('max-height', t.d.maxHeight);
+            return t;
+        }
+        return t.d.maxHeight;
+    };
+    p.title = function (title) {
+        var t = this;
+        if (typeof title !== 'undefined') {
+            if(typeof title === 'boolean'){
+                t.widget().toggleClass('automizy-has-title', title);
+                return t;
+            }
+            t.widget().addClass('automizy-has-title');
+            t.d.title = title;
+            t.d.$title.html(title);
+            return t;
+        }
+        return t.d.title;
+    };
+    p.search = function (searchValue) {
+        var t = this;
+        var re = new RegExp(searchValue.trim(), "gi");
+        var searchCount = 0;
+        t.elements().forEach(function (element) {
+            if (element.search().search(re) >= 0) {
+                element.widget().show();
+                searchCount++;
+            } else {
+                element.widget().hide();
+            }
+        });
+        return searchCount;
+    };
+    p.type = function (type) {
+        var t = this;
+        if (typeof type !== 'undefined') {
+            t.d.type = type;
+            return t;
+        }
+        return t.d.type;
+    };
+    p.inactivateAllElement = function () {
+        var t = this;
+        t.elements().forEach(function(element){
+            element.inactivate();
+        });
+        return t.d.type;
+    };
+    p.removeAllElement = function () {
+        var t = this;
+        t.elements().forEach(function(element){
+            element.remove();
+        });
+        return t.d.type;
+    };
+    p.elements = function (elements) {
+        var t = this;
+        if(typeof elements !== 'undefined') {
+            t.removeAllElement();
+            t.d.elements = [];
+            elements.forEach(function (element) {
+                var elementModule;
+                element.listModule = t;
+                element.type = element.type || t.type() || 'simple';
+                if(element.type === 'simple'){
+                    elementModule = $A.newSimpleListElement(element);
+                }else if(element.type === 'title-and-subtitle'){
+                    elementModule = $A.newTitleAndSubTitleListElement(element);
+                }
+                t.d.elements.push(elementModule);
+                elementModule.drawTo(t.d.$elements);
+            });
+            return t;
+        }
+        return t.d.elements;
+    };
+
+    p.loadingOn = function () {
+        var t = this;
+        t.d.$loading.ashow();
+        t.d.$elements.ahide();
+        return t;
+    };
+    p.loadingOff = function () {
+        var t = this;
+        t.d.$loading.ahide();
+        t.d.$elements.ashow();
+        return t;
+    };
+
+
+    $A.initBasicFunctions(List, "List", []);
+
+
+})();
+
+(function(){
+    var ListElement = function (obj) {
+        var t = this;
+        t.d = {
+            $widget: $('<div class="automizy-list-element"></div>'),
+            listModule:false,
+            removed:false,
+            search:''
+        };
+        t.f = {};
+        t.init();
+
+        t.d.$widget.click(function(){
+            if (t.click().returnValue() === false) {
+                return false;
+            }
+            t.listModule().inactivateAllElement();
+            t.activate();
+        });
+
+        if (typeof obj !== 'undefined') {
+            if (typeof obj.listModule !== 'undefined') {
+                t.listModule(obj.listModule);
+            }
+            if (typeof obj.search !== 'undefined') {
+                t.search(obj.search);
+            }
+            if (typeof obj.click !== 'undefined') {
+                t.click(obj.click);
+            }
+            t.initParameter(obj);
+        }
+
+    };
+
+
+    var p = ListElement.prototype;
+
+    p.listModule = function (listModule) {
+        var t = this;
+        if(typeof listModule !== 'undefined'){
+            t.d.listModule = listModule;
+            return t;
+        }
+        return t.d.listModule;
+    };
+    p.search = function (search) {
+        var t = this;
+        if(typeof search !== 'undefined'){
+            t.d.search = search;
+            return t;
+        }
+        return t.d.search;
+    };
+    p.remove = function () {
+        var t = this;
+        t.widget().remove();
+        t.d.removed = true;
+        return t;
+    };
+    p.activate = function () {
+        var t = this;
+        t.widget().addClass('automizy-active');
+        return t;
+    };
+    p.inactivate = function () {
+        var t = this;
+        t.widget().removeClass('automizy-active');
+        return t;
+    };
+    p.click = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('click', func, name, life);
+        } else {
+            var a = t.runFunctions('click');
+            t.returnValue(!(a[0] === false || a[1] === false));
+        }
+        return t;
+    };
+
+
+    $A.initBasicFunctions(ListElement, "ListElement", ['click']);
+
+})();
+
+(function(){
+
+    var SimpleListElement = function (obj) {
+        var t = this;
+
+        obj = obj || {};
+
+        $A.m.ListElement.apply(t, [obj]);
+
+        if (typeof obj !== 'undefined') {
+            if (typeof obj.text !== 'undefined') {
+                t.text(obj.text);
+            }
+        }
+
+        t.widget().addClass('automizy-type-simple');
+
+    };
+    SimpleListElement.prototype = Object.create($A.m.ListElement.prototype);
+    SimpleListElement.prototype.constructor = SimpleListElement;
+
+    var p = SimpleListElement.prototype;
+
+    p.text = function(text){
+        var t = this;
+        t.widget().html(text);
+        return t;
+    };
+
+    $A.initBasicFunctions(SimpleListElement, "SimpleListElement", []);
+
+})();
+
+(function(){
+
+    var TitleAndSubTitleListElement = function (obj) {
+        var t = this;
+
+        obj = obj || {};
+
+        $A.m.ListElement.apply(t, [obj]);
+
+        t.d.$title = $('<div class="automizy-list-element-title"></div>').appendTo(t.d.$widget);
+        t.d.$subTitle = $('<div class="automizy-list-element-subtitle"></div>').appendTo(t.d.$widget);
+
+        t.d.title = false;
+        t.d.subTitle = false;
+
+        if (typeof obj !== 'undefined') {
+            if (typeof obj.title !== 'undefined') {
+                t.title(obj.title);
+            }
+            if (typeof obj.subTitle !== 'undefined') {
+                t.subTitle(obj.subTitle);
+            }
+        }
+
+        t.widget().addClass('automizy-type-title-and-subtitle');
+
+    };
+    TitleAndSubTitleListElement.prototype = Object.create($A.m.ListElement.prototype);
+    TitleAndSubTitleListElement.prototype.constructor = TitleAndSubTitleListElement;
+
+    var p = TitleAndSubTitleListElement.prototype;
+
+    p.title = function(title){
+        var t = this;
+        if(typeof title !== 'undefined') {
+            t.d.title = title;
+            t.d.$title.html(t.d.title);
+            return t;
+        }
+        return t.d.title;
+    };
+    p.subTitle = function(subTitle){
+        var t = this;
+        if(typeof subTitle !== 'undefined') {
+            t.d.subTitle = subTitle;
+            t.d.$subTitle.html('(' + t.d.subTitle + ')');
+            return t;
+        }
+        return t.d.subTitle;
+    };
+
+    $A.initBasicFunctions(TitleAndSubTitleListElement, "TitleAndSubTitleListElement", []);
+
+})();
+
+(function(){
     if (!Date.now) {
         Date.now = function () {
             return new Date().getTime();
