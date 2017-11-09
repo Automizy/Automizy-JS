@@ -20,7 +20,9 @@ define([
             if (t.click().returnValue() === false) {
                 return false;
             }
-            t.listModule().inactivateAllElement();
+            var listModule = t.listModule();
+            listModule.d.elementClick.apply(t, [listModule]);
+            listModule.inactivateAllElement();
             t.activate();
         });
 

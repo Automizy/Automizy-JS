@@ -16,6 +16,9 @@ define([
 
             deviceType: 'default-tablet-portrait',
             scrolling:false,
+            zoom:false,
+            minHeight:'auto',
+            minWidth:'auto',
             content:'',
             id: 'automizy-mockup-' + $A.getUniqueString()
         };
@@ -33,6 +36,15 @@ define([
             }
             if (typeof obj.content !== 'undefined') {
                 t.content(obj.content);
+            }
+            if (typeof obj.zoom !== 'undefined') {
+                t.zoom(obj.zoom);
+            }
+            if (typeof obj.minWidth !== 'undefined') {
+                t.minWidth(obj.minWidth);
+            }
+            if (typeof obj.minHeight !== 'undefined') {
+                t.minHeight(obj.minHeight);
             }
             if (typeof obj.ratioForWidth !== 'undefined') {
                 if(obj.ratioForWidth){
@@ -61,8 +73,14 @@ define([
         var t = this;
         if (typeof content !== 'undefined') {
             t.d.content = content;
+            var style = 'body,html{margin:0;padding:0} ';
+            if(t.zoom() !== false){
+                var zoom = t.zoom();
+                var width = 100/zoom;
+                style += 'body{transform-origin: top left;width:'+width+'%;transform: scale('+zoom+');} ';
+            }
             setTimeout(function(){
-                t.iframeDocument().html(t.d.content);
+                t.iframeDocument().html('<!DOCTYPE html>' + t.d.content + '<style>'+style+'</style>');
             }, 10);
             return t;
         }
@@ -84,6 +102,32 @@ define([
             return t;
         }
         return t.d.scrolling;
+    };
+    p.zoom = function (zoom) {
+        var t = this;
+        if(typeof zoom !== 'undefined'){
+            t.d.zoom = zoom;
+            return t;
+        }
+        return t.d.zoom;
+    };
+    p.minWidth = function (minWidth) {
+        var t = this;
+        if(typeof minWidth !== 'undefined'){
+            t.d.minWidth = minWidth;
+            t.d.$deviceImage.css('min-width', t.d.minWidth);
+            return t;
+        }
+        return t.d.minWidth;
+    };
+    p.minHeight = function (minHeight) {
+        var t = this;
+        if(typeof minHeight !== 'undefined'){
+            t.d.minHeight = minHeight;
+            t.d.$deviceImage.css('min-height', t.d.minHeight);
+            return t;
+        }
+        return t.d.minHeight;
     };
     p.loadingOn = function () {
         var t = this;

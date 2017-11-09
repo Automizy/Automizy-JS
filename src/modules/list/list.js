@@ -17,7 +17,9 @@ define([
             type: 'simple',
             maxHeight:'100%',
 
-            elements: []
+            elements: [],
+
+            elementClick:function(){}
         };
         t.f = {};
         t.init();
@@ -39,6 +41,9 @@ define([
             }
             if (typeof obj.elements !== 'undefined') {
                 t.elements(obj.elements);
+            }
+            if (typeof obj.elementClick !== 'undefined') {
+                t.elementClick(obj.elementClick);
             }
             t.initParameter(obj);
         }
@@ -92,6 +97,14 @@ define([
         }
         return t.d.type;
     };
+    p.elementClick = function (elementClick) {
+        var t = this;
+        if (typeof elementClick !== 'undefined') {
+            t.d.elementClick = elementClick;
+            return t;
+        }
+        return t.d.elementClick;
+    };
     p.inactivateAllElement = function () {
         var t = this;
         t.elements().forEach(function(element){
@@ -119,6 +132,8 @@ define([
                     elementModule = $A.newSimpleListElement(element);
                 }else if(element.type === 'title-and-subtitle'){
                     elementModule = $A.newTitleAndSubTitleListElement(element);
+                }else if(element.type === 'box'){
+                    elementModule = $A.newBoxListElement(element);
                 }
                 t.d.elements.push(elementModule);
                 elementModule.drawTo(t.d.$elements);

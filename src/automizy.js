@@ -40,6 +40,7 @@ define([
     "automizy/modules/list/listElement",
     "automizy/modules/list/listElements/simple",
     "automizy/modules/list/listElements/titleAndSubTitle",
+    "automizy/modules/list/listElements/box",
 
     "automizy/defines/input",
     
