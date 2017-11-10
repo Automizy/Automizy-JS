@@ -13028,6 +13028,11 @@ var $A = {};
             if (typeof obj.click !== 'undefined') {
                 t.click(obj.click);
             }
+            if (typeof obj.activate !== 'undefined') {
+                if(obj.activate) {
+                    t.activate();
+                }
+            }
             t.initParameter(obj);
         }
 
