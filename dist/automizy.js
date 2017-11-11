@@ -13033,6 +13033,13 @@ var $A = {};
                     t.activate();
                 }
             }
+            if (typeof obj.autoClick !== 'undefined') {
+                if(obj.autoClick) {
+                    setTimeout(function(){
+                        t.widget().click();
+                    }, 50);
+                }
+            }
             t.initParameter(obj);
         }
 
