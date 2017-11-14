@@ -13,7 +13,6 @@
 .automizy-list-elements{
     overflow: hidden;
     overflow-y: auto;
-    max-height: 100%;
     box-sizing: border-box;
     padding:0;
 }

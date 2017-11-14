@@ -4179,7 +4179,6 @@ var $A = {};
                 }
                 t.colorPickerChange();
             }),
-            $loading: $('<div class="automizy-input2-loading"><div class="automizy-spinner"><div class="automizy-bounce1"></div><div class="automizy-bounce2"></div><div class="automizy-bounce3"></div></div></div>'),
             $labelAfter: $('<label class="automizy-input2-label-after"></label>'),
             $helpIcon: $('<span class="automizy-input2-help fa fa-question-circle"></span>'),
             $labelBottom: $('<label class="automizy-input2-label-bottom"></label>'),
@@ -4281,7 +4280,6 @@ var $A = {};
         t.d.$input.appendTo(t.d.$inputCell).attr('id', t.d.inputId);
         t.d.$inputInnerIconLeft.appendTo(t.d.$inputCell);
         t.d.$inputInnerIconRight.appendTo(t.d.$inputCell);
-        t.d.$loading.appendTo(t.d.$loadingCell);
         t.d.$labelAfter.appendTo(t.d.$labelAfterCell).attr('for', t.d.inputId);
         t.d.$helpIcon.appendTo(t.d.$helpIconCell);
         t.d.$labelBottom.appendTo(t.d.$labelBottomBox).attr('for', t.d.inputId);

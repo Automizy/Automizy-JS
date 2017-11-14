@@ -1268,6 +1268,7 @@ input.automizy-table-rowcheck:focus:disabled:checked { background-position: -15p
     box-shadow: inset 1px 1px 3px #f6f6f6;
     line-height: normal;
     display: table-cell;
+    background: #ffffff url(images/loading.gif) no-repeat center center;
 }
 .automizy-input2-icon-right-cell {
     min-width: 38px;
@@ -4026,7 +4027,6 @@ label.iPhoneCheckLabelOff span {
 .automizy-list-elements{
     overflow: hidden;
     overflow-y: auto;
-    max-height: 100%;
     box-sizing: border-box;
     padding:0;
 }

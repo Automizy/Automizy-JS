@@ -239,6 +239,7 @@
     box-shadow: inset 1px 1px 3px #f6f6f6;
     line-height: normal;
     display: table-cell;
+    background: #ffffff url(../images/loading.gif) no-repeat center center;
 }
 
 
