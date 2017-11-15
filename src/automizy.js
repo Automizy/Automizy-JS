@@ -4,7 +4,6 @@ requirejs.config({
         automizy: requirejs.s.contexts._.config.paths.automizy || requirejs.s.contexts._.config.paths.automizyJsDir || '../src'
     }
 });
-//require([
 define([
     "automizy/core",
 
@@ -86,5 +85,5 @@ define([
     "automizy/functions/animateElementLetterToLetter",
     "automizy/functions/sameAs"
 ], function () {
-    //console.log('%c AutomizyJs module loaded! ', 'background: #000000; color: #bada55; font-size:14px');
+    console.log('%c AutomizyJs loaded! ', 'background: #000000; color: #bada55; font-size:14px');
 });

@@ -78,10 +78,11 @@ define([
                     return false;
                 }
                 if(t.type() === 'number'){
-                    if(t.max() !== false && t.val() > t.max()){
+                    var value = parseInt(t.val());
+                    if(t.max() !== false && value > t.max()){
                         t.val(t.max());
                     }
-                    if(t.min() !== false && t.val() < t.min()){
+                    if(t.min() !== false && value < t.min()){
                         t.val(t.min());
                     }
                 }

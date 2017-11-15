@@ -6,7 +6,7 @@ define([
         if(s1 == s2){
             return true;
         }
-        
+
         s1 = String(s1);
         s2 = String(s2);
         if(s1 == s2){

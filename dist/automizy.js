@@ -3029,10 +3029,11 @@ var $A = {};
                     return false;
                 }
                 if(t.type() === 'number'){
-                    if(t.max() !== false && t.val() > t.max()){
+                    var value = parseInt(t.val());
+                    if(t.max() !== false && value > t.max()){
                         t.val(t.max());
                     }
-                    if(t.min() !== false && t.val() < t.min()){
+                    if(t.min() !== false && value < t.min()){
                         t.val(t.min());
                     }
                 }
@@ -15041,7 +15042,7 @@ var $A = {};
         if(s1 == s2){
             return true;
         }
-        
+
         s1 = String(s1);
         s2 = String(s2);
         if(s1 == s2){
@@ -15062,11 +15063,10 @@ var $A = {};
 
         return false;
     }
-});
+})();
 
-//require([
 (function(){
-    //console.log('%c AutomizyJs module loaded! ', 'background: #000000; color: #bada55; font-size:14px');
+    console.log('%c AutomizyJs loaded! ', 'background: #000000; color: #bada55; font-size:14px');
 })();
 window.$A = $A;
 window.AutomizyJs = $A;

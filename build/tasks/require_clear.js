@@ -8,11 +8,11 @@ module.exports = function( grunt ) {
 		data = data.toString().replace(/define\([^{]*{/g, '/*GRUNT_FLAG_1*/');
 		data = data.toString().replace(/}\s*\)\s*;[\s]*\/\*GRUNT_FLAG_1\*\//g, '/*GRUNT_FLAG_2*/');
 		data = data.toString().replace(/}\s*\)\s*;\s*$/, '/*GRUNT_FLAG_3*/');
-		
+
 		data = data.toString().replace(/\/\*GRUNT_FLAG_1\*\//g, "(function(){");
 		data = data.toString().replace(/\/\*GRUNT_FLAG_2\*\//g, "})();\r\n\r\n(function(){");
 		data = data.toString().replace(/\/\*GRUNT_FLAG_3\*\//g, "})();");
-		
+
 		data = '(function($){\r\nvar jQuery = $\r\nvar $A = {};\r\n' + data + '\r\nwindow.$A = $A;\r\nwindow.AutomizyJs = $A;\r\n})($);';
 		
 		fs.writeFileSync(jsFile, data);

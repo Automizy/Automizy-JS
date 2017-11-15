@@ -2400,6 +2400,8 @@ textarea.automizy-input2-input {
     z-index:-10 !important;
     width:0 !important;
     height:0 !important;
+    min-width:0 !important;
+    min-height:0 !important;
     color:transparent !important;
     font-size:0 !important;
     line-height:0 !important;
