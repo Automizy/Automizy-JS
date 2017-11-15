@@ -26,6 +26,7 @@ define([
     "automizy/modules/select/select",
     "automizy/modules/radio/radio",
     "automizy/modules/customFieldFilter/customFieldFilter",
+    "automizy/modules/customFieldUpdater/customFieldUpdater",
     "automizy/modules/message",
     "automizy/modules/panel",
     "automizy/modules/tag/tagger",

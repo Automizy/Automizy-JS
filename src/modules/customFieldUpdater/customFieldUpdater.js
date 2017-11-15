@@ -5,41 +5,21 @@ define([
     'automizy/functions/registerLocalEvents',
     'automizy/images/icons'
 ], function () {
-    var CustomFieldFilter = function (obj) {
+    var CustomFieldUpdater = function (obj) {
         var t = this;
         t.d = {
-            $widget: $('<div class="automizy-custom-field-filter"></div>'),
-            $filterButtons: $('<div class="automizy-custom-field-filter-filter-buttons"></div>'),
-            $customFieldSelect: $('<div class="automizy-custom-field-filter-custom-field-select-box"></div>'),
-            $customFieldSelectInputBox: $('<div class="automizy-custom-field-filter-custom-field-select-input-box"></div>'),
-            $customFieldSelectLabel: $('<div class="automizy-custom-field-filter-custom-field-select-label"></div>'),
-            $relationAndValue: $('<div class="automizy-custom-field-filter-relation-and-value"></div>'),
-            $relationInput: $('<div class="automizy-custom-field-filter-relation"></div>'),
-            $valueInput: $('<div class="automizy-custom-field-filter-value"></div>'),
-            id: 'automizy-custom-field-filter-' + $A.getUniqueString(),
+            $widget: $('<div class="automizy-custom-field-updater"></div>'),
+            $filterButtons: $('<div class="automizy-custom-field-updater-filter-buttons"></div>'),
+            $customFieldSelect: $('<div class="automizy-custom-field-updater-custom-field-select-box"></div>'),
+            $customFieldSelectInputBox: $('<div class="automizy-custom-field-updater-custom-field-select-input-box"></div>'),
+            $customFieldSelectLabel: $('<div class="automizy-custom-field-updater-custom-field-select-label"></div>'),
+            $valueLabel: $('<div class="automizy-custom-field-updater-value-label"></div>'),
+            $valueBox: $('<div class="automizy-custom-field-updater-value-box"></div>'),
+            $valueInput: $('<div class="automizy-custom-field-updater-value"></div>'),
+            id: 'automizy-custom-field-updater-' + $A.getUniqueString(),
 
             type:false,
 
-            relations:{
-                text:[
-                    ['EQ', $A.translate('is')],
-                    ['NE', $A.translate('is not')],
-                    ['IN', $A.translate('contains')],
-                    ['NI', $A.translate('does not contain')]
-                ],
-                date:[
-                    ['EQ', $A.translate('on the')],
-                    ['NE', $A.translate('not on')],
-                    ['GT', $A.translate('before')],
-                    ['LT', $A.translate('after')]
-                ],
-                number:[
-                    ['EQ', $A.translate('equals')],
-                    ['NE', $A.translate('not equals')],
-                    ['GT', $A.translate('less than')],
-                    ['LT', $A.translate('greater than')]
-                ]
-            },
             customFields:[],
 
             customFieldSelect:$A.newInput2({
@@ -50,11 +30,6 @@ define([
                         t.type(this.automizySelect().selectedOption().data('type'));
                     }
                 }
-            }),
-
-            relationSelect:$A.newInput2({
-                type:'select',
-                width:'180px'
             }),
 
             valueInputText:$A.newInput2({
@@ -86,22 +61,18 @@ define([
             }
         };
 
-        t.d.$filterButtons.appendTo(t.d.$widget);
         t.d.$customFieldSelect.appendTo(t.d.$widget);
         t.d.$customFieldSelectInputBox.appendTo(t.d.$customFieldSelect);
-        t.d.$customFieldSelectLabel.appendTo(t.d.$customFieldSelect);
+        t.d.$customFieldSelectLabel.appendTo(t.d.$customFieldSelect).text($A.translate('custom field'));
 
-        t.d.$relationAndValue.appendTo(t.d.$widget);
-        t.d.$relationInput.appendTo(t.d.$relationAndValue);
-        t.d.$valueInput.appendTo(t.d.$relationAndValue);
+        t.d.$valueBox.appendTo(t.d.$widget);
+        t.d.$valueLabel.appendTo(t.d.$valueBox);
+        t.d.$valueInput.appendTo(t.d.$valueBox);
 
         t.d.customFieldSelect.drawTo(t.d.$customFieldSelectInputBox);
-        t.d.relationSelect.drawTo(t.d.$relationInput);
         t.d.valueInputText.drawTo(t.d.$valueInput);
         t.d.valueInputDate.drawTo(t.d.$valueInput);
         t.d.valueInputNumber.drawTo(t.d.$valueInput);
-
-        t.d.relationSelect.automizySelect().hasCheck(false);
 
         t.f = {};
         t.init();
@@ -116,7 +87,7 @@ define([
         }
     };
 
-    var p = CustomFieldFilter.prototype;
+    var p = CustomFieldUpdater.prototype;
 
     p.customFieldId = function (customFieldId) {
         var t = this;
@@ -162,23 +133,6 @@ define([
         t.d.customFieldSelect.automizySelect().loadingStop();
         return t;
     };
-    p.relation = function (relation) {
-        var t = this;
-        if (typeof relation !== 'undefined') {
-            t.d.relation = relation;
-            t.d.relationSelect.automizySelect().val(t.d.relation);
-            return t;
-        }
-        return t.d.relationSelect.automizySelect().val();
-    };
-    p.relationOptions = function (relationOptions) {
-        var t = this;
-        if (typeof relation !== 'undefined') {
-            t.d.relationSelect.automizySelect().options(relationOptions);
-            return t;
-        }
-        return t.d.relationSelect.automizySelect().options();
-    };
     p.val = p.value = function (value) {
         var t = this;
         var type = t.type();
@@ -211,23 +165,19 @@ define([
             t.d.valueInputText.hide();
             t.d.valueInputDate.hide();
             t.d.valueInputNumber.hide();
-            t.d.relationSelect.show();
+            t.d.$valueLabel.show();
 
             if(t.d.type === 'text'){
                 t.d.valueInputText.show();
-                t.d.relationSelect.options(t.d.relations.text);
-                t.d.$customFieldSelectLabel.text($A.translate('custom field'));
+                t.d.$valueLabel.text('with this text:');
             }else if(t.d.type === 'date'){
                 t.d.valueInputDate.show();
-                t.d.relationSelect.options(t.d.relations.date);
-                t.d.$customFieldSelectLabel.text($A.translate('custom field is'));
+                t.d.$valueLabel.text('with this date:');
             }else if(t.d.type === 'number'){
                 t.d.valueInputNumber.show();
-                t.d.relationSelect.options(t.d.relations.number);
-                t.d.$customFieldSelectLabel.text($A.translate('custom field is'));
+                t.d.$valueLabel.text('with this number:');
             }else if(!t.d.type){
-                t.d.relationSelect.hide();
-                t.d.$customFieldSelectLabel.text($A.translate('custom field'));
+                t.d.$valueLabel.hide();
             }
 
             return t;
@@ -266,7 +216,7 @@ define([
     };
 
 
-    $A.initBasicFunctions(CustomFieldFilter, "CustomFieldFilter", ['change']);
+    $A.initBasicFunctions(CustomFieldUpdater, "CustomFieldUpdater", ['change']);
 
 
 });

@@ -1,0 +1,65 @@
+.automizy-custom-field-updater {
+    display: block;
+    width: 100%;
+}
+.automizy-custom-field-updater-custom-field-select-box {
+    display: -webkit-flex;
+    display: flex;
+    width: 100%;
+}
+
+
+.automizy-custom-field-updater-custom-field-select-box {
+    display: -webkit-flex;
+    display: flex;
+    width: 100%;
+}
+.automizy-custom-field-updater-custom-field-select-input-box {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 1 auto;
+    -moz-box-flex: 1;
+    -moz-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+}
+.automizy-custom-field-updater-custom-field-select-label {
+    white-space: nowrap;
+    text-align: right;
+    box-sizing: border-box;
+    padding:4px 0 0 24px;
+    color:#4a4a4a;
+    font-size:16px;
+    min-width: 126px;
+    display: inline-block;
+}
+
+
+
+.automizy-custom-field-updater-value-box {
+    display: -webkit-flex;
+    display: flex;
+    padding-top:12px;
+    width: 100%;
+}
+.automizy-custom-field-updater-value-label {
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 100px;
+    -moz-box-flex: 0;
+    -moz-flex: 0 0 100px;
+    -ms-flex: 0 0 100px;
+    flex: 0 0 100px;
+    display: inline-block;
+    box-sizing: border-box;
+    color:#4a4a4a;
+    font-size:16px;
+    min-width: 140px;
+    padding:0 12px 0 0;
+}
+.automizy-custom-field-updater-value {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 1 auto;
+    -moz-box-flex: 1;
+    -moz-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+}
