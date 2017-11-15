@@ -133,6 +133,7 @@
 .automizy-button.automizy-skin-nobox-green a,
 .automizy-button.automizy-skin-nobox-blue a,
 .automizy-button.automizy-skin-nobox-black a,
+.automizy-button.automizy-skin-nobox-white a,
 .automizy-button.automizy-skin-nobox-orange a {
     text-align: left;
     text-decoration: none;
@@ -150,6 +151,9 @@
 .automizy-button.automizy-skin-nobox-black a {
     color: #000000;
 }
+.automizy-button.automizy-skin-nobox-white a {
+    color: #ffffff;
+}
 .automizy-button.automizy-skin-nobox-green a {
     color: #4CAF50;
 }
@@ -157,6 +161,7 @@
 .automizy-button.automizy-skin-nobox-green a:hover,
 .automizy-button.automizy-skin-nobox-blue a:hover,
 .automizy-button.automizy-skin-nobox-black a:hover,
+.automizy-button.automizy-skin-nobox-white a:hover,
 .automizy-button.automizy-skin-nobox-orange a:hover {
     text-decoration: underline;
 }
