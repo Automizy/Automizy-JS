@@ -138,13 +138,17 @@ define([
             t.d.customFields = customFields;
             var options = [];
             t.d.customFields.forEach(function(cf){
-                options.push({
+                option = {
                     value:cf.value,
                     html:cf.text,
                     data:{
                         type:cf.type
                     }
-                });
+                };
+                if(typeof cf.group !== 'undefined'){
+                    option.group = cf.group;
+                }
+                options.push(option);
             });
             t.d.customFieldSelect.automizySelect().options(options);
             return t;
