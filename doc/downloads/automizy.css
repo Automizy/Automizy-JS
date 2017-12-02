@@ -248,6 +248,15 @@
     height: auto;
     line-height: normal;
 }
+.automizy-button.automizy-skin-nobox.automizy-button-thin a,
+.automizy-button.automizy-skin-nobox-green.automizy-button-thin a,
+.automizy-button.automizy-skin-nobox-blue.automizy-button-thin a,
+.automizy-button.automizy-skin-nobox-black.automizy-button-thin a,
+.automizy-button.automizy-skin-nobox-white.automizy-button-thin a,
+.automizy-button.automizy-skin-nobox-orange.automizy-button-thin a{
+    font-size:11px;
+    font-weight:normal;
+}
 .automizy-button.automizy-skin-bordered-green.automizy-button-semithick a,
 .automizy-button.automizy-skin-bordered-black.automizy-button-semithick a,
 .automizy-button.automizy-skin-bordered-orange.automizy-button-semithick a,
