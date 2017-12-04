@@ -20,6 +20,7 @@ define([
             minHeight:'auto',
             minWidth:'auto',
             content:'',
+            emptyContent:'',
             id: 'automizy-mockup-' + $A.getUniqueString()
         };
         t.f = {};
@@ -36,6 +37,9 @@ define([
             }
             if (typeof obj.content !== 'undefined') {
                 t.content(obj.content);
+            }
+            if (typeof obj.emptyContent !== 'undefined') {
+                t.emptyContent(obj.emptyContent);
             }
             if (typeof obj.zoom !== 'undefined') {
                 t.zoom(obj.zoom);
@@ -80,11 +84,23 @@ define([
                 style += 'body{transform-origin: top left;width:'+width+'%;transform: scale('+zoom+');} ';
             }
             setTimeout(function(){
-                t.iframeDocument().html('<!DOCTYPE html>' + t.d.content + '<style>'+style+'</style>');
+                if(t.d.content.trim().length <= 0){
+                    t.iframeDocument().html('<!DOCTYPE html>' + t.emptyContent() + '<style>body,html{margin:0;padding:0}</style>');
+                }else {
+                    t.iframeDocument().html('<!DOCTYPE html>' + t.d.content + '<style>' + style + '</style>');
+                }
             }, 10);
             return t;
         }
         return t.d.content;
+    };
+    p.emptyContent = function (emptyContent) {
+        var t = this;
+        if (typeof emptyContent !== 'undefined') {
+            t.d.emptyContent = emptyContent;
+            return t;
+        }
+        return t.d.emptyContent;
     };
     p.iframeDocument = function () {
         var t = this;
