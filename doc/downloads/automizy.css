@@ -4081,6 +4081,14 @@ label.iPhoneCheckLabelOff span {
     height: 85.4%;
     border-radius: 0.7%;
 }
+.automizy-mockup.automizy-mockup-device-type-default-tablet-landscape .automizy-mockup-iframe,
+.automizy-mockup.automizy-mockup-device-type-default-tablet-landscape .automizy-mockup-loading{
+    top: 6.2%;
+    left: 7.4%;
+    width: 85.3%;
+    height: 87.7%;
+    border-radius: 0.7%;
+}
 .automizy-mockup.ratio-for-width .automizy-mockup-device{
     height:auto;
     width:100%;

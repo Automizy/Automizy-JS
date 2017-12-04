@@ -12972,7 +12972,7 @@ var $A = {};
         if (typeof deviceType !== 'undefined') {
             t.d.deviceType = deviceType;
             t.widget().removeClassPrefix('automizy-mockup-device-type-').addClass('automizy-mockup-device-type-' + deviceType);
-            t.d.$deviceImage.attr('src', 'images/mockup/default-tablet-portrait.svg');
+            t.d.$deviceImage.attr('src', 'images/mockup/'+deviceType+'.svg');
             return t;
         }
         return t.d.deviceType;
