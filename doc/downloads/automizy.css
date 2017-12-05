@@ -132,6 +132,7 @@
 }
 .automizy-button.automizy-skin-nobox-green a,
 .automizy-button.automizy-skin-nobox-blue a,
+.automizy-button.automizy-skin-nobox-yellow a,
 .automizy-button.automizy-skin-nobox-black a,
 .automizy-button.automizy-skin-nobox-white a,
 .automizy-button.automizy-skin-nobox-orange a {
@@ -148,6 +149,9 @@
 .automizy-button.automizy-skin-nobox-blue a {
     color: #2094f9;
 }
+.automizy-button.automizy-skin-nobox-yellow a {
+    color: #ffc959;
+}
 .automizy-button.automizy-skin-nobox-black a {
     color: #000000;
 }
@@ -160,6 +164,7 @@
 .automizy-button.automizy-skin-nobox a:hover,
 .automizy-button.automizy-skin-nobox-green a:hover,
 .automizy-button.automizy-skin-nobox-blue a:hover,
+.automizy-button.automizy-skin-nobox-yellow a:hover,
 .automizy-button.automizy-skin-nobox-black a:hover,
 .automizy-button.automizy-skin-nobox-white a:hover,
 .automizy-button.automizy-skin-nobox-orange a:hover {
@@ -169,11 +174,13 @@
 .automizy-button.automizy-skin-bordered-black a,
 .automizy-button.automizy-skin-bordered-orange a,
 .automizy-button.automizy-skin-bordered-blue a,
+.automizy-button.automizy-skin-bordered-yellow a,
 .automizy-button.automizy-skin-simple-likemenu a,
 .automizy-button.automizy-skin-simple-white a,
 .automizy-button.automizy-skin-image-white a,
 .automizy-button.automizy-skin-simple-orange a,
 .automizy-button.automizy-skin-simple-blue a,
+.automizy-button.automizy-skin-simple-yellow a,
 .automizy-button.automizy-skin-simple-green a {
     line-height: 32px;
     
@@ -210,11 +217,13 @@
 .automizy-button.automizy-skin-bordered-black.automizy-button-semithin a,
 .automizy-button.automizy-skin-bordered-orange.automizy-button-semithin a,
 .automizy-button.automizy-skin-bordered-blue.automizy-button-semithin a,
+.automizy-button.automizy-skin-bordered-yellow.automizy-button-semithin a,
 .automizy-button.automizy-skin-simple-likemenu.automizy-button-semithin a,
 .automizy-button.automizy-skin-simple-white.automizy-button-semithin a,
 .automizy-button.automizy-skin-image-white.automizy-button-semithin a,
 .automizy-button.automizy-skin-simple-orange.automizy-button-semithin a,
 .automizy-button.automizy-skin-simple-blue.automizy-button-semithin a,
+.automizy-button.automizy-skin-simple-yellow.automizy-button-semithin a,
 .automizy-button.automizy-skin-simple-green.automizy-button-semithin a {
     padding: 9px 10px 9px 10px;
     height: auto;
@@ -224,11 +233,13 @@
 .automizy-button.automizy-skin-bordered-black.automizy-button-thin a,
 .automizy-button.automizy-skin-bordered-orange.automizy-button-thin a,
 .automizy-button.automizy-skin-bordered-blue.automizy-button-thin a,
+.automizy-button.automizy-skin-bordered-yellow.automizy-button-thin a,
 .automizy-button.automizy-skin-simple-likemenu.automizy-button-thin a,
 .automizy-button.automizy-skin-simple-white.automizy-button-thin a,
 .automizy-button.automizy-skin-image-white.automizy-button-thin a,
 .automizy-button.automizy-skin-simple-orange.automizy-button-thin a,
 .automizy-button.automizy-skin-simple-blue.automizy-button-thin a,
+.automizy-button.automizy-skin-simple-yellow.automizy-button-thin a,
 .automizy-button.automizy-skin-simple-green.automizy-button-thin a {
     padding: 6px 10px 6px 10px;
     height: auto;
@@ -238,11 +249,13 @@
 .automizy-button.automizy-skin-bordered-black.automizy-button-thinner a,
 .automizy-button.automizy-skin-bordered-orange.automizy-button-thinner a,
 .automizy-button.automizy-skin-bordered-blue.automizy-button-thinner a,
+.automizy-button.automizy-skin-bordered-yellow.automizy-button-thinner a,
 .automizy-button.automizy-skin-simple-likemenu.automizy-button-thinner a,
 .automizy-button.automizy-skin-simple-white.automizy-button-thinner a,
 .automizy-button.automizy-skin-image-white.automizy-button-thinner a,
 .automizy-button.automizy-skin-simple-orange.automizy-button-thinner a,
 .automizy-button.automizy-skin-simple-blue.automizy-button-thinner a,
+.automizy-button.automizy-skin-simple-yellow.automizy-button-thinner a,
 .automizy-button.automizy-skin-simple-green.automizy-button-thinner a {
     padding: 4px 7px 4px 7px;
     height: auto;
@@ -251,6 +264,7 @@
 .automizy-button.automizy-skin-nobox.automizy-button-thin a,
 .automizy-button.automizy-skin-nobox-green.automizy-button-thin a,
 .automizy-button.automizy-skin-nobox-blue.automizy-button-thin a,
+.automizy-button.automizy-skin-nobox-yellow.automizy-button-thin a,
 .automizy-button.automizy-skin-nobox-black.automizy-button-thin a,
 .automizy-button.automizy-skin-nobox-white.automizy-button-thin a,
 .automizy-button.automizy-skin-nobox-orange.automizy-button-thin a{
@@ -261,11 +275,13 @@
 .automizy-button.automizy-skin-bordered-black.automizy-button-semithick a,
 .automizy-button.automizy-skin-bordered-orange.automizy-button-semithick a,
 .automizy-button.automizy-skin-bordered-blue.automizy-button-semithick a,
+.automizy-button.automizy-skin-bordered-yellow.automizy-button-semithick a,
 .automizy-button.automizy-skin-simple-likemenu.automizy-button-semithick a,
 .automizy-button.automizy-skin-simple-white.automizy-button-semithick a,
 .automizy-button.automizy-skin-image-white.automizy-button-semithick a,
 .automizy-button.automizy-skin-simple-orange.automizy-button-semithick a,
 .automizy-button.automizy-skin-simple-blue.automizy-button-semithick a,
+.automizy-button.automizy-skin-simple-yellow.automizy-button-semithick a,
 .automizy-button.automizy-skin-simple-green.automizy-button-semithick a {
     padding: 8px 18px 8px 18px;
     height: auto;
@@ -278,11 +294,13 @@
 .automizy-button.automizy-skin-bordered-black.automizy-button-thick a,
 .automizy-button.automizy-skin-bordered-orange.automizy-button-thick a,
 .automizy-button.automizy-skin-bordered-blue.automizy-button-thick a,
+.automizy-button.automizy-skin-bordered-yellow.automizy-button-thick a,
 .automizy-button.automizy-skin-simple-likemenu.automizy-button-thick a,
 .automizy-button.automizy-skin-simple-white.automizy-button-thick a,
 .automizy-button.automizy-skin-image-white.automizy-button-thick a,
 .automizy-button.automizy-skin-simple-orange.automizy-button-thick a,
 .automizy-button.automizy-skin-simple-blue.automizy-button-thick a,
+.automizy-button.automizy-skin-simple-yellow.automizy-button-thick a,
 .automizy-button.automizy-skin-simple-green.automizy-button-thick a {
     padding: 12px 18px 12px 18px;
     font-size:15px;
@@ -303,10 +321,12 @@
 .automizy-button.automizy-skin-bordered-black a:active,
 .automizy-button.automizy-skin-bordered-orange a:active,
 .automizy-button.automizy-skin-bordered-blue a:active,
+.automizy-button.automizy-skin-bordered-yellow a:active,
 .automizy-button.automizy-skin-simple-likemenu a:active,
 .automizy-button.automizy-skin-simple-white a:active,
 .automizy-button.automizy-skin-simple-green a:active,
 .automizy-button.automizy-skin-simple-blue a:active,
+.automizy-button.automizy-skin-simple-yellow a:active,
 .automizy-button.automizy-skin-simple-orange a:active {
     outline: 0;
     background-image: none;
@@ -391,6 +411,21 @@
     background-color: #FEFEFF;
     border-color: rgba(158, 173, 195, .16);
 }
+.automizy-button.automizy-skin-simple-yellow a {
+    color: rgb(255, 255, 255);
+    border-color: #f5c156;
+    background: #ffc959;
+}
+.automizy-button.automizy-skin-simple-yellow a:hover,
+.automizy-input-box input[type="file"]:hover + span .automizy-skin-simple-yellow a {
+    border-color: #f7c356;
+    background: #fac557;
+}
+.automizy-button.disabled.automizy-skin-simple-yellow a {
+    color: #555a60;
+    background-color: #FEFEFF;
+    border-color: rgba(158, 173, 195, .16);
+}
 .automizy-button.automizy-skin-bordered-green a {
     color:#79c37c;
     border: 2px solid #4CAF50;
@@ -439,6 +474,18 @@
     color: #2094f9;
 }
 .automizy-button.disabled.automizy-skin-bordered-blue a {
+    opacity:0.5;
+}
+.automizy-button.automizy-skin-bordered-yellow a {
+    color:#ffc959;
+    border: 1px solid #ffc959;
+    background: #ffffff;
+}
+.automizy-button.automizy-skin-bordered-yellow a:hover,
+.automizy-input-box input[type="file"]:hover + span .automizy-skin-bordered-yellow a {
+    color: #ffc959;
+}
+.automizy-button.disabled.automizy-skin-bordered-yellow a {
     opacity:0.5;
 }
 .automizy-button.automizy-skin-simple-green a {
