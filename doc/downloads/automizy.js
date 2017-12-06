@@ -12929,6 +12929,8 @@ var $A = {};
             minWidth:'auto',
             content:'',
             emptyContent:'',
+            oldScrollTop:0,
+            actuallyScrollTop:0,
             id: 'automizy-mockup-' + $A.getUniqueString()
         };
         t.f = {};
@@ -12951,6 +12953,9 @@ var $A = {};
             }
             if (typeof obj.zoom !== 'undefined') {
                 t.zoom(obj.zoom);
+            }
+            if (typeof obj.scrolling !== 'undefined') {
+                t.scrolling(obj.scrolling);
             }
             if (typeof obj.minWidth !== 'undefined') {
                 t.minWidth(obj.minWidth);
@@ -12996,6 +13001,26 @@ var $A = {};
                     t.iframeDocument().html('<!DOCTYPE html>' + t.emptyContent() + '<style>body,html{margin:0;padding:0}</style>');
                 }else {
                     t.iframeDocument().html('<!DOCTYPE html>' + t.d.content + '<style>' + style + '</style>');
+                    $(t.contentWindow()).on('mousewheel', function(event){
+                        if(!t.scrolling()){
+                            return;
+                        }
+                        var $t = $(this);
+                        var scrollTop = $t.scrollTop();
+                        var scrollStep = 45;
+                        if(event.originalEvent.wheelDelta /120 > 0) {
+                            scrollTop -= scrollStep;
+                        } else{
+                            scrollTop += scrollStep;
+                        }
+                        $t.scrollTop(scrollTop);
+
+                        t.d.actuallyScrollTop = $t.scrollTop();
+                        if(t.d.actuallyScrollTop !== t.d.oldScrollTop){
+                            event.preventDefault();
+                        }
+                        t.d.oldScrollTop = $t.scrollTop();
+                    });
                 }
             }, 10);
             return t;
@@ -13010,19 +13035,18 @@ var $A = {};
         }
         return t.d.emptyContent;
     };
+    p.contentWindow = function () {
+        var t = this;
+        return t.d.$iframe[0].contentWindow;
+    };
     p.iframeDocument = function () {
         var t = this;
-        return $('body', t.d.$iframe[0].contentWindow.document);
+        return $('body', t.contentWindow().document);
     };
     p.scrolling = function (scrolling) {
         var t = this;
         if(typeof scrolling !== 'undefined'){
             t.d.scrolling = $A.parseBoolean(scrolling);
-            if(t.d.scrolling){
-                t.d.$iframe.attr('scrolling', 'yes');
-            }else{
-                t.d.$iframe.attr('scrolling', 'no');
-            }
             return t;
         }
         return t.d.scrolling;
