@@ -14,6 +14,8 @@ define([
 
             title:'',
             content:'',
+            nowrap:false,
+            padding:'15px 20px',
             id: 'automizy-panel-' + $A.getUniqueString()
         };
         t.f = {};
@@ -27,6 +29,12 @@ define([
             }
             if (typeof obj.content !== 'undefined') {
                 t.content(obj.content);
+            }
+            if (typeof obj.padding !== 'undefined') {
+                t.padding(obj.padding);
+            }
+            if (typeof obj.nowrap !== 'undefined') {
+                t.nowrap(obj.nowrap);
             }
 
             t.initParameter(obj);
@@ -53,6 +61,28 @@ define([
             return t;
         }
         return t.d.maxWidth;
+    };
+    p.padding = function (padding) {
+        var t = this;
+        if (typeof padding !== 'undefined') {
+            t.d.padding = padding;
+            t.d.$content.css('padding', t.d.padding);
+            return t;
+        }
+        return t.d.padding;
+    };
+    p.nowrap = function (nowrap) {
+        var t = this;
+        if (typeof nowrap !== 'undefined') {
+            t.d.nowrap = $A.parseBoolean(nowrap);
+            if(t.d.nowrap){
+                t.d.$content.css('white-space', 'nowrap');
+            }else{
+                t.d.$content.css('white-space', 'normal');
+            }
+            return t;
+        }
+        return t.d.nowrap;
     };
     p.content = function (content) {
         var t = this;

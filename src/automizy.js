@@ -51,6 +51,7 @@ define([
     "automizy/functions/escapeJQuerySelector",
     "automizy/functions/initBasicFunctions",
     "automizy/functions/setWindowScroll",
+    "automizy/functions/selectContent",
     "automizy/functions/hashChange",
     "automizy/functions/getFunctionStringFromArray",
     "automizy/functions/insertAtCaret",
