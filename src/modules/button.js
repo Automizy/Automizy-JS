@@ -617,6 +617,10 @@ define([
             buttons[i].d.dropDownMenuOpened = false;
         }
     };
+
+    $A.globalButtonPopoverModule = $A.newPopover();
+    $A.globalButtonPopoverModule.close();
+
     $(window).on('resize', function(){
         $A.closeAllButtonMenu();
     });

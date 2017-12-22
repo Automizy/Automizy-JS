@@ -239,6 +239,12 @@ define([
                     if (typeof parent !== 'undefined' && parent !== null && typeof parent.removeChild === 'function') {
                         parent.removeChild(t.d.$widget[0]);
                     }
+                    if(typeof t.d.$dropDownMenu !== 'undefined'){
+                        parent = t.d.$dropDownMenu[0].parentElement;
+                        if (typeof parent !== 'undefined' && parent !== null && typeof parent.removeChild === 'function') {
+                            parent.removeChild(t.d.$dropDownMenu[0]);
+                        }
+                    }
                 }
                 $A.setWindowScroll(true, t.id());
                 delete $A.d[moduleNameLower + "s"][t.id()];
