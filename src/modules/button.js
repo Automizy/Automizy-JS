@@ -3,6 +3,7 @@ define([
     'automizy/addons/jqueryAddOns',
     'automizy/functions/initBasicFunctions',
     'automizy/functions/registerLocalEvents',
+    'automizy/modules/popover',
     'automizy/images/icons'
 ], function () {
     var Button = function (obj) {

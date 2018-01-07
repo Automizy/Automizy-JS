@@ -3,6 +3,7 @@ define([
     'automizy/addons/jqueryAddOns',
     'automizy/functions/initBasicFunctions',
     'automizy/functions/registerLocalEvents',
+    'automizy/functions/getUniqueString',
     'automizy/images/icons'
 ], function () {
 
@@ -10,13 +11,18 @@ define([
         var t = this;
         t.d = {
             $widget: $('<div class="automizy-popover"></div>'),
+            $container: $('<div class="automizy-popover-container"></div>'),
+            $arrow: $('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 51.08 51.08" class="automizy-popover-arrow"><rect x="7.98" y="7.98" width="35.12" height="35.12" transform="translate(25.54 -10.58) rotate(45)" style="fill:#fff;stroke:#ccc;stroke-miterlimit:10;stroke-width:2px"/></svg>'),
+            $innerContainer: $('<div class="automizy-popover-inner-container"></div>'),
             $title: $('<div class="automizy-popover-title"></div>'),
             $content: $('<div class="automizy-popover-content"></div>'),
             $buttons: $('<div class="automizy-popover-buttons"></div>'),
 
             target: false,
+            opened:false,
 
             position: 'auto',
+            gravity: 'auto',
             width: 'auto',
             maxHeight: '800px',
             offsetTop: 0,
@@ -28,9 +34,12 @@ define([
         t.init();
 
         t.d.$widget.appendTo('body');
-        t.d.$title.appendTo(t.d.$widget);
-        t.d.$content.appendTo(t.d.$widget);
-        t.d.$buttons.appendTo(t.d.$widget);
+        t.d.$container.appendTo(t.d.$widget);
+        t.d.$arrow.appendTo(t.d.$container);
+        t.d.$innerContainer.appendTo(t.d.$container);
+        t.d.$title.appendTo(t.d.$innerContainer);
+        t.d.$content.appendTo(t.d.$innerContainer);
+        t.d.$buttons.appendTo(t.d.$innerContainer);
 
         if (typeof obj !== 'undefined') {
             if (typeof obj.target !== 'undefined') {
@@ -41,6 +50,9 @@ define([
             }
             if (typeof obj.position !== 'undefined') {
                 t.position(obj.position);
+            }
+            if (typeof obj.gravity !== 'undefined') {
+                t.gravity(obj.gravity);
             }
             if (typeof obj.offset !== 'undefined') {
                 t.offset(obj.offset);
@@ -59,7 +71,10 @@ define([
     p.target = function (target) {
         var t = this;
         if (typeof target !== 'undefined') {
-            t.d.target = target;
+            if (typeof target === 'string' || typeof target === 'number') {
+                target = $('#' + target);
+            }
+            t.d.target = $(target);
             t.d.target.addClass('automizy-popovered');
             return t;
         }
@@ -100,6 +115,14 @@ define([
         }
         return t.d.position;
     };
+    p.gravity = function (gravity) {
+        var t = this;
+        if (typeof gravity !== 'undefined') {
+            t.d.gravity = gravity;
+            return t;
+        }
+        return t.d.gravity;
+    };
     p.offsetTop = function (offsetTop) {
         var t = this;
         if (typeof offsetTop !== 'undefined') {
@@ -121,8 +144,12 @@ define([
         var t = this;
         if (typeof title !== 'undefined') {
             t.d.title = title;
-            t.d.$title.html(title);
-            t.d.$title.prependTo(t.d.$widget);
+            if (t.d.title === false) {
+                t.d.$title.prependTo($A.$tmp);
+            } else {
+                t.d.$title.html(title);
+                t.d.$title.prependTo(t.d.$widget);
+            }
             return t;
         }
         return t.d.title;
@@ -143,9 +170,21 @@ define([
             } else {
                 t.d.$content.html(t.d.content);
             }
+            t.loadingOff();
             return t;
         }
         return t.d.content;
+    };
+
+    p.loadingOn = p.loadingStart = function () {
+        var t = this;
+        t.widget().addClass('automizy-loading');
+        return t;
+    };
+    p.loadingOff = p.loadingStop = function () {
+        var t = this;
+        t.widget().removeClass('automizy-loading');
+        return t;
     };
 
     p.open = function (func, name, life) {
@@ -154,17 +193,42 @@ define([
             t.addFunction.apply(t, ['open', func, name, life]);
             return t;
         }
+        t.d.opened = true;
         t.widget().ashow();
+        t.setPosition();
+        t.runFunctions('open');
+        return t;
+    };
+    p.setPosition = function () {
+        var t = this;
+
+        if(!t.d.opened){
+            return t;
+        }
+
         var position = t.position();
+        var gravity = t.gravity();
         var targetOffset = t.target().offset();
         var targetOffsetTop = targetOffset.top + t.offsetTop();
         var targetOffsetLeft = targetOffset.left + t.offsetLeft();
-        var targetHeight = t.target().height();
+        var targetHeight = t.target().outerHeight();
         var targetWidth = t.target().outerWidth();
         var windowHeight = window.innerHeight;
         var windowWidth = window.innerWidth;
         var popoverHeight = t.widget().height();
         var popoverWidth = t.widget().outerWidth();
+        var boxCss = {
+            bottom: 'auto',
+            left: 'auto',
+            right: 'auto',
+            top: 'auto'
+        };
+        var arrowCss = {
+            bottom: 'auto',
+            left: 'auto',
+            right: 'auto',
+            top: 'auto'
+        };
 
         if (position === 'auto') {
             if (targetOffsetTop + targetHeight + popoverHeight >= windowHeight) {
@@ -173,37 +237,88 @@ define([
                 position = 'bottom';
             }
         }
-
-        if (position === 'top') {
-            t.widget().css({
-                bottom: (windowHeight - targetOffsetTop) + 'px',
-                left: targetOffsetLeft + 'px',
-                right:'auto',
-                top: 'auto'
-            })
-        }else if (position === 'left') {
-            t.widget().css({
-                bottom: 'auto',
-                left: 'auto',
-                right: windowWidth - targetOffsetLeft + 10 + 'px',
-                top: targetOffsetTop - 17 + 'px'
-            })
-        } else {
-            t.widget().css({
-                bottom: 'auto',
-                left: targetOffsetLeft + 'px',
-                right:'auto',
-                top: (targetOffsetTop + targetHeight) + 'px'
-            })
+        if (gravity === 'auto') {
+            if (position === 'top' || position === 'bottom') {
+                gravity = 'left';
+            } else {
+                gravity = 'top';
+            }
         }
 
-        t.widget().attr('automizy-position', position);
+        if (position === 'top') {
+            boxCss = {
+                bottom: (windowHeight - targetOffsetTop) + 'px',
+                left: targetOffsetLeft + 'px',
+                right: 'auto',
+                top: 'auto'
+            };
+            arrowCss = {
+                bottom: '-10px',
+                left: '10px',
+                right: 'auto',
+                top: 'auto'
+            };
+        } else if (position === 'bottom') {
+            boxCss.top = (targetOffsetTop + targetHeight) + 'px';
+            arrowCss.top = '-10px';
+            if (gravity === 'right') {
+                boxCss.right = windowWidth - targetOffsetLeft - targetWidth + 'px';
+                arrowCss.right = '10px';
+            } else {
+                boxCss.left = targetOffsetLeft + 'px';
+                arrowCss.left = '10px';
+            }
+        } else if (position === 'left') {
+            boxCss = {
+                bottom: 'auto',
+                left: 'auto',
+                right: windowWidth - targetOffsetLeft + 11 + 'px',
+                top: targetOffsetTop - 17 + 'px'
+            };
+            arrowCss = {
+                bottom: 'auto',
+                left: 'auto',
+                right: '-10px',
+                top: '10px'
+            };
+        } else if (position === 'right') {
+            boxCss = {
+                bottom: 'auto',
+                left: 'auto',
+                right: windowWidth - targetOffsetLeft + 11 + 'px',
+                top: targetOffsetTop - 17 + 'px'
+            };
+            arrowCss = {
+                bottom: 'auto',
+                left: 'auto',
+                right: '-10px',
+                top: '10px'
+            };
+        }
 
-        t.runFunctions('open');
+        t.widget().css(boxCss);
+        t.d.$arrow.css(arrowCss);
+
+        return t;
+    };
+    p.reset = function () {
+        var t = this;
+
+        t.target(false);
+        t.position('auto');
+        t.gravity('auto');
+        t.width('auto');
+        t.maxHeight('800px');
+        t.content('');
+        t.offsetTop(0);
+        t.offsetLeft(0);
+        t.buttons([]);
+
         return t;
     };
     p.close = function () {
         var t = this;
+        t.d.opened = false;
         t.widget().ahide();
         return t;
     };
@@ -211,11 +326,6 @@ define([
     $A.popover = function (obj) {
         if (typeof obj === 'undefined') {
             return $A.globalPopoverModule;
-        }
-        if (obj.target instanceof HTMLElement) {
-            obj.target = $(obj.target);
-        } else if (typeof obj.target.widget === 'function') {
-            obj.target = obj.target.widget();
         }
 
         if (typeof obj.popover === 'undefined') {
@@ -251,6 +361,12 @@ define([
             obj.popover.position(obj.position);
         } else {
             obj.popover.position('auto');
+        }
+
+        if (typeof obj.gravity !== 'undefined') {
+            obj.popover.gravity(obj.gravity);
+        } else {
+            obj.popover.gravity('auto');
         }
 
         if (typeof obj.offsetTop !== 'undefined') {

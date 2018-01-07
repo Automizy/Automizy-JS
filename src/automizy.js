@@ -11,6 +11,7 @@ define([
 
     "automizy/modules/dialog",
     "automizy/modules/alert",
+    "automizy/modules/popover",
     "automizy/modules/button",
     "automizy/modules/input",
     "automizy/modules/input2",
@@ -31,7 +32,6 @@ define([
     "automizy/modules/panel",
     "automizy/modules/tag/tagger",
     "automizy/modules/progressBar",
-    "automizy/modules/popover",
     "automizy/modules/specialTagger",
     "automizy/modules/columnContent/columnContent",
     "automizy/modules/columnContent/columnContentColumn",

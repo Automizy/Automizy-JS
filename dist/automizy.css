@@ -3722,72 +3722,79 @@ label.iPhoneCheckLabelOff span {
           transform: scale(1.0);
       }
 }
-.automizy-popover{
-   position:absolute;
-    display:inline-block;
+.automizy-popover {
+    position: absolute;
+    display: inline-block;
     z-index: 9999999;
     min-width: 50px;
     max-width: 100%;
     min-height: 30px;
     text-align: left;
-    background-color: #ffffff;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    border-radius: 6px;
-    margin:10px 0 10px 0;
+    margin: 9px 0 9px 0;
     box-sizing: border-box;
-    box-shadow: 0 3px 4px rgba(0,0,0,.16);
 }
-.automizy-popover:after, .automizy-popover:before {
-    -webkit-transform: rotate(90deg);
-    -moz-transform: rotate(90deg);
-    -ms-transform: rotate(90deg);
-    transform: rotate(90deg);
+.automizy-popover-container {
+    position: relative;
+    display: block;
+    min-width: 100%;
+    min-height: 100%;
+    background-color: #ffffff;
+    border-radius: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    box-shadow: 0 3px 4px rgba(0, 0, 0, .16);
+}
+.automizy-popover-arrow {
     position: absolute;
-    top: -11px;
-    left: 32px;
-    right:auto;
-    margin:0;
-    content: '';
-    width: 0;
-    height: 0;
-    border-width: 7px 7px 7px 0;
-    border-style: solid;
-    border-color: transparent #cecece transparent transparent;
-    z-index: 50;
+    width:20px;
+    height:20px;
+    top:-10px;
+    left:30px;
 }
-.automizy-popover:after {
-    top: -10px;
-    border-color: transparent #fff transparent transparent;
+.automizy-popover-inner-container {
+    position: relative;
+    display: block;
+    min-width: 100%;
+    min-height: 100%;
+    background-color: #ffffff;
+    border-radius: 6px;
 }
-.automizy-popover[automizy-position='left']:after, .automizy-popover[automizy-position='left']:before {
-    -webkit-transform: rotate(180deg);
-    -moz-transform: rotate(180deg);
-    -ms-transform: rotate(180deg);
-    transform: rotate(180deg);
-    top: -9px;
-    left: auto;
-    right: -7px;
-    margin: 16px 0 0 0;
+.automizy-popover.automizy-loading {
+    min-width: 100px;
+    min-height: 50px;
 }
-.automizy-popover-title{
-    text-align:left;
+.automizy-popover.automizy-loading .automizy-popover-container {
+    min-width: 100px;
+    min-height: 50px;
+}
+.automizy-popover.automizy-loading .automizy-popover-inner-container {
+    min-width: 100px;
+    min-height: 50px;
+    background: #ffffff url(images/loading.gif) no-repeat center center;
+}
+.automizy-popover.automizy-loading .automizy-popover-title,
+.automizy-popover.automizy-loading .automizy-popover-content,
+.automizy-popover.automizy-loading .automizy-popover-buttons {
+    display:none;
+}
+.automizy-popover-title {
+    text-align: left;
     padding: 8px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
-.automizy-popover-title:empty{
-    display:none;
+.automizy-popover-title:empty {
+    display: none;
 }
-.automizy-popover-content{
-    text-align:left;
+.automizy-popover-content {
+    text-align: left;
     padding: 8px;
 }
-.automizy-popover-buttons{
-    text-align:right;
+.automizy-popover-buttons {
+    text-align: right;
     padding: 8px;
     border-top: 1px solid rgba(0, 0, 0, 0.2);
 }
-.automizy-popover-buttons:empty{
-    display:none;
+.automizy-popover-buttons:empty {
+    display: none;
 }
 .automizy-radio{
     font-size: 14px;
