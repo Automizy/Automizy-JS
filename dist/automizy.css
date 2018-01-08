@@ -608,7 +608,14 @@
 .automizy-button-badge:empty{
     display: none !important;
 }
+.automizy-button-box{
+    white-space: nowrap;
+}
+.automizy-button-box .fa{
+    padding: 0 7px;
+}
 .automizy-button-dropdown-button{
+    display: inline !important;
     margin: 0 0 0 -3px !important;
     min-width: 23px !important;
     width: 23px !important;

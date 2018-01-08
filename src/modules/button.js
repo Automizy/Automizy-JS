@@ -56,7 +56,6 @@ define([
             if(t.d.dropDownMenuOpened){
                 $A.closeAllButtonMenu();
             }else {
-                $A.closeAllButtonMenu();
                 t.openDropDownMenu();
             }
         });
@@ -589,6 +588,7 @@ define([
     };
     p.openDropDownMenu = function(){
         var t = this;
+        $A.closeAllButtonMenu();
         t.d.dropDownMenuOpened = true;
         var $target = t.widget();
         var targetOffset = $target.offset();
