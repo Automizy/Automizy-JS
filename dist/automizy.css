@@ -3377,6 +3377,9 @@ label.iPhoneCheckLabelOff span {
     margin: 0 auto;
     max-width:100%;
 }
+.automizy-panel .automizy-panel-content:empty{
+    display:none;
+}
 .automizy-panel.automizy-skin-content-box{
     border: 1px solid #eff1f6;
     border-bottom: none;
@@ -3430,6 +3433,42 @@ label.iPhoneCheckLabelOff span {
     border: none;
     color: #ffffff;
     background: rgba(255,255,255,.2);
+}
+.automizy-panel .automizy-panel-navigator{
+    border-bottom: #F7F7F7 solid 1px;
+    color: #3e4855;
+    background-color: #FFFFFF;
+    padding: 10px 15px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+.automizy-panel .automizy-panel-navigator:empty{
+    display:none;
+}
+.automizy-panel .automizy-panel-navigator-element{
+    cursor:pointer;
+    color: #3e4855;
+    text-transform: uppercase;
+    display: inline-block;
+    font-weight: bold;
+    margin: 0 24px;
+}
+.automizy-panel .automizy-panel-navigator-element:hover{
+    color:#2094f9;
+}
+.automizy-panel .automizy-panel-navigator-element.automizy-active{
+    border-bottom:2px solid #2094f9;
+    color:#2094f9;
+}
+.automizy-panel .automizy-panel-navigator-contents{
+    padding: 15px 20px;
+    margin: 0 auto;
+    max-width:100%;
+}
+.automizy-panel .automizy-panel-navigator-contents:empty{
+    display:none;
+}
+.automizy-panel .automizy-panel-navigator-content{
 }
 .automizy-progress {
     width: 100%;
@@ -4187,6 +4226,12 @@ label.iPhoneCheckLabelOff span {
     position: relative;
     box-sizing: border-box;
 }
+.automizy-list-element-separator{
+    display: block;
+    height: 1px;
+    background-color: #4a4a4a;
+    margin: 7px 0 4px 0;
+}
 .automizy-list-element.automizy-type-simple{
     color:#4a4a4a;
     font-size:13px;
@@ -4260,4 +4305,47 @@ label.iPhoneCheckLabelOff span {
     background-color: #2094f9;
     border-color: #2094f9;
     color:#ffffff;
+}
+.automizy-list-element.automizy-type-iconed{
+    color:#4a4a4a;
+    padding: 3px 14px 3px 8px;
+}
+.automizy-list-element.automizy-type-iconed:hover{
+    color:#2094f9;
+}
+.automizy-list-element.automizy-type-iconed.automizy-active{
+    color:#2094f9;
+}
+.automizy-list-element.automizy-type-iconed .automizy-list-element-icon{
+    width: 34px;
+    text-align: center;
+    vertical-align: middle;
+}
+.automizy-list-element.automizy-type-iconed .automizy-list-element-text{
+    font-size:14px;
+    display:inline-block;
+    vertical-align: middle;
+}
+.automizy-list-element.automizy-type-iconed.automizy-active .automizy-list-element-text{
+    text-decoration:underline;
+}
+.automizy-content {
+    display: block;
+    position: relative;
+    border-radius: 10px;
+    padding: 0;
+    box-sizing: border-box;
+    margin: 0;
+    clear: both;
+}
+.automizy-content-navigation-box{
+    display: block;
+    padding:12px;
+}
+.automizy-content-navigation-box:empty{
+    display:none;
+}
+.automizy-content-content{
+    display: block;
+    padding:12px;
 }

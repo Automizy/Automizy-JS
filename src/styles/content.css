@@ -1,0 +1,20 @@
+.automizy-content {
+    display: block;
+    position: relative;
+    border-radius: 10px;
+    padding: 0;
+    box-sizing: border-box;
+    margin: 0;
+    clear: both;
+}
+.automizy-content-navigation-box{
+    display: block;
+    padding:12px;
+}
+.automizy-content-navigation-box:empty{
+    display:none;
+}
+.automizy-content-content{
+    display: block;
+    padding:12px;
+}

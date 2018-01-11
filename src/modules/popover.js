@@ -20,6 +20,7 @@ define([
 
             target: false,
             opened:false,
+            padding:'8px',
 
             position: 'auto',
             gravity: 'auto',
@@ -54,11 +55,20 @@ define([
             if (typeof obj.gravity !== 'undefined') {
                 t.gravity(obj.gravity);
             }
-            if (typeof obj.offset !== 'undefined') {
-                t.offset(obj.offset);
+            if (typeof obj.offsetTop !== 'undefined') {
+                t.offsetTop(obj.offsetTop);
             }
-            if (typeof obj.open === 'function') {
+            if (typeof obj.offsetLeft !== 'undefined') {
+                t.offsetLeft(obj.offsetLeft);
+            }
+            if (typeof obj.open !== 'undefined') {
                 t.open(obj.open);
+            }
+            if (typeof obj.content !== 'undefined') {
+                t.content(obj.content);
+            }
+            if (typeof obj.padding !== 'undefined') {
+                t.padding(obj.padding);
             }
             t.initParameter(obj);
         }
@@ -153,6 +163,15 @@ define([
             return t;
         }
         return t.d.title;
+    };
+    p.padding = function (padding) {
+        var t = this;
+        if (typeof padding !== 'undefined') {
+            t.d.padding = padding;
+            t.d.$content.css('padding', padding);
+            return t;
+        }
+        return t.d.padding;
     };
 
     p.content = function (content) {
@@ -379,6 +398,12 @@ define([
             obj.popover.offsetLeft(obj.offsetLeft);
         } else {
             obj.popover.offsetLeft(0);
+        }
+
+        if (typeof obj.padding !== 'undefined') {
+            obj.popover.padding(obj.padding);
+        } else {
+            obj.popover.padding('8px');
         }
 
         if (typeof obj.appendTo !== 'undefined') {

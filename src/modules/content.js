@@ -10,13 +10,12 @@ define([
         t.d = {
             $widget: $('<div class="automizy-content"></div>'),
             $navigationBox: $('<div class="automizy-content-navigation-box"></div>'),
-            $navigationBoxButton1: $('<div class="automizy-content-navigation-box-button"></div>'),
-            $content1: $('<div class="automizy-content-content-1"></div>'),
-            $content2: $('<div class="automizy-content-content-2"></div>'),
+            $content: $('<div class="automizy-content-content"></div>'),
 
             title:'',
             content:'',
-            id: 'automizy-panel-' + $A.getUniqueString()
+            width:'auto',
+            id: 'automizy-content-' + $A.getUniqueString()
         };
         t.f = {};
         t.init();
@@ -36,25 +35,15 @@ define([
 
     };
 
-    var p = Panel.prototype;
-    p.title = function (title) {
+    var p = Content.prototype;
+    p.width = function (width) {
         var t = this;
-        if (typeof title !== 'undefined') {
-            t.d.title = title;
-            t.d.$title.html(title);
-            t.d.$title.prependTo(t.d.$widget);
+        if (typeof width !== 'undefined') {
+            t.d.width = width;
+            t.d.$content.css('max-width', t.d.width);
             return t;
         }
-        return t.d.title;
-    };
-    p.maxWidth = function (maxWidth) {
-        var t = this;
-        if (typeof maxWidth !== 'undefined') {
-            t.d.maxWidth = maxWidth;
-            t.d.$content.css('max-width', t.d.maxWidth);
-            return t;
-        }
-        return t.d.maxWidth;
+        return t.d.width;
     };
     p.content = function (content) {
         var t = this;
@@ -77,7 +66,7 @@ define([
     };
 
 
-    $A.initBasicFunctions(Panel, "Panel", []);
+    $A.initBasicFunctions(Content, "Content", []);
 
 
 });

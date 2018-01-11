@@ -29,6 +29,12 @@
     position: relative;
     box-sizing: border-box;
 }
+.automizy-list-element-separator{
+    display: block;
+    height: 1px;
+    background-color: #4a4a4a;
+    margin: 7px 0 4px 0;
+}
 
 
 
@@ -111,4 +117,29 @@
     background-color: #2094f9;
     border-color: #2094f9;
     color:#ffffff;
+}
+
+
+.automizy-list-element.automizy-type-iconed{
+    color:#4a4a4a;
+    padding: 3px 14px 3px 8px;
+}
+.automizy-list-element.automizy-type-iconed:hover{
+    color:#2094f9;
+}
+.automizy-list-element.automizy-type-iconed.automizy-active{
+    color:#2094f9;
+}
+.automizy-list-element.automizy-type-iconed .automizy-list-element-icon{
+    width: 34px;
+    text-align: center;
+    vertical-align: middle;
+}
+.automizy-list-element.automizy-type-iconed .automizy-list-element-text{
+    font-size:14px;
+    display:inline-block;
+    vertical-align: middle;
+}
+.automizy-list-element.automizy-type-iconed.automizy-active .automizy-list-element-text{
+    text-decoration:underline;
 }

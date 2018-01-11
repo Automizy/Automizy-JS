@@ -126,17 +126,23 @@ define([
             t.d.elements = [];
             elements.forEach(function (element) {
                 var elementModule;
-                element.listModule = t;
-                element.type = element.type || t.type() || 'simple';
-                if(element.type === 'simple'){
-                    elementModule = $A.newSimpleListElement(element);
-                }else if(element.type === 'title-and-subtitle'){
-                    elementModule = $A.newTitleAndSubTitleListElement(element);
-                }else if(element.type === 'box'){
-                    elementModule = $A.newBoxListElement(element);
+                if(element === 'separator'){
+                    $('<div class="automizy-list-element-separator"></div>').appendTo(t.d.$elements);
+                }else {
+                    element.listModule = t;
+                    element.type = element.type || t.type() || 'simple';
+                    if (element.type === 'simple') {
+                        elementModule = $A.newSimpleListElement(element);
+                    } else if (element.type === 'title-and-subtitle') {
+                        elementModule = $A.newTitleAndSubTitleListElement(element);
+                    } else if (element.type === 'box') {
+                        elementModule = $A.newBoxListElement(element);
+                    } else if (element.type === 'iconed') {
+                        elementModule = $A.newIconedListElement(element);
+                    }
+                    t.d.elements.push(elementModule);
+                    elementModule.drawTo(t.d.$elements);
                 }
-                t.d.elements.push(elementModule);
-                elementModule.drawTo(t.d.$elements);
             });
             return t;
         }

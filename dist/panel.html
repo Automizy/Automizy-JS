@@ -6,7 +6,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="automizy.js"></script>
     <link rel="stylesheet" href="fontawesome/css/font-awesome.css">
-    <link rel="stylesheet" href="../src/styles/panel.css">
+    <link rel="stylesheet" href="automizy.css">
     <script>
         $(function () {
 
@@ -25,6 +25,24 @@
                 target:$content
             });
 
+            $A.newPanel({
+                target: 'body',
+                navigators: [
+                    {
+                        text: 'Lists',
+                        content: 'Alma'
+                    },
+                    {
+                        text: 'Sign up forms',
+                        content: 'Körte'
+                    },
+                    {
+                        text: 'Import history',
+                        content: 'Meggy'
+                    }
+                ]
+            })
+
         });
     </script>
     <style>
@@ -33,7 +51,7 @@
         }
     </style>
 </head>
-<body>
+<body style="font-family: 'Segoe UI'; margin:0; padding:0">
 </body>
 </html>
 

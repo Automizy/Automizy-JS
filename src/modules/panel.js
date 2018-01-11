@@ -10,18 +10,23 @@ define([
         t.d = {
             $widget: $('<div class="automizy-panel"></div>'),
             $title: $('<div class="automizy-panel-title"></div>'),
+            $navigator: $('<div class="automizy-panel-navigator"></div>'),
             $content: $('<div class="automizy-panel-content"></div>'),
+            $navigatorContents: $('<div class="automizy-panel-navigator-contents"></div>'),
 
             title:'',
             content:'',
             nowrap:false,
             padding:'15px 20px',
+            navigators:{},
             id: 'automizy-panel-' + $A.getUniqueString()
         };
         t.f = {};
         t.init();
 
+        t.d.$navigator.appendTo(t.d.$widget);
         t.d.$content.appendTo(t.d.$widget);
+        t.d.$navigatorContents.appendTo(t.d.$widget);
         if (typeof obj !== 'undefined') {
 
             if (typeof obj.title !== 'undefined') {
@@ -35,6 +40,9 @@ define([
             }
             if (typeof obj.nowrap !== 'undefined') {
                 t.nowrap(obj.nowrap);
+            }
+            if (typeof obj.navigators !== 'undefined') {
+                t.navigators(obj.navigators);
             }
 
             t.initParameter(obj);
@@ -87,21 +95,63 @@ define([
     p.content = function (content) {
         var t = this;
         if (typeof content !== 'undefined') {
-            if (t.d.$content.contents() instanceof jQuery) {
-                t.d.$content.contents().appendTo($A.$tmp);
-            }
-            t.d.$content.empty();
             t.d.content = content;
-            if (t.d.content instanceof jQuery) {
-                t.d.content.appendTo(t.d.$content);
-            } else if(typeof t.d.content.drawTo === 'function') {
-                t.d.content.drawTo(t.d.$content);
-            } else {
-                t.d.$content.html(t.d.content);
-            }
+            $A.setContent(t.d.content, t.d.$content);
             return t;
         }
         return t.d.content;
+    };
+    p.navigators = function (navigators) {
+        var t = this;
+        if (typeof navigators !== 'undefined') {
+            t.d.$navigator.empty();
+            t.d.$navigatorContents.empty();
+            t.d.navigators = {};
+            navigators.forEach(function(navigator){
+                t.addNavigator(navigator)
+            });
+            return t;
+        }
+        return t.d.navigators;
+    };
+    p.addNavigator = function (navigator) {
+        var t = this;
+        var navigatorObj = {};
+        navigatorObj.text = navigator.text || '-';
+        navigatorObj.name = navigator.name || navigator.text;
+        navigatorObj.content = navigator.content || '';
+        navigatorObj.activate = navigator.activate || function(){};
+        navigatorObj.$element = $('<div class="automizy-panel-navigator-element"></div>').appendTo(t.d.$navigator).data('navigator', navigatorObj).text(navigatorObj.text).click(function(){
+            var navigator = $(this).data('navigator');
+            for(var i in t.d.navigators){
+                t.d.navigators[i].$element.removeClass('automizy-active');
+                t.d.navigators[i].$content.ahide();
+            }
+            navigator.$element.addClass('automizy-active');
+            navigator.$content.ashow();
+            navigator.activate.apply(navigator, []);
+        });
+        navigatorObj.$content = $('<div class="automizy-panel-navigator-content"></div>').appendTo(t.d.$navigatorContents).ahide();
+        $A.setContent(navigatorObj.content, navigatorObj.$content);
+
+        t.d.navigators[navigatorObj.name] = navigatorObj;
+        return t;
+    };
+    p.setNavigatorContent = function (content, name) {
+        var t = this;
+        if(typeof t.d.navigators[name] === 'undefined'){
+            return t;
+        }
+        $A.setContent(content, t.d.navigators[name].$content);
+        return t;
+    };
+    p.activateNavigator = function (name) {
+        var t = this;
+        if(typeof t.d.navigators[name] === 'undefined'){
+            return t;
+        }
+        t.d.navigators[name].$element.click();
+        return t;
     };
 
 

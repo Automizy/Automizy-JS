@@ -803,6 +803,7 @@ var $A = {};
 
             target: false,
             opened:false,
+            padding:'8px',
 
             position: 'auto',
             gravity: 'auto',
@@ -837,11 +838,20 @@ var $A = {};
             if (typeof obj.gravity !== 'undefined') {
                 t.gravity(obj.gravity);
             }
-            if (typeof obj.offset !== 'undefined') {
-                t.offset(obj.offset);
+            if (typeof obj.offsetTop !== 'undefined') {
+                t.offsetTop(obj.offsetTop);
             }
-            if (typeof obj.open === 'function') {
+            if (typeof obj.offsetLeft !== 'undefined') {
+                t.offsetLeft(obj.offsetLeft);
+            }
+            if (typeof obj.open !== 'undefined') {
                 t.open(obj.open);
+            }
+            if (typeof obj.content !== 'undefined') {
+                t.content(obj.content);
+            }
+            if (typeof obj.padding !== 'undefined') {
+                t.padding(obj.padding);
             }
             t.initParameter(obj);
         }
@@ -936,6 +946,15 @@ var $A = {};
             return t;
         }
         return t.d.title;
+    };
+    p.padding = function (padding) {
+        var t = this;
+        if (typeof padding !== 'undefined') {
+            t.d.padding = padding;
+            t.d.$content.css('padding', padding);
+            return t;
+        }
+        return t.d.padding;
     };
 
     p.content = function (content) {
@@ -1162,6 +1181,12 @@ var $A = {};
             obj.popover.offsetLeft(obj.offsetLeft);
         } else {
             obj.popover.offsetLeft(0);
+        }
+
+        if (typeof obj.padding !== 'undefined') {
+            obj.popover.padding(obj.padding);
+        } else {
+            obj.popover.padding('8px');
         }
 
         if (typeof obj.appendTo !== 'undefined') {
@@ -11573,18 +11598,23 @@ var $A = {};
         t.d = {
             $widget: $('<div class="automizy-panel"></div>'),
             $title: $('<div class="automizy-panel-title"></div>'),
+            $navigator: $('<div class="automizy-panel-navigator"></div>'),
             $content: $('<div class="automizy-panel-content"></div>'),
+            $navigatorContents: $('<div class="automizy-panel-navigator-contents"></div>'),
 
             title:'',
             content:'',
             nowrap:false,
             padding:'15px 20px',
+            navigators:{},
             id: 'automizy-panel-' + $A.getUniqueString()
         };
         t.f = {};
         t.init();
 
+        t.d.$navigator.appendTo(t.d.$widget);
         t.d.$content.appendTo(t.d.$widget);
+        t.d.$navigatorContents.appendTo(t.d.$widget);
         if (typeof obj !== 'undefined') {
 
             if (typeof obj.title !== 'undefined') {
@@ -11598,6 +11628,9 @@ var $A = {};
             }
             if (typeof obj.nowrap !== 'undefined') {
                 t.nowrap(obj.nowrap);
+            }
+            if (typeof obj.navigators !== 'undefined') {
+                t.navigators(obj.navigators);
             }
 
             t.initParameter(obj);
@@ -11650,21 +11683,63 @@ var $A = {};
     p.content = function (content) {
         var t = this;
         if (typeof content !== 'undefined') {
-            if (t.d.$content.contents() instanceof jQuery) {
-                t.d.$content.contents().appendTo($A.$tmp);
-            }
-            t.d.$content.empty();
             t.d.content = content;
-            if (t.d.content instanceof jQuery) {
-                t.d.content.appendTo(t.d.$content);
-            } else if(typeof t.d.content.drawTo === 'function') {
-                t.d.content.drawTo(t.d.$content);
-            } else {
-                t.d.$content.html(t.d.content);
-            }
+            $A.setContent(t.d.content, t.d.$content);
             return t;
         }
         return t.d.content;
+    };
+    p.navigators = function (navigators) {
+        var t = this;
+        if (typeof navigators !== 'undefined') {
+            t.d.$navigator.empty();
+            t.d.$navigatorContents.empty();
+            t.d.navigators = {};
+            navigators.forEach(function(navigator){
+                t.addNavigator(navigator)
+            });
+            return t;
+        }
+        return t.d.navigators;
+    };
+    p.addNavigator = function (navigator) {
+        var t = this;
+        var navigatorObj = {};
+        navigatorObj.text = navigator.text || '-';
+        navigatorObj.name = navigator.name || navigator.text;
+        navigatorObj.content = navigator.content || '';
+        navigatorObj.activate = navigator.activate || function(){};
+        navigatorObj.$element = $('<div class="automizy-panel-navigator-element"></div>').appendTo(t.d.$navigator).data('navigator', navigatorObj).text(navigatorObj.text).click(function(){
+            var navigator = $(this).data('navigator');
+            for(var i in t.d.navigators){
+                t.d.navigators[i].$element.removeClass('automizy-active');
+                t.d.navigators[i].$content.ahide();
+            }
+            navigator.$element.addClass('automizy-active');
+            navigator.$content.ashow();
+            navigator.activate.apply(navigator, []);
+        });
+        navigatorObj.$content = $('<div class="automizy-panel-navigator-content"></div>').appendTo(t.d.$navigatorContents).ahide();
+        $A.setContent(navigatorObj.content, navigatorObj.$content);
+
+        t.d.navigators[navigatorObj.name] = navigatorObj;
+        return t;
+    };
+    p.setNavigatorContent = function (content, name) {
+        var t = this;
+        if(typeof t.d.navigators[name] === 'undefined'){
+            return t;
+        }
+        $A.setContent(content, t.d.navigators[name].$content);
+        return t;
+    };
+    p.activateNavigator = function (name) {
+        var t = this;
+        if(typeof t.d.navigators[name] === 'undefined'){
+            return t;
+        }
+        t.d.navigators[name].$element.click();
+        return t;
     };
 
 
@@ -13269,6 +13344,73 @@ var $A = {};
 })();
 
 (function(){
+    var Content = function (obj) {
+        var t = this;
+        t.d = {
+            $widget: $('<div class="automizy-content"></div>'),
+            $navigationBox: $('<div class="automizy-content-navigation-box"></div>'),
+            $content: $('<div class="automizy-content-content"></div>'),
+
+            title:'',
+            content:'',
+            width:'auto',
+            id: 'automizy-content-' + $A.getUniqueString()
+        };
+        t.f = {};
+        t.init();
+
+        t.d.$content.appendTo(t.d.$widget);
+        if (typeof obj !== 'undefined') {
+
+            if (typeof obj.title !== 'undefined') {
+                t.title(obj.title);
+            }
+            if (typeof obj.content !== 'undefined') {
+                t.content(obj.content);
+            }
+
+            t.initParameter(obj);
+        }
+
+    };
+
+    var p = Content.prototype;
+    p.width = function (width) {
+        var t = this;
+        if (typeof width !== 'undefined') {
+            t.d.width = width;
+            t.d.$content.css('max-width', t.d.width);
+            return t;
+        }
+        return t.d.width;
+    };
+    p.content = function (content) {
+        var t = this;
+        if (typeof content !== 'undefined') {
+            if (t.d.$content.contents() instanceof jQuery) {
+                t.d.$content.contents().appendTo($A.$tmp);
+            }
+            t.d.$content.empty();
+            t.d.content = content;
+            if (t.d.content instanceof jQuery) {
+                t.d.content.appendTo(t.d.$content);
+            } else if(typeof t.d.content.drawTo === 'function') {
+                t.d.content.drawTo(t.d.$content);
+            } else {
+                t.d.$content.html(t.d.content);
+            }
+            return t;
+        }
+        return t.d.content;
+    };
+
+
+    $A.initBasicFunctions(Content, "Content", []);
+
+
+})();
+
+(function(){
     var List = function (obj) {
         var t = this;
         t.d = {
@@ -13390,17 +13532,23 @@ var $A = {};
             t.d.elements = [];
             elements.forEach(function (element) {
                 var elementModule;
-                element.listModule = t;
-                element.type = element.type || t.type() || 'simple';
-                if(element.type === 'simple'){
-                    elementModule = $A.newSimpleListElement(element);
-                }else if(element.type === 'title-and-subtitle'){
-                    elementModule = $A.newTitleAndSubTitleListElement(element);
-                }else if(element.type === 'box'){
-                    elementModule = $A.newBoxListElement(element);
+                if(element === 'separator'){
+                    $('<div class="automizy-list-element-separator"></div>').appendTo(t.d.$elements);
+                }else {
+                    element.listModule = t;
+                    element.type = element.type || t.type() || 'simple';
+                    if (element.type === 'simple') {
+                        elementModule = $A.newSimpleListElement(element);
+                    } else if (element.type === 'title-and-subtitle') {
+                        elementModule = $A.newTitleAndSubTitleListElement(element);
+                    } else if (element.type === 'box') {
+                        elementModule = $A.newBoxListElement(element);
+                    } else if (element.type === 'iconed') {
+                        elementModule = $A.newIconedListElement(element);
+                    }
+                    t.d.elements.push(elementModule);
+                    elementModule.drawTo(t.d.$elements);
                 }
-                t.d.elements.push(elementModule);
-                elementModule.drawTo(t.d.$elements);
             });
             return t;
         }
@@ -13694,6 +13842,61 @@ var $A = {};
     };
 
     $A.initBasicFunctions(BoxListElement, "BoxListElement", []);
+
+})();
+
+(function(){
+
+    var IconedListElement = function (obj) {
+        var t = this;
+
+        obj = obj || {};
+
+        $A.m.ListElement.apply(t, [obj]);
+
+        t.d.$icon = $('<span class="automizy-list-element-icon fa"></span>').appendTo(t.d.$widget);
+        t.d.$text = $('<span class="automizy-list-element-text"></span>').appendTo(t.d.$widget);
+
+        t.d.text = false;
+        t.d.icon = false;
+
+        if (typeof obj !== 'undefined') {
+            if (typeof obj.text !== 'undefined') {
+                t.text(obj.text);
+            }
+            if (typeof obj.icon !== 'undefined') {
+                t.icon(obj.icon);
+            }
+        }
+
+        t.widget().addClass('automizy-type-iconed');
+
+    };
+    IconedListElement.prototype = Object.create($A.m.ListElement.prototype);
+    IconedListElement.prototype.constructor = IconedListElement;
+
+    var p = IconedListElement.prototype;
+
+    p.text = function(text){
+        var t = this;
+        if(typeof text !== 'undefined') {
+            t.d.text = text;
+            t.d.$text.html(t.d.text);
+            return t;
+        }
+        return t.d.text;
+    };
+    p.icon = function(icon){
+        var t = this;
+        if(typeof icon !== 'undefined') {
+            t.d.icon = icon;
+            t.d.$icon.addClass(icon);
+            return t;
+        }
+        return t.d.icon;
+    };
+
+    $A.initBasicFunctions(IconedListElement, "IconedListElement", []);
 
 })();
 
@@ -15457,6 +15660,23 @@ var $A = {};
         });
     };
 
+})();
+
+(function(){
+    $A.setContent = function (content, target) {
+        if (target.contents() instanceof jQuery) {
+            target.contents().appendTo($A.$tmp);
+        }
+        target.empty();
+        if (content instanceof jQuery) {
+            content.appendTo(target);
+        } else if(typeof content.drawTo === 'function') {
+            content.drawTo(target);
+        } else {
+            target.html(content);
+        }
+        return $A;
+    };
 })();
 
 (function(){

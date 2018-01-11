@@ -36,11 +36,13 @@ define([
     "automizy/modules/columnContent/columnContent",
     "automizy/modules/columnContent/columnContentColumn",
     "automizy/modules/mockup",
+    "automizy/modules/content",
     "automizy/modules/list/list",
     "automizy/modules/list/listElement",
     "automizy/modules/list/listElements/simple",
     "automizy/modules/list/listElements/titleAndSubTitle",
     "automizy/modules/list/listElements/box",
+    "automizy/modules/list/listElements/iconed",
 
     "automizy/defines/input",
     
@@ -83,6 +85,7 @@ define([
     "automizy/functions/runEvent",
     "automizy/functions/isPageVisibility",
     "automizy/functions/escapeHtml",
+    "automizy/functions/setContent",
     "automizy/functions/convertElementLetterToLetter",
     "automizy/functions/animateElementLetterToLetter",
     "automizy/functions/sameAs"
