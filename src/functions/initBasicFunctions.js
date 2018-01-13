@@ -299,7 +299,7 @@ define([
                     return t;
                 }
                 if (typeof obj !== 'undefined') {
-                    if (obj instanceof $A.m.Button || obj instanceof $A.m.Input) {
+                    if (typeof obj.drawTo === 'function') {
                         obj.drawTo(t.d.$buttons || t.d.$widget);
                         obj.d.thisIsVariable = true;
                         t.d.buttons.push(obj);
@@ -346,8 +346,14 @@ define([
                         }
                     }
                     t.d.buttons = [];
-                    for (var i in buttons) {
-                        t.addButton(buttons[i]);
+                    if(Array.isArray(buttons)){
+                        buttons.forEach(function(button){
+                            t.addButton(button);
+                        })
+                    }else{
+                        for (var i in buttons) {
+                            t.addButton(buttons[i]);
+                        }
                     }
                     return t;
                 }

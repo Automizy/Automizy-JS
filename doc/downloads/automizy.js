@@ -559,7 +559,7 @@ var $A = {};
                     return t;
                 }
                 if (typeof obj !== 'undefined') {
-                    if (obj instanceof $A.m.Button || obj instanceof $A.m.Input) {
+                    if (typeof obj.drawTo === 'function') {
                         obj.drawTo(t.d.$buttons || t.d.$widget);
                         obj.d.thisIsVariable = true;
                         t.d.buttons.push(obj);
@@ -606,8 +606,14 @@ var $A = {};
                         }
                     }
                     t.d.buttons = [];
-                    for (var i in buttons) {
-                        t.addButton(buttons[i]);
+                    if(Array.isArray(buttons)){
+                        buttons.forEach(function(button){
+                            t.addButton(button);
+                        })
+                    }else{
+                        for (var i in buttons) {
+                            t.addButton(buttons[i]);
+                        }
                     }
                     return t;
                 }
@@ -1001,6 +1007,21 @@ var $A = {};
         t.runFunctions('open');
         return t;
     };
+    p.close = function () {
+        var t = this;
+        t.d.opened = false;
+        t.widget().ahide();
+        return t;
+    };
+    p.toggle = function () {
+        var t = this;
+        if(t.d.opened){
+            t.close();
+        }else{
+            t.open();
+        }
+        return t;
+    };
     p.setPosition = function () {
         var t = this;
 
@@ -1116,12 +1137,6 @@ var $A = {};
         t.offsetLeft(0);
         t.buttons([]);
 
-        return t;
-    };
-    p.close = function () {
-        var t = this;
-        t.d.opened = false;
-        t.widget().ahide();
         return t;
     };
 
@@ -1259,8 +1274,8 @@ var $A = {};
             },
             dropDownMenuOpened:false,
             dropDownMenuList:[],
-            create: function () {
-            },
+            create: function () {},
+            openDropDownMenuFunction: function () {},
             id: 'automizy-button-' + $A.getUniqueString()
         };
         t.f = {};
@@ -1368,6 +1383,9 @@ var $A = {};
             }
             if (typeof obj.dropdown !== 'undefined') {
                 t.dropdown(obj.dropdown);
+            }
+            if (typeof obj.openDropDownMenu !== 'undefined') {
+                t.openDropDownMenu(obj.openDropDownMenu);
             }
             t.initParameter(obj);
         }
@@ -1807,8 +1825,12 @@ var $A = {};
         }
         return t.d.dropdown;
     };
-    p.openDropDownMenu = function(){
+    p.openDropDownMenu = function(func){
         var t = this;
+        if(typeof func === 'function'){
+            t.d.openDropDownMenuFunction = func;
+            return t;
+        }
         $A.closeAllButtonMenu();
         t.d.dropDownMenuOpened = true;
         var $target = t.widget();
@@ -1824,6 +1846,7 @@ var $A = {};
             width: targetWidth + 'px',
             display: 'block'
         });
+        t.d.openDropDownMenuFunction.apply(t, []);
         return t;
     };
 
@@ -10747,6 +10770,10 @@ var $A = {};
             }
             if(typeof options[i].labelAfter !== 'undefined'){
                 options[i].$labelAfter.html(options[i].labelAfter).ashow();
+            }
+            if(typeof options[i].newRow !== 'undefined' && options[i].newRow === true){
+                options[i].$box.append('<br/>');
+                options[i].$labelAfter.css('margin-right', 0);
             }
 
             t.d.options.push(options[i]);

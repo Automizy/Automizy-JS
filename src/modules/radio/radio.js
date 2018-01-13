@@ -93,6 +93,10 @@ define([
             if(typeof options[i].labelAfter !== 'undefined'){
                 options[i].$labelAfter.html(options[i].labelAfter).ashow();
             }
+            if(typeof options[i].newRow !== 'undefined' && options[i].newRow === true){
+                options[i].$box.append('<br/>');
+                options[i].$labelAfter.css('margin-right', 0);
+            }
 
             t.d.options.push(options[i]);
         }

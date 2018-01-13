@@ -218,6 +218,21 @@ define([
         t.runFunctions('open');
         return t;
     };
+    p.close = function () {
+        var t = this;
+        t.d.opened = false;
+        t.widget().ahide();
+        return t;
+    };
+    p.toggle = function () {
+        var t = this;
+        if(t.d.opened){
+            t.close();
+        }else{
+            t.open();
+        }
+        return t;
+    };
     p.setPosition = function () {
         var t = this;
 
@@ -333,12 +348,6 @@ define([
         t.offsetLeft(0);
         t.buttons([]);
 
-        return t;
-    };
-    p.close = function () {
-        var t = this;
-        t.d.opened = false;
-        t.widget().ahide();
         return t;
     };
 

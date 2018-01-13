@@ -38,8 +38,8 @@ define([
             },
             dropDownMenuOpened:false,
             dropDownMenuList:[],
-            create: function () {
-            },
+            create: function () {},
+            openDropDownMenuFunction: function () {},
             id: 'automizy-button-' + $A.getUniqueString()
         };
         t.f = {};
@@ -147,6 +147,9 @@ define([
             }
             if (typeof obj.dropdown !== 'undefined') {
                 t.dropdown(obj.dropdown);
+            }
+            if (typeof obj.openDropDownMenu !== 'undefined') {
+                t.openDropDownMenu(obj.openDropDownMenu);
             }
             t.initParameter(obj);
         }
@@ -586,8 +589,12 @@ define([
         }
         return t.d.dropdown;
     };
-    p.openDropDownMenu = function(){
+    p.openDropDownMenu = function(func){
         var t = this;
+        if(typeof func === 'function'){
+            t.d.openDropDownMenuFunction = func;
+            return t;
+        }
         $A.closeAllButtonMenu();
         t.d.dropDownMenuOpened = true;
         var $target = t.widget();
@@ -603,6 +610,7 @@ define([
             width: targetWidth + 'px',
             display: 'block'
         });
+        t.d.openDropDownMenuFunction.apply(t, []);
         return t;
     };
 
