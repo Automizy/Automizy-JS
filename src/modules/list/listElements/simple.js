@@ -13,6 +13,9 @@ define([
             if (typeof obj.text !== 'undefined') {
                 t.text(obj.text);
             }
+            if (typeof obj.bold !== 'undefined') {
+                t.bold(obj.bold);
+            }
         }
 
         t.widget().addClass('automizy-type-simple');
@@ -26,6 +29,16 @@ define([
     p.text = function(text){
         var t = this;
         t.widget().html(text);
+        return t;
+    };
+
+    p.bold = function(bold){
+        var t = this;
+        if(bold){
+            t.widget().css('font-weight', 'bold');
+        }else{
+            t.widget().css('font-weight', 'normal');
+        }
         return t;
     };
 

@@ -57,6 +57,7 @@ define([
         if (typeof maxHeight !== 'undefined') {
             t.d.maxHeight = maxHeight;
             t.widget().css('max-height', t.d.maxHeight);
+            t.d.$elements.css('max-height', t.d.maxHeight);
             return t;
         }
         return t.d.maxHeight;
@@ -77,6 +78,11 @@ define([
     };
     p.search = function (searchValue) {
         var t = this;
+        if(typeof searchValue === 'undefined'){
+            searchValue = '';
+        }else if(typeof searchValue === 'boolean' || typeof searchValue === 'object'){
+            searchValue = '';
+        }
         var re = new RegExp(searchValue.trim(), "gi");
         var searchCount = 0;
         t.elements().forEach(function (element) {

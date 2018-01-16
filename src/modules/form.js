@@ -71,9 +71,6 @@ define([
             if (typeof obj.name !== 'undefined') {
                 t.name(obj.name);
             }
-            if (typeof obj.maxWidth !== 'undefined') {
-                t.maxWidth(obj.maxWidth);
-            }
             if (typeof obj.minWidth !== 'undefined') {
                 t.minWidth(obj.minWidth);
             }

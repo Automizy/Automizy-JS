@@ -44,6 +44,9 @@ define([
             if (typeof obj.navigators !== 'undefined') {
                 t.navigators(obj.navigators);
             }
+            if (typeof obj.maxWidth !== 'undefined') {
+                t.maxWidth(obj.maxWidth);
+            }
 
             t.initParameter(obj);
         }

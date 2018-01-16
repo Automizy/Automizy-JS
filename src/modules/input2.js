@@ -660,6 +660,10 @@ define([
                 var radio = t.automizyRadio();
                 radio.val.apply(radio, arguments || []);
                 return t;
+            } else if (t.type() === 'select') {
+                var select = t.automizySelect();
+                select.val.apply(select, arguments || []);
+                return t;
             } else {
                 t.input().val(value);
             }

@@ -5256,6 +5256,10 @@ var $A = {};
                 var radio = t.automizyRadio();
                 radio.val.apply(radio, arguments || []);
                 return t;
+            } else if (t.type() === 'select') {
+                var select = t.automizySelect();
+                select.val.apply(select, arguments || []);
+                return t;
             } else {
                 t.input().val(value);
             }
@@ -6351,9 +6355,6 @@ var $A = {};
             }
             if (typeof obj.name !== 'undefined') {
                 t.name(obj.name);
-            }
-            if (typeof obj.maxWidth !== 'undefined') {
-                t.maxWidth(obj.maxWidth);
             }
             if (typeof obj.minWidth !== 'undefined') {
                 t.minWidth(obj.minWidth);
@@ -11659,6 +11660,9 @@ var $A = {};
             if (typeof obj.navigators !== 'undefined') {
                 t.navigators(obj.navigators);
             }
+            if (typeof obj.maxWidth !== 'undefined') {
+                t.maxWidth(obj.maxWidth);
+            }
 
             t.initParameter(obj);
         }
@@ -13490,6 +13494,7 @@ var $A = {};
         if (typeof maxHeight !== 'undefined') {
             t.d.maxHeight = maxHeight;
             t.widget().css('max-height', t.d.maxHeight);
+            t.d.$elements.css('max-height', t.d.maxHeight);
             return t;
         }
         return t.d.maxHeight;
@@ -13510,6 +13515,11 @@ var $A = {};
     };
     p.search = function (searchValue) {
         var t = this;
+        if(typeof searchValue === 'undefined'){
+            searchValue = '';
+        }else if(typeof searchValue === 'boolean' || typeof searchValue === 'object'){
+            searchValue = '';
+        }
         var re = new RegExp(searchValue.trim(), "gi");
         var searchCount = 0;
         t.elements().forEach(function (element) {
@@ -13714,6 +13724,9 @@ var $A = {};
             if (typeof obj.text !== 'undefined') {
                 t.text(obj.text);
             }
+            if (typeof obj.bold !== 'undefined') {
+                t.bold(obj.bold);
+            }
         }
 
         t.widget().addClass('automizy-type-simple');
@@ -13727,6 +13740,16 @@ var $A = {};
     p.text = function(text){
         var t = this;
         t.widget().html(text);
+        return t;
+    };
+
+    p.bold = function(bold){
+        var t = this;
+        if(bold){
+            t.widget().css('font-weight', 'bold');
+        }else{
+            t.widget().css('font-weight', 'normal');
+        }
         return t;
     };
 
