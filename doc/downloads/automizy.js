@@ -10432,6 +10432,14 @@ var $A = {};
         }
         return t.d.options;
     };
+    p.getOptionValues = function () {
+        var t = this;
+        var values = [];
+        t.d.options.forEach(function(option){
+            values.push(option.val());
+        });
+        return values;
+    };
     p.addOptions = function (options, before) {
         var t = this;
         var val = t.val();
