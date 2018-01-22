@@ -148,6 +148,8 @@ define([
                     $elem.insertAfter(target);
                 }else if(where === 'before'){
                     $elem.insertBefore(target);
+                }else if(where === 'prepend'){
+                    $elem.prependTo(target);
                 }else{
                     $elem.appendTo(target);
                 }

@@ -408,6 +408,8 @@ var $A = {};
                     $elem.insertAfter(target);
                 }else if(where === 'before'){
                     $elem.insertBefore(target);
+                }else if(where === 'prepend'){
+                    $elem.prependTo(target);
                 }else{
                     $elem.appendTo(target);
                 }
@@ -835,6 +837,9 @@ var $A = {};
             if (typeof obj.target !== 'undefined') {
                 t.target(obj.target);
             }
+            if (typeof obj.title !== 'undefined') {
+                t.title(obj.title);
+            }
             if (typeof obj.width !== 'undefined') {
                 t.width(obj.width);
             }
@@ -946,8 +951,8 @@ var $A = {};
             if (t.d.title === false) {
                 t.d.$title.prependTo($A.$tmp);
             } else {
-                t.d.$title.html(title);
-                t.d.$title.prependTo(t.d.$widget);
+                t.d.$title.html(t.d.title);
+                //t.d.$title.prependTo(t.d.$widget);
             }
             return t;
         }
@@ -9590,6 +9595,7 @@ var $A = {};
             $icon: $('<span class="automizy-icon"></span>'),
             $option:$('<option></option>'),
             selectModule:false,
+            before:false,
             selectOptionBoxModule:false,
             value: '',
             html:'',
@@ -9612,6 +9618,9 @@ var $A = {};
         if (typeof obj !== 'undefined') {
             if (typeof obj.selectModule !== 'undefined') {
                 t.selectModule(obj.selectModule);
+            }
+            if (typeof obj.before !== 'undefined') {
+                t.before(obj.before);
             }
             if (typeof obj.selectOptionBoxModule !== 'undefined') {
                 t.selectOptionBoxModule(obj.selectOptionBoxModule);
@@ -9681,11 +9690,23 @@ var $A = {};
         }
         return t.d.selectModule;
     };
+    p.before = function (before) {
+        var t = this;
+        if (typeof before !== 'undefined') {
+            t.d.before = before;
+            return t;
+        }
+        return t.d.before;
+    };
     p.selectOptionBoxModule = function (selectOptionBoxModule) {
         var t = this;
         if (typeof selectOptionBoxModule !== 'undefined') {
             t.d.selectOptionBoxModule = selectOptionBoxModule;
-            t.drawTo(t.d.selectOptionBoxModule.d.$options);
+            if(t.before()){
+                t.drawTo(t.d.selectOptionBoxModule.d.$options, 'prepend');
+            }else {
+                t.drawTo(t.d.selectOptionBoxModule.d.$options);
+            }
             return t;
         }
         return t.d.selectOptionBoxModule;
@@ -10274,6 +10295,7 @@ var $A = {};
     };
     p.width = function (width) {
         var t = this;
+        var t = this;
         if (typeof width !== 'undefined') {
             t.d.width = width;
             t.widget().css('width', t.d.width);
@@ -10411,8 +10433,8 @@ var $A = {};
         t.cleanGroups();
         return t;
     };
-    p.addOption = function (option) {
-        return this.addOptions([option]);
+    p.addOption = function (option, before) {
+        return this.addOptions([option], before || false);
     };
     p.options = function (options) {
         var t = this;
@@ -10443,8 +10465,8 @@ var $A = {};
     p.addOptions = function (options, before) {
         var t = this;
         var val = t.val();
-        var before = before || false;
-        var options = options || [];
+        before = before || false;
+        options = options || [];
         if (!(options instanceof Array)) {
             var optionsArray = [];
             for (var i in options) {
@@ -10471,6 +10493,7 @@ var $A = {};
             }
             options[i].selectModule = t;
             options[i].selectOptionBoxModule = t.optionBox();
+            options[i].before = before;
             if (options[i].selected === true) {
                 hasSelected = true;
             }
@@ -10834,499 +10857,6 @@ var $A = {};
 
 
     $A.initBasicFunctions(Radio, "Radio", ['change', 'manualChange']);
-
-
-})();
-
-(function(){
-    var CustomFieldFilter = function (obj) {
-        var t = this;
-        t.d = {
-            $widget: $('<div class="automizy-custom-field-filter"></div>'),
-            $filterButtons: $('<div class="automizy-custom-field-filter-filter-buttons"></div>'),
-            $customFieldSelect: $('<div class="automizy-custom-field-filter-custom-field-select-box"></div>'),
-            $customFieldSelectInputBox: $('<div class="automizy-custom-field-filter-custom-field-select-input-box"></div>'),
-            $customFieldSelectLabel: $('<div class="automizy-custom-field-filter-custom-field-select-label"></div>'),
-            $relationAndValue: $('<div class="automizy-custom-field-filter-relation-and-value"></div>'),
-            $relationInput: $('<div class="automizy-custom-field-filter-relation"></div>'),
-            $valueInput: $('<div class="automizy-custom-field-filter-value"></div>'),
-            id: 'automizy-custom-field-filter-' + $A.getUniqueString(),
-
-            type:false,
-
-            relations:{
-                text:[
-                    ['EQ', $A.translate('is')],
-                    ['NE', $A.translate('is not')],
-                    ['IN', $A.translate('contains')],
-                    ['NI', $A.translate('does not contain')]
-                ],
-                date:[
-                    ['EQ', $A.translate('on the')],
-                    ['NE', $A.translate('not on')],
-                    ['GT', $A.translate('before')],
-                    ['LT', $A.translate('after')]
-                ],
-                number:[
-                    ['EQ', $A.translate('equals')],
-                    ['NE', $A.translate('not equals')],
-                    ['GT', $A.translate('less than')],
-                    ['LT', $A.translate('greater than')]
-                ]
-            },
-            customFields:[],
-
-            customFieldSelect:$A.newInput2({
-                type:'select',
-                change:function(){
-                    var selectedOption = this.automizySelect().selectedOption();
-                    if(!!selectedOption) {
-                        t.type(this.automizySelect().selectedOption().data('type'));
-                    }
-                }
-            }),
-
-            relationSelect:$A.newInput2({
-                type:'select',
-                width:'180px'
-            }),
-
-            valueInputText:$A.newInput2({
-                type:'text'
-            }),
-
-            valueInputDate:$A.newInput2({
-                type:'text',
-                create:function(){
-                    if (typeof $.ui !== 'undefined') {
-                        this.input().datepicker({
-                            dateFormat: 'yy-mm-dd',
-                            closeText: $A.translate('Save')
-                        })
-                    }else{
-                        this.type('date');
-                    }
-                }
-            }),
-
-            valueInputNumber:$A.newInput2({
-                type:'number'
-            }),
-
-            change: function () {
-                if (t.change().returnValue() === false) {
-                    return false;
-                }
-            }
-        };
-
-        t.d.$filterButtons.appendTo(t.d.$widget);
-        t.d.$customFieldSelect.appendTo(t.d.$widget);
-        t.d.$customFieldSelectInputBox.appendTo(t.d.$customFieldSelect);
-        t.d.$customFieldSelectLabel.appendTo(t.d.$customFieldSelect);
-
-        t.d.$relationAndValue.appendTo(t.d.$widget);
-        t.d.$relationInput.appendTo(t.d.$relationAndValue);
-        t.d.$valueInput.appendTo(t.d.$relationAndValue);
-
-        t.d.customFieldSelect.drawTo(t.d.$customFieldSelectInputBox);
-        t.d.relationSelect.drawTo(t.d.$relationInput);
-        t.d.valueInputText.drawTo(t.d.$valueInput);
-        t.d.valueInputDate.drawTo(t.d.$valueInput);
-        t.d.valueInputNumber.drawTo(t.d.$valueInput);
-
-        t.d.relationSelect.automizySelect().hasCheck(false);
-
-        t.f = {};
-        t.init();
-
-        t.type(false);
-
-        if (typeof obj !== 'undefined') {
-            if (typeof obj.customFields !== 'undefined') {
-                t.customFields(obj.customFields);
-            }
-            t.initParameter(obj);
-        }
-    };
-
-    var p = CustomFieldFilter.prototype;
-
-    p.customFieldId = function (customFieldId) {
-        var t = this;
-        if (typeof customFieldId !== 'undefined') {
-            t.d.customFieldId = customFieldId;
-            t.d.customFieldSelect.automizySelect().val(t.d.customFieldId);
-            if(!t.d.customFieldId){
-                t.d.valueInputText.val('');
-                t.d.valueInputDate.val('');
-                t.d.valueInputNumber.val(0);
-            }
-            return t;
-        }
-        return t.d.customFieldSelect.automizySelect().val();
-    };
-    p.customFields = function (customFields) {
-        var t = this;
-        if (typeof customFields !== 'undefined') {
-            t.d.customFields = customFields;
-            var options = [];
-            t.d.customFields.forEach(function(cf){
-                option = {
-                    value:cf.value,
-                    html:cf.text,
-                    data:{
-                        type:cf.type
-                    }
-                };
-                if(typeof cf.group !== 'undefined'){
-                    option.group = cf.group;
-                }
-                options.push(option);
-            });
-            t.d.customFieldSelect.automizySelect().options(options);
-            return t;
-        }
-        return t.d.customFields;
-    };
-    p.loadingStart = function () {
-        var t = this;
-        t.type(false);
-        t.d.customFieldSelect.automizySelect().loadingStart();
-        return t;
-    };
-    p.loadingStop = function () {
-        var t = this;
-        t.d.customFieldSelect.automizySelect().loadingStop();
-        return t;
-    };
-    p.relation = function (relation) {
-        var t = this;
-        if (typeof relation !== 'undefined') {
-            t.d.relation = relation;
-            t.d.relationSelect.automizySelect().val(t.d.relation);
-            return t;
-        }
-        return t.d.relationSelect.automizySelect().val();
-    };
-    p.relationOptions = function (relationOptions) {
-        var t = this;
-        if (typeof relation !== 'undefined') {
-            t.d.relationSelect.automizySelect().options(relationOptions);
-            return t;
-        }
-        return t.d.relationSelect.automizySelect().options();
-    };
-    p.val = p.value = function (value) {
-        var t = this;
-        var type = t.type();
-        if (typeof value !== 'undefined') {
-            if(type === 'text'){
-                t.d.valueInputText.val(value);
-            }else if(type === 'date'){
-                t.d.valueInputDate.val(value);
-            }else if(type === 'number'){
-                t.d.valueInputNumber.val(value);
-            }
-            return t;
-        }
-
-        if(type === 'text'){
-            return t.d.valueInputText.val();
-        }else if(type === 'date'){
-            return t.d.valueInputDate.val();
-        }else if(type === 'number'){
-            return t.d.valueInputNumber.val();
-        }
-
-        return false;
-    };
-    p.type = function (type) {
-        var t = this;
-        if (typeof type !== 'undefined') {
-            t.d.type = type;
-
-            t.d.valueInputText.hide();
-            t.d.valueInputDate.hide();
-            t.d.valueInputNumber.hide();
-            t.d.relationSelect.show();
-
-            if(t.d.type === 'text'){
-                t.d.valueInputText.show();
-                t.d.relationSelect.options(t.d.relations.text);
-                t.d.$customFieldSelectLabel.text($A.translate('custom field'));
-            }else if(t.d.type === 'date'){
-                t.d.valueInputDate.show();
-                t.d.relationSelect.options(t.d.relations.date);
-                t.d.$customFieldSelectLabel.text($A.translate('custom field is'));
-            }else if(t.d.type === 'number'){
-                t.d.valueInputNumber.show();
-                t.d.relationSelect.options(t.d.relations.number);
-                t.d.$customFieldSelectLabel.text($A.translate('custom field is'));
-            }else if(!t.d.type){
-                t.d.relationSelect.hide();
-                t.d.$customFieldSelectLabel.text($A.translate('custom field'));
-            }
-
-            return t;
-        }
-        return t.d.type;
-    };
-    p.change = function (func, name, life) {
-        var t = this;
-        if (typeof func === 'function') {
-            t.addFunction('change', func, name, life);
-        } else {
-            var a = t.runFunctions('change');
-            t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
-        }
-        return t;
-    };
-
-    p.drawTo = p.draw = p.appendTo = function ($target) {
-        var t = this;
-        $target = $target || $('body');
-        t.d.$widget.appendTo($target);
-        return t;
-    };
-    p.show = function () {
-        var t = this;
-        this.d.$widget.ashow();
-        return t;
-    };
-    p.hide = function () {
-        var t = this;
-        this.d.$widget.ahide();
-        return t;
-    };
-    p.disabled = function(){
-        return false;
-    };
-
-
-    $A.initBasicFunctions(CustomFieldFilter, "CustomFieldFilter", ['change']);
-
-
-})();
-
-(function(){
-    var CustomFieldUpdater = function (obj) {
-        var t = this;
-        t.d = {
-            $widget: $('<div class="automizy-custom-field-updater"></div>'),
-            $filterButtons: $('<div class="automizy-custom-field-updater-filter-buttons"></div>'),
-            $customFieldSelect: $('<div class="automizy-custom-field-updater-custom-field-select-box"></div>'),
-            $customFieldSelectInputBox: $('<div class="automizy-custom-field-updater-custom-field-select-input-box"></div>'),
-            $customFieldSelectLabel: $('<div class="automizy-custom-field-updater-custom-field-select-label"></div>'),
-            $valueLabel: $('<div class="automizy-custom-field-updater-value-label"></div>'),
-            $valueBox: $('<div class="automizy-custom-field-updater-value-box"></div>'),
-            $valueInput: $('<div class="automizy-custom-field-updater-value"></div>'),
-            id: 'automizy-custom-field-updater-' + $A.getUniqueString(),
-
-            type:false,
-
-            customFields:[],
-
-            customFieldSelect:$A.newInput2({
-                type:'select',
-                change:function(){
-                    var selectedOption = this.automizySelect().selectedOption();
-                    if(!!selectedOption) {
-                        t.type(this.automizySelect().selectedOption().data('type'));
-                    }
-                }
-            }),
-
-            valueInputText:$A.newInput2({
-                type:'text'
-            }),
-
-            valueInputDate:$A.newInput2({
-                type:'text',
-                create:function(){
-                    if (typeof $.ui !== 'undefined') {
-                        this.input().datepicker({
-                            dateFormat: 'yy-mm-dd',
-                            closeText: $A.translate('Save')
-                        })
-                    }else{
-                        this.type('date');
-                    }
-                }
-            }),
-
-            valueInputNumber:$A.newInput2({
-                type:'number'
-            }),
-
-            change: function () {
-                if (t.change().returnValue() === false) {
-                    return false;
-                }
-            }
-        };
-
-        t.d.$customFieldSelect.appendTo(t.d.$widget);
-        t.d.$customFieldSelectInputBox.appendTo(t.d.$customFieldSelect);
-        t.d.$customFieldSelectLabel.appendTo(t.d.$customFieldSelect).text($A.translate('custom field'));
-
-        t.d.$valueBox.appendTo(t.d.$widget);
-        t.d.$valueLabel.appendTo(t.d.$valueBox);
-        t.d.$valueInput.appendTo(t.d.$valueBox);
-
-        t.d.customFieldSelect.drawTo(t.d.$customFieldSelectInputBox);
-        t.d.valueInputText.drawTo(t.d.$valueInput);
-        t.d.valueInputDate.drawTo(t.d.$valueInput);
-        t.d.valueInputNumber.drawTo(t.d.$valueInput);
-
-        t.f = {};
-        t.init();
-
-        t.type(false);
-
-        if (typeof obj !== 'undefined') {
-            if (typeof obj.customFields !== 'undefined') {
-                t.customFields(obj.customFields);
-            }
-            t.initParameter(obj);
-        }
-    };
-
-    var p = CustomFieldUpdater.prototype;
-
-    p.customFieldId = function (customFieldId) {
-        var t = this;
-        if (typeof customFieldId !== 'undefined') {
-            t.d.customFieldId = customFieldId;
-            t.d.customFieldSelect.automizySelect().val(t.d.customFieldId);
-            if(!t.d.customFieldId){
-                t.d.valueInputText.val('');
-                t.d.valueInputDate.val('');
-                t.d.valueInputNumber.val(0);
-            }
-            return t;
-        }
-        return t.d.customFieldSelect.automizySelect().val();
-    };
-    p.customFields = function (customFields) {
-        var t = this;
-        if (typeof customFields !== 'undefined') {
-            t.d.customFields = customFields;
-            var options = [];
-            var option = {};
-            t.d.customFields.forEach(function(cf){
-                option = {
-                    value:cf.value,
-                    html:cf.text,
-                    data:{
-                        type:cf.type
-                    }
-                };
-                if(typeof cf.group !== 'undefined'){
-                    option.group = cf.group;
-                }
-                options.push(option);
-            });
-            t.d.customFieldSelect.automizySelect().options(options);
-            return t;
-        }
-        return t.d.customFields;
-    };
-    p.loadingStart = function () {
-        var t = this;
-        t.type(false);
-        t.d.customFieldSelect.automizySelect().loadingStart();
-        return t;
-    };
-    p.loadingStop = function () {
-        var t = this;
-        t.d.customFieldSelect.automizySelect().loadingStop();
-        return t;
-    };
-    p.val = p.value = function (value) {
-        var t = this;
-        var type = t.type();
-        if (typeof value !== 'undefined') {
-            if(type === 'text'){
-                t.d.valueInputText.val(value);
-            }else if(type === 'date'){
-                t.d.valueInputDate.val(value);
-            }else if(type === 'number'){
-                t.d.valueInputNumber.val(value);
-            }
-            return t;
-        }
-
-        if(type === 'text'){
-            return t.d.valueInputText.val();
-        }else if(type === 'date'){
-            return t.d.valueInputDate.val();
-        }else if(type === 'number'){
-            return t.d.valueInputNumber.val();
-        }
-
-        return false;
-    };
-    p.type = function (type) {
-        var t = this;
-        if (typeof type !== 'undefined') {
-            t.d.type = type;
-
-            t.d.valueInputText.hide();
-            t.d.valueInputDate.hide();
-            t.d.valueInputNumber.hide();
-            t.d.$valueLabel.show();
-
-            if(t.d.type === 'text'){
-                t.d.valueInputText.show();
-                t.d.$valueLabel.text('with this text:');
-            }else if(t.d.type === 'date'){
-                t.d.valueInputDate.show();
-                t.d.$valueLabel.text('with this date:');
-            }else if(t.d.type === 'number'){
-                t.d.valueInputNumber.show();
-                t.d.$valueLabel.text('with this number:');
-            }else if(!t.d.type){
-                t.d.$valueLabel.hide();
-            }
-
-            return t;
-        }
-        return t.d.type;
-    };
-    p.change = function (func, name, life) {
-        var t = this;
-        if (typeof func === 'function') {
-            t.addFunction('change', func, name, life);
-        } else {
-            var a = t.runFunctions('change');
-            t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
-        }
-        return t;
-    };
-
-    p.drawTo = p.draw = p.appendTo = function ($target) {
-        var t = this;
-        $target = $target || $('body');
-        t.d.$widget.appendTo($target);
-        return t;
-    };
-    p.show = function () {
-        var t = this;
-        this.d.$widget.ashow();
-        return t;
-    };
-    p.hide = function () {
-        var t = this;
-        this.d.$widget.ahide();
-        return t;
-    };
-    p.disabled = function(){
-        return false;
-    };
-
-
-    $A.initBasicFunctions(CustomFieldUpdater, "CustomFieldUpdater", ['change']);
 
 
 })();
@@ -13450,17 +12980,818 @@ var $A = {};
 })();
 
 (function(){
+    var CustomFieldFilter = function (obj) {
+        var t = this;
+        t.d = {
+            $widget: $('<div class="automizy-custom-field-filter"></div>'),
+            $filterButtons: $('<div class="automizy-custom-field-filter-filter-buttons"></div>'),
+            $customFieldSelect: $('<div class="automizy-custom-field-filter-custom-field-select-box"></div>'),
+            $customFieldSelectInputBox: $('<div class="automizy-custom-field-filter-custom-field-select-input-box"></div>'),
+            $customFieldSelectLabel: $('<div class="automizy-custom-field-filter-custom-field-select-label"></div>'),
+            $relationAndValue: $('<div class="automizy-custom-field-filter-relation-and-value"></div>'),
+            $relationInput: $('<div class="automizy-custom-field-filter-relation"></div>'),
+            $valueInput: $('<div class="automizy-custom-field-filter-value"></div>'),
+            id: 'automizy-custom-field-filter-' + $A.getUniqueString(),
+
+            type:false,
+
+            relations:{
+                text:[
+                    ['EQ', $A.translate('is')],
+                    ['NE', $A.translate('is not')],
+                    ['IN', $A.translate('contains')],
+                    ['NI', $A.translate('does not contain')]
+                ],
+                date:[
+                    ['EQ', $A.translate('on the')],
+                    ['NE', $A.translate('not on')],
+                    ['GT', $A.translate('before')],
+                    ['LT', $A.translate('after')]
+                ],
+                number:[
+                    ['EQ', $A.translate('equals')],
+                    ['NE', $A.translate('not equals')],
+                    ['GT', $A.translate('less than')],
+                    ['LT', $A.translate('greater than')]
+                ]
+            },
+            customFields:[],
+
+            customFieldSelect:$A.newInput2({
+                type:'select',
+                change:function(){
+                    var selectedOption = this.automizySelect().selectedOption();
+                    if(!!selectedOption) {
+                        t.type(this.automizySelect().selectedOption().data('type'));
+                    }
+                }
+            }),
+
+            relationSelect:$A.newInput2({
+                type:'select',
+                width:'180px'
+            }),
+
+            valueInputText:$A.newInput2({
+                type:'text'
+            }),
+
+            valueInputDate:$A.newInput2({
+                type:'text',
+                create:function(){
+                    if (typeof $.ui !== 'undefined') {
+                        this.input().datepicker({
+                            dateFormat: 'yy-mm-dd',
+                            closeText: $A.translate('Save')
+                        })
+                    }else{
+                        this.type('date');
+                    }
+                }
+            }),
+
+            valueInputNumber:$A.newInput2({
+                type:'number'
+            }),
+
+            change: function () {
+                if (t.change().returnValue() === false) {
+                    return false;
+                }
+            }
+        };
+
+        t.d.$filterButtons.appendTo(t.d.$widget);
+        t.d.$customFieldSelect.appendTo(t.d.$widget);
+        t.d.$customFieldSelectInputBox.appendTo(t.d.$customFieldSelect);
+        t.d.$customFieldSelectLabel.appendTo(t.d.$customFieldSelect);
+
+        t.d.$relationAndValue.appendTo(t.d.$widget);
+        t.d.$relationInput.appendTo(t.d.$relationAndValue);
+        t.d.$valueInput.appendTo(t.d.$relationAndValue);
+
+        t.d.customFieldSelect.drawTo(t.d.$customFieldSelectInputBox);
+        t.d.relationSelect.drawTo(t.d.$relationInput);
+        t.d.valueInputText.drawTo(t.d.$valueInput);
+        t.d.valueInputDate.drawTo(t.d.$valueInput);
+        t.d.valueInputNumber.drawTo(t.d.$valueInput);
+
+        t.d.relationSelect.automizySelect().hasCheck(false);
+
+        t.f = {};
+        t.init();
+
+        t.type(false);
+
+        if (typeof obj !== 'undefined') {
+            if (typeof obj.customFields !== 'undefined') {
+                t.customFields(obj.customFields);
+            }
+            t.initParameter(obj);
+        }
+    };
+
+    var p = CustomFieldFilter.prototype;
+
+    p.customFieldId = function (customFieldId) {
+        var t = this;
+        if (typeof customFieldId !== 'undefined') {
+            t.d.customFieldId = customFieldId;
+            t.d.customFieldSelect.automizySelect().val(t.d.customFieldId);
+            if(!t.d.customFieldId){
+                t.d.valueInputText.val('');
+                t.d.valueInputDate.val('');
+                t.d.valueInputNumber.val(0);
+            }
+            return t;
+        }
+        return t.d.customFieldSelect.automizySelect().val();
+    };
+    p.customFields = function (customFields) {
+        var t = this;
+        if (typeof customFields !== 'undefined') {
+            t.d.customFields = customFields;
+            var options = [];
+            t.d.customFields.forEach(function(cf){
+                option = {
+                    value:cf.value,
+                    html:cf.text,
+                    data:{
+                        type:cf.type
+                    }
+                };
+                if(typeof cf.group !== 'undefined'){
+                    option.group = cf.group;
+                }
+                options.push(option);
+            });
+            t.d.customFieldSelect.automizySelect().options(options);
+            return t;
+        }
+        return t.d.customFields;
+    };
+    p.loadingStart = function () {
+        var t = this;
+        t.type(false);
+        t.d.customFieldSelect.automizySelect().loadingStart();
+        return t;
+    };
+    p.loadingStop = function () {
+        var t = this;
+        t.d.customFieldSelect.automizySelect().loadingStop();
+        return t;
+    };
+    p.relation = function (relation) {
+        var t = this;
+        if (typeof relation !== 'undefined') {
+            t.d.relation = relation;
+            t.d.relationSelect.automizySelect().val(t.d.relation);
+            return t;
+        }
+        return t.d.relationSelect.automizySelect().val();
+    };
+    p.relationOptions = function (relationOptions) {
+        var t = this;
+        if (typeof relation !== 'undefined') {
+            t.d.relationSelect.automizySelect().options(relationOptions);
+            return t;
+        }
+        return t.d.relationSelect.automizySelect().options();
+    };
+    p.val = p.value = function (value) {
+        var t = this;
+        var type = t.type();
+        if (typeof value !== 'undefined') {
+            if(type === 'text'){
+                t.d.valueInputText.val(value);
+            }else if(type === 'date'){
+                t.d.valueInputDate.val(value);
+            }else if(type === 'number'){
+                t.d.valueInputNumber.val(value);
+            }
+            return t;
+        }
+
+        if(type === 'text'){
+            return t.d.valueInputText.val();
+        }else if(type === 'date'){
+            return t.d.valueInputDate.val();
+        }else if(type === 'number'){
+            return t.d.valueInputNumber.val();
+        }
+
+        return false;
+    };
+    p.type = function (type) {
+        var t = this;
+        if (typeof type !== 'undefined') {
+            t.d.type = type;
+
+            t.d.valueInputText.hide();
+            t.d.valueInputDate.hide();
+            t.d.valueInputNumber.hide();
+            t.d.relationSelect.show();
+
+            if(t.d.type === 'text'){
+                t.d.valueInputText.show();
+                t.d.relationSelect.options(t.d.relations.text);
+                t.d.$customFieldSelectLabel.text($A.translate('custom field'));
+            }else if(t.d.type === 'date'){
+                t.d.valueInputDate.show();
+                t.d.relationSelect.options(t.d.relations.date);
+                t.d.$customFieldSelectLabel.text($A.translate('custom field is'));
+            }else if(t.d.type === 'number'){
+                t.d.valueInputNumber.show();
+                t.d.relationSelect.options(t.d.relations.number);
+                t.d.$customFieldSelectLabel.text($A.translate('custom field is'));
+            }else if(!t.d.type){
+                t.d.relationSelect.hide();
+                t.d.$customFieldSelectLabel.text($A.translate('custom field'));
+            }
+
+            return t;
+        }
+        return t.d.type;
+    };
+    p.change = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('change', func, name, life);
+        } else {
+            var a = t.runFunctions('change');
+            t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
+        }
+        return t;
+    };
+
+    p.drawTo = p.draw = p.appendTo = function ($target) {
+        var t = this;
+        $target = $target || $('body');
+        t.d.$widget.appendTo($target);
+        return t;
+    };
+    p.show = function () {
+        var t = this;
+        this.d.$widget.ashow();
+        return t;
+    };
+    p.hide = function () {
+        var t = this;
+        this.d.$widget.ahide();
+        return t;
+    };
+    p.disabled = function(){
+        return false;
+    };
+
+
+    $A.initBasicFunctions(CustomFieldFilter, "CustomFieldFilter", ['change']);
+
+
+})();
+
+(function(){
+    var CustomFieldUpdater = function (obj) {
+        var t = this;
+        t.d = {
+            $widget: $('<div class="automizy-custom-field-updater"></div>'),
+            $filterButtons: $('<div class="automizy-custom-field-updater-filter-buttons"></div>'),
+            $customFieldSelect: $('<div class="automizy-custom-field-updater-custom-field-select-box"></div>'),
+            $customFieldSelectInputBox: $('<div class="automizy-custom-field-updater-custom-field-select-input-box"></div>'),
+            $customFieldSelectLabel: $('<div class="automizy-custom-field-updater-custom-field-select-label"></div>'),
+            $valueLabel: $('<div class="automizy-custom-field-updater-value-label"></div>'),
+            $valueBox: $('<div class="automizy-custom-field-updater-value-box"></div>'),
+            $valueInput: $('<div class="automizy-custom-field-updater-value"></div>'),
+            id: 'automizy-custom-field-updater-' + $A.getUniqueString(),
+
+            type:false,
+
+            customFields:[],
+
+            customFieldSelect:$A.newInput2({
+                type:'select',
+                change:function(){
+                    var selectedOption = this.automizySelect().selectedOption();
+                    if(!!selectedOption) {
+                        t.type(this.automizySelect().selectedOption().data('type'));
+                    }
+                }
+            }),
+
+            valueInputText:$A.newInput2({
+                type:'text'
+            }),
+
+            valueInputDate:$A.newInput2({
+                type:'text',
+                create:function(){
+                    if (typeof $.ui !== 'undefined') {
+                        this.input().datepicker({
+                            dateFormat: 'yy-mm-dd',
+                            closeText: $A.translate('Save')
+                        })
+                    }else{
+                        this.type('date');
+                    }
+                }
+            }),
+
+            valueInputNumber:$A.newInput2({
+                type:'number'
+            }),
+
+            change: function () {
+                if (t.change().returnValue() === false) {
+                    return false;
+                }
+            }
+        };
+
+        t.d.$customFieldSelect.appendTo(t.d.$widget);
+        t.d.$customFieldSelectInputBox.appendTo(t.d.$customFieldSelect);
+        t.d.$customFieldSelectLabel.appendTo(t.d.$customFieldSelect).text($A.translate('custom field'));
+
+        t.d.$valueBox.appendTo(t.d.$widget);
+        t.d.$valueLabel.appendTo(t.d.$valueBox);
+        t.d.$valueInput.appendTo(t.d.$valueBox);
+
+        t.d.customFieldSelect.drawTo(t.d.$customFieldSelectInputBox);
+        t.d.valueInputText.drawTo(t.d.$valueInput);
+        t.d.valueInputDate.drawTo(t.d.$valueInput);
+        t.d.valueInputNumber.drawTo(t.d.$valueInput);
+
+        t.f = {};
+        t.init();
+
+        t.type(false);
+
+        if (typeof obj !== 'undefined') {
+            if (typeof obj.customFields !== 'undefined') {
+                t.customFields(obj.customFields);
+            }
+            t.initParameter(obj);
+        }
+    };
+
+    var p = CustomFieldUpdater.prototype;
+
+    p.customFieldId = function (customFieldId) {
+        var t = this;
+        if (typeof customFieldId !== 'undefined') {
+            t.d.customFieldId = customFieldId;
+            t.d.customFieldSelect.automizySelect().val(t.d.customFieldId);
+            if(!t.d.customFieldId){
+                t.d.valueInputText.val('');
+                t.d.valueInputDate.val('');
+                t.d.valueInputNumber.val(0);
+            }
+            return t;
+        }
+        return t.d.customFieldSelect.automizySelect().val();
+    };
+    p.customFields = function (customFields) {
+        var t = this;
+        if (typeof customFields !== 'undefined') {
+            t.d.customFields = customFields;
+            var options = [];
+            var option = {};
+            t.d.customFields.forEach(function(cf){
+                option = {
+                    value:cf.value,
+                    html:cf.text,
+                    data:{
+                        type:cf.type
+                    }
+                };
+                if(typeof cf.group !== 'undefined'){
+                    option.group = cf.group;
+                }
+                options.push(option);
+            });
+            t.d.customFieldSelect.automizySelect().options(options);
+            return t;
+        }
+        return t.d.customFields;
+    };
+    p.loadingStart = function () {
+        var t = this;
+        t.type(false);
+        t.d.customFieldSelect.automizySelect().loadingStart();
+        return t;
+    };
+    p.loadingStop = function () {
+        var t = this;
+        t.d.customFieldSelect.automizySelect().loadingStop();
+        return t;
+    };
+    p.val = p.value = function (value) {
+        var t = this;
+        var type = t.type();
+        if (typeof value !== 'undefined') {
+            if(type === 'text'){
+                t.d.valueInputText.val(value);
+            }else if(type === 'date'){
+                t.d.valueInputDate.val(value);
+            }else if(type === 'number'){
+                t.d.valueInputNumber.val(value);
+            }
+            return t;
+        }
+
+        if(type === 'text'){
+            return t.d.valueInputText.val();
+        }else if(type === 'date'){
+            return t.d.valueInputDate.val();
+        }else if(type === 'number'){
+            return t.d.valueInputNumber.val();
+        }
+
+        return false;
+    };
+    p.type = function (type) {
+        var t = this;
+        if (typeof type !== 'undefined') {
+            t.d.type = type;
+
+            t.d.valueInputText.hide();
+            t.d.valueInputDate.hide();
+            t.d.valueInputNumber.hide();
+            t.d.$valueLabel.show();
+
+            if(t.d.type === 'text'){
+                t.d.valueInputText.show();
+                t.d.$valueLabel.text('with this text:');
+            }else if(t.d.type === 'date'){
+                t.d.valueInputDate.show();
+                t.d.$valueLabel.text('with this date:');
+            }else if(t.d.type === 'number'){
+                t.d.valueInputNumber.show();
+                t.d.$valueLabel.text('with this number:');
+            }else if(!t.d.type){
+                t.d.$valueLabel.hide();
+            }
+
+            return t;
+        }
+        return t.d.type;
+    };
+    p.change = function (func, name, life) {
+        var t = this;
+        if (typeof func === 'function') {
+            t.addFunction('change', func, name, life);
+        } else {
+            var a = t.runFunctions('change');
+            t.returnValue(!(t.disabled() === true || a[0] === false || a[1] === false));
+        }
+        return t;
+    };
+
+    p.drawTo = p.draw = p.appendTo = function ($target) {
+        var t = this;
+        $target = $target || $('body');
+        t.d.$widget.appendTo($target);
+        return t;
+    };
+    p.show = function () {
+        var t = this;
+        this.d.$widget.ashow();
+        return t;
+    };
+    p.hide = function () {
+        var t = this;
+        this.d.$widget.ahide();
+        return t;
+    };
+    p.disabled = function(){
+        return false;
+    };
+
+
+    $A.initBasicFunctions(CustomFieldUpdater, "CustomFieldUpdater", ['change']);
+
+
+})();
+
+(function(){
+    var SmartListSelector = function (obj) {
+        var t = this;
+        t.d = {
+            $widget: $('<div class="automizy-smart-list-selector"></div>'),
+            $noListContent: $('<div style="text-align:center;color:#cacaca;font-weight:bold;font-size:14px;"></div>'),
+
+            noListButton: $A.newButton({
+                skin: 'simple-blue',
+                text: $A.translate('Create List'),
+                margin: '22px 0 12px 0',
+                width: '150px',
+                click: function () {
+                    t.d.popoverCreateListButton.click();
+                }
+            }),
+            searchInput:$A.newInput2({
+                placeholder: $A.translate('Click to choose list(s)'),
+                iconRight: 'fa-search',
+                automizyChange: function () {
+                    t.d.popoverSmartListList.search(this.val());
+                },
+                focus: function () {
+                    var activeElements = t.d.addedSmartListList.activeElements();
+                    var elements = [];
+                    t.d.smartLists.forEach(function (smartList) {
+
+                        var selected = false;
+                        for (var i = 0; i < activeElements.length; i++) {
+                            if (activeElements[i].data('id') == smartList.id) {
+                                selected = true;
+                                break;
+                            }
+                        }
+
+                        elements.push({
+                            text: smartList.name + ' (' + smartList.contactsCount + ')',
+                            search: smartList.name,
+                            //icon: 'fa-filter',
+                            padding: '6px 0 6px 24px',
+                            //iconPosition: 'right',
+                            //iconClick: function () {
+                            //    console.log('Icon click: ' + this.data('id'));
+                            //},
+                            selected: selected,
+                            activateIfClick: false,
+                            data: {
+                                id: smartList.id
+                            }
+                        });
+
+                    });
+                    t.d.popoverSmartListList.elements(elements);
+                    t.d.searchInput.automizyChange();
+                    t.d.popover.open();
+                }
+            }),
+
+            listNameInput: $A.newInput2({
+                labelTop: $A.translate('Add a name to your list'),
+                placeholder: $A.translate('Enter the name of your new list...'),
+                validator: 'notEmpty',
+                enter: function () {
+                    t.d.popoverSaveListButton.click();
+                }
+            }),
+            popoverCancelButton: $A.newButton({
+                text: $A.translate('Cancel'),
+                skin: 'nobox-black',
+                thick: true,
+                float: 'left',
+                click: function () {
+                    t.d.popover.open();
+                }
+            }),
+            popoverCreateListButton: $A.newButton({
+                text: $A.translate('Create list'),
+                skin: 'nobox-blue',
+                thick: true,
+                click: function () {
+                    t.d.popover.title($A.translate('Name Your List')).content(t.d.listNameInput);
+                    t.d.popoverCreateListButton.hide();
+                    t.d.popoverCancelButton.show();
+                    t.d.popoverSaveListButton.show();
+                    t.d.listNameInput.val('').select();
+                }
+            }),
+            popoverSaveListButton: $A.newButton({
+                text: $A.translate('Save list'),
+                skin: 'nobox-blue',
+                thick: true,
+                click: function () {
+                    if (t.d.listNameInput.validate()) {
+                        t.d.popover.loadingStart();
+                        //AJAX
+                        $A.delay(function () {
+                            var smartList = {
+                                id: 123,
+                                name: 'ALMA',
+                                contactsCount: 0
+                            };
+                            t.d.smartLists.unshift(smartList);
+                            t.d.addedSmartListList.addElement({
+                                content: smartList.name,
+                                disabled: true,
+                                removable: true,
+                                data: {
+                                    id: smartList.id
+                                }
+                            });
+                            t.d.popover.close();
+                        }, 1000);
+                    }
+                }
+            }),
+            popoverSmartListList: $A.newList({
+                type: 'simple',
+                maxVisibleElement: 3,
+                moreText: $A.translate('more lists (%s)'),
+                emptySearchContent: $A.translate('No match found.'),
+                maxHeight: '130px',
+                minHeight: '130px',
+                elementClick: function () {
+                    var listElement = this;
+                    var id = listElement.data('id');
+                    if (listElement.selected()) {
+                        listElement.unselect();
+                        var activeElements = t.d.addedSmartListList.activeElements();
+                        for (var i = 0; i < activeElements.length; i++) {
+                            if (activeElements[i].data('id') == id) {
+                                activeElements[i].remove();
+                                break;
+                            }
+                        }
+                    } else {
+                        listElement.select();
+                        t.d.addedSmartListList.addElement({
+                            content: listElement.text(),
+                            disabled: true,
+                            removable: true,
+                            data: {
+                                id: id
+                            }
+                        });
+                    }
+                }
+            }),
+            
+            addedSmartListList: $A.newList({
+                type: 'row'
+            }),
+            
+            id: 'automizy-smart-list-selector-' + $A.getUniqueString(),
+
+            smartLists:[
+                {
+                    id: 5,
+                    name: 'Smart list 5',
+                    contactsCount: 253
+                },
+                {
+                    id: 4,
+                    name: 'Smart list 4',
+                    contactsCount: 0
+                },
+                {
+                    id: 3,
+                    name: 'Smart list 3',
+                    contactsCount: 167
+                },
+                {
+                    id: 2,
+                    name: 'Smart list 2',
+                    contactsCount: 34
+                },
+                {
+                    id: 1,
+                    name: 'Smart list 1',
+                    contactsCount: 4
+                }
+            ]
+        };
+
+
+        t.d.popover = $A.newPopover({
+            target:t.d.searchInput.widget(),
+            width: '400px',
+            position: 'bottom',
+            gravity: 'right',
+            offsetLeft: -2,
+            open: function () {
+                if (t.d.smartLists.length <= 0) {
+                    this.title($A.translate('Create your first list')).content(t.d.$noListContent);
+                    t.d.popoverCreateListButton.hide();
+                    t.d.popoverCancelButton.hide();
+                    t.d.popoverSaveListButton.hide();
+                } else {
+                    this.title($A.translate('Contact Lists')).content(t.d.popoverSmartListList);
+                    t.d.popoverCreateListButton.show();
+                    t.d.popoverCancelButton.hide();
+                    t.d.popoverSaveListButton.hide();
+                }
+            },
+            buttons: [
+                t.d.popoverCancelButton,
+                t.d.popoverCreateListButton,
+                t.d.popoverSaveListButton
+            ]
+        }).close();
+
+
+        t.d.$noListContent.text($A.translate("You don't have any lists yet. Create one firstly!"));
+        t.d.noListButton.drawTo(t.d.$noListContent);
+        
+        t.d.searchInput.drawTo(t.d.$widget);
+        t.d.addedSmartListList.drawTo(t.d.$widget);
+
+
+        t.f = {};
+        t.init();
+
+        if (typeof obj !== 'undefined') {
+            if (typeof obj.smartLists !== 'undefined') {
+                t.smartLists(obj.smartLists);
+            }
+            t.initParameter(obj);
+        }
+    };
+
+    var p = SmartListSelector.prototype;
+    
+    p.smartLists = function (smartLists) {
+        var t = this;
+        if (typeof smartLists !== 'undefined') {
+            t.d.smartLists = smartLists;
+            return t;
+        }
+        return t.d.smartLists;
+    };
+    p.val = p.value = function (value) {
+        var t = this;
+        if(typeof value !== 'undefined'){
+            var ids = value;
+            var smartLists = t.smartLists();
+            t.d.addedSmartListList.removeAllElement();
+            smartLists.forEach(function(smartList){
+                if(ids.indexOf(smartList.id) >= 0){
+                    t.d.addedSmartListList.addElement({
+                        content: smartList.name,
+                        disabled: true,
+                        removable: true,
+                        data: {
+                            id: smartList.id
+                        }
+                    });
+                }
+            });
+            return t;
+        }
+        value = [];
+        var activeElements = t.d.addedSmartListList.activeElements();
+        activeElements.forEach(function(element){
+            value.push(element.data('id'));
+        });
+        return value;
+    };
+
+    p.drawTo = p.draw = p.appendTo = function ($target) {
+        var t = this;
+        $target = $target || $('body');
+        t.d.$widget.appendTo($target);
+        return t;
+    };
+    p.show = function () {
+        var t = this;
+        this.d.$widget.ashow();
+        return t;
+    };
+    p.hide = function () {
+        var t = this;
+        this.d.$widget.ahide();
+        return t;
+    };
+
+
+    $A.initBasicFunctions(SmartListSelector, "SmartListSelector", []);
+
+
+})();
+
+(function(){
     var List = function (obj) {
         var t = this;
         t.d = {
             $widget: $('<div class="automizy-list"></div>'),
             $title: $('<div class="automizy-list-title"></div>'),
             $elements: $('<div class="automizy-list-elements"></div>'),
+            $emptySearchContent:$('<div class="automizy-list-empty-search-content"></div>'),
             $loading:$('<div class="automizy-list-loading"></div>'),
+            moreButton:$A.newButton({
+                skin:'nobox-blue',
+                click:function(){
+                    this.hide();
+                    t.elements().forEach(function(element){
+                        if(!element.d.hideBySearch) {
+                            element.show();
+                        }
+                    });
+                    t.d.isMoreOpened = true;
+                }
+            }),
 
             title: false,
             type: 'simple',
             maxHeight:'100%',
+            minHeight:0,
+
+            maxVisibleElement:false,
+            isMoreOpened:false,
+            moreText:$A.translate('%s more'),
 
             elements: [],
 
@@ -13471,6 +13802,8 @@ var $A = {};
 
         t.d.$title.appendTo(t.d.$widget);
         t.d.$elements.appendTo(t.d.$widget);
+        t.d.moreButton.appendTo(t.d.$widget).hide();
+        t.d.$emptySearchContent.appendTo(t.d.$widget).ahide();
         t.d.$loading.appendTo(t.d.$widget);
         t.loadingOff();
 
@@ -13481,8 +13814,20 @@ var $A = {};
             if (typeof obj.maxHeight !== 'undefined') {
                 t.maxHeight(obj.maxHeight);
             }
+            if (typeof obj.minHeight !== 'undefined') {
+                t.minHeight(obj.minHeight);
+            }
             if (typeof obj.type !== 'undefined') {
                 t.type(obj.type);
+            }
+            if (typeof obj.emptySearchContent !== 'undefined') {
+                t.emptySearchContent(obj.emptySearchContent);
+            }
+            if (typeof obj.maxVisibleElement !== 'undefined') {
+                t.maxVisibleElement(obj.maxVisibleElement);
+            }
+            if (typeof obj.moreText !== 'undefined') {
+                t.moreText(obj.moreText);
             }
             if (typeof obj.elements !== 'undefined') {
                 t.elements(obj.elements);
@@ -13501,11 +13846,21 @@ var $A = {};
         var t = this;
         if (typeof maxHeight !== 'undefined') {
             t.d.maxHeight = maxHeight;
-            t.widget().css('max-height', t.d.maxHeight);
+            //t.widget().css('max-height', t.d.maxHeight);
             t.d.$elements.css('max-height', t.d.maxHeight);
             return t;
         }
         return t.d.maxHeight;
+    };
+    p.minHeight = function (minHeight) {
+        var t = this;
+        if (typeof minHeight !== 'undefined') {
+            t.d.minHeight = minHeight;
+            t.widget().css('min-height', t.d.minHeight);
+            //t.d.$elements.css('min-height', t.d.minHeight);
+            return t;
+        }
+        return t.d.minHeight;
     };
     p.title = function (title) {
         var t = this;
@@ -13532,13 +13887,30 @@ var $A = {};
         var searchCount = 0;
         t.elements().forEach(function (element) {
             if (element.search().search(re) >= 0) {
-                element.widget().show();
+                element.show();
+                element.d.hideBySearch = false;
                 searchCount++;
             } else {
-                element.widget().hide();
+                element.d.hideBySearch = true;
+                element.hide();
             }
         });
+        t.refreshVisibleElements();
+        if(searchCount <= 0){
+            t.d.$emptySearchContent.ashow();
+        }else{
+            t.d.$emptySearchContent.ahide();
+        }
         return searchCount;
+    };
+    p.emptySearchContent = function (content) {
+        var t = this;
+        if (typeof content !== 'undefined') {
+            t.d.content = content;
+            $A.setContent(t.d.content, t.d.$emptySearchContent);
+            return t;
+        }
+        return t.d.content;
     };
     p.type = function (type) {
         var t = this;
@@ -13547,6 +13919,65 @@ var $A = {};
             return t;
         }
         return t.d.type;
+    };
+    p.maxVisibleElement = function (maxVisibleElement) {
+        var t = this;
+        if (typeof maxVisibleElement !== 'undefined') {
+            t.d.maxVisibleElement = maxVisibleElement;
+            return t;
+        }
+        return t.d.maxVisibleElement;
+    };
+    p.moreText = function (moreText) {
+        var t = this;
+        if (typeof moreText !== 'undefined') {
+            t.d.moreText = moreText;
+            t.refreshMore();
+            return t;
+        }
+        return t.d.moreText;
+    };
+    p.refreshMore = function (count) {
+        var t = this;
+        var maxVisibleElement = t.maxVisibleElement();
+        if(maxVisibleElement === false){
+            t.d.moreButton.hide();
+            t.d.isMoreOpened = true;
+            return t;
+        }
+        if(typeof count === 'undefined'){
+            count = t.d.elements.length;
+        }
+        var moreCount = (count) - t.maxVisibleElement();
+        if(moreCount <= 0){
+            t.d.moreButton.hide();
+            t.d.isMoreOpened = true;
+        }else{
+            t.d.moreButton.text(t.moreText().replace("%s", moreCount)).show();
+            t.d.isMoreOpened = false;
+        }
+        return t;
+    };
+    p.refreshVisibleElements = function (count) {
+        var t = this;
+        var maxVisibleElement = t.maxVisibleElement();
+        if(maxVisibleElement === false){
+            return t;
+        }
+        var elementsLength = 0;
+        t.activeElements().forEach(function(element){
+            if(!element.d.hideBySearch){
+                elementsLength++;
+                if(elementsLength > maxVisibleElement){
+                    element.hide();
+                }else{
+                    element.show();
+                }
+            }
+        });
+        t.refreshMore(elementsLength);
+
+        return t;
     };
     p.elementClick = function (elementClick) {
         var t = this;
@@ -13576,28 +14007,54 @@ var $A = {};
             t.removeAllElement();
             t.d.elements = [];
             elements.forEach(function (element) {
-                var elementModule;
-                if(element === 'separator'){
-                    $('<div class="automizy-list-element-separator"></div>').appendTo(t.d.$elements);
-                }else {
-                    element.listModule = t;
-                    element.type = element.type || t.type() || 'simple';
-                    if (element.type === 'simple') {
-                        elementModule = $A.newSimpleListElement(element);
-                    } else if (element.type === 'title-and-subtitle') {
-                        elementModule = $A.newTitleAndSubTitleListElement(element);
-                    } else if (element.type === 'box') {
-                        elementModule = $A.newBoxListElement(element);
-                    } else if (element.type === 'iconed') {
-                        elementModule = $A.newIconedListElement(element);
-                    }
-                    t.d.elements.push(elementModule);
-                    elementModule.drawTo(t.d.$elements);
-                }
+                t.addElement(element);
             });
             return t;
         }
         return t.d.elements;
+    };
+    p.activeElements = function () {
+        var t = this;
+        var elements = [];
+        t.d.elements.forEach(function (element) {
+            if(!element.d.removed){
+                elements.push(element);
+            }
+        });
+        return elements;
+    };
+    p.addElement = function (element, where) {
+        var t = this;
+        if(typeof element !== 'undefined') {
+            var elementModule;
+            if(element === 'separator'){
+                $('<div class="automizy-list-element-separator"></div>').appendTo(t.d.$elements);
+            }else {
+                element.listModule = t;
+                element.type = element.type || t.type() || 'simple';
+                if (element.type === 'simple') {
+                    elementModule = $A.newSimpleListElement(element);
+                } else if (element.type === 'title-and-subtitle') {
+                    elementModule = $A.newTitleAndSubTitleListElement(element);
+                } else if (element.type === 'box') {
+                    elementModule = $A.newBoxListElement(element);
+                } else if (element.type === 'iconed') {
+                    elementModule = $A.newIconedListElement(element);
+                } else if (element.type === 'row') {
+                    elementModule = $A.newRowListElement(element);
+                }
+                t.d.elements.push(elementModule);
+                if(typeof where !== 'undefined'){
+                    elementModule.drawTo(t.d.$elements, where);
+                }else {
+                    elementModule.drawTo(t.d.$elements);
+                }
+
+                t.refreshVisibleElements();
+
+            }
+        }
+        return t;
     };
 
     p.loadingOn = function () {
@@ -13626,6 +14083,10 @@ var $A = {};
             $widget: $('<div class="automizy-list-element"></div>'),
             listModule:false,
             removed:false,
+            enabled:true,
+            clickInside:false,
+            activateIfClick:true,
+            hideBySearch:false,
             search:''
         };
         t.f = {};
@@ -13635,10 +14096,15 @@ var $A = {};
             if (t.click().returnValue() === false) {
                 return false;
             }
-            var listModule = t.listModule();
-            listModule.d.elementClick.apply(t, [listModule]);
-            listModule.inactivateAllElement();
-            t.activate();
+            if(!t.d.clickInside) {
+                var listModule = t.listModule();
+                listModule.d.elementClick.apply(t, [listModule]);
+                if (t.d.activateIfClick) {
+                    listModule.inactivateAllElement();
+                    t.activate();
+                }
+            }
+            t.d.clickInside = false;
         });
 
         if (typeof obj !== 'undefined') {
@@ -13651,9 +14117,24 @@ var $A = {};
             if (typeof obj.click !== 'undefined') {
                 t.click(obj.click);
             }
+            if (typeof obj.activateIfClick !== 'undefined') {
+                t.activateIfClick(obj.activateIfClick);
+            }
             if (typeof obj.activate !== 'undefined') {
                 if(obj.activate) {
                     t.activate();
+                }
+            }
+            if (typeof obj.selected !== 'undefined') {
+                if(obj.selected) {
+                    t.select();
+                }else{
+                    t.unselect();
+                }
+            }
+            if (typeof obj.disabled !== 'undefined') {
+                if(obj.disabled) {
+                    t.disable();
                 }
             }
             if (typeof obj.autoClick !== 'undefined') {
@@ -13687,10 +14168,22 @@ var $A = {};
         }
         return t.d.search;
     };
+    p.activateIfClick = function (activateIfClick) {
+        var t = this;
+        if(typeof activateIfClick !== 'undefined'){
+            t.d.activateIfClick = activateIfClick;
+            return t;
+        }
+        return t.d.activateIfClick;
+    };
     p.remove = function () {
         var t = this;
         t.widget().remove();
         t.d.removed = true;
+        var listModule = t.listModule();
+        if(!listModule.d.isMoreOpened){
+            listModule.refreshVisibleElements();
+        }
         return t;
     };
     p.activate = function () {
@@ -13703,11 +14196,50 @@ var $A = {};
         t.widget().removeClass('automizy-active');
         return t;
     };
+    p.disable = function () {
+        var t = this;
+        t.d.enabled = false;
+        t.widget().addClass('automizy-disable');
+        return t;
+    };
+    p.enable = function () {
+        var t = this;
+        t.d.enabled = true;
+        t.widget().removeClass('automizy-disable');
+        return t;
+    };
+    p.selected = function (selected) {
+        var t = this;
+        if(typeof selected !== 'undefined'){
+            if(selected){
+                t.select();
+            }else{
+                t.unselect();
+            }
+            return t;
+        }
+        return t.d.selected;
+    };
+    p.select = function () {
+        var t = this;
+        t.d.selected = true;
+        t.widget().addClass('automizy-selected');
+        return t;
+    };
+    p.unselect = function () {
+        var t = this;
+        t.d.selected = false;
+        t.widget().removeClass('automizy-selected');
+        return t;
+    };
     p.click = function (func, name, life) {
         var t = this;
         if (typeof func === 'function') {
             t.addFunction('click', func, name, life);
         } else {
+            if(!t.d.enabled){
+                return t;
+            }
             var a = t.runFunctions('click');
             t.returnValue(!(a[0] === false || a[1] === false));
         }
@@ -13728,6 +14260,8 @@ var $A = {};
 
         $A.m.ListElement.apply(t, [obj]);
 
+        t.d.text = '';
+
         if (typeof obj !== 'undefined') {
             if (typeof obj.text !== 'undefined') {
                 t.text(obj.text);
@@ -13747,8 +14281,12 @@ var $A = {};
 
     p.text = function(text){
         var t = this;
-        t.widget().html(text);
-        return t;
+        if(typeof text !== 'undefined'){
+            t.d.text = text;
+            t.widget().html(t.d.text);
+            return t;
+        }
+        return t.d.text;
     };
 
     p.bold = function(bold){
@@ -13912,11 +14450,19 @@ var $A = {};
 
         $A.m.ListElement.apply(t, [obj]);
 
-        t.d.$icon = $('<span class="automizy-list-element-icon fa"></span>').appendTo(t.d.$widget);
+        t.d.$icon = $('<span class="automizy-list-element-icon fa"></span>').appendTo(t.d.$widget).click(function(){
+            if(t.d.activeIconClick) {
+                t.d.clickInside = true;
+                t.iconClick();
+            }
+        });
         t.d.$text = $('<span class="automizy-list-element-text"></span>').appendTo(t.d.$widget);
 
         t.d.text = false;
         t.d.icon = false;
+        t.d.iconPosition = 'left';
+        t.d.iconClick = function(){};
+        t.d.activeIconClick = false;
 
         if (typeof obj !== 'undefined') {
             if (typeof obj.text !== 'undefined') {
@@ -13924,6 +14470,12 @@ var $A = {};
             }
             if (typeof obj.icon !== 'undefined') {
                 t.icon(obj.icon);
+            }
+            if (typeof obj.iconPosition !== 'undefined') {
+                t.iconPosition(obj.iconPosition);
+            }
+            if (typeof obj.iconClick !== 'undefined') {
+                t.iconClick(obj.iconClick);
             }
         }
 
@@ -13953,8 +14505,154 @@ var $A = {};
         }
         return t.d.icon;
     };
+    p.iconPosition = function(iconPosition){
+        var t = this;
+        if(typeof iconPosition !== 'undefined') {
+            t.d.iconPosition = iconPosition;
+            if(t.d.iconPosition === 'right'){
+                t.d.$icon.addClass('automizy-position-right').appendTo(t.d.$widget);
+            }else{
+                t.d.$icon.removeClass('automizy-position-right').prependTo(t.d.$widget);
+            }
+            return t;
+        }
+        return t.d.icon;
+    };
+    p.iconClick = function(iconClick){
+        var t = this;
+        if(typeof iconClick !== 'undefined') {
+            if(t.d.iconClick === false){
+                t.d.iconClick = function(){};
+                t.d.activeIconClick = false;
+                t.d.$icon.removeClass('automizy-clickable');
+                return t;
+            }
+            t.d.iconClick = iconClick;
+            t.d.activeIconClick = true;
+            t.d.$icon.addClass('automizy-clickable');
+            return t;
+        }
+        t.d.iconClick.apply(t, []);
+        return t;
+    };
 
     $A.initBasicFunctions(IconedListElement, "IconedListElement", []);
+
+})();
+
+(function(){
+
+    var RowListElement = function (obj) {
+        var t = this;
+
+        obj = obj || {};
+
+        $A.m.ListElement.apply(t, [obj]);
+
+        t.d.$row = $('<div class="automizy-list-element-row"></div>').appendTo(t.d.$widget);
+
+        t.d.$remove = $('<span class="automizy-list-element-remove fa fa-remove"></span>').appendTo(t.d.$row).click(function(){
+            t.remove();
+        });
+        t.d.$infoBox = $('<div class="automizy-list-element-info-box"></div>').appendTo(t.d.$row);
+        t.d.$buttonBox = $('<div class="automizy-list-element-button-box"></div>').appendTo(t.d.$row);
+
+        t.d.$title = $('<div class="automizy-list-element-title"></div>').appendTo(t.d.$infoBox);
+        t.d.$content = $('<div class="automizy-list-element-content"></div>').appendTo(t.d.$infoBox);
+        t.d.$tags = $('<div class="automizy-list-element-tags"></div>').appendTo(t.d.$infoBox);
+
+        t.d.title = false;
+        t.d.tags = [];
+
+        if (typeof obj !== 'undefined') {
+            if (typeof obj.removable !== 'undefined') {
+                t.removable(obj.removable);
+            }
+            if (typeof obj.title !== 'undefined') {
+                t.title(obj.title);
+            }
+            if (typeof obj.content !== 'undefined') {
+                t.content(obj.content);
+            }
+            if (typeof obj.tags !== 'undefined') {
+                t.tags(obj.tags);
+            }
+        }
+
+        t.widget().addClass('automizy-type-row');
+
+    };
+    RowListElement.prototype = Object.create($A.m.ListElement.prototype);
+    RowListElement.prototype.constructor = RowListElement;
+
+    var p = RowListElement.prototype;
+
+    p.title = function(title){
+        var t = this;
+        if(typeof title !== 'undefined') {
+            t.d.title = title;
+            t.d.$title.html(t.d.title);
+            return t;
+        }
+        return t.d.title;
+    };
+    p.content = function(content){
+        var t = this;
+        if(typeof content !== 'undefined') {
+            t.d.content = content;
+            t.d.$content.html(t.d.content);
+            return t;
+        }
+        return t.d.content;
+    };
+    p.tags = function(tags){
+        var t = this;
+        if(typeof tags !== 'undefined') {
+            t.d.tags = [];
+            tags.forEach(function(tag){
+                t.addTag(tag);
+            });
+            return t;
+        }
+        return t.d.tags;
+    };
+    p.addTag = function(tag){
+        var t = this;
+        if(typeof tag !== 'undefined') {
+            var tagObj = {
+                name:tag,
+                text:tag
+            };
+            tagObj.$widget = $('<span class="automizy-list-element-tag"><i class="fa fa-filter"></i>'+tag+'</span>').appendTo(t.d.$tags);
+            t.d.tags.push(tagObj);
+            return t;
+        }
+        return t.d.tags;
+    };
+    p.removeTag = function(tag){
+        var t = this;
+        if(typeof tag !== 'undefined') {
+            t.d.tags.forEach(function(tagObj){
+                if(tagObj.name === tag){
+                    tagObj.$widget.remove();
+                }
+            });
+        }
+        return t;
+    };
+    p.removable = function(removable){
+        var t = this;
+        if(typeof removable !== 'undefined') {
+            if(removable){
+                t.d.$remove.ashow();
+            }else{
+                t.d.$remove.ahide();
+            }
+        }
+        return t;
+    };
+
+    $A.initBasicFunctions(RowListElement, "RowListElement", []);
 
 })();
 

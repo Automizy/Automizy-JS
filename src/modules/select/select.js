@@ -357,6 +357,7 @@ define([
     };
     p.width = function (width) {
         var t = this;
+        var t = this;
         if (typeof width !== 'undefined') {
             t.d.width = width;
             t.widget().css('width', t.d.width);
@@ -494,8 +495,8 @@ define([
         t.cleanGroups();
         return t;
     };
-    p.addOption = function (option) {
-        return this.addOptions([option]);
+    p.addOption = function (option, before) {
+        return this.addOptions([option], before || false);
     };
     p.options = function (options) {
         var t = this;
@@ -526,8 +527,8 @@ define([
     p.addOptions = function (options, before) {
         var t = this;
         var val = t.val();
-        var before = before || false;
-        var options = options || [];
+        before = before || false;
+        options = options || [];
         if (!(options instanceof Array)) {
             var optionsArray = [];
             for (var i in options) {
@@ -554,6 +555,7 @@ define([
             }
             options[i].selectModule = t;
             options[i].selectOptionBoxModule = t.optionBox();
+            options[i].before = before;
             if (options[i].selected === true) {
                 hasSelected = true;
             }

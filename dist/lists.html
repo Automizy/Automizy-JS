@@ -11,7 +11,7 @@
     <script>
         $(function () {
 
-            var $content = $('<div style="display:inline-block;width:300px;padding-bottom:48px;box-sizing:border-box;background-color:#eeeeee"></div>');
+            var $content = $('<div style="display:inline-block;width:300px;margin:12px;box-sizing:border-box;background-color:#eeeeee;vertical-align:top"></div>');
             var $info = $('<div style="display:block;height:48px;border:1px solid #eeeeee"></div>').appendTo('body');
 
             $A.newButton({
@@ -20,17 +20,19 @@
                 click:function(){
                     window.simpleList = $A.newList({
                         type:'simple',
-                        target:$content,
+                        target:$content.clone().appendTo('body'),
                         elements:[
                             {
                                 text:'Element 1',
-                                bold:false,
+                                //bold:false,
+                                padding:'6px 4px 6px 32px',
                                 data:{
                                     myKey:'Simple Value 1'
                                 }
                             },
                             {
                                 text:'Element 2',
+                                padding:'6px 4px 6px 32px',
                                 data:{
                                     myKey:'Simple Value 2'
                                 },
@@ -50,7 +52,7 @@
                 click:function(){
                     window.simpleList = $A.newList({
                         type:'title-and-subtitle',
-                        target:$content,
+                        target:$content.clone().appendTo('body'),
                         elements:[
                             {
                                 title:'Element 1',
@@ -76,12 +78,82 @@
             });
 
             $A.newButton({
+                text:'Iconed',
+                target:'body',
+                click:function(){
+                    window.simpleList = $A.newList({
+                        type:'iconed',
+                        target:$content.clone().appendTo('body'),
+                        elements:[
+                            {
+                                text:'Element 1',
+                                icon:'fa-cog',
+                                data:{
+                                    myKey:'Iconed Value 1'
+                                }
+                            },
+                            {
+                                text:'Element 2',
+                                icon:'fa-eye',
+                                data:{
+                                    myKey:'Iconed Value 2'
+                                }
+                            }
+                        ],
+                        elementClick:function(){
+                            $info.html(this.data('myKey'));
+                        }
+                    });
+                }
+            });
+
+            $A.newButton({
+                text:'Iconed Right',
+                target:'body',
+                click:function(){
+                    window.simpleList = $A.newList({
+                        type:'iconed',
+                        target:$content.clone().appendTo('body'),
+                        elements:[
+                            {
+                                text:'Element 1',
+                                icon:'fa-filter',
+                                iconPosition:'right',
+                                iconClick:function(){
+                                    $info.html('Icon click: ' + this.data('myKey'));
+                                },
+                                activateIfClick:false,
+                                data:{
+                                    myKey:'Iconed Value 1'
+                                }
+                            },
+                            {
+                                text:'Element 2',
+                                icon:'fa-filter',
+                                iconPosition:'right',
+                                iconClick:function(){
+                                    $info.html('Icon click: ' + this.data('myKey'));
+                                },
+                                activateIfClick:false,
+                                data:{
+                                    myKey:'Iconed Value 2'
+                                }
+                            }
+                        ],
+                        elementClick:function(){
+                            $info.html(this.data('myKey'));
+                        }
+                    });
+                }
+            });
+
+            $A.newButton({
                 text:'Box',
                 target:'body',
                 click:function(){
                     window.simpleList = $A.newList({
                         type:'box',
-                        target:$content,
+                        target:$content.clone().appendTo('body'),
                         elements:[
                             {
                                 title:'Element 1',
@@ -110,14 +182,81 @@
                 }
             });
 
+            $A.newButton({
+                text:'Row (clear)',
+                target:'body',
+                click:function(){
+                    window.rowList = $A.newList({
+                        type:'row',
+                        target:$content.clone().appendTo('body'),
+                        elements:[
+                            {
+                                content:'content 1',
+                                disabled:true,
+                                removable:true,
+                                data:{
+                                    myKey:'Row Value 1'
+                                }
+                            },
+                            {
+                                content:'content 2',
+                                disabled:true,
+                                removable:true,
+                                data:{
+                                    myKey:'Row Value 2'
+                                }
+                            }
+                        ],
+                        elementClick:function(){
+                            $info.html(this.data('myKey'));
+                        }
+                    });
+                }
+            });
+
+            $A.newButton({
+                text:'Row (full)',
+                target:'body',
+                click:function(){
+                    window.rowList = $A.newList({
+                        type:'row',
+                        target:$content.clone().appendTo('body'),
+                        elements:[
+                            {
+                                title:'Element 1',
+                                content:'content 1',
+                                tags:['tag 1.1', 'tag 1.2'],
+                                disabled:true,
+                                removable:true,
+                                data:{
+                                    myKey:'Row Value 1'
+                                }
+                            },
+                            {
+                                title:'Element 2',
+                                content:'content 2',
+                                tags:['tag 2'],
+                                disabled:true,
+                                removable:true,
+                                data:{
+                                    myKey:'Row Value 2'
+                                }
+                            }
+                        ],
+                        elementClick:function(){
+                            $info.html(this.data('myKey'));
+                        }
+                    });
+                }
+            });
+
 
             $('body').append('<br/>');
-            $content.appendTo('body');
 
         });
     </script>
 </head>
-<body>
+<body style="font-family: 'Segoe UI'; margin:0; padding:0">
 </body>
 </html>
 

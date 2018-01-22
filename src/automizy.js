@@ -26,8 +26,6 @@ define([
     "automizy/modules/i18n",
     "automizy/modules/select/select",
     "automizy/modules/radio/radio",
-    "automizy/modules/customFieldFilter/customFieldFilter",
-    "automizy/modules/customFieldUpdater/customFieldUpdater",
     "automizy/modules/message",
     "automizy/modules/panel",
     "automizy/modules/tag/tagger",
@@ -37,12 +35,18 @@ define([
     "automizy/modules/columnContent/columnContentColumn",
     "automizy/modules/mockup",
     "automizy/modules/content",
+
+    "automizy/modules/customFieldFilter/customFieldFilter",
+    "automizy/modules/customFieldUpdater/customFieldUpdater",
+    "automizy/modules/smartListSelector/smartListSelector",
+
     "automizy/modules/list/list",
     "automizy/modules/list/listElement",
     "automizy/modules/list/listElements/simple",
     "automizy/modules/list/listElements/titleAndSubTitle",
     "automizy/modules/list/listElements/box",
     "automizy/modules/list/listElements/iconed",
+    "automizy/modules/list/listElements/row",
 
     "automizy/defines/input",
     

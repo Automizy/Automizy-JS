@@ -1,145 +1,264 @@
-.automizy-list{
+.automizy-list {
 
 }
-.automizy-list-title{
-    display:none;
+
+.automizy-list-title {
+    display: none;
     font-size: 14px;
     color: #4a4a4a;
     padding: 24px 0 9px 0;
 }
-.automizy-list.automizy-has-title .automizy-list-title{
-    display:block;
+
+.automizy-list.automizy-has-title .automizy-list-title {
+    display: block;
 }
-.automizy-list-elements{
+
+.automizy-list-elements {
     overflow: hidden;
     overflow-y: auto;
     box-sizing: border-box;
-    padding:0;
+    padding: 0;
 }
-.automizy-list.automizy-has-title .automizy-list-elements{
-    padding:0 0 0 12px;
+
+.automizy-list.automizy-has-title .automizy-list-elements {
+    padding: 0 0 0 12px;
 }
-.automizy-list-loading{
+
+.automizy-list-loading {
     background: #ffffff url(../images/loading.gif) no-repeat center center;
     height: 30px;
 }
 
-.automizy-list-element{
-    cursor:pointer;
+.automizy-list-element {
+    cursor: pointer;
     position: relative;
     box-sizing: border-box;
 }
-.automizy-list-element-separator{
+
+.automizy-list-element.automizy-disable {
+    cursor: auto;
+}
+
+.automizy-list-element-separator {
     display: block;
     height: 1px;
     background-color: #4a4a4a;
     margin: 7px 0 4px 0;
 }
 
-
-
-.automizy-list-element.automizy-type-simple{
-    color:#4a4a4a;
-    font-size:13px;
-    padding:3px 0 3px 0;
-    font-weight:bold;
-}
-.automizy-list-element.automizy-type-simple:hover{
-    text-decoration:underline;
-}
-.automizy-list-element.automizy-type-simple.automizy-active{
-    color:#42aacf;
+.automizy-list-element.automizy-type-simple {
+    color: #4a4a4a;
+    font-size: 13px;
+    padding: 3px 0 3px 0;
+    font-weight: bold;
+    border-radius: 10px;
 }
 
-
-
-.automizy-list-element.automizy-type-title-and-subtitle{
-    color:#4a4a4a;
-    padding:3px 0 3px 0;
-}
-.automizy-list-element.automizy-type-title-and-subtitle:hover{
-    text-decoration:underline;
-}
-.automizy-list-element.automizy-type-title-and-subtitle.automizy-active{
-    color:#42aacf;
-}
-.automizy-list-element.automizy-type-title-and-subtitle .automizy-list-element-title{
-    font-size:12px;
-    font-weight:bold;
-}
-.automizy-list-element.automizy-type-title-and-subtitle .automizy-list-element-subtitle{
-    font-size:11px;
+.automizy-list-element.automizy-type-simple:hover {
+    text-decoration: underline;
 }
 
+.automizy-list-element.automizy-type-simple.automizy-active {
+    color: #42aacf;
+}
 
+.automizy-list-element.automizy-type-simple.automizy-selected {
+    background-color: #2094f9;
+    color: #ffffff;
+}
 
-.automizy-list-element.automizy-type-box{
-    color:#4a4a4a;
-    padding:6px;
-    border:2px solid #cacaca;
+.automizy-list-element.automizy-type-title-and-subtitle {
+    color: #4a4a4a;
+    padding: 3px 0 3px 0;
+}
+
+.automizy-list-element.automizy-type-title-and-subtitle:hover {
+    text-decoration: underline;
+}
+
+.automizy-list-element.automizy-type-title-and-subtitle.automizy-active {
+    color: #42aacf;
+}
+
+.automizy-list-element.automizy-type-title-and-subtitle .automizy-list-element-title {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.automizy-list-element.automizy-type-title-and-subtitle .automizy-list-element-subtitle {
+    font-size: 11px;
+}
+
+.automizy-list-element.automizy-type-box {
+    color: #4a4a4a;
+    padding: 6px;
+    border: 2px solid #cacaca;
     min-height: 72px;
-    border-radius:2px;
-    margin-bottom:6px;
+    border-radius: 2px;
+    margin-bottom: 6px;
 }
-.automizy-list-element.automizy-type-box:hover{
+
+.automizy-list-element.automizy-type-box:hover {
     border-color: #4a4a4a;
 }
-.automizy-list-element.automizy-type-box.automizy-active{
-    border-color:#2094f9;
+
+.automizy-list-element.automizy-type-box.automizy-active {
+    border-color: #2094f9;
 }
-.automizy-list-element.automizy-type-box .automizy-list-element-title{
-    font-size:11px;
+
+.automizy-list-element.automizy-type-box .automizy-list-element-title {
+    font-size: 11px;
 }
-.automizy-list-element.automizy-type-box .automizy-list-element-subtitle{
-    font-size:12px;
-    font-weight:bold;
+
+.automizy-list-element.automizy-type-box .automizy-list-element-subtitle {
+    font-size: 12px;
+    font-weight: bold;
 }
-.automizy-list-element.automizy-type-box .automizy-list-element-info{
-    font-size:11px;
+
+.automizy-list-element.automizy-type-box .automizy-list-element-info {
+    font-size: 11px;
     position: absolute;
-    bottom:6px;
-    left:6px;
+    bottom: 6px;
+    left: 6px;
 }
-.automizy-list-element.automizy-type-box .automizy-list-element-badge{
-    font-size:10px;
+
+.automizy-list-element.automizy-type-box .automizy-list-element-badge {
+    font-size: 10px;
     position: absolute;
-    bottom:6px;
-    right:6px;
+    bottom: 6px;
+    right: 6px;
     border-radius: 10px;
-    width:90px;
-    border:1px solid #4a4a4a;
+    width: 90px;
+    border: 1px solid #4a4a4a;
     box-sizing: border-box;
-    padding:1px;
-    text-align:center;
+    padding: 1px;
+    text-align: center;
     text-transform: uppercase;
 }
-.automizy-list-element.automizy-type-box.automizy-active .automizy-list-element-badge{
+
+.automizy-list-element.automizy-type-box.automizy-active .automizy-list-element-badge {
     background-color: #2094f9;
     border-color: #2094f9;
-    color:#ffffff;
+    color: #ffffff;
 }
 
+.automizy-list-element.automizy-type-iconed {
+    display: block;
+    display: -webkit-flex;
+    display: flex;
+    color: #4a4a4a;
+    padding: 3px 8px 3px 8px;
+    align-items: center;
+    justify-content: center;
+}
 
-.automizy-list-element.automizy-type-iconed{
-    color:#4a4a4a;
-    padding: 3px 14px 3px 8px;
+.automizy-list-element.automizy-type-iconed:hover {
+    color: #2094f9;
 }
-.automizy-list-element.automizy-type-iconed:hover{
-    color:#2094f9;
+
+.automizy-list-element.automizy-type-iconed:hover .automizy-list-element-icon.automizy-clickable {
+    color: #4a4a4a;
 }
-.automizy-list-element.automizy-type-iconed.automizy-active{
-    color:#2094f9;
+
+.automizy-list-element.automizy-type-iconed .automizy-list-element-icon.automizy-clickable:hover {
+    color: #2094f9;
 }
-.automizy-list-element.automizy-type-iconed .automizy-list-element-icon{
+
+.automizy-list-element.automizy-type-iconed.automizy-active {
+    color: #2094f9;
+}
+
+.automizy-list-element.automizy-type-iconed .automizy-list-element-icon {
     width: 34px;
     text-align: center;
     vertical-align: middle;
 }
-.automizy-list-element.automizy-type-iconed .automizy-list-element-text{
-    font-size:14px;
-    display:inline-block;
+
+.automizy-list-element.automizy-type-iconed .automizy-list-element-text {
+    font-size: 14px;
+    display: inline-block;
     vertical-align: middle;
+    width: 100%;
 }
-.automizy-list-element.automizy-type-iconed.automizy-active .automizy-list-element-text{
-    text-decoration:underline;
+
+.automizy-list-element.automizy-type-iconed.automizy-active .automizy-list-element-text {
+    text-decoration: underline;
+}
+
+.automizy-list-element-row {
+    display: -webkit-flex;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 100%;
+    margin: 20px auto 20px auto;
+    position: relative;
+    background-color: #ffffff;
+    border: 1px solid #cacaca;
+    border-radius: 10px;
+    height: 82px;
+    padding: 0 12px 0 12px;
+}
+
+.automizy-list-element-row .automizy-list-element-info-box {
+    width: 50%;
+    min-width: 200px;
+}
+
+.automizy-list-element-row .automizy-list-element-button-box {
+
+}
+
+.automizy-list-element-row .automizy-list-element-remove {
+    cursor: pointer;
+    box-sizing: border-box;
+    vertical-align: middle;
+    color: #4a4a4a;
+    opacity: 0.7;
+    margin: 0 18px 0 18px;
+}
+
+.automizy-list-element-row .automizy-list-element-remove:hover {
+    opacity: 1;
+}
+
+.automizy-list-element-row .automizy-list-element-title {
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.automizy-list-element-row .automizy-list-element-content {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.automizy-list-element-row .automizy-list-element-tags {
+
+}
+
+.automizy-list-element-row .automizy-list-element-tag {
+    display: inline-block;
+    margin: 0 12px 0 0;
+    text-align: center;
+    white-space: nowrap;
+    border-radius: 20px;
+    min-width: 70px;
+    border: 1px solid #4a4a4a;
+    font-size: 11px;
+    text-transform: uppercase;
+    box-sizing: border-box;
+    padding: 1px 6px;
+}
+
+.automizy-list-element-row .automizy-list-element-tag i {
+    font-size: 13px;
+    padding-right: 4px;
+}
+
+.automizy-list-empty-search-content {
+    text-align: center;
+    color: #cacaca;
+    font-weight: bold;
+    font-size: 14px
 }

@@ -15,6 +15,7 @@ define([
             $icon: $('<span class="automizy-icon"></span>'),
             $option:$('<option></option>'),
             selectModule:false,
+            before:false,
             selectOptionBoxModule:false,
             value: '',
             html:'',
@@ -37,6 +38,9 @@ define([
         if (typeof obj !== 'undefined') {
             if (typeof obj.selectModule !== 'undefined') {
                 t.selectModule(obj.selectModule);
+            }
+            if (typeof obj.before !== 'undefined') {
+                t.before(obj.before);
             }
             if (typeof obj.selectOptionBoxModule !== 'undefined') {
                 t.selectOptionBoxModule(obj.selectOptionBoxModule);
@@ -106,11 +110,23 @@ define([
         }
         return t.d.selectModule;
     };
+    p.before = function (before) {
+        var t = this;
+        if (typeof before !== 'undefined') {
+            t.d.before = before;
+            return t;
+        }
+        return t.d.before;
+    };
     p.selectOptionBoxModule = function (selectOptionBoxModule) {
         var t = this;
         if (typeof selectOptionBoxModule !== 'undefined') {
             t.d.selectOptionBoxModule = selectOptionBoxModule;
-            t.drawTo(t.d.selectOptionBoxModule.d.$options);
+            if(t.before()){
+                t.drawTo(t.d.selectOptionBoxModule.d.$options, 'prepend');
+            }else {
+                t.drawTo(t.d.selectOptionBoxModule.d.$options);
+            }
             return t;
         }
         return t.d.selectOptionBoxModule;

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="automizy.js"></script>
+    <link rel="stylesheet" href="fontawesome/css/font-awesome.css">
+    <!--<link rel="stylesheet" href="automizy.css">-->
+    <link rel="stylesheet" href="automizy.css">
+    <script>
+        $(function () {
+
+
+            window.smartLists = [
+                {
+                    id: 5,
+                    name: 'Smart list 5',
+                    contactsCount: 253
+                },
+                {
+                    id: 4,
+                    name: 'Smart list 4',
+                    contactsCount: 0
+                },
+                {
+                    id: 3,
+                    name: 'Smart list 3',
+                    contactsCount: 167
+                },
+                {
+                    id: 2,
+                    name: 'Smart list 2',
+                    contactsCount: 34
+                },
+                {
+                    id: 1,
+                    name: 'Smart list 1',
+                    contactsCount: 4
+                }
+            ];
+            window.smartLists = [];
+
+
+            window.$noListContent = $('<div style="text-align:center;color:#cacaca;font-weight:bold;font-size:14px;"></div>')
+                .text($A.translate("You don't have any lists yet. Create one firstly!"));
+            window.noListButton = $A.newButton({
+                skin: 'simple-blue',
+                target: window.$noListContent,
+                text: $A.translate('Create List'),
+                margin: '22px 0 12px 0',
+                width: '150px',
+                click: function () {
+                    window.popoverCreateListButton.click();
+                }
+            });
+
+            window.searchInput = $A.newInput2({
+                target: 'body',
+                placeholder: $A.translate('Click to choose list(s)'),
+                iconRight: 'fa-search',
+                automizyChange: function () {
+                    window.popoverSmartListList.search(this.val());
+                },
+                focus: function () {
+                    var activeElements = window.addedSmartListList.activeElements();
+                    var elements = [];
+                    window.smartLists.forEach(function (smartList) {
+
+                        var selected = false;
+                        for (var i = 0; i < activeElements.length; i++) {
+                            if (activeElements[i].data('id') == smartList.id) {
+                                selected = true;
+                                break;
+                            }
+                        }
+
+                        elements.push({
+                            text: smartList.name + ' (' + smartList.contactsCount + ')',
+                            search: smartList.name,
+                            //icon: 'fa-filter',
+                            padding: '6px 0 6px 24px',
+                            //iconPosition: 'right',
+                            //iconClick: function () {
+                            //    console.log('Icon click: ' + this.data('id'));
+                            //},
+                            selected: selected,
+                            activateIfClick: false,
+                            data: {
+                                id: smartList.id
+                            }
+                        });
+
+                    });
+                    window.popoverSmartListList.elements(elements);
+                    window.searchInput.automizyChange();
+                    window.popover.open();
+                }
+            });
+            window.listNameInput = $A.newInput2({
+                labelTop: $A.translate('Add a name to your list'),
+                placeholder: $A.translate('Enter the name of your new list...'),
+                validator: 'notEmpty',
+                enter: function () {
+                    window.popoverSaveListButton.click();
+                }
+            });
+            window.popoverCancelButton = $A.newButton({
+                text: $A.translate('Cancel'),
+                skin: 'nobox-black',
+                thick: true,
+                float: 'left',
+                click: function () {
+                    window.popover.open();
+                }
+            });
+            window.popoverCreateListButton = $A.newButton({
+                text: $A.translate('Create list'),
+                skin: 'nobox-blue',
+                thick: true,
+                click: function () {
+                    window.popover.title($A.translate('Name Your List')).content(window.listNameInput);
+                    window.popoverCreateListButton.hide();
+                    window.popoverCancelButton.show();
+                    window.popoverSaveListButton.show();
+                    window.listNameInput.val('').select();
+                }
+            });
+            window.popoverSaveListButton = $A.newButton({
+                text: $A.translate('Save list'),
+                skin: 'nobox-blue',
+                thick: true,
+                click: function () {
+                    if (window.listNameInput.validate()) {
+                        window.popover.loadingStart();
+                        //AJAX
+                        $A.delay(function () {
+                            var smartList = {
+                                id: 123,
+                                name: 'ALMA',
+                                contactsCount: 0
+                            };
+                            window.smartLists.unshift(smartList);
+                            window.addedSmartListList.addElement({
+                                content: smartList.name,
+                                disabled: true,
+                                removable: true,
+                                data: {
+                                    id: smartList.id
+                                }
+                            });
+                            window.popover.close();
+                        }, 1000);
+                    }
+                }
+            });
+
+            window.popoverSmartListList = $A.newList({
+                type: 'simple',
+                maxVisibleElement: 3,
+                moreText: $A.translate('more lists (%s)'),
+                emptySearchContent: $A.translate('No match found.'),
+                maxHeight: '130px',
+                minHeight: '130px',
+                elementClick: function () {
+                    var listElement = this;
+                    var id = listElement.data('id');
+                    if (listElement.selected()) {
+                        listElement.unselect();
+                        var activeElements = window.addedSmartListList.activeElements();
+                        for (var i = 0; i < activeElements.length; i++) {
+                            if (activeElements[i].data('id') == id) {
+                                activeElements[i].remove();
+                                break;
+                            }
+                        }
+                    } else {
+                        listElement.select();
+                        window.addedSmartListList.addElement({
+                            content: listElement.text(),
+                            disabled: true,
+                            removable: true,
+                            data: {
+                                id: id
+                            }
+                        });
+                    }
+                }
+            });
+            window.addedSmartListList = $A.newList({
+                type: 'row',
+                target: 'body'
+            });
+
+            window.popover = $A.newPopover({
+                target: window.searchInput.widget(),
+                width: '400px',
+                position: 'bottom',
+                gravity: 'right',
+                offsetLeft: -2,
+                open: function () {
+                    if (window.smartLists.length <= 0) {
+                        this.title($A.translate('Create your first list')).content(window.$noListContent);
+                        window.popoverCreateListButton.hide();
+                        window.popoverCancelButton.hide();
+                        window.popoverSaveListButton.hide();
+                    } else {
+                        this.title($A.translate('Contact Lists')).content(window.popoverSmartListList);
+                        window.popoverCreateListButton.show();
+                        window.popoverCancelButton.hide();
+                        window.popoverSaveListButton.hide();
+                    }
+                },
+                buttons: [
+                    window.popoverCancelButton,
+                    window.popoverCreateListButton,
+                    window.popoverSaveListButton
+                ]
+            }).close();
+
+        });
+    </script>
+</head>
+<body style="font-family: 'Segoe UI'; margin:0; padding:0">
+</body>
+</html>
+

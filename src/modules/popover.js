@@ -46,6 +46,9 @@ define([
             if (typeof obj.target !== 'undefined') {
                 t.target(obj.target);
             }
+            if (typeof obj.title !== 'undefined') {
+                t.title(obj.title);
+            }
             if (typeof obj.width !== 'undefined') {
                 t.width(obj.width);
             }
@@ -157,8 +160,8 @@ define([
             if (t.d.title === false) {
                 t.d.$title.prependTo($A.$tmp);
             } else {
-                t.d.$title.html(title);
-                t.d.$title.prependTo(t.d.$widget);
+                t.d.$title.html(t.d.title);
+                //t.d.$title.prependTo(t.d.$widget);
             }
             return t;
         }

@@ -9,11 +9,19 @@ define([
 
         $A.m.ListElement.apply(t, [obj]);
 
-        t.d.$icon = $('<span class="automizy-list-element-icon fa"></span>').appendTo(t.d.$widget);
+        t.d.$icon = $('<span class="automizy-list-element-icon fa"></span>').appendTo(t.d.$widget).click(function(){
+            if(t.d.activeIconClick) {
+                t.d.clickInside = true;
+                t.iconClick();
+            }
+        });
         t.d.$text = $('<span class="automizy-list-element-text"></span>').appendTo(t.d.$widget);
 
         t.d.text = false;
         t.d.icon = false;
+        t.d.iconPosition = 'left';
+        t.d.iconClick = function(){};
+        t.d.activeIconClick = false;
 
         if (typeof obj !== 'undefined') {
             if (typeof obj.text !== 'undefined') {
@@ -21,6 +29,12 @@ define([
             }
             if (typeof obj.icon !== 'undefined') {
                 t.icon(obj.icon);
+            }
+            if (typeof obj.iconPosition !== 'undefined') {
+                t.iconPosition(obj.iconPosition);
+            }
+            if (typeof obj.iconClick !== 'undefined') {
+                t.iconClick(obj.iconClick);
             }
         }
 
@@ -49,6 +63,36 @@ define([
             return t;
         }
         return t.d.icon;
+    };
+    p.iconPosition = function(iconPosition){
+        var t = this;
+        if(typeof iconPosition !== 'undefined') {
+            t.d.iconPosition = iconPosition;
+            if(t.d.iconPosition === 'right'){
+                t.d.$icon.addClass('automizy-position-right').appendTo(t.d.$widget);
+            }else{
+                t.d.$icon.removeClass('automizy-position-right').prependTo(t.d.$widget);
+            }
+            return t;
+        }
+        return t.d.icon;
+    };
+    p.iconClick = function(iconClick){
+        var t = this;
+        if(typeof iconClick !== 'undefined') {
+            if(t.d.iconClick === false){
+                t.d.iconClick = function(){};
+                t.d.activeIconClick = false;
+                t.d.$icon.removeClass('automizy-clickable');
+                return t;
+            }
+            t.d.iconClick = iconClick;
+            t.d.activeIconClick = true;
+            t.d.$icon.addClass('automizy-clickable');
+            return t;
+        }
+        t.d.iconClick.apply(t, []);
+        return t;
     };
 
     $A.initBasicFunctions(IconedListElement, "IconedListElement", []);

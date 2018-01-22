@@ -9,6 +9,8 @@ define([
 
         $A.m.ListElement.apply(t, [obj]);
 
+        t.d.text = '';
+
         if (typeof obj !== 'undefined') {
             if (typeof obj.text !== 'undefined') {
                 t.text(obj.text);
@@ -28,8 +30,12 @@ define([
 
     p.text = function(text){
         var t = this;
-        t.widget().html(text);
-        return t;
+        if(typeof text !== 'undefined'){
+            t.d.text = text;
+            t.widget().html(t.d.text);
+            return t;
+        }
+        return t.d.text;
     };
 
     p.bold = function(bold){
