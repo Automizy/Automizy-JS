@@ -38,7 +38,6 @@ define([
 
     "automizy/modules/customFieldFilter/customFieldFilter",
     "automizy/modules/customFieldUpdater/customFieldUpdater",
-    "automizy/modules/smartListSelector/smartListSelector",
 
     "automizy/modules/list/list",
     "automizy/modules/list/listElement",
