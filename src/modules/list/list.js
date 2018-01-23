@@ -11,6 +11,7 @@ define([
             $widget: $('<div class="automizy-list"></div>'),
             $title: $('<div class="automizy-list-title"></div>'),
             $elements: $('<div class="automizy-list-elements"></div>'),
+            $errorContent:$('<div class="automizy-list-error-content"></div>'),
             $emptySearchContent:$('<div class="automizy-list-empty-search-content"></div>'),
             $loading:$('<div class="automizy-list-loading"></div>'),
             moreButton:$A.newButton({
@@ -43,9 +44,10 @@ define([
         t.init();
 
         t.d.$title.appendTo(t.d.$widget);
+        t.d.$errorContent.appendTo(t.d.$widget).ahide();
+        t.d.$emptySearchContent.appendTo(t.d.$widget).ahide();
         t.d.$elements.appendTo(t.d.$widget);
         t.d.moreButton.appendTo(t.d.$widget).hide();
-        t.d.$emptySearchContent.appendTo(t.d.$widget).ahide();
         t.d.$loading.appendTo(t.d.$widget);
         t.loadingOff();
 
@@ -61,6 +63,9 @@ define([
             }
             if (typeof obj.type !== 'undefined') {
                 t.type(obj.type);
+            }
+            if (typeof obj.errorContent !== 'undefined') {
+                t.errorContent(obj.errorContent);
             }
             if (typeof obj.emptySearchContent !== 'undefined') {
                 t.emptySearchContent(obj.emptySearchContent);
@@ -139,20 +144,47 @@ define([
         });
         t.refreshVisibleElements();
         if(searchCount <= 0){
-            t.d.$emptySearchContent.ashow();
+            t.showEmptySearchContent();
         }else{
-            t.d.$emptySearchContent.ahide();
+            t.hideEmptySearchContent();
         }
         return searchCount;
     };
     p.emptySearchContent = function (content) {
         var t = this;
         if (typeof content !== 'undefined') {
-            t.d.content = content;
-            $A.setContent(t.d.content, t.d.$emptySearchContent);
+            $A.setContent(content, t.d.$emptySearchContent);
             return t;
         }
-        return t.d.content;
+        return t;
+    };
+    p.showEmptySearchContent = function () {
+        var t = this;
+        t.d.$emptySearchContent.ashow();
+        return t;
+    };
+    p.hideEmptySearchContent = function () {
+        var t = this;
+        t.d.$emptySearchContent.ahide();
+        return t;
+    };
+    p.errorContent = function (content) {
+        var t = this;
+        if (typeof content !== 'undefined') {
+            $A.setContent(content, t.d.$errorContent);
+            return t;
+        }
+        return t;
+    };
+    p.showErrorContent = function () {
+        var t = this;
+        t.d.$errorContent.ashow();
+        return t;
+    };
+    p.hideErrorContent = function () {
+        var t = this;
+        t.d.$errorContent.ahide();
+        return t;
     };
     p.type = function (type) {
         var t = this;

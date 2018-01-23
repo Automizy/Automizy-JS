@@ -18,7 +18,7 @@ define([
             $content: $('<div class="automizy-popover-content"></div>'),
             $buttons: $('<div class="automizy-popover-buttons"></div>'),
 
-            target: false,
+            targetElement: false,
             opened:false,
             padding:'8px',
 
@@ -44,7 +44,10 @@ define([
 
         if (typeof obj !== 'undefined') {
             if (typeof obj.target !== 'undefined') {
-                t.target(obj.target);
+                t.targetElement(obj.target);
+            }
+            if (typeof obj.targetElement !== 'undefined') {
+                t.targetElement(obj.targetElement);
             }
             if (typeof obj.title !== 'undefined') {
                 t.title(obj.title);
@@ -81,17 +84,17 @@ define([
     var p = Popover.prototype;
 
 
-    p.target = function (target) {
+    p.targetElement = p.target = function (targetElement) {
         var t = this;
-        if (typeof target !== 'undefined') {
-            if (typeof target === 'string' || typeof target === 'number') {
-                target = $('#' + target);
+        if (typeof targetElement !== 'undefined') {
+            if (typeof targetElement === 'string' || typeof targetElement === 'number') {
+                targetElement = $('#' + targetElement);
             }
-            t.d.target = $(target);
-            t.d.target.addClass('automizy-popovered');
+            t.d.targetElement = $(targetElement);
+            t.d.targetElement.addClass('automizy-popovered');
             return t;
         }
-        return t.d.target;
+        return t.d.targetElement;
     };
     p.appendTo = function (appendTo) {
         var t = this;
@@ -245,11 +248,11 @@ define([
 
         var position = t.position();
         var gravity = t.gravity();
-        var targetOffset = t.target().offset();
+        var targetOffset = t.targetElement().offset();
         var targetOffsetTop = targetOffset.top + t.offsetTop();
         var targetOffsetLeft = targetOffset.left + t.offsetLeft();
-        var targetHeight = t.target().outerHeight();
-        var targetWidth = t.target().outerWidth();
+        var targetHeight = t.targetElement().outerHeight();
+        var targetWidth = t.targetElement().outerWidth();
         var windowHeight = window.innerHeight;
         var windowWidth = window.innerWidth;
         var popoverHeight = t.widget().height();
@@ -341,7 +344,7 @@ define([
     p.reset = function () {
         var t = this;
 
-        t.target(false);
+        t.targetElement(false);
         t.position('auto');
         t.gravity('auto');
         t.width('auto');
@@ -362,7 +365,7 @@ define([
         if (typeof obj.popover === 'undefined') {
             obj.popover = $A.globalPopoverModule;
         }
-        obj.popover.target(obj.target);
+        obj.popover.targetElement(obj.targetElement || obj.target);
 
         if (typeof obj.title !== 'undefined') {
             obj.popover.title(obj.title);

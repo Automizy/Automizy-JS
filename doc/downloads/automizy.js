@@ -809,7 +809,7 @@ var $A = {};
             $content: $('<div class="automizy-popover-content"></div>'),
             $buttons: $('<div class="automizy-popover-buttons"></div>'),
 
-            target: false,
+            targetElement: false,
             opened:false,
             padding:'8px',
 
@@ -835,7 +835,10 @@ var $A = {};
 
         if (typeof obj !== 'undefined') {
             if (typeof obj.target !== 'undefined') {
-                t.target(obj.target);
+                t.targetElement(obj.target);
+            }
+            if (typeof obj.targetElement !== 'undefined') {
+                t.targetElement(obj.targetElement);
             }
             if (typeof obj.title !== 'undefined') {
                 t.title(obj.title);
@@ -872,17 +875,17 @@ var $A = {};
     var p = Popover.prototype;
 
 
-    p.target = function (target) {
+    p.targetElement = p.target = function (targetElement) {
         var t = this;
-        if (typeof target !== 'undefined') {
-            if (typeof target === 'string' || typeof target === 'number') {
-                target = $('#' + target);
+        if (typeof targetElement !== 'undefined') {
+            if (typeof targetElement === 'string' || typeof targetElement === 'number') {
+                targetElement = $('#' + targetElement);
             }
-            t.d.target = $(target);
-            t.d.target.addClass('automizy-popovered');
+            t.d.targetElement = $(targetElement);
+            t.d.targetElement.addClass('automizy-popovered');
             return t;
         }
-        return t.d.target;
+        return t.d.targetElement;
     };
     p.appendTo = function (appendTo) {
         var t = this;
@@ -1036,11 +1039,11 @@ var $A = {};
 
         var position = t.position();
         var gravity = t.gravity();
-        var targetOffset = t.target().offset();
+        var targetOffset = t.targetElement().offset();
         var targetOffsetTop = targetOffset.top + t.offsetTop();
         var targetOffsetLeft = targetOffset.left + t.offsetLeft();
-        var targetHeight = t.target().outerHeight();
-        var targetWidth = t.target().outerWidth();
+        var targetHeight = t.targetElement().outerHeight();
+        var targetWidth = t.targetElement().outerWidth();
         var windowHeight = window.innerHeight;
         var windowWidth = window.innerWidth;
         var popoverHeight = t.widget().height();
@@ -1132,7 +1135,7 @@ var $A = {};
     p.reset = function () {
         var t = this;
 
-        t.target(false);
+        t.targetElement(false);
         t.position('auto');
         t.gravity('auto');
         t.width('auto');
@@ -1153,7 +1156,7 @@ var $A = {};
         if (typeof obj.popover === 'undefined') {
             obj.popover = $A.globalPopoverModule;
         }
-        obj.popover.target(obj.target);
+        obj.popover.targetElement(obj.targetElement || obj.target);
 
         if (typeof obj.title !== 'undefined') {
             obj.popover.title(obj.title);
@@ -13479,6 +13482,7 @@ var $A = {};
             $widget: $('<div class="automizy-list"></div>'),
             $title: $('<div class="automizy-list-title"></div>'),
             $elements: $('<div class="automizy-list-elements"></div>'),
+            $errorContent:$('<div class="automizy-list-error-content"></div>'),
             $emptySearchContent:$('<div class="automizy-list-empty-search-content"></div>'),
             $loading:$('<div class="automizy-list-loading"></div>'),
             moreButton:$A.newButton({
@@ -13511,9 +13515,10 @@ var $A = {};
         t.init();
 
         t.d.$title.appendTo(t.d.$widget);
+        t.d.$errorContent.appendTo(t.d.$widget).ahide();
+        t.d.$emptySearchContent.appendTo(t.d.$widget).ahide();
         t.d.$elements.appendTo(t.d.$widget);
         t.d.moreButton.appendTo(t.d.$widget).hide();
-        t.d.$emptySearchContent.appendTo(t.d.$widget).ahide();
         t.d.$loading.appendTo(t.d.$widget);
         t.loadingOff();
 
@@ -13529,6 +13534,9 @@ var $A = {};
             }
             if (typeof obj.type !== 'undefined') {
                 t.type(obj.type);
+            }
+            if (typeof obj.errorContent !== 'undefined') {
+                t.errorContent(obj.errorContent);
             }
             if (typeof obj.emptySearchContent !== 'undefined') {
                 t.emptySearchContent(obj.emptySearchContent);
@@ -13607,20 +13615,47 @@ var $A = {};
         });
         t.refreshVisibleElements();
         if(searchCount <= 0){
-            t.d.$emptySearchContent.ashow();
+            t.showEmptySearchContent();
         }else{
-            t.d.$emptySearchContent.ahide();
+            t.hideEmptySearchContent();
         }
         return searchCount;
     };
     p.emptySearchContent = function (content) {
         var t = this;
         if (typeof content !== 'undefined') {
-            t.d.content = content;
-            $A.setContent(t.d.content, t.d.$emptySearchContent);
+            $A.setContent(content, t.d.$emptySearchContent);
             return t;
         }
-        return t.d.content;
+        return t;
+    };
+    p.showEmptySearchContent = function () {
+        var t = this;
+        t.d.$emptySearchContent.ashow();
+        return t;
+    };
+    p.hideEmptySearchContent = function () {
+        var t = this;
+        t.d.$emptySearchContent.ahide();
+        return t;
+    };
+    p.errorContent = function (content) {
+        var t = this;
+        if (typeof content !== 'undefined') {
+            $A.setContent(content, t.d.$errorContent);
+            return t;
+        }
+        return t;
+    };
+    p.showErrorContent = function () {
+        var t = this;
+        t.d.$errorContent.ashow();
+        return t;
+    };
+    p.hideErrorContent = function () {
+        var t = this;
+        t.d.$errorContent.ahide();
+        return t;
     };
     p.type = function (type) {
         var t = this;

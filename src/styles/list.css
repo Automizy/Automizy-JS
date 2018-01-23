@@ -29,6 +29,20 @@
     height: 30px;
 }
 
+.automizy-list-error-content {
+    margin-top: 2px;
+    position: relative;
+    box-sizing: border-box;
+    color: #da4b50;
+    text-align: left;
+    border: 1px solid #da4b50;
+    width: 100%;
+    padding: 12px 6px 9px 9px;
+    font-weight: bold;
+    font-size: 14px;
+    background-color: #fafafa;
+}
+
 .automizy-list-element {
     cursor: pointer;
     position: relative;
@@ -202,7 +216,7 @@
 }
 
 .automizy-list-element-row .automizy-list-element-info-box {
-    width: 50%;
+    width: 100%;
     min-width: 200px;
 }
 
@@ -255,6 +269,15 @@
     font-size: 13px;
     padding-right: 4px;
 }
+
+.automizy-list-element.automizy-type-row:last-child .automizy-list-element-row{
+    margin-bottom:0;
+}
+
+.automizy-list-element.automizy-type-row:last-child .automizy-list-element-row{
+    margin-bottom:0;
+}
+
 
 .automizy-list-empty-search-content {
     text-align: center;
